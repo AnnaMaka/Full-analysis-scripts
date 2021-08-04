@@ -1,0 +1,538 @@
+---
+title: "analysisAngle"
+author: "Anna Makova"
+date: "7/22/2021"
+output: html_document
+---
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(lme4)
+library(tidyverse)
+library(broom)
+library(ggsignif)
+library(patchwork)
+library(gghalves)
+library(cowplot)
+library(scico) 
+library(Cairo) 
+library(ggnewscale) 
+library(here) 
+library(effsize)
+library(pwr)
+```
+
+```{r}
+blocks <- c(1, 2, 3, 4)
+trials <- c(1:16)
+objects <- c("monster", "partyhat", "lamp", "flower")
+```
+
+retrieving subject IDs from the directory
+```{r}
+fn <- list.files(path = here("data"), pattern="*_feedbackPhase_block4_Sum") 
+subjects <- c()
+for (i_file in length(fn)) {
+  subjects <- substr(fn,1,4)
+}
+```
+
+```{r}
+Sum_angle <- read_delim(here("data" ,"SumAngle.txt"), delim = " ", col_names = TRUE) 
+Sum_all <- read_delim(here("data" ,"Sum.txt"), delim = " ", col_names = TRUE) 
+```
+
+```{r}
+out <- c()
+for (i_sub in subjects) {
+  score <- t.test(subset(Sum_all, ID==i_sub & block==1)$memoryScoreTraj, 
+                  mu=0.5, var.equal = FALSE, alternative = "greater") %>% tidy()
+  if (score$p.value > 0.05) {
+    out <- c(out, i_sub)
+    }
+}
+print(out)
+
+Sum_angle <- filter(Sum_angle, ID != out[1] & ID != out[2])
+Sum_all <-filter(Sum_all, ID != out[1] & ID != out[2])
+
+```
+
+Block 1
+```{r}
+summaryBlock1_Angle <- Sum_angle %>%
+  filter(block==1) %>% 
+  group_by(ID, block) %>% 
+  summarise(angleErr = mean(abs(angleError)), relativeAng = mean(relativeAngle), .groups="drop") 
+```
+
+```{r}
+t.test(summaryBlock1_Angle$angleErr, mu = 90, alternative = "less") %>% tidy()
+cohen.d(d=1, f=NA, data=summaryBlock1_Angle$angleErr, mu=90) 
+```
+
+```{r angle estimation block 1 visualisation}
+g_errB1 <- ggplot(summaryBlock1_Angle, aes(x=block, y=angleErr)) + 
+  geom_half_violin(aes(x=block-0.05), fill=scico(1, palette= "lajolla", begin = 0.45), alpha =0.5, color=NA) +
+  geom_point(aes(x=block+0.07), position = position_jitter(width =0.02, height = 0), shape=16, size = 1) +
+  geom_boxplot(width = .05, outlier.shape = NA) +
+  theme_cowplot() +
+  geom_hline(yintercept = 90, linetype=2) +
+  labs(y='Pointing Error (°)', x=' ', title = "Average Absolute Error") + 
+  theme(axis.title = element_text(size=10), axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank(), axis.text.y = element_text(size=10)) +
+  annotate("text", label = "90°", x = 1.3, y = 85, size = 3)
+
+g_errB1
+```
+
+```{r angle estimation ech trial in Block 1}
+g_anglB1 <- ggplot(Sum_angle %>% filter(block == 1), aes(x = angleError)) +
+  geom_histogram(binwidth = 10, boundary = -7.5, fill = scico(1, palette = "lajolla", begin=0.5), color= "black", size = .25) +
+  coord_polar(start=pi) +
+  scale_x_continuous(limits = c(-180,180),
+                     breaks = seq(-180, 180, by = 45),
+                     minor_breaks = seq(-180, 180, by = 15)) +
+  theme_cowplot() +
+  background_grid() +
+  labs(x = "Pointing Error (°)", y = "Count", title = "Signed Distribution of Error") +
+  theme(axis.title.y = element_text(hjust = 0.7))
+  
+g_anglB1
+```
+
+```{r}
+angleEst_B1 <- g_errB1 + g_anglB1 &
+  theme(axis.title = element_text(size=12), plot.title = element_text(face="italic", size=12)) &
+  plot_annotation(title = 'Pointing Errors', 
+                  theme = theme(plot.title = element_text(size = 14, face="bold"))) 
+
+
+ggsave(file="AngleErrors_B1.pdf", plot=angleEst_B1, units = "cm", width = 15.9, height = 10, dpi = "retina", device = cairo_pdf, path = here("figures"))
+ggsave(file="AngleErrors_B1.png", plot=angleEst_B1, units = "cm", width = 15.9, height = 10, dpi = "retina", device = "png", path = here("figures"))
+
+angleEst_B1
+```
+
+```{r all grahs for block 1}
+block1_graphs <- memory_B1 / angleEst_B1 &
+  theme(axis.title = element_text(size=10), axis.text = element_text(size=10), 
+        plot.title = element_text(face="italic", size=12),
+        legend.text = element_text(size=10), legend.title = element_text(size=10),
+        plot.tag = element_text(size = 10, face="bold")) &
+  plot_annotation(title = 'Block 1 Performance', 
+                  subtitle = ' \nPositional Memory',
+                  theme = theme(plot.title = element_text(size = 14, face="bold"), plot.subtitle = element_text(size=12, face="bold")),
+                  tag_levels = 'A') 
+
+block1_graphs
+
+ggsave(file="B1.pdf", plot=block1_graphs, units = "cm", width = 15, height = 16, dpi = "retina", device = cairo_pdf, path = here("figures"))
+ggsave(file="B1.png", plot=block1_graphs, units = "cm", width = 15, height = 16, dpi = "retina", device = "png", path = here("figures"))
+
+```
+
+Cue 
+```{r filtering and summarising the data}
+subset_RA <- Sum_angle %>% 
+  filter(block!=1) %>% 
+  select(-cue1, -object, -sec2Beg, -sec2Est, -sec2End, -trialLen, -secTrialEst) %>%
+  mutate(cueMM = recode(cue, "boundary" = 1, "landmark" = -1), mini = scale(miniblock, center = TRUE, scale = FALSE), ID = as.factor(ID))
+
+relativeAngleBlocks <- subset_RA %>%
+  group_by(ID, cue, age) %>% 
+  summarise(angleErr = mean(abs(angleError)), relativeAng = mean(relativeAngle), raSD = sd(relativeAngle), .groups="drop")
+```
+
+```{r t-test of RA vs 0.5 landmark}
+t.test(subset(relativeAngleBlocks, cue=="landmark")$relativeAng, 
+       mu = 0.5, alternative = "less") %>% tidy()
+cohen.d(d=subset(relativeAngleBlocks, cue=="landmark")$relativeAng, f=NA, mu = 0.5)
+```
+
+
+```{r t-test of RA vs 0.5 boundary}
+t.test(subset(relativeAngleBlocks, cue=="boundary")$relativeAng, 
+       mu = 0.5, alternative = "greater") %>% tidy()
+cohen.d(d=subset(relativeAngleBlocks, cue=="boundary")$relativeAng, f=NA, mu = 0.5)
+```
+
+```{r t-test of RA boundary vs. landmark}
+t.test(subset(relativeAngleBlocks, cue=="boundary")$relativeAng, 
+       subset(relativeAngleBlocks, cue=="landmark")$relativeAng, paired = TRUE) %>% tidy()
+cohen.d(subset(relativeAngleBlocks, cue=="boundary")$relativeAng, 
+       subset(relativeAngleBlocks, cue=="landmark")$relativeAng, paired=TRUE)
+pwr.t.test(n = 36, d = 2.532636, sig.level = 0.05, power = NULL, type = c("paired"), alternative = c("two.sided"))
+```
+
+```{r RA block 2-4 graph}
+rel_InfAng <- ggplot(relativeAngleBlocks, aes(x=cue, y=relativeAng)) + 
+  scale_x_discrete(labels = c('Boundary', 'Landmark')) +
+  gghalves::geom_half_violin(data=relativeAngleBlocks %>% filter(cue=="landmark"), 
+                             position=position_nudge(+0.2), aes(fill=cue),alpha =0.7, color=NA, side="r") +
+  gghalves::geom_half_violin(data=relativeAngleBlocks %>% filter(cue=="boundary"), 
+                             position=position_nudge(-0.2), aes(fill=cue),alpha =0.7, color=NA, side="l") + 
+  scale_fill_scico_d(palette = 'tokyo', begin=0.15, end=0.85) +
+  geom_point(shape=16, size = 1) +
+  geom_boxplot(data=relativeAngleBlocks %>% filter(cue=="landmark"), 
+               position=position_nudge(+0.1), width = .1, outlier.shape = NA) +
+  geom_boxplot(data= relativeAngleBlocks %>% filter(cue=="boundary"), 
+               position=position_nudge(-0.1), width = .1, outlier.shape = NA) +
+  geom_line(aes(group=ID), alpha=0.5) +
+  theme_cowplot() +
+  labs(x = " ", y = "Relative Influence (0-1)", 
+       title = "Pointing") + 
+  geom_signif(comparisons = list(c("landmark", "boundary")),  test="t.test", 
+              test.args=list(alternative = "two.sided", paired=TRUE), 
+              map_signif_level = TRUE, tip_length = 0, extend_line = 0.045, y_position = 0.85) +
+  geom_hline(yintercept=0.5, linetype=2, alpha=0.6) +
+  scale_y_continuous(limits=c(0.1, 0.9), breaks = c(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9))
+
+
+ggsave("relativeInfluenceAng.pdf", plot=rel_InfAng, units = "cm", width = 15, height = 12, dpi = "retina", device = cairo_pdf, path = here("figures"))
+ggsave("relativeInfluenceAng.png", plot=rel_InfAng, units = "cm", width = 15, height = 12, dpi = "retina", device = "png", path = here("figures"))
+
+rel_InfAng
+```
+
+```{r}
+relative_infl <- rel_Inf / rel_InfAng &
+  theme(axis.title = element_text(size=10), axis.text = element_text(size=10), 
+        plot.title = element_text(face="italic", size=12),
+        plot.tag = element_text(size = 10, face="bold"),
+        legend.position = "none") &
+  plot_annotation(title = "Relative Influence",
+                  theme = theme(plot.title = element_text(size = 12, face="bold")),
+                  tag_levels = 'A') 
+
+ggsave("relativeInfluenceAll.pdf", plot=relative_infl, units = "cm", width = 11, height = 15, dpi = "retina", device = cairo_pdf, path = here("figures"))
+ggsave("relativeInfluenceAll.png", plot=relative_infl, units = "cm", width = 11, height = 15, dpi = "retina", device = "png", path = here("figures"))
+
+relative_infl
+```
+
+
+```{r angle estimation error difference? nah}
+t.test(subset(relativeAngleBlocks, cue=="boundary")$angleErr, subset(relativeAngleBlocks, cue=="landmark")$angleErr, paired = TRUE) %>% tidy()
+```
+
+```{r angle error graph}
+cue_Ang <- ggplot(relativeAngleBlocks, aes(x=cue, y= angleErr)) + 
+  scale_x_discrete(labels = c('Boundary', 'Landmark')) +
+  gghalves::geom_half_violin(data=relativeAngleBlocks %>% filter(cue=="landmark"), 
+                             position=position_nudge(+0.2), aes(fill=cue),alpha =0.7, color=NA, side="r") +
+  gghalves::geom_half_violin(data=relativeAngleBlocks %>% filter(cue=="boundary"), 
+                             position=position_nudge(-0.2), aes(fill=cue),alpha =0.7, color=NA, side="l") + 
+  scale_fill_scico_d(palette = 'tokyo', begin=0.15, end=0.85) +
+  geom_point(shape=16, size = 1) +
+  geom_boxplot(data=relativeAngleBlocks %>% filter(cue=="landmark"), 
+               position=position_nudge(+0.1), width = .1, outlier.shape = NA) +
+  geom_boxplot(data=relativeAngleBlocks %>% filter(cue=="boundary"), 
+               position=position_nudge(-0.1), width = .1, outlier.shape = NA) +
+  geom_line(aes(group=ID), alpha=0.5) +
+  theme_cowplot() +
+  labs(x = " ", y = "Pointing Error (°)", 
+       title = "Pointing") +
+  geom_signif(comparisons = list(c("landmark", "boundary")), test="t.test", 
+              test.args=list(alternative = "two.sided", paired=TRUE),
+              map_signif_level = TRUE, tip_length = 0, extend_line = 0.045, y_position = 92) +
+  scale_y_continuous(breaks = c(25, 50, 75, 100), limits = c(9,100))
+
+
+ggsave("angleError.pdf", plot=cue_Ang, units = "cm", width = 15.9, height = 12, dpi = "retina", device = cairo_pdf, path = here("figures"))
+ggsave("angleError.png", plot=cue_Ang, units = "cm", width = 15.9, height = 12, dpi = "retina", device = "png", path = here("figures"))
+
+cue_Ang
+```
+
+```{r}
+cue_Diff <- g_cue / cue_Ang &
+  theme(axis.title = element_text(size=10), axis.text = element_text(size=10), 
+        plot.title = element_text(face="italic", size=12),
+        plot.tag = element_text(size = 10, face="bold"),
+        legend.position = "none") &
+  plot_annotation(title = "Raw Performance Differences",
+                  theme = theme(plot.title = element_text(size = 12, face="bold")),
+                  tag_levels = 'A')
+
+ggsave("cueDiffAll.pdf", plot=cue_Diff, units = "cm", width = 11, height = 15, dpi = "retina", device = cairo_pdf, path = here("figures"))
+ggsave("cueDiffAll.png", plot=cue_Diff, units = "cm", width = 11, height = 15, dpi = "retina", device = "png", path = here("figures"))
+
+cue_Diff
+```
+
+```{r}
+formulaCue <- "relativeAngle ~ cueMM + (1+cueMM|ID)"
+modelCueAngle <- lme4::lmer(formula = formulaCue, data=subset_RA)
+summary(modelCueAngle)
+```
+
+```{r}
+formulaControl <- "relativeAngle ~ 1 + (1+cueMM|ID)"
+modelCueControl <- lme4::lmer(formula = formulaControl, data=subset_RA)
+ratioCueAngle <- anova(modelCueAngle, modelCueControl)
+ratioCueAngle
+```
+
+
+MINIBLOCKS
+```{r}
+formulaMiniblocks <- "relativeAngle ~ cue*mini + (1+mini:cueMM|ID)"
+modelMiniblocksCue <- lme4::lmer(formula = formulaMiniblocks, data=subset_RA)
+summary(modelMiniblocksCue)
+```
+
+```{r}
+formulaMiniControl <- "relativeAngle ~  mini+cueMM + (1+mini:cueMM|ID)" 
+modelMiniControlInt <- lme4::lmer(formula = formulaMiniControl, data=subset_RA)
+
+ratioMiniblocksInt <- anova(modelMiniblocksCue, modelMiniControlInt)
+ratioMiniblocksInt
+```
+
+```{r}
+formulaMiniblocksAngle <- "relativeAngle ~ mini + (1+mini|ID)" 
+modelMiniblocksLandmarkAngle <- lme4::lmer(formula = formulaMiniblocksAngle, data=subset(subset_RA, cue=="landmark"))
+summary(modelMiniblocksLandmarkAngle) 
+```
+
+
+```{r}
+formulaMiniControl <- "relativeAngle ~ 1 + (1+mini|ID)" 
+modelMiniLandmarkControl <- lme4::lmer(formula = formulaMiniControl, data=subset(subset_RA, cue=="landmark"))
+ratioMiniLandmark = anova(modelMiniblocksLandmarkAngle, modelMiniLandmarkControl)
+ratioMiniLandmark
+```
+
+
+```{r}
+formulaMiniblocksAngle <- "relativeAngle ~ mini + (1+mini|ID)" 
+modelMiniblocksBoundaryAngle <- lme4::lmer(formula = formulaMiniblocksAngle, data=subset(subset_RA,cue=="boundary"))
+summary(modelMiniblocksBoundaryAngle)
+```
+
+```{r}
+formulaMiniControl <- "relativeAngle ~ 1 + (1+mini|ID)" 
+modelMiniBoundaryControl <- lme4::lmer(formula = formulaMiniControl, data=subset(subset_RA, cue=="boundary"))
+ratioMiniBoundary = anova(modelMiniblocksBoundaryAngle, modelMiniBoundaryControl)
+ratioMiniBoundary
+```
+
+
+```{r}
+summary_miniblock_A <- subset_RA %>%
+  group_by(ID, miniblock, cue, age) %>% 
+  summarise(angleErr = mean(abs(angleError)), 
+            aeSD = sd(abs(angleError)), 
+            relativeAng = mean(relativeAngle), 
+            raSD = sd(relativeAngle),
+            .groups = "drop")
+
+g_miniAng <- ggplot(summary_miniblock_A, aes(miniblock, relativeAng, group=interaction(cue, ID), color=cue)) + 
+  geom_line(size=0.8, alpha = 0.3) +
+  stat_summary(data= subset(summary_miniblock_A, cue=="boundary"), fun.data=mean_se, 
+               aes(group=cue), geom="errorbar", width=0.1, position = position_nudge(x=0.01)) +
+  stat_summary(data= subset(summary_miniblock_A, cue=="landmark"), fun.data=mean_se, 
+               aes(group=cue), geom="errorbar",  width=0.1, position=position_nudge(x=-0.01)) +
+  stat_summary(fun=mean, aes(group=cue), geom="line", size = 1.5) +
+  stat_summary(fun=mean, aes(group=cue), geom="point", size=2) +
+  geom_hline(yintercept = 0.5, linetype = 2) +
+  theme_cowplot() +
+  labs(x= "Miniblock", y = "Relative Influence (0-1)", title = "Averaged across Blocks", color = "Cue") +
+  theme(plot.title = element_text(size=12, face="italic"), 
+        axis.title = element_text(size=10),
+        axis.text = element_text(size=10)) +
+  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
+  scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1), limits = c(0,1)) +
+  scale_x_continuous(limits = c(0.5, 4.5), breaks = c(1,2,3,4))
+
+g_miniAng
+```
+
+```{r}
+#data summarizing
+summary_objectTrial_A <- subset_RA %>%
+  group_by(ID, objectTrial, cue) %>% 
+  summarise(relativeAng = mean(relativeAngle), 
+            raSD = sd(relativeAngle), .groups="drop")
+
+#graph
+g_objTrialAng <- ggplot(data=summary_objectTrial_A, aes(objectTrial, relativeAng, group=interaction(cue, ID), color=cue)) + 
+  theme_cowplot() +
+  geom_line(data= subset(summary_objectTrial_A, objectTrial < 9), size=0.8, alpha = 0.3) +
+  geom_line(data= subset(summary_objectTrial_A, objectTrial < 13 & objectTrial > 8), size=0.8, alpha = 0.3) +
+  geom_line(data= subset(summary_objectTrial_A, objectTrial > 12), size=0.8, alpha = 0.3) +
+  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary, Landmark")) +
+  labs(x= "Miniblock", y = "Relative Influence (0-1)", title= "Separately per Block", color= "Cue") +
+  stat_summary(data = subset(summary_objectTrial_A, objectTrial < 9), fun=mean, aes(group=cue), geom="line", size = 1.5) +
+  stat_summary(data = subset(summary_objectTrial_A, objectTrial  < 13 & objectTrial > 8), fun=mean, aes(group=cue), 
+               geom="line", size = 1.5) +
+  stat_summary(data = subset(summary_objectTrial_A, objectTrial > 12), fun=mean, aes(group=cue), geom="line", size = 1.5) +
+  stat_summary(data= subset(summary_objectTrial_A, cue=="boundary"), fun.data = mean_se, 
+               aes(group=cue), geom = "errorbar", width=0.1, position = position_nudge(x=+0.01)) +
+  stat_summary(data= subset(summary_objectTrial_A, cue=="landmark"), fun.data = mean_se, 
+               aes(group=cue), geom = "errorbar", width=0.1, position = position_nudge(x=-0.01)) +
+  stat_summary(fun=mean, aes(group=cue), geom="point", size=2) +
+  geom_hline(yintercept = 0.5, linetype = 2) +
+  geom_vline(xintercept = 8.9, alpha = 0.7, linetype=3) +
+  geom_vline(xintercept = 12.9, alpha = 0.7, linetype=3) +
+  geom_vline(xintercept = 4.9, alpha = 0.7, linetype=3) +
+  scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1), limits = c(0,1)) +
+  scale_x_continuous(breaks = c(5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), 
+                     labels = c("1", "2", "3", "4", "1", "2", "3", "4", "1", "2", "3", "4")) +
+  annotate("text", label = "Block 2", x = 5.6, y = 1, size = 3) +
+  annotate("text", label = "Block 3", x = 9.6, y = 1, size = 3) +
+  annotate("text", label = "Block 4", x = 13.6, y = 1, size = 3) +
+  theme(legend.position = "none")
+
+
+g_objTrialAng 
+```
+
+
+```{r}
+layout <- "
+AAAAAA
+AAAAAA
+AAAAAA
+BB####
+BB#C##
+BB####
+"
+
+g_leg <- guide_area()
+g_minAng <- g_objTrialAng + g_miniAng + g_leg +
+  plot_layout(design = layout, guides = "collect") &
+  theme(axis.title = element_text(size = 10), axis.text = element_text(size=10), 
+        legend.title = element_text(size=10), legend.text = element_text(size=10),
+        plot.title = element_text(size=12, face="italic"),
+        plot.tag = element_text(size = 10, face="bold")) &
+  plot_annotation(title = 'Pointing Error',
+                  theme = theme(plot.title = element_text(size = 12, face="bold")),
+                  tag_levels = list(c('C', 'D')))
+
+g_minAng
+
+ggsave("relativeAngle_min.pdf", plot=g_minAng, units = "cm", width = 15, height = 13, dpi = "retina", device = cairo_pdf, path = here("figures"))
+ggsave("relativeAngle_min.png", plot=g_minAng, units = "cm", width = 15, height = 13, dpi = "retina", device = "png", path = here("figures"))
+
+```
+
+
+
+AGE
+```{r}
+Age_c <- subset_RA %>% 
+  group_by(ID) %>%
+  distinct(age) %>%
+  ungroup() %>%
+  mutate(age_c = scale(age, center=TRUE, scale=FALSE))
+
+subset_RA <- inner_join(subset_RA, Age_c%>%select(ID, age_c), by="ID")
+
+formulaFinalAngle <- "relativeAngle ~ age_c*cueMM+(1+cueMM|ID)" 
+modelFinalAngle <- lme4::lmer(formula = formulaFinalAngle, data=subset_RA)
+summary(modelFinalAngle)
+```
+
+
+```{r} 
+controlFinal <- "relativeAngle ~ age_c+cueMM+(1+cueMM|ID)"
+modelControl <- lme4::lmer(formula = controlFinal, data=subset_RA)
+ratioFinalAngle <- anova(modelFinalAngle, modelControl)
+ratioFinalAngle
+```
+
+```{r}
+formulaAgeLandmark <- "relativeAngle ~ age_c + (1|ID)"
+modelAgeLandmark <- lme4::lmer(formula = formulaAgeLandmark, data=subset(subset_RA, cue=="landmark"))
+summary(modelAgeLandmark)
+
+controlAgeLandmark <- "relativeAngle ~ 1 + (1 |ID)"
+modelControlAgeLandmark <- lme4::lmer(formula = controlAgeLandmark, data=subset(subset_RA, cue=="landmark"))
+ratioAgeLandmark <- anova(modelAgeLandmark, modelControlAgeLandmark)
+ratioAgeLandmark
+```
+
+```{r}
+formulaAgeBoundary <- "relativeAngle ~ age_c +(1|ID)"
+modelAgeBoundary <- lme4::lmer(formula = formulaAgeBoundary, data=subset(subset_RA, cue=="boundary"))
+summary(modelAgeBoundary)
+
+controlAgeBoundary <- "relativeAngle ~ 1 + (1 |ID)"
+modelControlAgeBoundary <- lme4::lmer(formula = controlAgeBoundary, data=subset(subset_RA, cue=="boundary"))
+ratioAgeBoundary <- anova(modelAgeBoundary, modelControlAgeBoundary)
+ratioAgeBoundary
+```
+
+
+```{r RA_final graph}
+RA_final <- ggplot(relativeAngleBlocks, aes(age, relativeAng, color=cue)) + 
+  theme_cowplot() +
+  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, guide = "none") +
+  stat_summary(fun.data = mean_se,geom="errorbar", size=0.8, width=0.1, alpha=0.95) +
+  stat_summary(fun=mean, aes(group=cue), geom="line", size = 1.5) +
+  stat_summary(fun=mean, aes(group=cue), geom="point", size = 2) +
+  new_scale_color() + 
+  geom_point(data = relativeAngleBlocks, aes(color=cue)) + 
+  scale_color_scico_d(palette = 'tokyo', begin=0.3, end=0.7, labels = c("Boundary", "Landmark")) +
+  scale_x_continuous(breaks = c(8,9,10,11,12,13,14,15)) +
+  scale_y_continuous(limits = c(0.2, 0.8), breaks = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)) +
+  labs(x= "Age", y = "Relative Influence (0-1)", 
+       title = "Data", color="Cue") +
+  geom_hline(yintercept = 0.5, linetype=2, alpha=0.6)
+  
+  
+RA_final
+```
+
+```{r RA_model graph}
+RA_predict <- ggeffects::ggpredict(modelFinalAngle, terms = c("age_c", "cueMM")) %>% 
+  as_tibble() %>%
+  mutate(cuePredict = factor(if_else(group == 1, true = "boundary", false = "landmark"),
+                      levels = c("boundary", "landmark")))
+  
+RA_model <- ggplot(RA_predict, aes(x = x, y = predicted, colour = cuePredict, fill = cuePredict)) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .2, linetype=0) +
+  geom_line(size = 0.5) +
+  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
+  scale_fill_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
+  scale_x_continuous(breaks = sort(unique(Age_c$age_c)), labels = c("8", "9", "10", "11", "12", "13", "14", "15")) +
+  scale_y_continuous(breaks = c(0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8), limits = c(0.2, 0.8)) +
+  theme_cowplot() +
+  labs(x="Age", y=" ", color="Cue", fill="Cue", 
+       title = "Mixed Model") + 
+  theme(legend.position = "none") +
+  geom_hline(yintercept = 0.5, linetype=2, alpha=0.6)
+
+RA_model
+```
+
+```{r RA final graphs together}
+layout <- "
+AAAAA#BBBBBB
+AAAAA#BBBBBB
+AAAAA#BBBBBB
+"
+
+g_finalAng <- RA_final + RA_model &
+  plot_layout(design=layout) &
+  theme(axis.title = element_text(size = 10), axis.text = element_text(size=10), 
+        legend.title = element_text(size=10), legend.text = element_text(size=10),
+        legend.position = "bottom",
+        plot.title = element_text(size=12, face="italic"),
+        plot.tag = element_text(size = 10, face="bold")) &
+  plot_annotation(title = 'Pointing ',
+                  theme = theme(plot.title = element_text(size = 12, face="bold")),
+                  tag_levels = list(c('C', 'D')))
+
+g_finalAng
+
+ggsave("relativeInfluence_finalAng.pdf", plot=g_finalAng, 
+       units = "cm", width = 15, height = 9, dpi = "retina", device = cairo_pdf, path = here("figures"))
+ggsave("relativeInfluence_finalAng.png", plot=g_finalAng, 
+       units = "cm", width = 15, height = 9, dpi = "retina", device = "png", path = here("figures"))
+```
