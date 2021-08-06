@@ -2,9 +2,12 @@
 title: "analysisAngle"
 author: "Anna Makova"
 date: "7/22/2021"
-output: html_document
+site: bookdown::bookdown_site
+documentclass: book
+output:
+  bookdown::gitbook: default
 ---
-
+# Angle estimation analysis
 ```{r}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -32,7 +35,7 @@ objects <- c("monster", "partyhat", "lamp", "flower")
 ```
 
 retrieving subject IDs from the directory
-```{r}
+```{r, eval=FALSE}
 fn <- list.files(path = here("data"), pattern="*_feedbackPhase_block4_Sum") 
 subjects <- c()
 for (i_file in length(fn)) {
@@ -43,6 +46,10 @@ for (i_file in length(fn)) {
 ```{r}
 Sum_angle <- read_delim(here("data" ,"SumAngle.txt"), delim = " ", col_names = TRUE) 
 Sum_all <- read_delim(here("data" ,"Sum.txt"), delim = " ", col_names = TRUE) 
+```
+```{r}
+Sum_all <- filter(Sum_all, error!=-1)
+subjects <- unique(Sum_all$ID)
 ```
 
 ```{r}
@@ -71,7 +78,7 @@ summaryBlock1_Angle <- Sum_angle %>%
 
 ```{r}
 t.test(summaryBlock1_Angle$angleErr, mu = 90, alternative = "less") %>% tidy()
-cohen.d(d=1, f=NA, data=summaryBlock1_Angle$angleErr, mu=90) 
+#cohen.d(d=1, f=NA, data=summaryBlock1_Angle$angleErr, mu=90) 
 ```
 
 ```{r angle estimation block 1 visualisation}
@@ -139,7 +146,7 @@ Cue
 ```{r filtering and summarising the data}
 subset_RA <- Sum_angle %>% 
   filter(block!=1) %>% 
-  select(-cue1, -object, -sec2Beg, -sec2Est, -sec2End, -trialLen, -secTrialEst) %>%
+  select(-object, -sec2Beg, -sec2Est, -sec2End, -trialLen, -secTrialEst) %>%
   mutate(cueMM = recode(cue, "boundary" = 1, "landmark" = -1), mini = scale(miniblock, center = TRUE, scale = FALSE), ID = as.factor(ID))
 
 relativeAngleBlocks <- subset_RA %>%
@@ -431,7 +438,8 @@ Age_c <- subset_RA %>%
   ungroup() %>%
   mutate(age_c = scale(age, center=TRUE, scale=FALSE))
 
-subset_RA <- inner_join(subset_RA, Age_c%>%select(ID, age_c), by="ID")
+subset_RA <- inner_join(subset_RA, Age_c%>%select(ID, age_c), by="ID") 
+subset_RA <- rename(subset_RA, age_c=age_c.x)
 
 formulaFinalAngle <- "relativeAngle ~ age_c*cueMM+(1+cueMM|ID)" 
 modelFinalAngle <- lme4::lmer(formula = formulaFinalAngle, data=subset_RA)

@@ -1,13 +1,17 @@
 ---
 title: "analysis"
-output: html_document
+site: bookdown::bookdown_site
+documentclass: book
+output:
+  bookdown::gitbook: default
 ---
+# Analysis
 
-```{r setup, include=FALSE}
+```{r}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r library}
+```{r}
 library(lme4)
 library(tidyverse)
 library(broom)
@@ -24,7 +28,7 @@ library(here)
 library(effsize)
 ```
 
-```{r basic needed info}
+```{r}
 blocks <- c(1, 2, 3, 4)
 trials <- c(1:16)
 objects <- c("monster", "partyhat", "lamp", "flower")
@@ -32,7 +36,7 @@ if (dir.exists(here("figures"))){dir.create(here("figures"))}
 ```
 
 retrieving subject IDs from the directory
-```{r ID}
+```{r, eval=FALSE}
 fn <- list.files(path = here("data"), pattern="*_feedbackPhase_block4_Sum") 
 subjects <- c()
 for (i_file in length(fn)) {
@@ -45,7 +49,7 @@ Sum_all <- read_delim(here("data" ,"Sum.txt"), delim = " ", col_names = TRUE) # 
 Traj <- read_delim(here("data" ,"Traj.txt"), delim = " ", col_names = TRUE) # JB added loading of trajectory data because used below. TO DO: column specification.
 ```
 
-```{r functions}
+```{r}
 circleFun <- function(center = c(0,0), r = 27.5, npoints = 100){
     tt <- seq(0,2*pi,length.out = npoints)
     xx <- center[1] + r * cos(tt)
@@ -62,6 +66,9 @@ dist <- function(loc1X, loc1Y, loc2X, loc2Y) {
 
 Hypothesis: Boundary-dependent object position memory will improve between 8 and 15 years of age, while landmark-dependent object memory will stay relatively constant.
 
+```{r}
+subjects <- unique(Sum_all$ID)
+```
 
 DISTANCE/LOCATION ANALYSIS
 Descriptives
@@ -92,7 +99,7 @@ Sum_all <- Sum_all %>%
 
 ```{r visualisation of calculation of memory scores} 
 #data sorting
-i_sub = "2020"
+i_sub = subjects[5]
 XY <- filter(Traj, ID == i_sub) %>% select(ID, charX, charY)
 XY <- XY[sample(nrow(XY), 1000), ]
 graph_sub <- filter(Sum_all, ID == i_sub)
@@ -268,7 +275,7 @@ Cues
 ```{r summarise the data for rest of the analysis}
 subset_RI <- Sum_all %>% 
   filter(block!=1) %>% 
-  select(-cue1, -object, -sec2Beg, -sec2Est, -dropTime, -sec2End, -trialLen, -secTrialEst) 
+  select(-object, -sec2Beg, -sec2Est, -dropTime, -sec2End, -trialLen, -secTrialEst) 
 
 relativeInfluenceBlocks <- subset_RI %>%
   group_by(ID, cue) %>% 
@@ -450,7 +457,7 @@ summary_objectTrial <- subset_RI %>%
   group_by(ID, objectTrial, cue) %>% 
   summarise(relativeInf = mean(relativeInfluence), 
             riSD = sd(relativeInfluence), 
-            .groups = "none")
+            .groups = "drop")
 
 g_objTrial <- ggplot(summary_objectTrial, aes(objectTrial, relativeInf, group=interaction(cue, ID), color=cue)) + 
   theme_cowplot() +
@@ -631,14 +638,14 @@ modelFullNext <- lmer(formula = formulaFullNext, data=subset_RI)
 summary(modelFullNext)
 ```
 
-```{r ratio Test} 
+```{r} 
 controlFinalNext <- "correct_RI ~ age_c + cueMM + (1 + cueMM | ID)" 
 modelControlNext <- lmer(formula = controlFinalNext, data=subset_RI)
 ratioFullModelNext <- anova(modelFullNext, modelControlNext)
 ratioFullModelNext
 ```
 
-```{r RI_final graph}
+```{r RI_final graph next}
 RI_final <- ggplot(relativeInfluenceBlocks, aes(age, corCueRI, color=cue)) + 
   theme_cowplot() +
   scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, guide = FALSE) +
@@ -682,7 +689,7 @@ RI_model <- ggplot(RI_predict, aes(x = x, y = predicted, colour = cuePredict, fi
 RI_model
 ```
 
-```{r graphs together}
+```{r graphs together next}
 layout <- "
 AAAAA#BBBBBB
 AAAAA#BBBBBB

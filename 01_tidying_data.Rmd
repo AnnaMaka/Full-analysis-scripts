@@ -1,33 +1,47 @@
 ---
-title: "Data preparation" 
-output: html_document
+title: "Data Preparation" 
+author: "Anna Makova (under supervision of Jacob Bellmund)"
+date: "05/08/2021"
+site: bookdown::bookdown_site
+documentclass: book
+output:
+  bookdown::gitbook: default
 ---
+
+# Data Preparation
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## Setup
+
+Libraries used for data preparation 
 ```{r libraries}
 library(tidyverse)
-library(installr)
 library(here)
 ```
 
+Functions created for this analysis 
 ```{r functions}
-#function angleDiff() takes in 2 angles in degrees and gives out the difference between them (0-180) with the proper direction (i.e. positive = clockwise, negative = counterclockwise; angle1 being theoretical 0/trueAngle)
+#function angleDiff() takes in 2 angles in degrees and gives out the difference between them (0-180) with the proper direction 
+#(i.e. positive = clockwise, negative = counterclockwise; angle1 being theoretical 0/trueAngle)
 angleDiff <- function(angle1, angle2){
     x = angle2 - angle1
     if (x > 180) {x = x -360} else if (x < -180) {x = x + 360}
     return(x)
 }
 
-#function dist() calculates distance between given 2 points (loc1, loc2) while taking in their X and Y separately
+#function dist() calculates distance between 2 given points (loc1, loc2) while taking in their X and Y separately
 dist <- function(loc1X, loc1Y, loc2X, loc2Y) {
    d = sqrt(((loc1X-loc2X)**2)+((loc1Y-loc2Y)**2))
    return(d)
 }
 
-# calculating imaginary angle, a(X, Y) = character position, b(X, Y) = imaginary object position, necessary for relative influence calculation
+#function angle() takes in 2 locations (a, b) and calculates angle between A-B and A-C (created inside the function)
+#a(X, Y) = character position, b(X, Y) = imaginary object position
+#necessary for relative influence calculation
+
 angle <- function(a_X, a_Y, b_X, b_Y) { 
   c_X = a_X
   c_Y = a_Y + 10
@@ -42,64 +56,65 @@ angle <- function(a_X, a_Y, b_X, b_Y) {
 }
 ```
 
-```{r basic info}
-blocks <- c(1, 2, 3, 4)
-objects <- c("monster", "partyhat", "lamp", "flower")
-```
 
-retrieving subject IDs from the directory
+Creating a list of subject IDs based on presence of summary files for Block 4 
+Subsequently, creating list of new random IDs which were used during a transfer of data between computers
 ```{r ID}
 fn <- list.files(path =  here("data"), pattern="*_feedbackPhase_block4_Sum") 
 subjects <- c()
 for (i_file in length(fn)) {
   subjects <- substr(fn,1,4)
 }
+
+newID <- sample(c(1000:9999), size=length(subjects), replace=FALSE)
 ```
 
-retrieving age information from a summary sheet
+Retrieving participants' age from participants.csv (used for participation tracking purposes, created manually)
 ```{r age}
 age <- read.table(here("data", "participants.csv"), sep  = ";", header = TRUE, colClasses = "character") %>% 
   select(study.ID, age, study) %>% 
   filter(study == "yes") 
-
-newID <- sample(c(1000:9999), size=length(age$study.ID), replace=FALSE)
 ```
 
-Loading in all Summary and Angle files
-Joining the Sum and Angle into one big data frame
-adding and calculating many more variables
-Sum_all - all participants
-Sum - all data for 1 participant 
-sub_dat - data from 1 block for 1 participant 
+## Summary and Angle files 
+The files are loaded in and joined into a big data frame containing all information from both summary and angle files for all participants
+
+Dataframes created along the way:
+- Sum_all: all participants
+- Sum: all data for 1 participant 
+- sub_dat: data from 1 block for 1 participant 
+
 ```{r Summary}
-Sum_all = tibble()
+blocks <- c(1, 2, 3, 4) #number of blocks in the experiment
+Sum_all = tibble() #creating an empty tibble where eventually will the full dataset be stored
 
 for(i_sub in subjects){
+  #new, empty tibble for each participant
   Sum = tibble()
   for (i_block in blocks){
-    col_types_list <- cols_only(X1 = "d", X2 = "c", X3 = "d", X4 = "d", X5 = "d", X6 = "d", X7 = "d", X8 = "d", X9 = "d", X10 = "d", 
-                                X11 = "d", X12 = "d", X13 = "d",X14 = "d", X15 = "d", X16 = "d")
-        
-    #loading in Sum data
+    
+    #loading in summary data
     fn <- dir(path = here("data"), pattern = sprintf("%s_feedbackPhase_block%s_Sum", i_sub, i_block), full.names = TRUE) 
-    sub_dat <- as_tibble(read_delim(fn, delim = "\t", col_names = FALSE, col_types = col_types_list)) %>%
+    sub_dat <- as_tibble(read_delim(fn, delim = "\t", col_names = FALSE, col_types = "dcdddddddddddddd")) %>%
       rename(trial = X1, object = X2, sec2Beg = X3, landmarkX = X4, landmarkZ = X5, landmarkY = X6, objX = X7, objZ = X8, objY = X9, 
              error=X13, secTrialRepl = X14, trialLen = X15, sec2End = X16, remLocX = X10, remLocY = X12, remLocZ = X11) %>% 
-      mutate(ID=i_sub, newID = NA, block=i_block, dropTime = (sec2Beg + secTrialRepl),  angleError=NA, miniblock = NA, objectTrial = NA, cue=NA,
+      mutate(ID=i_sub, 
+             newID=newID[which(subjects == i_sub)], 
+             age=age$age[which(i_sub==age$study.ID)], 
+             block=i_block, dropTime = (sec2Beg + secTrialRepl), miniblock = NA, objectTrial = NA, cue=NA,
              landmarkCuePosX=NA, landmarkCuePosY=NA, boundaryCuePosX=NA, boundaryCuePosY=NA, relativeInfluence=NA, correct_RI = NA, 
-             landmarkAngle=NA, boundaryAngle=NA, relativeAngle=NA, correct_RA = NA, age=NA, distanceTo1 = NA,  distanceTo2=NA, distanceTo3=NA, cue1 = NA) 
-
-    col_types_listA <- cols_only(X1 = "d", X2 = "c", X3 = "d", X4 = "d", X5 = "d", X6 = "d", X7 = "d", X8 = "d", X9 = "d", X10 = "d", 
-                                 X11 = "d", X12 = "d")
+             angleError=NA, landmarkAngle=NA, boundaryAngle=NA, relativeAngle=NA, correct_RA = NA, 
+             distanceTo1 = NA, distanceTo2=NA, distanceTo3=NA, averageDist=NA) 
     
-    fnA <- dir(path = here("data"), pattern = sprintf("%s_feedbackPhase_block%s_Angle", i_sub, i_block), full.names = TRUE) 
-    sub_datA <- as_tibble(read_delim(fnA, delim = "\t", col_names = FALSE, col_types = col_types_listA)) %>%
+    #loading in angle data
+    fn_A <- dir(path = here("data"), pattern = sprintf("%s_feedbackPhase_block%s_Angle", i_sub, i_block), full.names = TRUE) 
+    sub_dat_A <- as_tibble(read_delim(fn_A, delim = "\t", col_names = FALSE, col_types = "dcdddddddddd")) %>%
       mutate(ID=i_sub, block=i_block) %>% 
       rename(trial = X1, object = X2, charX = X3, charZ = X4, charY = X5, estAngle = X6, objX = X7, objZ = X8, objY = X9, trueAngle = X10,
              secTrialEst = X11, sec2Est = X12) 
   
-    #put together sub_dat and sub_datA
-    sub_dat <- inner_join(sub_dat, sub_datA, by=c("trial", "object", "objX", "objZ", "objY", "ID", "block"))
+    #joining together sub_dat and sub_datA
+    sub_dat <- inner_join(sub_dat, sub_dat_A, by=c("trial", "object", "objX", "objZ", "objY", "ID", "block"))
     
     #renaming objects in German to English
     sub_dat[sub_dat == "die Lampe"] <- "lamp"
@@ -107,7 +122,7 @@ for(i_sub in subjects){
     sub_dat[sub_dat == "der Partyhut"] <- "partyhat"
     sub_dat[sub_dat == "das Monster"] <- "monster"
     
-    #assigning miniblocks
+    #assigning miniblocks based on trial number
     for (i_trial in 1:(length(sub_dat$trial))){
       if (sub_dat$trial[i_trial] < 5) {
         sub_dat$miniblock[i_trial] <- 1
@@ -118,17 +133,13 @@ for(i_sub in subjects){
       } else {
         sub_dat$miniblock[i_trial] <- 4
       }
-      #calculating the angle error 
-      sub_dat$angleError[i_trial] <- angleDiff(sub_dat$trueAngle[i_trial], sub_dat$estAngle[i_trial])
       
       #assigning objectTrial (1-16) - miniblock order number throughout the experiment
       sub_dat$objectTrial[i_trial] <- (sub_dat$miniblock[i_trial]+((sub_dat$block[i_trial]-1)*4))
       
-      #adding age 
-      sub_dat$age[i_trial] <- age$age[which(i_sub==age$study.ID)]
-      
       
       #finding distance between remembered position and other than target objects
+      objects <- c("monster", "partyhat", "lamp", "flower")
       otherObjects <- objects[objects != sub_dat$object[i_trial]]
       sub_dat$distanceTo1[i_trial] <- dist(sub_dat$remLocX[i_trial], sub_dat$remLocY[i_trial], 
                                            sub_dat$objX[sample(which(sub_dat$object == otherObjects[1]),1)],
@@ -139,6 +150,12 @@ for(i_sub in subjects){
       sub_dat$distanceTo3[i_trial] <- dist(sub_dat$remLocX[i_trial], sub_dat$remLocY[i_trial], 
                                            sub_dat$objX[sample(which(sub_dat$object == otherObjects[3]),1)], 
                                            sub_dat$objY[sample(which(sub_dat$object == otherObjects[3]),1)])
+      
+      #averaging the distance to the other 3 objects' locations to get a single value
+      sub_dat$averageDist[i_trial] <- (sub_dat$distanceTo1[i_trial] + sub_dat$distanceTo2[i_trial] + sub_dat$distanceTo3[i_trial])/3
+      
+      #calculating the angle error 
+      sub_dat$angleError[i_trial] <- angleDiff(sub_dat$trueAngle[i_trial], sub_dat$estAngle[i_trial])
     }
     
     Sum <- bind_rows(sub_dat, Sum)  
@@ -172,50 +189,86 @@ for(i_sub in subjects){
   if (length(boundary_objects) != 2){stop(sprintf("Did not find exactly 2 boundary objects for subject %s", i_sub))}
   if(any(is.na(Sum$cue))){stop(sprintf("Did not assign cue for at least one trial for subject %s", i_sub))}
   
-  # JB: Check that assignment of landmark or boundary produced the same cue value for each block -> there should be 4 rows, one per object
+  # Check that assignment of landmark or boundary produced the same cue value for each block -> there should be 4 rows, one per object
   if (Sum %>% count(object, cue) %>% nrow() != 4){
     warning(sprintf("Assignment of landmark/boundary cue has gone wrong for subject %s", i_sub))
   }
-  # # JB: END ADAPTED SECTION 
+  # JB: END ADAPTED SECTION 
+  
   
   #assigning predicted position based on the cue (boundary vs landmark)
   for (i_trial in 1:nrow(Sum)) {
-    if (Sum$block[i_trial] == 1){ #not applicable for block 1 as there has not been any movement of the landmark 
+    
+    #block 1
+    if (Sum$block[i_trial] == 1){ 
+        #not applicable for block 1 as there has not been any movement of the landmark -> all true locations and angles
         Sum$landmarkCuePosX[i_trial] <- Sum$objX[i_trial]
         Sum$landmarkCuePosY[i_trial] <- Sum$objY[i_trial]
         Sum$boundaryCuePosX[i_trial] <- Sum$objX[i_trial]
         Sum$boundaryCuePosY[i_trial] <- Sum$objY[i_trial]
         Sum$landmarkAngle[i_trial] <- Sum$trueAngle[i_trial]
         Sum$boundaryAngle[i_trial] <- Sum$trueAngle[i_trial]
+     
+    #block 2       
     }else if (Sum$block[i_trial] == 2){ 
-        if (Sum$cue[i_trial] == "landmark") { #in block 2, boundary predicted location for landmark-bound objects is their location from block 1
+      
+        #landmark-dependent objects
+        if (Sum$cue[i_trial] == "landmark") {
+          #position predicted by landmark is the true object position
           Sum$landmarkCuePosX[i_trial] <- Sum$objX[i_trial]
           Sum$landmarkCuePosY[i_trial] <- Sum$objY[i_trial]
+          
+          #position predicted by boundary is the true object position in block 1
           Sum$boundaryCuePosX[i_trial] <- Sum$objX[sample(which(Sum$block == 1 & Sum$object == Sum$object[i_trial]), 1)]
           Sum$boundaryCuePosY[i_trial] <- Sum$objY[sample(which(Sum$block == 1 & Sum$object == Sum$object[i_trial]), 1)]
+          
+          #angle predicted by landmark is angle towards the true location 
           Sum$landmarkAngle[i_trial] <- Sum$trueAngle[i_trial]
+          
+          #angle predicted by boundary is angle towards object position in block 1
           Sum$boundaryAngle[i_trial] <- angle(Sum$charX[i_trial], Sum$charY[i_trial], Sum$boundaryCuePosX[i_trial], Sum$boundaryCuePosY[i_trial])
-        } else { #in block 2, potential new location based on movement of landmark is calculated for boundary-bound objects 
+        
+        #boundary-dependent objects  
+        } else { 
+          #position predicted by boundary is the true object position
           Sum$boundaryCuePosX[i_trial] <- Sum$objX[i_trial]
           Sum$boundaryCuePosY[i_trial] <- Sum$objY[i_trial]
+          
+          #position predicted by landmark is calculated based on landmark movement
           idx <- which(Sum$objectTrial == 1 & Sum$object == Sum$object[i_trial])
           Sum$landmarkCuePosX[i_trial] <- (Sum$objX[idx] + (Sum$landmarkX[i_trial]-Sum$landmarkX[idx]))
           Sum$landmarkCuePosY[i_trial] <- (Sum$objY[idx] + (Sum$landmarkY[i_trial]-Sum$landmarkY[idx]))
+          
+          #angle predicted by boundary is angle towards the true location 
           Sum$boundaryAngle[i_trial] <- Sum$trueAngle[i_trial]
+          
+          #angle predicted by landmark is angle towards the position predicted by landmark 
           Sum$landmarkAngle[i_trial] <- angle(Sum$charX[i_trial], Sum$charY[i_trial] ,Sum$landmarkCuePosX[i_trial], Sum$landmarkCuePosY[i_trial])
         }
-    }else{ #block 3 and 4
+    
+    #block 3 and 4
+    }else{ 
+        #landmark-dependent objects
         if (Sum$cue[i_trial] == "landmark") {
+          
+          # true position and angle 
           Sum$landmarkCuePosX[i_trial] <- Sum$objX[i_trial]
           Sum$landmarkCuePosY[i_trial] <- Sum$objY[i_trial]
           Sum$landmarkAngle[i_trial] <- Sum$trueAngle[i_trial]
-          #checking whether the remembered position is closer to the objects location in block 1 or previous block and then assigning the closer one as a location predicted by the boundary
-          block1BoundaryX <- Sum$objX[sample(which(Sum$block == 1 & Sum$object == Sum$object[i_trial]),1)]
+          
+          #Retrieving coordinates of the object in block 1
+          block1BoundaryX <- Sum$objX[sample(which(Sum$block == 1 & Sum$object == Sum$object[i_trial]), 1)]
           block1BoundaryY <- Sum$objY[sample(which(Sum$block == 1 & Sum$object == Sum$object[i_trial]), 1)]
+          
+          #Retrieving coordinates of the object in previous block
           block2BoundaryX <- Sum$objX[sample(which(Sum$block == (Sum$block[i_trial]-1) & Sum$object == Sum$object[i_trial]), 1)]
           block2BoundaryY <- Sum$objY[sample(which(Sum$block == (Sum$block[i_trial]-1)  & Sum$object == Sum$object[i_trial]), 1)]
+          
+          #Calculating the distance to the remembered position of the 2 retrieved positions 
           diffBlock1 <- dist(block1BoundaryX, block1BoundaryY, Sum$remLocX[i_trial], Sum$remLocY[i_trial])
           diffBlock2 <- dist(block2BoundaryX, block2BoundaryY, Sum$remLocX[i_trial], Sum$remLocY[i_trial])
+          
+          #The position that is closer to the remembered position is assigned as the position predicted by boundary
           if (diffBlock1 < diffBlock2) {
             Sum$boundaryCuePosX[i_trial] <- block1BoundaryX
             Sum$boundaryCuePosY[i_trial] <- block1BoundaryY
@@ -223,20 +276,32 @@ for(i_sub in subjects){
             Sum$boundaryCuePosX[i_trial] <- block2BoundaryX
             Sum$boundaryCuePosY[i_trial] <- block2BoundaryY
           }
+          
+          #Calculating the angle predicted by boundary based on the position predicted by boundary
           Sum$boundaryAngle[i_trial] <- angle(Sum$charX[i_trial], Sum$charY[i_trial], Sum$boundaryCuePosX[i_trial], Sum$boundaryCuePosY[i_trial])
         
-        } else { #for boundary objects, 2 potential locations are calculated based on the potential location predicted by landmark in block 1 and block 2, closer location is assigned
+        #boundary-dependent objects
+        } else { 
+          #true position and angle 
           Sum$boundaryCuePosX[i_trial] <- Sum$objX[i_trial]
           Sum$boundaryCuePosY[i_trial] <- Sum$objY[i_trial]
           Sum$boundaryAngle[i_trial] <- Sum$trueAngle[i_trial]
+          
+          #Calculating landmark predicted position as if the object was landmark-dependent since block 1
           idx1 <- sample(which(Sum$block == 1 & Sum$object == Sum$object[i_trial]), 1)
           block1LandmarkX <- (Sum$objX[idx1] + (Sum$landmarkX[i_trial]-Sum$landmarkX[idx1]))
           block1LandmarkY <- (Sum$objY[idx1] + (Sum$landmarkY[i_trial]-Sum$landmarkY[idx1]))
+          
+          #Calculating new position as if the object was landmark-dependent since previous block
           idx2 <- sample(which(Sum$block == (Sum$block[i_trial]-1) & Sum$object == Sum$object[i_trial]), 1)
           block2LandmarkX <- (Sum$objX[idx2] + (Sum$landmarkX[i_trial]-Sum$landmarkX[idx2]))
           block2LandmarkY <- (Sum$objY[idx2] + (Sum$landmarkY[i_trial]-Sum$landmarkY[idx2]))
+          
+          #Calculating the distance to the remembered position of the 2 calculated positions
           diffBlock1 <- dist(block1LandmarkX, block1LandmarkY, Sum$remLocX[i_trial], Sum$remLocY[i_trial])
           diffBlock2 <- dist(block2LandmarkX, block2LandmarkY, Sum$remLocX[i_trial], Sum$remLocY[i_trial])
+          
+          #The position that is closer to the remembered position is assigned as the position predicted by landmark
           if (diffBlock1 < diffBlock2) {
             Sum$landmarkCuePosX[i_trial] <- block1LandmarkX
             Sum$landmarkCuePosY[i_trial] <- block1LandmarkY
@@ -244,11 +309,13 @@ for(i_sub in subjects){
             Sum$landmarkCuePosX[i_trial] <- block2LandmarkX
             Sum$landmarkCuePosY[i_trial] <- block2LandmarkY
           }
+          
+          #Calculating the angle predicted by landmark based on the position predicted by landmark
           Sum$landmarkAngle[i_trial] <- angle(Sum$charX[i_trial], Sum$charY[i_trial], Sum$landmarkCuePosX[i_trial], Sum$landmarkCuePosY[i_trial])
         }
     } 
     
-    #calculating the relative influence of each cue on the remembered location of the hidden object
+    #calculating the relative influence of each cue on the remembered location of the cued object
     distL <- dist(Sum$landmarkCuePosX[i_trial], Sum$landmarkCuePosY[i_trial], Sum$remLocX[i_trial], Sum$remLocY[i_trial])
     distB <- dist(Sum$boundaryCuePosX[i_trial], Sum$boundaryCuePosY[i_trial], Sum$remLocX[i_trial], Sum$remLocY[i_trial])
     Sum$relativeInfluence[i_trial] <- distL / (distL + distB)
@@ -258,6 +325,7 @@ for(i_sub in subjects){
     errorB <- abs(angleDiff(Sum$boundaryAngle[i_trial], Sum$estAngle[i_trial]))
     Sum$relativeAngle[i_trial] <- errorL / (errorL + errorB)
     
+    #calculating the relative influence with a new formula "distCorrect/(distCorrect+distOther)" and creating values in the same direction for both cues
     if (Sum$cue[i_trial] == "boundary") {
       Sum$correct_RI[i_trial] <- distB / (distB + distL)
       Sum$correct_RA[i_trial] <- errorB / (errorL + errorB)
@@ -267,26 +335,30 @@ for(i_sub in subjects){
     }
     
   }
-  Sum$newID <- newID[which(subjects == i_sub)]
   
-  Sum_all <- bind_rows(Sum_all, Sum) 
+  Sum_all <- bind_rows(Sum_all, Sum) #join the new participant data to the existing overall data frame
 }
+```
 
+Last changes to the summary dataframe
+
+```{r}
 #assigning the correct format to values in columns used for analysis
 Sum_all <- Sum_all %>% 
-  arrange(ID, objectTrial) %>% 
-  mutate(averageDist = (distanceTo1 + distanceTo2 + distanceTo3)/3, 
-         cueMM = recode(cue, "boundary" = 1, "landmark" = -1), 
+  arrange(ID, objectTrial) %>% #ordering the dataframe according to ID and the experiment sequence
+  mutate( 
+         cueMM = recode(cue, "boundary" = 1, "landmark" = -1), #recoding cues to 1 and -1, used for mixed model analysis
          newID = as.factor(newID), 
          cue = as.factor(cue), 
-         age = as.numeric(age)) 
+         age = as.numeric(age)
+         ) 
 
-# JB: calculate centered age (using this more complicated way as opposed to directly do scale(age) because different subjects can have a different number of rows in the Sum_all tibble)
+# calculating centered age and miniblock (using this more complicated way as opposed to directly do scale() because different subjects can have a different number of rows in the Sum_all tibble)
 Age_c <- Sum_all %>% 
   group_by(ID) %>%
   distinct(age) %>%
   ungroup() %>%
-  mutate(age_c = scale(age, center=TRUE, scale=FALSE))
+  mutate(age_c = scale(age, center=TRUE, scale=FALSE)) 
 
 Sum_all <- inner_join(Sum_all, Age_c%>%select(ID, age_c), by="ID")
 
@@ -294,38 +366,50 @@ Mini_c <- Sum_all %>%
   group_by(ID) %>%
   distinct(miniblock) %>%
   ungroup() %>%
-  mutate(mini = scale(age, center=TRUE, scale=FALSE))
+  mutate(mini = scale(miniblock, center=TRUE, scale=FALSE))
 
-Sum_all <- inner_join(Sum_all, Mini_c%>%select(ID, mini), by="ID")
+Sum_all <- inner_join(Sum_all, Mini_c, by=c("ID", "miniblock"))
 ```
 
-assigning only landmark-dependent/boundary-dependent object 1-2
-```{r cue1}
+Assigning landmark-dependent/boundary-dependent object 1-2
+(currently not used any further)
+```{r cue1, eval=FALSE}
+Sum_all <- mutate(Sum_all, cue1=NA) #creating new column 
+
 for (i_trial in 1:nrow(Sum_all)) { 
+  #if this is the first time participant sees the object
   if (Sum_all$objectTrial[i_trial]==1) {
+    #creates a dataframe "this" that has 2 lines (1 line = current object/trial + 1 line = other landmark-/boundary-dependent object)
     this <- filter(Sum_all, ID == Sum_all$ID[i_trial] & cue == Sum_all$cue[i_trial] & objectTrial == 1) %>% 
       select(ID, objectTrial, cue, cue1)
+    
+    #if the first object has not been assigned number yet, then this object/trial is assigned 1, otherwise 2
     if (is.na(this$cue1[1])) {Sum_all$cue1[i_trial] <- 1} else {Sum_all$cue1[i_trial] <- 2} 
+    
+  #retrieves and assigns information about object number from objectTrial 1
   } else {
     Sum_all$cue1[i_trial] <- Sum_all$cue1[which(Sum_all$ID == Sum_all$ID[i_trial] & Sum_all$object == Sum_all$object[i_trial] & Sum_all$objectTrial == 1)]
   }
 }
 ```
 
+## Trajectory files
 
 Loading in Trajectory files and creating one huge data frame (~30,000 lines per participant)
-Adding cols - ID (string), block (int), miniblock (1-4 in each block, int), objectTrial (overall miniblock order e.g. Block:2 - objectTrial:5-8, int), object (eventually string, not assigned in this chunk)
-```{r Trajectory}
-Traj = tibble()
+
+```{r Trajectory, eval=FALSE}
+Traj = tibble() #creating an empty where eventually the full dataframe will be stored (>2M lines)
 
 for(i_sub in subjects){
   for (i_block in blocks){
-    fn <- dir(path = here("data"), pattern = sprintf("%s_feedbackPhase_block%s_Traj", i_sub, i_block),full.names=TRUE) # JB: file naming
+    #loading in a single trajectory file 
+    fn <- dir(path = here("data"), pattern = sprintf("%s_feedbackPhase_block%s_Traj", i_sub, i_block),full.names=TRUE) 
     sub_dat <- as_tibble(read_delim(fn, delim = "\t", col_names = FALSE, col_types = "ddddddddddd")) %>% 
-      mutate(ID=i_sub, block=i_block, miniblock = NA, object = NA, cue=NA, cue1=NA) %>% 
+      mutate(ID=i_sub, newID = NA, block=i_block, miniblock = NA, object = NA, cue=NA) %>% 
       rename(trial=X1, sec2Frame=X2, charX=X3, charZ=X4, charY=X5, rotQua1=X6, rotQua2=X7, rotQua3=X8, rotQua4=X9, rotAngle=X10) %>% 
-      relocate(ID, block)
+      relocate(ID, newID, block)
     
+    #assigning miniblock
     for (i in 1:nrow(sub_dat)){
       if (sub_dat$trial[i] < 5) {
         sub_dat$miniblock[i] <- 1
@@ -337,31 +421,40 @@ for(i_sub in subjects){
         sub_dat$miniblock[i] <- 4
       }
     
-      #sub_dat$objectTrial[i] <- (sub_dat$miniblock[i]+((sub_dat$block[i]-1)*4)) JB: Take this out of the loop for speed
+      #sub_dat$objectTrial[i] <- (sub_dat$miniblock[i]+((sub_dat$block[i]-1)*4)) Currently not used so taken out for speed
       
-      obj <- which(Sum_all$block == sub_dat$block[i] & Sum_all$trial == sub_dat$trial[i] & Sum_all$ID == sub_dat$ID[i])
+      #retrieving information about object and cue from summary file
+      obj <- which(Sum_all$ID == sub_dat$ID[i] & Sum_all$block == sub_dat$block[i] & Sum_all$trial == sub_dat$trial[i])
+      
+      #some trials in summary files missing therefore it leave the columns as NA is it cannot find the above index
       if (length(obj) == 1) {
         sub_dat$object[i] <- Sum_all$object[obj]
         sub_dat$cue[i] <- Sum_all$cue[obj]
-        sub_dat$cue1[i] <- Sum_all$cue1[obj]
+        #sub_dat$cue1[i] <- Sum_all$cue1[obj] currently not used
       } 
     }
-    
-    sub_dat$miniblock+((sub_dat$block-1)*4)
-    
+    #assigning newID
+    sub_dat$newID <- newID[which(subjects == i_sub)]
+   
     # append to table with data from all subjects
     Traj <- bind_rows(sub_dat, Traj)
   }
 }
 ```
 
-Getting rid of trajectory outside of the arena
-```{r Traj filtering}
-Traj <- filter(Traj, charX > -27.5 & charX < 27.5 & charY > -27.5 & charY < 27.5) #removing locations outside of the arena (internet glitch)
+Getting rid of trajectory locations outside of the arena which have been probably caused by an internet glitch 
+
+```{r Traj filtering, eval=FALSE}
+#removing locations outside of the arena (possibly internet glitch)
+Traj <- filter(Traj, charX > -27.5 & charX < 27.5 & charY > -27.5 & charY < 27.5) 
 ```
 
-Memory scores
-generating randomly distributed point within the arena
+## Memory scores
+
+### Based on randomly distributed 1000 locations within the arena
+
+Generating 1000 randomly distributed locations within the arena
+
 ```{r thousand points}
 thousand_x <- c()
 thousand_y <- c()
@@ -384,72 +477,102 @@ for (i in points){
 }
 ```
 
-calculating the memory score based on random distribution of 1000 point within the arena
+Calculating the memory score based on random distribution of 1000 locations within the arena
+
 ```{r calculating memory score (random)}
-Sum_all <- Sum_all %>% mutate(memoryScoreRand = NA, memoryScoreTraj = NA)
+Sum_all <- Sum_all %>% mutate(memoryScoreRand = NA, memoryScoreTraj = NA) #creating 2 new columns in the summary dataframe
 
 for (i_trial in 1:nrow(Sum_all)) {
   farther <- 0
-  for (i_point in 1:length(thousand_x)) {
+  for (i_point in points) {
+    #for each location distance to the true location of the cued object is calculated
     distance = dist(thousand_x[i_point], thousand_y[i_point], Sum_all$objX[i_trial], Sum_all$objY[i_trial])
+    
+    #if the distance is bigger than the distance error then 1 is added to the count "farther"
     if (distance > Sum_all$error[i_trial]) {farther <- farther+1} else {farther <- farther}
   }
+  #final score is calculating the proportion of the 1000 locations that are farther from the true location than the remembered location
   Sum_all$memoryScoreRand[i_trial] <- farther/1000
 }
 ```
 
-calculating memory scores based on 1000 points taken from the trajectory of the participant
-```{r calculating memory score (trajector)}
-points <- c(1:1000)
-trials <- 0 # JB: I see what you are doing with this variable, but wouldn't it be easier to work a curr_df <- Sum_all %>% filter(ID==i_sub)?
+### Based on 1000 locations taken from the participant's trajectory
+
+Calculating memory scores based on 1000 points taken from the complete trajectory of the participant
+
+```{r calculating memory score (trajectory), eval=FALSE}
+#basically row counter
+trials <- 0 
 for (i_sub in subjects) {
+  #selecting 1000 random locations from participant's overall trajectory
   XY <- filter(Traj, ID == i_sub) %>% select(ID, charX, charY)
   XY <- XY[sample(nrow(XY), 1000), ]
   for (i_trial in 1:nrow(filter(Sum_all, ID == i_sub))) {
     farther <- 0
     for (i_point in 1:length(points)) {
+      #for each location distance to the true location of the cued object is calculated
       distance = dist(XY$charX[i_point], XY$charY[i_point], Sum_all$objX[i_trial+trials], Sum_all$objY[i_trial+trials])
+      
+      #if the distance is bigger than the distance error then 1 is added to the count "farther"
       if (distance > Sum_all$error[i_trial+trials]) {farther <- (farther+1)}
     }
+    
+    #final score is calculating the proportion of the 1000 locations that are farther from the true location than the remembered location
     Sum_all$memoryScoreTraj[i_trial+trials] <- farther/1000
   }
   trials <- trials + nrow(filter(Sum_all, ID == i_sub))
 }
 ```
 
+## Saving the compiled dataset
 
-Relocate
+Last changes before saving the datasets into big files
+
+
+Rearrange the columns into more cohesive order and replacing the local ID with a new ID that is necessary for data transfer.
 ```{r organising Sum_all better}
 Sum_all <- Sum_all %>%
-  relocate(newID, age, age_c, block, miniblock, objectTrial, trial, cue, cue1, object, 
+  relocate(newID, age, age_c, block, miniblock, mini, objectTrial, trial, cue, object, 
            sec2Beg, dropTime, secTrialRepl, trialLen, sec2End, 
            landmarkX, landmarkY, landmarkZ, objX, objY, objZ, remLocX, remLocY, remLocZ, 
            error, distanceTo1, distanceTo2, distanceTo3, averageDist, memoryScoreRand, memoryScoreTraj, 
            landmarkCuePosX, landmarkCuePosY, boundaryCuePosX, boundaryCuePosY, relativeInfluence, correct_RI, 
            trueAngle, estAngle, angleError) %>%
-  select(-ID)
+  select(-ID) %>%
+  rename(ID = newID)
 ```
 
-Sum_angle 
+Sum_angle will contain only columns related to angle estimation task.
+
 ```{r}
 Sum_angle <- Sum_all %>% 
-  select(newID, age, age_c, block, miniblock, objectTrial, trial, cue, cue1, object, sec2Beg, sec2Est, sec2End, secTrialEst, trialLen, 
+  select(ID, age, age_c, block, miniblock, mini, objectTrial, trial, cue, object, sec2Beg, sec2Est, sec2End, secTrialEst, trialLen, 
          landmarkX, landmarkY, landmarkZ, objX, objY, objZ, charX, charY, charZ, trueAngle, estAngle, angleError, 
          landmarkAngle, boundaryAngle, relativeAngle, correct_RA)
 ```
 
 
-Explanations of all cols:  
+Replacing local ID with a new ID that is necessary for data transfer, this time in Trajectory dataframe. 
+
+```{r, eval=FALSE}
+Traj <- Traj %>%
+  select(-ID) %>%
+  rename(ID = newID)
+```
+
+
+Explanations of all columns:  
 
 - ID - randomly assigned ID of 4 digits  
 - age - 8-15 years old (entered as character atm)  
 - age_c - centered age
 - block - 1-4  
 - miniblock - 1-4 within block (in each miniblock each object appears once)  
+- mini - centered miniblocks
 - objectTrial - 1-16, miniblocks throughout the experiment (in objectTrial 12, participants see a object for 12th time)  
 - trial - 1-16 within block  
 - cue - landmark vs boundary, randomly assigned in an input files  
-- cue1 - 1-2, to get rid of object names (landmark object 1, landmark object 2, boundary object 1, boundary object 2)  
+- cue1 - 1-2, to get rid of object names (landmark object 1, landmark object 2, boundary object 1, boundary object 2)  - currently not generated
 - object - "monster", "partyhat", "lamp", "flower"  
 - sec2Beg - seconds from the beginning of the experiment to the beginning to the trial  
 - dropTime - seconds from the beginning of the experiment to the indication of remembered location of the cued object  
@@ -489,7 +612,10 @@ Explanations of all cols:
 - secTrialEst - seconds from the beginning of the trial to the angle estimation  
 - sec2Est - seconds from the beginning of the experiment to the angle estimation  
 
-```{r writing big file}
+
+Saving these into text files into our local data folder.
+
+```{r writing big file, eval=FALSE}
 write.table(Sum_all, file = here("data", "Sum.txt"), sep = " ", row.names = FALSE, col.names = TRUE) 
 write.table(Sum_angle, file = here("data", "SumAngle.txt"), sep = " ", row.names = FALSE, col.names = TRUE)  
 write.table(Traj, file = here("data", "Traj.txt"), sep = " ", row.names = FALSE, col.names = TRUE) 
