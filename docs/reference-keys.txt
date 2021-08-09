@@ -1,0 +1,11 @@
+experiment-overview
+data-preparation
+setup
+summary-and-angle-files
+trajectory-files
+memory-scores
+based-on-randomly-distributed-1000-locations-within-the-arena
+based-on-1000-locations-taken-from-the-participants-trajectory
+saving-the-compiled-dataset
+analysis
+angle-estimation-analysis

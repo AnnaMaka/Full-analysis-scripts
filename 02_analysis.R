@@ -1,36 +1,34 @@
----
-title: "analysis"
-site: bookdown::bookdown_site
-documentclass: book
-output:
-  bookdown::gitbook: default
----
-# Analysis
-
-## Set up
-```{r}
+## ----------------------------------------------------------------------------------------------------------------------------------
 knitr::opts_chunk$set(echo = TRUE)
-```
 
-```{r}
-library(here)
+
+## ----------------------------------------------------------------------------------------------------------------------------------
+library(lme4)
 library(tidyverse)
 library(broom)
-library(lme4)
-library(effsize)
-library(scico)
-library(cowplot)
-library(gghalves)
-library(ggnewscale)
-library(ggeffects)
 library(ggsignif)
 library(patchwork)
+library(scico)
 library(Cairo)
-```
+library(Hmisc)
+library(gghalves)
+library(cowplot)
+library(ggnewscale)
+library(ggeffects)
+library(here)
+library(effsize)
 
-```{r}
-#function circleFun() generates locations of 100 points that are in shape of circle
-#used for mapping out the arena in graphs
+
+## ----------------------------------------------------------------------------------------------------------------------------------
+if (dir.exists(here("figures"))){dir.create(here("figures"))}
+
+
+## ----data--------------------------------------------------------------------------------------------------------------------------
+Sum_all <- read_delim(here("data" ,"Sum.txt"), delim = " ", col_names = TRUE) # JB: path specification. TO DO: column specification. Would save work when later recoding the variables for mixed model
+Traj <- read_delim(here("data" ,"Traj.txt"), delim = " ", col_names = TRUE) # JB added loading of trajectory data because used below. TO DO: column specification.
+
+
+## ----------------------------------------------------------------------------------------------------------------------------------
 circleFun <- function(center = c(0,0), r = 27.5, npoints = 100){
     tt <- seq(0,2*pi,length.out = npoints)
     xx <- center[1] + r * cos(tt)
@@ -43,40 +41,34 @@ dist <- function(loc1X, loc1Y, loc2X, loc2Y) {
    d = sqrt(((loc1X-loc2X)**2)+((loc1Y-loc2Y)**2))
    return(d)
 }
-```
 
-```{r, eval=FALSE}
-if (dir.exists(here("figures"))){dir.create(here("figures"))}
-```
 
-```{r data}
-Sum_all <- read_delim(here("data" ,"Sum.txt"), delim = " ", 
-                      col_names = TRUE, col_types = "fdddddddfcdddddddddddddddddddddddddddddddddddddddd") 
-Traj <- read_delim(here("data" ,"Traj.txt"), delim = " ", col_names = TRUE, col_types = "fddddddddddddcd") 
-```
-
-```{r}
-#generating subject ID list
+## ----------------------------------------------------------------------------------------------------------------------------------
 subjects <- unique(Sum_all$ID)
-```
 
-## Timeout sessions
-filtering timeout sessions
-```{r}
-#summary of timeout trials 
-timeout <- filter(Sum_all, error == -1)
-print(sprintf("# timeout trials: %s", nrow(timeout)))
-print(sprintf("# participants with timeout trials: %s", length(unique(timeout$ID))))
-print(sprintf("average # timeout trials per participant with timeout trials: %s", nrow(timeout)/length(unique(timeout$ID))))
-print(sprintf("average # timeout trials per participant: %s", nrow(timeout)/length(subjects)))
 
-#filtering timeout trials as they do not include location estimation
-Sum_all <- filter(Sum_all, error != -1)
-```
+## ----------------------------------------------------------------------------------------------------------------------------------
+Sum_all <- Sum_all %>% filter(error!=-1)
 
-## Exclusion criteria
-Exclusion of participants according to memory scores in block 1
-```{r visualisation of calculation of memory scores} 
+
+## ----exclusion t-test--------------------------------------------------------------------------------------------------------------
+out <- c()
+for (i_sub in subjects) {
+  score <- t.test(subset(Sum_all, ID==i_sub & block==1)$memoryScoreTraj, 
+                  mu=0.5, var.equal = FALSE, alternative = "greater") %>% tidy()
+  if (score$p.value > 0.05) {
+    out <- c(out, i_sub)
+    }
+}
+print(out)
+
+Sum_all <- Sum_all %>% 
+  filter(ID != out[1]) %>% 
+  filter(ID != out[2])
+
+
+
+## ----visualisation of calculation of memory scores---------------------------------------------------------------------------------
 #data sorting
 i_sub = subjects[5]
 XY <- filter(Traj, ID == i_sub) %>% select(ID, charX, charY)
@@ -122,87 +114,20 @@ ggsave("memory_score_visual.png", plot=mem_score, units = "cm", width = 15, heig
        dpi = "retina", device = "png", path = here("figures"))
 
 mem_score
-```
-
-```{r exclusion t-test}
-exclusion <- c()
-for (i_sub in subjects) {
-  score <- t.test(subset(Sum_all, ID==i_sub & block==1)$memoryScoreTraj, 
-                  mu=0.5, var.equal = FALSE, alternative = "greater") %>% tidy()
-  if (score$p.value > 0.05) {
-    exclusion <- c(exclusion, i_sub)
-    }
-}
-print(exclusion)
 
 
-for (i_sub in subjects) {
-  if (i_sub %in% exclusion) {
-    Sum_all <- filter(Sum_all, ID != i_sub)
-  }
-}
-```
-
-
-## Descriptives
-```{r}
-age <- Sum_all %>%
-  group_by(ID, age) %>%
-  summarise(n = n(), .groups="drop")
-
-ggplot(age, aes(x=age)) + 
-  geom_bar(fill=scico(1, palette="acton", begin=0.8)) +
-  theme_cowplot() +
-  background_grid(major="y") +
-  scale_x_continuous(breaks = c(8,9,10,11,12,13,14,15)) +
-  theme(legend.position = "none") +
-  labs(x="Age", y="Count", title="Distribution of age")
-```
-
-```{r}
-#average RT 
-reaction_time_dat <- Sum_all %>%
-  mutate(posResponse = secTrialRepl - secTrialEst) %>%
-  group_by(ID, age) %>%
-  summarise(posiMemResponse = mean(posResponse), .groups="drop") 
-
-#graph showing distribution, 1 point per participant
-ggplot(reaction_time_dat, aes(x=0, y=posiMemResponse)) +
-  geom_half_violin(aes(x=-0.05), fill=scico(1, palette = "acton", begin = 0.45), alpha =0.5, color=NA) +
-  geom_point(aes(x=0.105, color=age), position = position_jitter(width =0.05, height = 0), shape=16, size = 2) +
-  scale_color_scico(palette = "acton") +
-  geom_boxplot(width = .08, outlier.shape = NA) +
-  theme_cowplot() +
-  ylab('RT') + xlab('') +  
-  theme(axis.text.x = element_blank(), 
-        axis.ticks.x = element_blank(),
-        aspect.ratio =1, 
-        plot.title = element_text(face="italic", size=12))
-
-#actual average RT and sd
-reaction_time <- summarise(reaction_time_dat, 
-                           mean = mean(posResponse), sd=sd(posResponse), min=min(posResponse), max=max(posResponse))
-
-reaction_time
-```
-
-
-Hypothesis: Boundary-dependent object position memory will improve between 8 and 15 years of age, while landmark-dependent object memory will stay relatively constant.
-
-Block 1
-Were they completing the study?
-```{r summarise data for block 1}
+## ----summarise data for block 1----------------------------------------------------------------------------------------------------
 summaryBlock1 <- Sum_all %>% 
   filter(block==1) %>% 
   group_by(ID, block) %>% 
   summarise(memoryScore = mean(memoryScoreTraj), distanceOther = mean(averageDist), distanceTrue = mean(error), .groups="drop")
-```
 
-```{r memory score vs 0.5, one-sample t-test}
+
+## ----memory score vs 0.5, one-sample t-test----------------------------------------------------------------------------------------
 t.test(summaryBlock1$memoryScore, mu = 0.5) %>% tidy()
-```
 
-```{r memory score graph}
+
+## ----memory score graph------------------------------------------------------------------------------------------------------------
 mem_score_B1 <- ggplot(summaryBlock1, aes(x=block, y= memoryScore)) + 
   geom_half_violin(aes(x=block-0.06), fill=scico(1, palette = "lajolla", begin = 0.45), alpha =0.5, color=NA) +
   geom_point(aes(x=block+0.08), position = position_jitter(width =0.01, height = 0), shape=16, size = 1) +
@@ -223,9 +148,9 @@ ggsave("memory_score_B1.png", plot=mem_score_B1, units = "cm", width = 10, heigh
        dpi = "retina", device = "png", path = here("figures"))
 
 mem_score_B1
-```
 
-```{r heat map}
+
+## ----heat map----------------------------------------------------------------------------------------------------------------------
 heatMapDat <- Sum_all %>%
   filter(block==1) %>% 
   select(ID, miniblock, objX, objY, remLocX, remLocY, cue, block) %>% 
@@ -253,9 +178,9 @@ ggsave("heatMap_block1.png", plot=heat_map_B1, units = "cm", width = 10, height 
        device = "png", path = here("figures"))
 
 heat_map_B1
-```
 
-```{r}
+
+## ----------------------------------------------------------------------------------------------------------------------------------
 memory_B1 <- mem_score_B1 + heat_map_B1 &
   theme(axis.text = element_text(size=10), 
         axis.title=element_text(size=10), 
@@ -268,17 +193,17 @@ ggsave("Block1_loc.pdf", plot=memory_B1, units = "cm", width = 15.9, height = 10
 ggsave("Block1_loc.png", plot=memory_B1, units = "cm", width = 15.9, height = 10, dpi = "retina", device = "png", path = here("figures"))
 
 memory_B1
-```
 
-```{r distance to incorrect objects vs the cued object t-test}
+
+## ----distance to incorrect objects vs the cued object t-test-----------------------------------------------------------------------
 t.test(summaryBlock1$distanceOther, summaryBlock1$distanceTrue, var.equal = FALSE, paired = TRUE) %>% tidy()
-```
 
-```{r pivoting the summary for the graph}
+
+## ----pivoting the summary for the graph--------------------------------------------------------------------------------------------
 summaryBlock1 <- pivot_longer(summaryBlock1, cols=c(distanceTrue, distanceOther))
-```
 
-```{r distance error visualisation}
+
+## ----distance error visualisation--------------------------------------------------------------------------------------------------
 distance_B1 <- ggplot(summaryBlock1, aes(x=name, y= value)) + 
   scale_x_discrete(limits = c('distanceTrue', 'distanceOther'),
                    labels = c('to Correct Location', 'to Other Object Locations')) + 
@@ -311,11 +236,9 @@ ggsave("distances_B1.pdf", plot=distance_B1, units = "cm", width = 13, height = 
 ggsave("distances_B1.png", plot=distance_B1, units = "cm", width = 13, height = 10, dpi = "retina", device = "png", path = here("figures"))
 
 distance_B1
-```
 
 
-Cues
-```{r summarise the data for rest of the analysis}
+## ----summarise the data for rest of the analysis-----------------------------------------------------------------------------------
 subset_RI <- Sum_all %>% 
   filter(block!=1) %>% 
   select(-object, -sec2Beg, -sec2Est, -dropTime, -sec2End, -trialLen, -secTrialEst) 
@@ -327,24 +250,24 @@ relativeInfluenceBlocks <- subset_RI %>%
             distanceError = mean(error), 
             age=unique(age), 
             .groups="drop") 
-```
 
-```{r t-test of RI vs 0.5 landmark}
+
+## ----t-test of RI vs 0.5 landmark--------------------------------------------------------------------------------------------------
 t.test(subset(relativeInfluenceBlocks, cue=="landmark")$relativeInf, 
        mu = 0.5, alternative = "less") %>% tidy()
-```
 
-```{r t-test of RI vs 0.5 boundary}
+
+## ----t-test of RI vs 0.5 boundary--------------------------------------------------------------------------------------------------
 t.test(subset(relativeInfluenceBlocks, cue=="boundary")$relativeInf, 
        mu = 0.5, alternative = "greater") %>% tidy()
-```
 
-```{r t-test RI boundary vs landmark}
+
+## ----t-test RI boundary vs landmark------------------------------------------------------------------------------------------------
 t.test(subset(relativeInfluenceBlocks, cue=="boundary")$relativeInf, 
        subset(relativeInfluenceBlocks, cue=="landmark")$relativeInf, paired=TRUE) %>% tidy()
-```
 
-```{r relative influence block 2-4 graph}
+
+## ----relative influence block 2-4 graph--------------------------------------------------------------------------------------------
 rel_Inf <- ggplot(relativeInfluenceBlocks, aes(x=cue, y=relativeInf)) + 
   scale_x_discrete(labels = c('Boundary', 'Landmark')) +
   gghalves::geom_half_violin(data=relativeInfluenceBlocks %>% filter(cue=="landmark"), 
@@ -376,15 +299,14 @@ ggsave("relativeInfluence.pdf", plot=rel_Inf, units = "cm", width = 15, height =
 ggsave("relativeInfluence.png", plot=rel_Inf, units = "cm", width = 15, height = 11, dpi = "retina", device = "png", path = here("figures"))
 
 rel_Inf
-```
 
-```{r t-test distance error boundary vs landmark}
+
+## ----t-test distance error boundary vs landmark------------------------------------------------------------------------------------
 t.test(subset(relativeInfluenceBlocks, cue=="boundary")$distanceError, 
        subset(relativeInfluenceBlocks, cue=="landmark")$distanceError, paired=TRUE) %>% tidy()
-```
 
 
-```{r distance error graph}
+## ----distance error graph----------------------------------------------------------------------------------------------------------
 g_cue <- ggplot(relativeInfluenceBlocks, aes(x=cue, y= distanceError)) + 
   scale_x_discrete(labels = c('Boundary', 'Landmark')) +
   gghalves::geom_half_violin(data=relativeInfluenceBlocks %>% filter(cue=="landmark"), 
@@ -413,39 +335,37 @@ ggsave("distancesError.pdf", plot=g_cue, units = "cm", width = 15, height = 11, 
 ggsave("distancesError.png", plot=g_cue, units = "cm", width = 15, height = 11, dpi = "retina", device = "png", path = here("figures"))
 
 g_cue
-```
 
-```{r simpliest MEM}
+
+## ----simpliest MEM-----------------------------------------------------------------------------------------------------------------
 formulaCue <- "relativeInfluence ~ cueMM + (1+cueMM|ID)"
 modelCue <- lme4::lmer(formula = formulaCue, data=subset_RI)
 summary(modelCue)
-```
 
-```{r control MEM}
+
+## ----control MEM-------------------------------------------------------------------------------------------------------------------
 formulaCueControl<- "relativeInfluence ~ 1 + (1+cueMM|ID)"
 modelCueControl <- lme4::lmer(formula = formulaCueControl, data=subset_RI)
 ratioCue <- anova(modelCue, modelCueControl)
 ratioCue
-```
 
 
-Miniblocks learning
-```{r MEM for miniblocks}
+## ----MEM for miniblocks------------------------------------------------------------------------------------------------------------
 formulaMiniblocksCue <- "relativeInfluence ~ cueMM*mini + (1+mini:cueMM|ID)"
 modelMiniblocksCue <- lme4::lmer(formula = formulaMiniblocksCue, data=subset_RI)
 summary(modelMiniblocksCue)
 
-```
 
-```{r testing interaction significance}
+
+## ----testing interaction significance----------------------------------------------------------------------------------------------
 formulaMiniblocksControl <- "relativeInfluence ~ cueMM+mini + (1+mini:cueMM|ID)"
 modelMiniblocksControl <- lme4::lmer(formula = formulaMiniblocksControl, data=subset_RI)
 
 ratioMini <- anova(modelMiniblocksCue, modelMiniblocksControl)
 ratioMini
-```
 
-```{r MEM for miniblocks landmark}
+
+## ----MEM for miniblocks landmark---------------------------------------------------------------------------------------------------
 formulaMiniblocks <- "relativeInfluence ~ mini + (1+mini|ID)"
 modelMiniblocksLandmark <- lme4::lmer(formula = formulaMiniblocks, data=subset(subset_RI, cue=="landmark"))
 summary(modelMiniblocksLandmark)
@@ -454,9 +374,9 @@ formulaMiniControl <- "relativeInfluence ~ 1 + (1+mini|ID)"
 modelMiniLandmarkControl <- lme4::lmer(formula = formulaMiniControl, data=subset(subset_RI, cue=="landmark"))
 ratioMiniLandmark = anova(modelMiniblocksLandmark, modelMiniLandmarkControl)
 ratioMiniLandmark
-```
 
-```{r MEM for miniblocks boundary}
+
+## ----MEM for miniblocks boundary---------------------------------------------------------------------------------------------------
 formulaMiniblocks <- "relativeInfluence ~ mini + (1+mini|ID)"
 modelMiniblocksBoundary <- lme4::lmer(formula = formulaMiniblocks, data=subset(subset_RI,cue=="boundary"))
 summary(modelMiniblocksBoundary) 
@@ -465,9 +385,9 @@ formulaMiniControl <- "relativeAngle ~ 1 + (1+mini|ID)"
 modelMiniBoundaryControl <- lme4::lmer(formula = formulaMiniControl, data=subset(subset_RI, cue=="boundary"))
 ratioMiniBoundary = anova(modelMiniblocksBoundary, modelMiniBoundaryControl)
 ratioMiniBoundary
-```
 
-```{r} 
+
+## ----------------------------------------------------------------------------------------------------------------------------------
 summary_miniblock <- subset_RI %>% # JB: add comments please!
   group_by(ID, miniblock, cue, age) %>% 
   summarise(relativeInf = mean(relativeInfluence), 
@@ -493,9 +413,9 @@ g_mini <- ggplot(summary_miniblock, aes(miniblock, relativeInf, group=interactio
   scale_x_continuous(limits = c(0.5, 4.5), breaks = c(1,2,3,4))
 
 g_mini
-```
 
-```{r}
+
+## ----------------------------------------------------------------------------------------------------------------------------------
 summary_objectTrial <- subset_RI %>%
   group_by(ID, objectTrial, cue) %>% 
   summarise(relativeInf = mean(relativeInfluence), 
@@ -535,9 +455,9 @@ g_objTrial <- ggplot(summary_objectTrial, aes(objectTrial, relativeInf, group=in
 g_objTrial
 
 
-```
 
-```{r}
+
+## ----------------------------------------------------------------------------------------------------------------------------------
 layout <- "
 AAAAAA
 AAAAAA
@@ -565,25 +485,22 @@ ggsave("relativeInfluence_min.pdf", plot=g_min, units = "cm", width = 15.9, heig
 ggsave("relativeInfluence_min.png", plot=g_min, units = "cm", width = 15.9, height = 13, 
        dpi = "retina", device = "png", path = here("figures"))
 
-```
 
-Age
-```{r}
+
+## ----------------------------------------------------------------------------------------------------------------------------------
 formulaFull <- "relativeInfluence ~ age_c*cueMM + ( 1 + cueMM | ID)" 
 modelFull <- lmer(formula = formulaFull, data=subset_RI)
 summary(modelFull)
-```
 
 
-```{r ratio Test} 
+## ----ratio Test--------------------------------------------------------------------------------------------------------------------
 controlFinalInt <- "relativeInfluence ~ age_c + cueMM + (1 + cueMM | ID)" 
 modelControl <- lmer(formula = controlFinalInt, data=subset_RI)
 ratioFullModel <- anova(modelFull, modelControl)
 ratioFullModel
-```
 
 
-```{r age model landmark}
+## ----age model landmark------------------------------------------------------------------------------------------------------------
 formulaAgeLandmark <- "relativeInfluence ~ age_c + (1|ID)"
 modelAgeLandmark <- lme4::lmer(formula = formulaAgeLandmark, data=subset(subset_RI, cue=="landmark"))
 summary(modelAgeLandmark)
@@ -592,9 +509,9 @@ controlAgeLandmark <- "relativeInfluence ~ 1 + (1 |ID)"
 modelControlAgeLandmark <- lme4::lmer(formula = controlAgeLandmark, data=subset(subset_RI, cue=="landmark"))
 ratioAgeLandmark <- anova(modelAgeLandmark, modelControlAgeLandmark)
 ratioAgeLandmark
-```
 
-```{r age model boundary}
+
+## ----age model boundary------------------------------------------------------------------------------------------------------------
 formulaAgeBoundary <- "relativeInfluence ~ age_c +(1|ID)"
 modelAgeBoundary <- lme4::lmer(formula = formulaAgeBoundary, data=subset(subset_RI, cue=="boundary"))
 summary(modelAgeBoundary)
@@ -603,9 +520,9 @@ controlAgeBoundary <- "relativeInfluence ~ 1 + (1 |ID)"
 modelControlAgeBoundary <- lme4::lmer(formula = controlAgeBoundary, data=subset(subset_RI, cue=="boundary"))
 ratioAgeBoundary <- anova(modelAgeBoundary, modelControlAgeBoundary)
 ratioAgeBoundary
-```
 
-```{r RI_final graph}
+
+## ----RI_final graph----------------------------------------------------------------------------------------------------------------
 RI_final <- ggplot(relativeInfluenceBlocks, aes(age, relativeInf, color=cue)) + 
   theme_cowplot() +
   scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, guide = FALSE) +
@@ -624,8 +541,8 @@ RI_final <- ggplot(relativeInfluenceBlocks, aes(age, relativeInf, color=cue)) +
   geom_hline(yintercept = 0.5, linetype=2, alpha=0.6)
   
 RI_final
-```
-```{r RI_model graph}
+
+## ----RI_model graph----------------------------------------------------------------------------------------------------------------
 RI_predict <- ggeffects::ggpredict(modelFull, terms = c("age_c", "cueMM")) %>%
   as_tibble() %>%
   mutate(cuePredict = factor(if_else(group == 1, true = "boundary", false = "landmark"),
@@ -645,9 +562,9 @@ RI_model <- ggplot(RI_predict, aes(x = x, y = predicted, colour = cuePredict, fi
   geom_hline(yintercept = 0.5, linetype=2, alpha=0.6)
 
 RI_model
-```
 
-```{r graphs together}
+
+## ----graphs together---------------------------------------------------------------------------------------------------------------
 layout <- "
 AAAAA#BBBBBB
 AAAAA#BBBBBB
@@ -671,24 +588,22 @@ ggsave("relativeInfluence_final.pdf", plot=g_final, units = "cm", width = 15, he
        dpi = "retina", device = cairo_pdf, path = here("figures"))
 ggsave("relativeInfluence_final.png", plot=g_final, units = "cm", width = 15, height = 9, 
        dpi = "retina", device = "png", path = here("figures"))
-```
 
-#recoded relative influence
 
-```{r}
+## ----------------------------------------------------------------------------------------------------------------------------------
 formulaFullNext <- "correct_RI ~ age_c*cueMM + ( 1 + cueMM | ID)" 
 modelFullNext <- lmer(formula = formulaFullNext, data=subset_RI)
 summary(modelFullNext)
-```
 
-```{r} 
+
+## ----------------------------------------------------------------------------------------------------------------------------------
 controlFinalNext <- "correct_RI ~ age_c + cueMM + (1 + cueMM | ID)" 
 modelControlNext <- lmer(formula = controlFinalNext, data=subset_RI)
 ratioFullModelNext <- anova(modelFullNext, modelControlNext)
 ratioFullModelNext
-```
 
-```{r RI_final graph next}
+
+## ----RI_final graph next-----------------------------------------------------------------------------------------------------------
 RI_final <- ggplot(relativeInfluenceBlocks, aes(age, corCueRI, color=cue)) + 
   theme_cowplot() +
   scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, guide = FALSE) +
@@ -707,10 +622,9 @@ RI_final <- ggplot(relativeInfluenceBlocks, aes(age, corCueRI, color=cue)) +
   geom_hline(yintercept = 0.5, linetype=2, alpha=0.6)
   
 RI_final
-```
 
 
-```{r RI_model graph next}
+## ----RI_model graph next-----------------------------------------------------------------------------------------------------------
 RI_predict <- ggeffects::ggpredict(modelFullNext, terms = c("age_c", "cueMM")) %>%
   as_tibble() %>%
   mutate(cuePredict = factor(if_else(group == 1, true = "boundary", false = "landmark"),
@@ -730,9 +644,9 @@ RI_model <- ggplot(RI_predict, aes(x = x, y = predicted, colour = cuePredict, fi
   geom_hline(yintercept = 0.5, linetype=2, alpha=0.6)
 
 RI_model
-```
 
-```{r graphs together next}
+
+## ----graphs together next----------------------------------------------------------------------------------------------------------
 layout <- "
 AAAAA#BBBBBB
 AAAAA#BBBBBB
@@ -756,5 +670,4 @@ ggsave("relativeInfluence_finalNew.pdf", plot=g_final_next, units = "cm", width 
        dpi = "retina", device = cairo_pdf, path = here("figures"))
 ggsave("relativeInfluence_finalNew.png", plot=g_final_next, units = "cm", width = 15, height = 9, 
        dpi = "retina", device = "png", path = here("figures"))
-```
 

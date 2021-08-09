@@ -1,0 +1,15 @@
+---
+title: "Data Preparation and Analysis"
+author: "Anna Makova (under supervision of Jacob Bellmund)"
+date: "05/08/2021"
+site: bookdown::bookdown_site
+documentclass: book
+output:
+  bookdown::gitbook: default
+---
+
+# Experiment Overview
+
+This experiment was conducted to investigate the development of spatial memory in 8- to 15-year-old children and adolescents. Participants navigated throughout a circular arena with a landmark and extra-maze, orientation cues created in Unity environment. Participants learnt positions of 4 objects from which 2 were landmark-bound and 2 were boundary-bound. More summary ...
+
+

@@ -47,8 +47,8 @@ for (i_file in length(fn)) {
 Sum_angle <- read_delim(here("data" ,"SumAngle.txt"), delim = " ", col_names = TRUE) 
 Sum_all <- read_delim(here("data" ,"Sum.txt"), delim = " ", col_names = TRUE) 
 ```
+
 ```{r}
-Sum_all <- filter(Sum_all, error!=-1)
 subjects <- unique(Sum_all$ID)
 ```
 
@@ -66,6 +66,31 @@ print(out)
 Sum_angle <- filter(Sum_angle, ID != out[1] & ID != out[2])
 Sum_all <-filter(Sum_all, ID != out[1] & ID != out[2])
 
+```
+
+```{r}
+#average RT 
+reaction_time_dat <- Sum_angle %>%
+  group_by(ID, age) %>%
+  summarise(estResponse = mean(secTrialEst), .groups = "drop") 
+
+#graph showing distribution, 1 point per participant
+ggplot(reaction_time_dat, aes(x=0, y=estResponse)) +
+  geom_half_violin(aes(x=-0.05), fill=scico(1, palette = "acton", begin = 0.45), alpha =0.5, color=NA) +
+  geom_point(aes(x=0.105, color=age), position = position_jitter(width =0.05, height = 0), shape=16, size = 2) +
+  scale_color_scico(palette = "acton") +
+  geom_boxplot(width = .08, outlier.shape = NA) +
+  theme_cowplot() +
+  ylab('RT') + xlab('') +  
+  theme(axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank(),
+        aspect.ratio =1, 
+        plot.title = element_text(face="italic", size=12))
+
+#actual average RT and sd
+reaction_time <- summarise(reaction_time_dat, mean = mean(estResponse), sd=sd(estResponse), min=min(estResponse), max=max(estResponse))
+
+reaction_time
 ```
 
 Block 1
@@ -144,14 +169,17 @@ ggsave(file="B1.png", plot=block1_graphs, units = "cm", width = 15, height = 16,
 
 Cue 
 ```{r filtering and summarising the data}
-subset_RA <- Sum_angle %>% 
+subset_RA <- Sum_all %>% 
   filter(block!=1) %>% 
-  select(-object, -sec2Beg, -sec2Est, -sec2End, -trialLen, -secTrialEst) %>%
-  mutate(cueMM = recode(cue, "boundary" = 1, "landmark" = -1), mini = scale(miniblock, center = TRUE, scale = FALSE), ID = as.factor(ID))
+  select(ID, age, age_c, block, miniblock, mini, objectTrial, trial, cue, cueMM, angleError, relativeAngle, correct_RA) 
 
 relativeAngleBlocks <- subset_RA %>%
   group_by(ID, cue, age) %>% 
-  summarise(angleErr = mean(abs(angleError)), relativeAng = mean(relativeAngle), raSD = sd(relativeAngle), .groups="drop")
+  summarise(angleErr = mean(abs(angleError)), 
+            relativeAng = mean(relativeAngle), 
+            raSD = sd(relativeAngle), 
+            corCueRA = mean(correct_RA),
+            .groups="drop")
 ```
 
 ```{r t-test of RA vs 0.5 landmark}
@@ -544,3 +572,62 @@ ggsave("relativeInfluence_finalAng.pdf", plot=g_finalAng,
 ggsave("relativeInfluence_finalAng.png", plot=g_finalAng, 
        units = "cm", width = 15, height = 9, dpi = "retina", device = "png", path = here("figures"))
 ```
+
+## recoded version analysis
+```{r}
+formulaFullNext <- "correct_RA ~ age_c*cueMM + ( 1 + cueMM | ID)" 
+modelFullNext <- lmer(formula = formulaFullNext, data=subset_RA)
+summary(modelFullNext)
+```
+
+```{r} 
+controlFinalNext <- "correct_RA ~ age_c + cueMM + (1 + cueMM | ID)" 
+modelControlNext <- lmer(formula = controlFinalNext, data=subset_RA)
+ratioFullModelNext <- anova(modelFullNext, modelControlNext)
+ratioFullModelNext
+```
+
+```{r RI_final graph next}
+RA_final <- ggplot(relativeAngleBlocks, aes(age, corCueRA, color=cue)) + 
+  theme_cowplot() +
+  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, guide = FALSE) +
+  stat_summary(fun=mean, aes(group=cue), geom="line", size = 1.5) +
+  stat_summary(fun=mean, aes(group=cue), geom="point", size = 2) +
+  stat_summary(fun.data=mean_se, aes(group=cue),  
+               geom="errorbar", size=0.8, width=0.1, alpha=0.95) +
+  new_scale_color() + 
+  geom_point(aes(color=cue)) + 
+  scale_color_scico_d(palette = 'tokyo', begin=0.3, end=0.7, labels = c("Boundary", "Landmark")) +
+  scale_x_continuous(breaks = c(8,9,10,11,12,13,14,15)) +
+  scale_y_continuous(limits = c(0.2, 0.8), breaks = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)) +
+  labs(x= "Age", y = "Relative Influence (0-1)", 
+       title = "Data", color="Cue") +
+  
+  geom_hline(yintercept = 0.5, linetype=2, alpha=0.6)
+  
+RA_final
+```
+
+
+```{r RI_model graph next}
+RA_predict <- ggeffects::ggpredict(modelFullNext, terms = c("age_c", "cueMM")) %>%
+  as_tibble() %>%
+  mutate(cuePredict = factor(if_else(group == 1, true = "boundary", false = "landmark"),
+                      levels = c("boundary", "landmark")))
+  
+RA_model <- ggplot(RA_predict, aes(x = x, y = predicted, colour = cuePredict, fill = cuePredict)) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .2, linetype=0) +
+  geom_line(size = 0.5) +
+  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
+  scale_fill_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
+  scale_x_continuous(breaks = sort(unique(Age_c$age_c)), labels = c("8", "9", "10", "11", "12", "13", "14", "15")) +
+  scale_y_continuous(breaks = c(0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8), limits = c(0.2, 0.8)) +
+  theme_cowplot() +
+  labs(x="Age", y=" ", color="Cue", fill="Cue", 
+       title = "Mixed Model") + 
+  theme(legend.position = "none") +
+  geom_hline(yintercept = 0.5, linetype=2, alpha=0.6)
+
+RA_model
+```
+

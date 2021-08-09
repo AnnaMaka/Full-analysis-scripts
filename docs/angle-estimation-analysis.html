@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4 Angle estimation analysis | Data Preparation and Analysis</title>
+  <meta name="description" content="4 Angle estimation analysis | Data Preparation and Analysis" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4 Angle estimation analysis | Data Preparation and Analysis" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 Angle estimation analysis | Data Preparation and Analysis" />
+  
+  
+  
+
+<meta name="author" content="Anna Makova (under supervision of Jacob Bellmund)" />
+
+
+<meta name="date" content="2021-05-08" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="analysis.html"/>
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Experiment Overview</a></li>
+<li class="chapter" data-level="2" data-path="data-preparation.html"><a href="data-preparation.html"><i class="fa fa-check"></i><b>2</b> Data Preparation</a><ul>
+<li class="chapter" data-level="2.1" data-path="data-preparation.html"><a href="data-preparation.html#setup"><i class="fa fa-check"></i><b>2.1</b> Setup</a></li>
+<li class="chapter" data-level="2.2" data-path="data-preparation.html"><a href="data-preparation.html#summary-and-angle-files"><i class="fa fa-check"></i><b>2.2</b> Summary and Angle files</a></li>
+<li class="chapter" data-level="2.3" data-path="data-preparation.html"><a href="data-preparation.html#trajectory-files"><i class="fa fa-check"></i><b>2.3</b> Trajectory files</a></li>
+<li class="chapter" data-level="2.4" data-path="data-preparation.html"><a href="data-preparation.html#memory-scores"><i class="fa fa-check"></i><b>2.4</b> Memory scores</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="data-preparation.html"><a href="data-preparation.html#based-on-randomly-distributed-1000-locations-within-the-arena"><i class="fa fa-check"></i><b>2.4.1</b> Based on randomly distributed 1000 locations within the arena</a></li>
+<li class="chapter" data-level="2.4.2" data-path="data-preparation.html"><a href="data-preparation.html#based-on-1000-locations-taken-from-the-participants-trajectory"><i class="fa fa-check"></i><b>2.4.2</b> Based on 1000 locations taken from the participant’s trajectory</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="data-preparation.html"><a href="data-preparation.html#saving-the-compiled-dataset"><i class="fa fa-check"></i><b>2.5</b> Saving the compiled dataset</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="analysis.html"><a href="analysis.html"><i class="fa fa-check"></i><b>3</b> Analysis</a></li>
+<li class="chapter" data-level="4" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html"><i class="fa fa-check"></i><b>4</b> Angle estimation analysis</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Data Preparation and Analysis</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="angle-estimation-analysis" class="section level1">
+<h1><span class="header-section-number">4</span> Angle estimation analysis</h1>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="angle-estimation-analysis.html#cb150-1"></a>knitr<span class="op">::</span>opts_chunk<span class="op">$</span><span class="kw">set</span>(<span class="dt">echo =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="angle-estimation-analysis.html#cb151-1"></a><span class="kw">library</span>(lme4)</span>
+<span id="cb151-2"><a href="angle-estimation-analysis.html#cb151-2"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb151-3"><a href="angle-estimation-analysis.html#cb151-3"></a><span class="kw">library</span>(broom)</span>
+<span id="cb151-4"><a href="angle-estimation-analysis.html#cb151-4"></a><span class="kw">library</span>(ggsignif)</span>
+<span id="cb151-5"><a href="angle-estimation-analysis.html#cb151-5"></a><span class="kw">library</span>(patchwork)</span>
+<span id="cb151-6"><a href="angle-estimation-analysis.html#cb151-6"></a><span class="kw">library</span>(gghalves)</span>
+<span id="cb151-7"><a href="angle-estimation-analysis.html#cb151-7"></a><span class="kw">library</span>(cowplot)</span>
+<span id="cb151-8"><a href="angle-estimation-analysis.html#cb151-8"></a><span class="kw">library</span>(scico) </span>
+<span id="cb151-9"><a href="angle-estimation-analysis.html#cb151-9"></a><span class="kw">library</span>(Cairo) </span>
+<span id="cb151-10"><a href="angle-estimation-analysis.html#cb151-10"></a><span class="kw">library</span>(ggnewscale) </span>
+<span id="cb151-11"><a href="angle-estimation-analysis.html#cb151-11"></a><span class="kw">library</span>(here) </span>
+<span id="cb151-12"><a href="angle-estimation-analysis.html#cb151-12"></a><span class="kw">library</span>(effsize)</span>
+<span id="cb151-13"><a href="angle-estimation-analysis.html#cb151-13"></a><span class="kw">library</span>(pwr)</span></code></pre></div>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="angle-estimation-analysis.html#cb152-1"></a>blocks &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb152-2"><a href="angle-estimation-analysis.html#cb152-2"></a>trials &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">16</span>)</span>
+<span id="cb152-3"><a href="angle-estimation-analysis.html#cb152-3"></a>objects &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;monster&quot;</span>, <span class="st">&quot;partyhat&quot;</span>, <span class="st">&quot;lamp&quot;</span>, <span class="st">&quot;flower&quot;</span>)</span></code></pre></div>
+<p>retrieving subject IDs from the directory</p>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="angle-estimation-analysis.html#cb153-1"></a>fn &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;data&quot;</span>), <span class="dt">pattern=</span><span class="st">&quot;*_feedbackPhase_block4_Sum&quot;</span>) </span>
+<span id="cb153-2"><a href="angle-estimation-analysis.html#cb153-2"></a>subjects &lt;-<span class="st"> </span><span class="kw">c</span>()</span>
+<span id="cb153-3"><a href="angle-estimation-analysis.html#cb153-3"></a><span class="cf">for</span> (i_file <span class="cf">in</span> <span class="kw">length</span>(fn)) {</span>
+<span id="cb153-4"><a href="angle-estimation-analysis.html#cb153-4"></a>  subjects &lt;-<span class="st"> </span><span class="kw">substr</span>(fn,<span class="dv">1</span>,<span class="dv">4</span>)</span>
+<span id="cb153-5"><a href="angle-estimation-analysis.html#cb153-5"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="angle-estimation-analysis.html#cb154-1"></a>Sum_angle &lt;-<span class="st"> </span><span class="kw">read_delim</span>(<span class="kw">here</span>(<span class="st">&quot;data&quot;</span> ,<span class="st">&quot;SumAngle.txt&quot;</span>), <span class="dt">delim =</span> <span class="st">&quot; &quot;</span>, <span class="dt">col_names =</span> <span class="ot">TRUE</span>) </span></code></pre></div>
+<pre><code>## Rows: 2413 Columns: 31</code></pre>
+<pre><code>## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## Delimiter: &quot; &quot;
+## chr  (2): cue, object
+## dbl (29): ID, age, age_c, block, miniblock, mini, objectTrial, trial, sec2Beg, sec2Est, sec2End, secTrialEst, trialLen, landmarkX, landmarkY, landmarkZ...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="angle-estimation-analysis.html#cb158-1"></a>Sum_all &lt;-<span class="st"> </span><span class="kw">read_delim</span>(<span class="kw">here</span>(<span class="st">&quot;data&quot;</span> ,<span class="st">&quot;Sum.txt&quot;</span>), <span class="dt">delim =</span> <span class="st">&quot; &quot;</span>, <span class="dt">col_names =</span> <span class="ot">TRUE</span>) </span></code></pre></div>
+<pre><code>## Rows: 2413 Columns: 50</code></pre>
+<pre><code>## ── Column specification ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+## Delimiter: &quot; &quot;
+## chr  (2): cue, object
+## dbl (48): ID, age, age_c, block, miniblock, mini, objectTrial, trial, sec2Beg, dropTime, secTrialRepl, trialLen, sec2End, landmarkX, landmarkY, landmar...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="angle-estimation-analysis.html#cb162-1"></a>Sum_all &lt;-<span class="st"> </span><span class="kw">filter</span>(Sum_all, error<span class="op">!=-</span><span class="dv">1</span>)</span>
+<span id="cb162-2"><a href="angle-estimation-analysis.html#cb162-2"></a>subjects &lt;-<span class="st"> </span><span class="kw">unique</span>(Sum_all<span class="op">$</span>ID)</span></code></pre></div>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="angle-estimation-analysis.html#cb163-1"></a>out &lt;-<span class="st"> </span><span class="kw">c</span>()</span>
+<span id="cb163-2"><a href="angle-estimation-analysis.html#cb163-2"></a><span class="cf">for</span> (i_sub <span class="cf">in</span> subjects) {</span>
+<span id="cb163-3"><a href="angle-estimation-analysis.html#cb163-3"></a>  score &lt;-<span class="st"> </span><span class="kw">t.test</span>(<span class="kw">subset</span>(Sum_all, ID<span class="op">==</span>i_sub <span class="op">&amp;</span><span class="st"> </span>block<span class="op">==</span><span class="dv">1</span>)<span class="op">$</span>memoryScoreTraj, </span>
+<span id="cb163-4"><a href="angle-estimation-analysis.html#cb163-4"></a>                  <span class="dt">mu=</span><span class="fl">0.5</span>, <span class="dt">var.equal =</span> <span class="ot">FALSE</span>, <span class="dt">alternative =</span> <span class="st">&quot;greater&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span>
+<span id="cb163-5"><a href="angle-estimation-analysis.html#cb163-5"></a>  <span class="cf">if</span> (score<span class="op">$</span>p.value <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.05</span>) {</span>
+<span id="cb163-6"><a href="angle-estimation-analysis.html#cb163-6"></a>    out &lt;-<span class="st"> </span><span class="kw">c</span>(out, i_sub)</span>
+<span id="cb163-7"><a href="angle-estimation-analysis.html#cb163-7"></a>    }</span>
+<span id="cb163-8"><a href="angle-estimation-analysis.html#cb163-8"></a>}</span>
+<span id="cb163-9"><a href="angle-estimation-analysis.html#cb163-9"></a><span class="kw">print</span>(out)</span></code></pre></div>
+<pre><code>## [1] 2739 9431</code></pre>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="angle-estimation-analysis.html#cb165-1"></a>Sum_angle &lt;-<span class="st"> </span><span class="kw">filter</span>(Sum_angle, ID <span class="op">!=</span><span class="st"> </span>out[<span class="dv">1</span>] <span class="op">&amp;</span><span class="st"> </span>ID <span class="op">!=</span><span class="st"> </span>out[<span class="dv">2</span>])</span>
+<span id="cb165-2"><a href="angle-estimation-analysis.html#cb165-2"></a>Sum_all &lt;-<span class="kw">filter</span>(Sum_all, ID <span class="op">!=</span><span class="st"> </span>out[<span class="dv">1</span>] <span class="op">&amp;</span><span class="st"> </span>ID <span class="op">!=</span><span class="st"> </span>out[<span class="dv">2</span>])</span></code></pre></div>
+<p>Block 1</p>
+<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="angle-estimation-analysis.html#cb166-1"></a>summaryBlock1_Angle &lt;-<span class="st"> </span>Sum_angle <span class="op">%&gt;%</span></span>
+<span id="cb166-2"><a href="angle-estimation-analysis.html#cb166-2"></a><span class="st">  </span><span class="kw">filter</span>(block<span class="op">==</span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb166-3"><a href="angle-estimation-analysis.html#cb166-3"></a><span class="st">  </span><span class="kw">group_by</span>(ID, block) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb166-4"><a href="angle-estimation-analysis.html#cb166-4"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">angleErr =</span> <span class="kw">mean</span>(<span class="kw">abs</span>(angleError)), <span class="dt">relativeAng =</span> <span class="kw">mean</span>(relativeAngle), <span class="dt">.groups=</span><span class="st">&quot;drop&quot;</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="angle-estimation-analysis.html#cb167-1"></a><span class="kw">t.test</span>(summaryBlock1_Angle<span class="op">$</span>angleErr, <span class="dt">mu =</span> <span class="dv">90</span>, <span class="dt">alternative =</span> <span class="st">&quot;less&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 8
+##   estimate statistic  p.value parameter conf.low conf.high method            alternative
+##      &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;             &lt;chr&gt;      
+## 1     20.8     -34.4 7.25e-29        35     -Inf      24.2 One Sample t-test less</code></pre>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="angle-estimation-analysis.html#cb169-1"></a><span class="co">#cohen.d(d=1, f=NA, data=summaryBlock1_Angle$angleErr, mu=90) </span></span></code></pre></div>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="angle-estimation-analysis.html#cb170-1"></a>g_errB1 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(summaryBlock1_Angle, <span class="kw">aes</span>(<span class="dt">x=</span>block, <span class="dt">y=</span>angleErr)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb170-2"><a href="angle-estimation-analysis.html#cb170-2"></a><span class="st">  </span><span class="kw">geom_half_violin</span>(<span class="kw">aes</span>(<span class="dt">x=</span>block<span class="fl">-0.05</span>), <span class="dt">fill=</span><span class="kw">scico</span>(<span class="dv">1</span>, <span class="dt">palette=</span> <span class="st">&quot;lajolla&quot;</span>, <span class="dt">begin =</span> <span class="fl">0.45</span>), <span class="dt">alpha =</span><span class="fl">0.5</span>, <span class="dt">color=</span><span class="ot">NA</span>) <span class="op">+</span></span>
+<span id="cb170-3"><a href="angle-estimation-analysis.html#cb170-3"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x=</span>block<span class="fl">+0.07</span>), <span class="dt">position =</span> <span class="kw">position_jitter</span>(<span class="dt">width =</span><span class="fl">0.02</span>, <span class="dt">height =</span> <span class="dv">0</span>), <span class="dt">shape=</span><span class="dv">16</span>, <span class="dt">size =</span> <span class="dv">1</span>) <span class="op">+</span></span>
+<span id="cb170-4"><a href="angle-estimation-analysis.html#cb170-4"></a><span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">width =</span> <span class="fl">.05</span>, <span class="dt">outlier.shape =</span> <span class="ot">NA</span>) <span class="op">+</span></span>
+<span id="cb170-5"><a href="angle-estimation-analysis.html#cb170-5"></a><span class="st">  </span><span class="kw">theme_cowplot</span>() <span class="op">+</span></span>
+<span id="cb170-6"><a href="angle-estimation-analysis.html#cb170-6"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="dv">90</span>, <span class="dt">linetype=</span><span class="dv">2</span>) <span class="op">+</span></span>
+<span id="cb170-7"><a href="angle-estimation-analysis.html#cb170-7"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y=</span><span class="st">&#39;Pointing Error (°)&#39;</span>, <span class="dt">x=</span><span class="st">&#39; &#39;</span>, <span class="dt">title =</span> <span class="st">&quot;Average Absolute Error&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb170-8"><a href="angle-estimation-analysis.html#cb170-8"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>), <span class="dt">axis.text.x =</span> <span class="kw">element_blank</span>(), </span>
+<span id="cb170-9"><a href="angle-estimation-analysis.html#cb170-9"></a>        <span class="dt">axis.ticks.x =</span> <span class="kw">element_blank</span>(), <span class="dt">axis.text.y =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>)) <span class="op">+</span></span>
+<span id="cb170-10"><a href="angle-estimation-analysis.html#cb170-10"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dt">label =</span> <span class="st">&quot;90°&quot;</span>, <span class="dt">x =</span> <span class="fl">1.3</span>, <span class="dt">y =</span> <span class="dv">85</span>, <span class="dt">size =</span> <span class="dv">3</span>)</span>
+<span id="cb170-11"><a href="angle-estimation-analysis.html#cb170-11"></a></span>
+<span id="cb170-12"><a href="angle-estimation-analysis.html#cb170-12"></a>g_errB1</span></code></pre></div>
+<p><img src="Test-book_files/figure-html/angle%20estimation%20block%201%20visualisation-1.png" width="672" /></p>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="angle-estimation-analysis.html#cb171-1"></a>g_anglB1 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(Sum_angle <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(block <span class="op">==</span><span class="st"> </span><span class="dv">1</span>), <span class="kw">aes</span>(<span class="dt">x =</span> angleError)) <span class="op">+</span></span>
+<span id="cb171-2"><a href="angle-estimation-analysis.html#cb171-2"></a><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">binwidth =</span> <span class="dv">10</span>, <span class="dt">boundary =</span> <span class="fl">-7.5</span>, <span class="dt">fill =</span> <span class="kw">scico</span>(<span class="dv">1</span>, <span class="dt">palette =</span> <span class="st">&quot;lajolla&quot;</span>, <span class="dt">begin=</span><span class="fl">0.5</span>), <span class="dt">color=</span> <span class="st">&quot;black&quot;</span>, <span class="dt">size =</span> <span class="fl">.25</span>) <span class="op">+</span></span>
+<span id="cb171-3"><a href="angle-estimation-analysis.html#cb171-3"></a><span class="st">  </span><span class="kw">coord_polar</span>(<span class="dt">start=</span>pi) <span class="op">+</span></span>
+<span id="cb171-4"><a href="angle-estimation-analysis.html#cb171-4"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">180</span>,<span class="dv">180</span>),</span>
+<span id="cb171-5"><a href="angle-estimation-analysis.html#cb171-5"></a>                     <span class="dt">breaks =</span> <span class="kw">seq</span>(<span class="op">-</span><span class="dv">180</span>, <span class="dv">180</span>, <span class="dt">by =</span> <span class="dv">45</span>),</span>
+<span id="cb171-6"><a href="angle-estimation-analysis.html#cb171-6"></a>                     <span class="dt">minor_breaks =</span> <span class="kw">seq</span>(<span class="op">-</span><span class="dv">180</span>, <span class="dv">180</span>, <span class="dt">by =</span> <span class="dv">15</span>)) <span class="op">+</span></span>
+<span id="cb171-7"><a href="angle-estimation-analysis.html#cb171-7"></a><span class="st">  </span><span class="kw">theme_cowplot</span>() <span class="op">+</span></span>
+<span id="cb171-8"><a href="angle-estimation-analysis.html#cb171-8"></a><span class="st">  </span><span class="kw">background_grid</span>() <span class="op">+</span></span>
+<span id="cb171-9"><a href="angle-estimation-analysis.html#cb171-9"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Pointing Error (°)&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Count&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Signed Distribution of Error&quot;</span>) <span class="op">+</span></span>
+<span id="cb171-10"><a href="angle-estimation-analysis.html#cb171-10"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.title.y =</span> <span class="kw">element_text</span>(<span class="dt">hjust =</span> <span class="fl">0.7</span>))</span>
+<span id="cb171-11"><a href="angle-estimation-analysis.html#cb171-11"></a>  </span>
+<span id="cb171-12"><a href="angle-estimation-analysis.html#cb171-12"></a>g_anglB1</span></code></pre></div>
+<pre><code>## Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
+<p><img src="Test-book_files/figure-html/angle%20estimation%20ech%20trial%20in%20Block%201-1.png" width="672" /></p>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="angle-estimation-analysis.html#cb173-1"></a>angleEst_B1 &lt;-<span class="st"> </span>g_errB1 <span class="op">+</span><span class="st"> </span>g_anglB1 <span class="op">&amp;</span></span>
+<span id="cb173-2"><a href="angle-estimation-analysis.html#cb173-2"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">12</span>), <span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">face=</span><span class="st">&quot;italic&quot;</span>, <span class="dt">size=</span><span class="dv">12</span>)) <span class="op">&amp;</span></span>
+<span id="cb173-3"><a href="angle-estimation-analysis.html#cb173-3"></a><span class="st">  </span><span class="kw">plot_annotation</span>(<span class="dt">title =</span> <span class="st">&#39;Pointing Errors&#39;</span>, </span>
+<span id="cb173-4"><a href="angle-estimation-analysis.html#cb173-4"></a>                  <span class="dt">theme =</span> <span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">14</span>, <span class="dt">face=</span><span class="st">&quot;bold&quot;</span>))) </span>
+<span id="cb173-5"><a href="angle-estimation-analysis.html#cb173-5"></a></span>
+<span id="cb173-6"><a href="angle-estimation-analysis.html#cb173-6"></a></span>
+<span id="cb173-7"><a href="angle-estimation-analysis.html#cb173-7"></a><span class="kw">ggsave</span>(<span class="dt">file=</span><span class="st">&quot;AngleErrors_B1.pdf&quot;</span>, <span class="dt">plot=</span>angleEst_B1, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="fl">15.9</span>, <span class="dt">height =</span> <span class="dv">10</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> cairo_pdf, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span></code></pre></div>
+<pre><code>## Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="angle-estimation-analysis.html#cb175-1"></a><span class="kw">ggsave</span>(<span class="dt">file=</span><span class="st">&quot;AngleErrors_B1.png&quot;</span>, <span class="dt">plot=</span>angleEst_B1, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="fl">15.9</span>, <span class="dt">height =</span> <span class="dv">10</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> <span class="st">&quot;png&quot;</span>, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span></code></pre></div>
+<pre><code>## Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
+<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="angle-estimation-analysis.html#cb177-1"></a>angleEst_B1</span></code></pre></div>
+<pre><code>## Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<div class="sourceCode" id="cb179"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb179-1"><a href="angle-estimation-analysis.html#cb179-1"></a>block1_graphs &lt;-<span class="st"> </span>memory_B1 <span class="op">/</span><span class="st"> </span>angleEst_B1 <span class="op">&amp;</span></span>
+<span id="cb179-2"><a href="angle-estimation-analysis.html#cb179-2"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>), <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>), </span>
+<span id="cb179-3"><a href="angle-estimation-analysis.html#cb179-3"></a>        <span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">face=</span><span class="st">&quot;italic&quot;</span>, <span class="dt">size=</span><span class="dv">12</span>),</span>
+<span id="cb179-4"><a href="angle-estimation-analysis.html#cb179-4"></a>        <span class="dt">legend.text =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>), <span class="dt">legend.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>),</span>
+<span id="cb179-5"><a href="angle-estimation-analysis.html#cb179-5"></a>        <span class="dt">plot.tag =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">face=</span><span class="st">&quot;bold&quot;</span>)) <span class="op">&amp;</span></span>
+<span id="cb179-6"><a href="angle-estimation-analysis.html#cb179-6"></a><span class="st">  </span><span class="kw">plot_annotation</span>(<span class="dt">title =</span> <span class="st">&#39;Block 1 Performance&#39;</span>, </span>
+<span id="cb179-7"><a href="angle-estimation-analysis.html#cb179-7"></a>                  <span class="dt">subtitle =</span> <span class="st">&#39; </span><span class="ch">\n</span><span class="st">Positional Memory&#39;</span>,</span>
+<span id="cb179-8"><a href="angle-estimation-analysis.html#cb179-8"></a>                  <span class="dt">theme =</span> <span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">14</span>, <span class="dt">face=</span><span class="st">&quot;bold&quot;</span>), <span class="dt">plot.subtitle =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">12</span>, <span class="dt">face=</span><span class="st">&quot;bold&quot;</span>)),</span>
+<span id="cb179-9"><a href="angle-estimation-analysis.html#cb179-9"></a>                  <span class="dt">tag_levels =</span> <span class="st">&#39;A&#39;</span>) </span>
+<span id="cb179-10"><a href="angle-estimation-analysis.html#cb179-10"></a></span>
+<span id="cb179-11"><a href="angle-estimation-analysis.html#cb179-11"></a>block1_graphs</span></code></pre></div>
+<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_density2d).</code></pre>
+<pre><code>## Warning: Removed 396 rows containing missing values (geom_raster).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
+<p><img src="Test-book_files/figure-html/all%20grahs%20for%20block%201-1.png" width="672" /></p>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="angle-estimation-analysis.html#cb184-1"></a><span class="kw">ggsave</span>(<span class="dt">file=</span><span class="st">&quot;B1.pdf&quot;</span>, <span class="dt">plot=</span>block1_graphs, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="dv">15</span>, <span class="dt">height =</span> <span class="dv">16</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> cairo_pdf, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span></code></pre></div>
+<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_density2d).</code></pre>
+<pre><code>## Warning: Removed 396 rows containing missing values (geom_raster).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="angle-estimation-analysis.html#cb189-1"></a><span class="kw">ggsave</span>(<span class="dt">file=</span><span class="st">&quot;B1.png&quot;</span>, <span class="dt">plot=</span>block1_graphs, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="dv">15</span>, <span class="dt">height =</span> <span class="dv">16</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> <span class="st">&quot;png&quot;</span>, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span></code></pre></div>
+<pre><code>## Warning: Removed 1 rows containing non-finite values (stat_density2d).</code></pre>
+<pre><code>## Warning: Removed 396 rows containing missing values (geom_raster).</code></pre>
+<pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
+<pre><code>## Warning: Removed 2 rows containing missing values (geom_bar).</code></pre>
+<p>Cue</p>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="angle-estimation-analysis.html#cb194-1"></a>subset_RA &lt;-<span class="st"> </span>Sum_angle <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb194-2"><a href="angle-estimation-analysis.html#cb194-2"></a><span class="st">  </span><span class="kw">filter</span>(block<span class="op">!=</span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb194-3"><a href="angle-estimation-analysis.html#cb194-3"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>object, <span class="op">-</span>sec2Beg, <span class="op">-</span>sec2Est, <span class="op">-</span>sec2End, <span class="op">-</span>trialLen, <span class="op">-</span>secTrialEst) <span class="op">%&gt;%</span></span>
+<span id="cb194-4"><a href="angle-estimation-analysis.html#cb194-4"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cueMM =</span> <span class="kw">recode</span>(cue, <span class="st">&quot;boundary&quot;</span> =<span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;landmark&quot;</span> =<span class="st"> </span><span class="dv">-1</span>), <span class="dt">mini =</span> <span class="kw">scale</span>(miniblock, <span class="dt">center =</span> <span class="ot">TRUE</span>, <span class="dt">scale =</span> <span class="ot">FALSE</span>), <span class="dt">ID =</span> <span class="kw">as.factor</span>(ID))</span>
+<span id="cb194-5"><a href="angle-estimation-analysis.html#cb194-5"></a></span>
+<span id="cb194-6"><a href="angle-estimation-analysis.html#cb194-6"></a>relativeAngleBlocks &lt;-<span class="st"> </span>subset_RA <span class="op">%&gt;%</span></span>
+<span id="cb194-7"><a href="angle-estimation-analysis.html#cb194-7"></a><span class="st">  </span><span class="kw">group_by</span>(ID, cue, age) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb194-8"><a href="angle-estimation-analysis.html#cb194-8"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">angleErr =</span> <span class="kw">mean</span>(<span class="kw">abs</span>(angleError)), <span class="dt">relativeAng =</span> <span class="kw">mean</span>(relativeAngle), <span class="dt">raSD =</span> <span class="kw">sd</span>(relativeAngle), <span class="dt">.groups=</span><span class="st">&quot;drop&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="angle-estimation-analysis.html#cb195-1"></a><span class="kw">t.test</span>(<span class="kw">subset</span>(relativeAngleBlocks, cue<span class="op">==</span><span class="st">&quot;landmark&quot;</span>)<span class="op">$</span>relativeAng, </span>
+<span id="cb195-2"><a href="angle-estimation-analysis.html#cb195-2"></a>       <span class="dt">mu =</span> <span class="fl">0.5</span>, <span class="dt">alternative =</span> <span class="st">&quot;less&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 8
+##   estimate statistic       p.value parameter conf.low conf.high method            alternative
+##      &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;             &lt;chr&gt;      
+## 1    0.377     -7.63 0.00000000299        35     -Inf     0.405 One Sample t-test less</code></pre>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="angle-estimation-analysis.html#cb197-1"></a><span class="kw">cohen.d</span>(<span class="dt">d=</span><span class="kw">subset</span>(relativeAngleBlocks, cue<span class="op">==</span><span class="st">&quot;landmark&quot;</span>)<span class="op">$</span>relativeAng, <span class="dt">f=</span><span class="ot">NA</span>, <span class="dt">mu =</span> <span class="fl">0.5</span>)</span></code></pre></div>
+<pre><code>## 
+## Cohen&#39;s d (single sample)
+## 
+## d estimate: -1.271776 (large)
+## Reference mu: 0.5
+## 95 percent confidence interval:
+##      lower      upper 
+## -2.0137388 -0.5298135</code></pre>
+<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="angle-estimation-analysis.html#cb199-1"></a><span class="kw">t.test</span>(<span class="kw">subset</span>(relativeAngleBlocks, cue<span class="op">==</span><span class="st">&quot;boundary&quot;</span>)<span class="op">$</span>relativeAng, </span>
+<span id="cb199-2"><a href="angle-estimation-analysis.html#cb199-2"></a>       <span class="dt">mu =</span> <span class="fl">0.5</span>, <span class="dt">alternative =</span> <span class="st">&quot;greater&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 8
+##   estimate statistic       p.value parameter conf.low conf.high method            alternative
+##      &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;             &lt;chr&gt;      
+## 1    0.585      7.71 0.00000000239        35    0.567       Inf One Sample t-test greater</code></pre>
+<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="angle-estimation-analysis.html#cb201-1"></a><span class="kw">cohen.d</span>(<span class="dt">d=</span><span class="kw">subset</span>(relativeAngleBlocks, cue<span class="op">==</span><span class="st">&quot;boundary&quot;</span>)<span class="op">$</span>relativeAng, <span class="dt">f=</span><span class="ot">NA</span>, <span class="dt">mu =</span> <span class="fl">0.5</span>)</span></code></pre></div>
+<pre><code>## 
+## Cohen&#39;s d (single sample)
+## 
+## d estimate: 1.2847 (large)
+## Reference mu: 0.5
+## 95 percent confidence interval:
+##     lower     upper 
+## 0.5414638 2.0279358</code></pre>
+<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="angle-estimation-analysis.html#cb203-1"></a><span class="kw">t.test</span>(<span class="kw">subset</span>(relativeAngleBlocks, cue<span class="op">==</span><span class="st">&quot;boundary&quot;</span>)<span class="op">$</span>relativeAng, </span>
+<span id="cb203-2"><a href="angle-estimation-analysis.html#cb203-2"></a>       <span class="kw">subset</span>(relativeAngleBlocks, cue<span class="op">==</span><span class="st">&quot;landmark&quot;</span>)<span class="op">$</span>relativeAng, <span class="dt">paired =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 8
+##   estimate statistic  p.value parameter conf.low conf.high method        alternative
+##      &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt;      
+## 1    0.208      9.30 5.48e-11        35    0.162     0.253 Paired t-test two.sided</code></pre>
+<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="angle-estimation-analysis.html#cb205-1"></a><span class="kw">cohen.d</span>(<span class="kw">subset</span>(relativeAngleBlocks, cue<span class="op">==</span><span class="st">&quot;boundary&quot;</span>)<span class="op">$</span>relativeAng, </span>
+<span id="cb205-2"><a href="angle-estimation-analysis.html#cb205-2"></a>       <span class="kw">subset</span>(relativeAngleBlocks, cue<span class="op">==</span><span class="st">&quot;landmark&quot;</span>)<span class="op">$</span>relativeAng, <span class="dt">paired=</span><span class="ot">TRUE</span>)</span></code></pre></div>
+<pre><code>## 
+## Cohen&#39;s d
+## 
+## d estimate: 2.532636 (large)
+## 95 percent confidence interval:
+##    lower    upper 
+## 1.418460 3.646813</code></pre>
+<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="angle-estimation-analysis.html#cb207-1"></a><span class="kw">pwr.t.test</span>(<span class="dt">n =</span> <span class="dv">36</span>, <span class="dt">d =</span> <span class="fl">2.532636</span>, <span class="dt">sig.level =</span> <span class="fl">0.05</span>, <span class="dt">power =</span> <span class="ot">NULL</span>, <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">&quot;paired&quot;</span>), <span class="dt">alternative =</span> <span class="kw">c</span>(<span class="st">&quot;two.sided&quot;</span>))</span></code></pre></div>
+<pre><code>## 
+##      Paired t test power calculation 
+## 
+##               n = 36
+##               d = 2.532636
+##       sig.level = 0.05
+##           power = 1
+##     alternative = two.sided
+## 
+## NOTE: n is number of *pairs*</code></pre>
+<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="angle-estimation-analysis.html#cb209-1"></a>rel_InfAng &lt;-<span class="st"> </span><span class="kw">ggplot</span>(relativeAngleBlocks, <span class="kw">aes</span>(<span class="dt">x=</span>cue, <span class="dt">y=</span>relativeAng)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb209-2"><a href="angle-estimation-analysis.html#cb209-2"></a><span class="st">  </span><span class="kw">scale_x_discrete</span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&#39;Boundary&#39;</span>, <span class="st">&#39;Landmark&#39;</span>)) <span class="op">+</span></span>
+<span id="cb209-3"><a href="angle-estimation-analysis.html#cb209-3"></a><span class="st">  </span>gghalves<span class="op">::</span><span class="kw">geom_half_violin</span>(<span class="dt">data=</span>relativeAngleBlocks <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(cue<span class="op">==</span><span class="st">&quot;landmark&quot;</span>), </span>
+<span id="cb209-4"><a href="angle-estimation-analysis.html#cb209-4"></a>                             <span class="dt">position=</span><span class="kw">position_nudge</span>(<span class="op">+</span><span class="fl">0.2</span>), <span class="kw">aes</span>(<span class="dt">fill=</span>cue),<span class="dt">alpha =</span><span class="fl">0.7</span>, <span class="dt">color=</span><span class="ot">NA</span>, <span class="dt">side=</span><span class="st">&quot;r&quot;</span>) <span class="op">+</span></span>
+<span id="cb209-5"><a href="angle-estimation-analysis.html#cb209-5"></a><span class="st">  </span>gghalves<span class="op">::</span><span class="kw">geom_half_violin</span>(<span class="dt">data=</span>relativeAngleBlocks <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(cue<span class="op">==</span><span class="st">&quot;boundary&quot;</span>), </span>
+<span id="cb209-6"><a href="angle-estimation-analysis.html#cb209-6"></a>                             <span class="dt">position=</span><span class="kw">position_nudge</span>(<span class="op">-</span><span class="fl">0.2</span>), <span class="kw">aes</span>(<span class="dt">fill=</span>cue),<span class="dt">alpha =</span><span class="fl">0.7</span>, <span class="dt">color=</span><span class="ot">NA</span>, <span class="dt">side=</span><span class="st">&quot;l&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb209-7"><a href="angle-estimation-analysis.html#cb209-7"></a><span class="st">  </span><span class="kw">scale_fill_scico_d</span>(<span class="dt">palette =</span> <span class="st">&#39;tokyo&#39;</span>, <span class="dt">begin=</span><span class="fl">0.15</span>, <span class="dt">end=</span><span class="fl">0.85</span>) <span class="op">+</span></span>
+<span id="cb209-8"><a href="angle-estimation-analysis.html#cb209-8"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">shape=</span><span class="dv">16</span>, <span class="dt">size =</span> <span class="dv">1</span>) <span class="op">+</span></span>
+<span id="cb209-9"><a href="angle-estimation-analysis.html#cb209-9"></a><span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">data=</span>relativeAngleBlocks <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(cue<span class="op">==</span><span class="st">&quot;landmark&quot;</span>), </span>
+<span id="cb209-10"><a href="angle-estimation-analysis.html#cb209-10"></a>               <span class="dt">position=</span><span class="kw">position_nudge</span>(<span class="op">+</span><span class="fl">0.1</span>), <span class="dt">width =</span> <span class="fl">.1</span>, <span class="dt">outlier.shape =</span> <span class="ot">NA</span>) <span class="op">+</span></span>
+<span id="cb209-11"><a href="angle-estimation-analysis.html#cb209-11"></a><span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">data=</span> relativeAngleBlocks <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(cue<span class="op">==</span><span class="st">&quot;boundary&quot;</span>), </span>
+<span id="cb209-12"><a href="angle-estimation-analysis.html#cb209-12"></a>               <span class="dt">position=</span><span class="kw">position_nudge</span>(<span class="op">-</span><span class="fl">0.1</span>), <span class="dt">width =</span> <span class="fl">.1</span>, <span class="dt">outlier.shape =</span> <span class="ot">NA</span>) <span class="op">+</span></span>
+<span id="cb209-13"><a href="angle-estimation-analysis.html#cb209-13"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">group=</span>ID), <span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span></span>
+<span id="cb209-14"><a href="angle-estimation-analysis.html#cb209-14"></a><span class="st">  </span><span class="kw">theme_cowplot</span>() <span class="op">+</span></span>
+<span id="cb209-15"><a href="angle-estimation-analysis.html#cb209-15"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot; &quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Relative Influence (0-1)&quot;</span>, </span>
+<span id="cb209-16"><a href="angle-estimation-analysis.html#cb209-16"></a>       <span class="dt">title =</span> <span class="st">&quot;Pointing&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb209-17"><a href="angle-estimation-analysis.html#cb209-17"></a><span class="st">  </span><span class="kw">geom_signif</span>(<span class="dt">comparisons =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;landmark&quot;</span>, <span class="st">&quot;boundary&quot;</span>)),  <span class="dt">test=</span><span class="st">&quot;t.test&quot;</span>, </span>
+<span id="cb209-18"><a href="angle-estimation-analysis.html#cb209-18"></a>              <span class="dt">test.args=</span><span class="kw">list</span>(<span class="dt">alternative =</span> <span class="st">&quot;two.sided&quot;</span>, <span class="dt">paired=</span><span class="ot">TRUE</span>), </span>
+<span id="cb209-19"><a href="angle-estimation-analysis.html#cb209-19"></a>              <span class="dt">map_signif_level =</span> <span class="ot">TRUE</span>, <span class="dt">tip_length =</span> <span class="dv">0</span>, <span class="dt">extend_line =</span> <span class="fl">0.045</span>, <span class="dt">y_position =</span> <span class="fl">0.85</span>) <span class="op">+</span></span>
+<span id="cb209-20"><a href="angle-estimation-analysis.html#cb209-20"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept=</span><span class="fl">0.5</span>, <span class="dt">linetype=</span><span class="dv">2</span>, <span class="dt">alpha=</span><span class="fl">0.6</span>) <span class="op">+</span></span>
+<span id="cb209-21"><a href="angle-estimation-analysis.html#cb209-21"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="fl">0.1</span>, <span class="fl">0.9</span>), <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="fl">0.1</span>,<span class="fl">0.2</span>,<span class="fl">0.3</span>,<span class="fl">0.4</span>,<span class="fl">0.5</span>,<span class="fl">0.6</span>,<span class="fl">0.7</span>,<span class="fl">0.8</span>,<span class="fl">0.9</span>))</span>
+<span id="cb209-22"><a href="angle-estimation-analysis.html#cb209-22"></a></span>
+<span id="cb209-23"><a href="angle-estimation-analysis.html#cb209-23"></a></span>
+<span id="cb209-24"><a href="angle-estimation-analysis.html#cb209-24"></a><span class="kw">ggsave</span>(<span class="st">&quot;relativeInfluenceAng.pdf&quot;</span>, <span class="dt">plot=</span>rel_InfAng, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="dv">15</span>, <span class="dt">height =</span> <span class="dv">12</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> cairo_pdf, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span>
+<span id="cb209-25"><a href="angle-estimation-analysis.html#cb209-25"></a><span class="kw">ggsave</span>(<span class="st">&quot;relativeInfluenceAng.png&quot;</span>, <span class="dt">plot=</span>rel_InfAng, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="dv">15</span>, <span class="dt">height =</span> <span class="dv">12</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> <span class="st">&quot;png&quot;</span>, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span>
+<span id="cb209-26"><a href="angle-estimation-analysis.html#cb209-26"></a></span>
+<span id="cb209-27"><a href="angle-estimation-analysis.html#cb209-27"></a>rel_InfAng</span></code></pre></div>
+<p><img src="Test-book_files/figure-html/RA%20block%202-4%20graph-1.png" width="672" /></p>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="angle-estimation-analysis.html#cb210-1"></a>relative_infl &lt;-<span class="st"> </span>rel_Inf <span class="op">/</span><span class="st"> </span>rel_InfAng <span class="op">&amp;</span></span>
+<span id="cb210-2"><a href="angle-estimation-analysis.html#cb210-2"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>), <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>), </span>
+<span id="cb210-3"><a href="angle-estimation-analysis.html#cb210-3"></a>        <span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">face=</span><span class="st">&quot;italic&quot;</span>, <span class="dt">size=</span><span class="dv">12</span>),</span>
+<span id="cb210-4"><a href="angle-estimation-analysis.html#cb210-4"></a>        <span class="dt">plot.tag =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">face=</span><span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb210-5"><a href="angle-estimation-analysis.html#cb210-5"></a>        <span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="op">&amp;</span></span>
+<span id="cb210-6"><a href="angle-estimation-analysis.html#cb210-6"></a><span class="st">  </span><span class="kw">plot_annotation</span>(<span class="dt">title =</span> <span class="st">&quot;Relative Influence&quot;</span>,</span>
+<span id="cb210-7"><a href="angle-estimation-analysis.html#cb210-7"></a>                  <span class="dt">theme =</span> <span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">12</span>, <span class="dt">face=</span><span class="st">&quot;bold&quot;</span>)),</span>
+<span id="cb210-8"><a href="angle-estimation-analysis.html#cb210-8"></a>                  <span class="dt">tag_levels =</span> <span class="st">&#39;A&#39;</span>) </span>
+<span id="cb210-9"><a href="angle-estimation-analysis.html#cb210-9"></a></span>
+<span id="cb210-10"><a href="angle-estimation-analysis.html#cb210-10"></a><span class="kw">ggsave</span>(<span class="st">&quot;relativeInfluenceAll.pdf&quot;</span>, <span class="dt">plot=</span>relative_infl, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="dv">11</span>, <span class="dt">height =</span> <span class="dv">15</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> cairo_pdf, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span>
+<span id="cb210-11"><a href="angle-estimation-analysis.html#cb210-11"></a><span class="kw">ggsave</span>(<span class="st">&quot;relativeInfluenceAll.png&quot;</span>, <span class="dt">plot=</span>relative_infl, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="dv">11</span>, <span class="dt">height =</span> <span class="dv">15</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> <span class="st">&quot;png&quot;</span>, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span>
+<span id="cb210-12"><a href="angle-estimation-analysis.html#cb210-12"></a></span>
+<span id="cb210-13"><a href="angle-estimation-analysis.html#cb210-13"></a>relative_infl</span></code></pre></div>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="angle-estimation-analysis.html#cb211-1"></a><span class="kw">t.test</span>(<span class="kw">subset</span>(relativeAngleBlocks, cue<span class="op">==</span><span class="st">&quot;boundary&quot;</span>)<span class="op">$</span>angleErr, <span class="kw">subset</span>(relativeAngleBlocks, cue<span class="op">==</span><span class="st">&quot;landmark&quot;</span>)<span class="op">$</span>angleErr, <span class="dt">paired =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 8
+##   estimate statistic p.value parameter conf.low conf.high method        alternative
+##      &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt;      
+## 1     1.29     0.810   0.424        35    -1.95      4.53 Paired t-test two.sided</code></pre>
+<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="angle-estimation-analysis.html#cb213-1"></a>cue_Ang &lt;-<span class="st"> </span><span class="kw">ggplot</span>(relativeAngleBlocks, <span class="kw">aes</span>(<span class="dt">x=</span>cue, <span class="dt">y=</span> angleErr)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb213-2"><a href="angle-estimation-analysis.html#cb213-2"></a><span class="st">  </span><span class="kw">scale_x_discrete</span>(<span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&#39;Boundary&#39;</span>, <span class="st">&#39;Landmark&#39;</span>)) <span class="op">+</span></span>
+<span id="cb213-3"><a href="angle-estimation-analysis.html#cb213-3"></a><span class="st">  </span>gghalves<span class="op">::</span><span class="kw">geom_half_violin</span>(<span class="dt">data=</span>relativeAngleBlocks <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(cue<span class="op">==</span><span class="st">&quot;landmark&quot;</span>), </span>
+<span id="cb213-4"><a href="angle-estimation-analysis.html#cb213-4"></a>                             <span class="dt">position=</span><span class="kw">position_nudge</span>(<span class="op">+</span><span class="fl">0.2</span>), <span class="kw">aes</span>(<span class="dt">fill=</span>cue),<span class="dt">alpha =</span><span class="fl">0.7</span>, <span class="dt">color=</span><span class="ot">NA</span>, <span class="dt">side=</span><span class="st">&quot;r&quot;</span>) <span class="op">+</span></span>
+<span id="cb213-5"><a href="angle-estimation-analysis.html#cb213-5"></a><span class="st">  </span>gghalves<span class="op">::</span><span class="kw">geom_half_violin</span>(<span class="dt">data=</span>relativeAngleBlocks <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(cue<span class="op">==</span><span class="st">&quot;boundary&quot;</span>), </span>
+<span id="cb213-6"><a href="angle-estimation-analysis.html#cb213-6"></a>                             <span class="dt">position=</span><span class="kw">position_nudge</span>(<span class="op">-</span><span class="fl">0.2</span>), <span class="kw">aes</span>(<span class="dt">fill=</span>cue),<span class="dt">alpha =</span><span class="fl">0.7</span>, <span class="dt">color=</span><span class="ot">NA</span>, <span class="dt">side=</span><span class="st">&quot;l&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb213-7"><a href="angle-estimation-analysis.html#cb213-7"></a><span class="st">  </span><span class="kw">scale_fill_scico_d</span>(<span class="dt">palette =</span> <span class="st">&#39;tokyo&#39;</span>, <span class="dt">begin=</span><span class="fl">0.15</span>, <span class="dt">end=</span><span class="fl">0.85</span>) <span class="op">+</span></span>
+<span id="cb213-8"><a href="angle-estimation-analysis.html#cb213-8"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">shape=</span><span class="dv">16</span>, <span class="dt">size =</span> <span class="dv">1</span>) <span class="op">+</span></span>
+<span id="cb213-9"><a href="angle-estimation-analysis.html#cb213-9"></a><span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">data=</span>relativeAngleBlocks <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(cue<span class="op">==</span><span class="st">&quot;landmark&quot;</span>), </span>
+<span id="cb213-10"><a href="angle-estimation-analysis.html#cb213-10"></a>               <span class="dt">position=</span><span class="kw">position_nudge</span>(<span class="op">+</span><span class="fl">0.1</span>), <span class="dt">width =</span> <span class="fl">.1</span>, <span class="dt">outlier.shape =</span> <span class="ot">NA</span>) <span class="op">+</span></span>
+<span id="cb213-11"><a href="angle-estimation-analysis.html#cb213-11"></a><span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">data=</span>relativeAngleBlocks <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(cue<span class="op">==</span><span class="st">&quot;boundary&quot;</span>), </span>
+<span id="cb213-12"><a href="angle-estimation-analysis.html#cb213-12"></a>               <span class="dt">position=</span><span class="kw">position_nudge</span>(<span class="op">-</span><span class="fl">0.1</span>), <span class="dt">width =</span> <span class="fl">.1</span>, <span class="dt">outlier.shape =</span> <span class="ot">NA</span>) <span class="op">+</span></span>
+<span id="cb213-13"><a href="angle-estimation-analysis.html#cb213-13"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">group=</span>ID), <span class="dt">alpha=</span><span class="fl">0.5</span>) <span class="op">+</span></span>
+<span id="cb213-14"><a href="angle-estimation-analysis.html#cb213-14"></a><span class="st">  </span><span class="kw">theme_cowplot</span>() <span class="op">+</span></span>
+<span id="cb213-15"><a href="angle-estimation-analysis.html#cb213-15"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot; &quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Pointing Error (°)&quot;</span>, </span>
+<span id="cb213-16"><a href="angle-estimation-analysis.html#cb213-16"></a>       <span class="dt">title =</span> <span class="st">&quot;Pointing&quot;</span>) <span class="op">+</span></span>
+<span id="cb213-17"><a href="angle-estimation-analysis.html#cb213-17"></a><span class="st">  </span><span class="kw">geom_signif</span>(<span class="dt">comparisons =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&quot;landmark&quot;</span>, <span class="st">&quot;boundary&quot;</span>)), <span class="dt">test=</span><span class="st">&quot;t.test&quot;</span>, </span>
+<span id="cb213-18"><a href="angle-estimation-analysis.html#cb213-18"></a>              <span class="dt">test.args=</span><span class="kw">list</span>(<span class="dt">alternative =</span> <span class="st">&quot;two.sided&quot;</span>, <span class="dt">paired=</span><span class="ot">TRUE</span>),</span>
+<span id="cb213-19"><a href="angle-estimation-analysis.html#cb213-19"></a>              <span class="dt">map_signif_level =</span> <span class="ot">TRUE</span>, <span class="dt">tip_length =</span> <span class="dv">0</span>, <span class="dt">extend_line =</span> <span class="fl">0.045</span>, <span class="dt">y_position =</span> <span class="dv">92</span>) <span class="op">+</span></span>
+<span id="cb213-20"><a href="angle-estimation-analysis.html#cb213-20"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">25</span>, <span class="dv">50</span>, <span class="dv">75</span>, <span class="dv">100</span>), <span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">9</span>,<span class="dv">100</span>))</span>
+<span id="cb213-21"><a href="angle-estimation-analysis.html#cb213-21"></a></span>
+<span id="cb213-22"><a href="angle-estimation-analysis.html#cb213-22"></a></span>
+<span id="cb213-23"><a href="angle-estimation-analysis.html#cb213-23"></a><span class="kw">ggsave</span>(<span class="st">&quot;angleError.pdf&quot;</span>, <span class="dt">plot=</span>cue_Ang, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="fl">15.9</span>, <span class="dt">height =</span> <span class="dv">12</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> cairo_pdf, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span>
+<span id="cb213-24"><a href="angle-estimation-analysis.html#cb213-24"></a><span class="kw">ggsave</span>(<span class="st">&quot;angleError.png&quot;</span>, <span class="dt">plot=</span>cue_Ang, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="fl">15.9</span>, <span class="dt">height =</span> <span class="dv">12</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> <span class="st">&quot;png&quot;</span>, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span>
+<span id="cb213-25"><a href="angle-estimation-analysis.html#cb213-25"></a></span>
+<span id="cb213-26"><a href="angle-estimation-analysis.html#cb213-26"></a>cue_Ang</span></code></pre></div>
+<p><img src="Test-book_files/figure-html/angle%20error%20graph-1.png" width="672" /></p>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="angle-estimation-analysis.html#cb214-1"></a>cue_Diff &lt;-<span class="st"> </span>g_cue <span class="op">/</span><span class="st"> </span>cue_Ang <span class="op">&amp;</span></span>
+<span id="cb214-2"><a href="angle-estimation-analysis.html#cb214-2"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>), <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>), </span>
+<span id="cb214-3"><a href="angle-estimation-analysis.html#cb214-3"></a>        <span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">face=</span><span class="st">&quot;italic&quot;</span>, <span class="dt">size=</span><span class="dv">12</span>),</span>
+<span id="cb214-4"><a href="angle-estimation-analysis.html#cb214-4"></a>        <span class="dt">plot.tag =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">face=</span><span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb214-5"><a href="angle-estimation-analysis.html#cb214-5"></a>        <span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="op">&amp;</span></span>
+<span id="cb214-6"><a href="angle-estimation-analysis.html#cb214-6"></a><span class="st">  </span><span class="kw">plot_annotation</span>(<span class="dt">title =</span> <span class="st">&quot;Raw Performance Differences&quot;</span>,</span>
+<span id="cb214-7"><a href="angle-estimation-analysis.html#cb214-7"></a>                  <span class="dt">theme =</span> <span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">12</span>, <span class="dt">face=</span><span class="st">&quot;bold&quot;</span>)),</span>
+<span id="cb214-8"><a href="angle-estimation-analysis.html#cb214-8"></a>                  <span class="dt">tag_levels =</span> <span class="st">&#39;A&#39;</span>)</span>
+<span id="cb214-9"><a href="angle-estimation-analysis.html#cb214-9"></a></span>
+<span id="cb214-10"><a href="angle-estimation-analysis.html#cb214-10"></a><span class="kw">ggsave</span>(<span class="st">&quot;cueDiffAll.pdf&quot;</span>, <span class="dt">plot=</span>cue_Diff, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="dv">11</span>, <span class="dt">height =</span> <span class="dv">15</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> cairo_pdf, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span>
+<span id="cb214-11"><a href="angle-estimation-analysis.html#cb214-11"></a><span class="kw">ggsave</span>(<span class="st">&quot;cueDiffAll.png&quot;</span>, <span class="dt">plot=</span>cue_Diff, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="dv">11</span>, <span class="dt">height =</span> <span class="dv">15</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> <span class="st">&quot;png&quot;</span>, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span>
+<span id="cb214-12"><a href="angle-estimation-analysis.html#cb214-12"></a></span>
+<span id="cb214-13"><a href="angle-estimation-analysis.html#cb214-13"></a>cue_Diff</span></code></pre></div>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="angle-estimation-analysis.html#cb215-1"></a>formulaCue &lt;-<span class="st"> &quot;relativeAngle ~ cueMM + (1+cueMM|ID)&quot;</span></span>
+<span id="cb215-2"><a href="angle-estimation-analysis.html#cb215-2"></a>modelCueAngle &lt;-<span class="st"> </span>lme4<span class="op">::</span><span class="kw">lmer</span>(<span class="dt">formula =</span> formulaCue, <span class="dt">data=</span>subset_RA)</span>
+<span id="cb215-3"><a href="angle-estimation-analysis.html#cb215-3"></a><span class="kw">summary</span>(modelCueAngle)</span></code></pre></div>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: relativeAngle ~ cueMM + (1 + cueMM | ID)
+##    Data: subset_RA
+## 
+## REML criterion at convergence: 282.9
+## 
+## Scaled residuals: 
+##      Min       1Q   Median       3Q      Max 
+## -2.31788 -0.76606 -0.00187  0.75191  2.72597 
+## 
+## Random effects:
+##  Groups   Name        Variance  Std.Dev. Corr 
+##  ID       (Intercept) 0.0009399 0.03066       
+##           cueMM       0.0030925 0.05561  -0.70
+##  Residual             0.0663842 0.25765       
+## Number of obs: 1709, groups:  ID, 36
+## 
+## Fixed effects:
+##             Estimate Std. Error t value
+## (Intercept) 0.480968   0.008061   59.67
+## cueMM       0.103895   0.011172    9.30
+## 
+## Correlation of Fixed Effects:
+##       (Intr)
+## cueMM -0.369</code></pre>
+<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="angle-estimation-analysis.html#cb217-1"></a>formulaControl &lt;-<span class="st"> &quot;relativeAngle ~ 1 + (1+cueMM|ID)&quot;</span></span>
+<span id="cb217-2"><a href="angle-estimation-analysis.html#cb217-2"></a>modelCueControl &lt;-<span class="st"> </span>lme4<span class="op">::</span><span class="kw">lmer</span>(<span class="dt">formula =</span> formulaControl, <span class="dt">data=</span>subset_RA)</span>
+<span id="cb217-3"><a href="angle-estimation-analysis.html#cb217-3"></a>ratioCueAngle &lt;-<span class="st"> </span><span class="kw">anova</span>(modelCueAngle, modelCueControl)</span></code></pre></div>
+<pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
+<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="angle-estimation-analysis.html#cb219-1"></a>ratioCueAngle</span></code></pre></div>
+<pre><code>## Data: subset_RA
+## Models:
+## modelCueControl: relativeAngle ~ 1 + (1 + cueMM | ID)
+## modelCueAngle: relativeAngle ~ cueMM + (1 + cueMM | ID)
+##                 npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)    
+## modelCueControl    5 322.54 349.76 -156.27   312.54                         
+## modelCueAngle      6 279.80 312.46 -133.90   267.80 44.747  1  2.242e-11 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>MINIBLOCKS</p>
+<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="angle-estimation-analysis.html#cb221-1"></a>formulaMiniblocks &lt;-<span class="st"> &quot;relativeAngle ~ cue*mini + (1+mini:cueMM|ID)&quot;</span></span>
+<span id="cb221-2"><a href="angle-estimation-analysis.html#cb221-2"></a>modelMiniblocksCue &lt;-<span class="st"> </span>lme4<span class="op">::</span><span class="kw">lmer</span>(<span class="dt">formula =</span> formulaMiniblocks, <span class="dt">data=</span>subset_RA)</span>
+<span id="cb221-3"><a href="angle-estimation-analysis.html#cb221-3"></a><span class="kw">summary</span>(modelMiniblocksCue)</span></code></pre></div>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: relativeAngle ~ cue * mini + (1 + mini:cueMM | ID)
+##    Data: subset_RA
+## 
+## REML criterion at convergence: 246.3
+## 
+## Scaled residuals: 
+##      Min       1Q   Median       3Q      Max 
+## -2.42101 -0.74427 -0.01048  0.77715  2.56172 
+## 
+## Random effects:
+##  Groups   Name        Variance  Std.Dev. Corr
+##  ID       (Intercept) 0.0009238 0.03039      
+##           mini:cueMM  0.0003289 0.01814  0.05
+##  Residual             0.0655204 0.25597      
+## Number of obs: 1709, groups:  ID, 36
+## 
+## Fixed effects:
+##                   Estimate Std. Error t value
+## (Intercept)       0.585126   0.010121  57.816
+## cuelandmark      -0.208334   0.012384 -16.822
+## mini              0.025078   0.008392   2.988
+## cuelandmark:mini -0.095901   0.012614  -7.603
+## 
+## Correlation of Fixed Effects:
+##             (Intr) clndmr mini  
+## cuelandmark -0.612              
+## mini         0.008  0.001       
+## culndmrk:mn -0.012  0.000 -0.752</code></pre>
+<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="angle-estimation-analysis.html#cb223-1"></a>formulaMiniControl &lt;-<span class="st"> &quot;relativeAngle ~  mini+cueMM + (1+mini:cueMM|ID)&quot;</span> </span>
+<span id="cb223-2"><a href="angle-estimation-analysis.html#cb223-2"></a>modelMiniControlInt &lt;-<span class="st"> </span>lme4<span class="op">::</span><span class="kw">lmer</span>(<span class="dt">formula =</span> formulaMiniControl, <span class="dt">data=</span>subset_RA)</span>
+<span id="cb223-3"><a href="angle-estimation-analysis.html#cb223-3"></a></span>
+<span id="cb223-4"><a href="angle-estimation-analysis.html#cb223-4"></a>ratioMiniblocksInt &lt;-<span class="st"> </span><span class="kw">anova</span>(modelMiniblocksCue, modelMiniControlInt)</span></code></pre></div>
+<pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
+<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="angle-estimation-analysis.html#cb225-1"></a>ratioMiniblocksInt</span></code></pre></div>
+<pre><code>## Data: subset_RA
+## Models:
+## modelMiniControlInt: relativeAngle ~ mini + cueMM + (1 + mini:cueMM | ID)
+## modelMiniblocksCue: relativeAngle ~ cue * mini + (1 + mini:cueMM | ID)
+##                     npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)    
+## modelMiniControlInt    7 265.05 303.16 -125.53   251.05                         
+## modelMiniblocksCue     8 232.03 275.58 -108.02   216.03 35.018  1  3.266e-09 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="angle-estimation-analysis.html#cb227-1"></a>formulaMiniblocksAngle &lt;-<span class="st"> &quot;relativeAngle ~ mini + (1+mini|ID)&quot;</span> </span>
+<span id="cb227-2"><a href="angle-estimation-analysis.html#cb227-2"></a>modelMiniblocksLandmarkAngle &lt;-<span class="st"> </span>lme4<span class="op">::</span><span class="kw">lmer</span>(<span class="dt">formula =</span> formulaMiniblocksAngle, <span class="dt">data=</span><span class="kw">subset</span>(subset_RA, cue<span class="op">==</span><span class="st">&quot;landmark&quot;</span>))</span>
+<span id="cb227-3"><a href="angle-estimation-analysis.html#cb227-3"></a><span class="kw">summary</span>(modelMiniblocksLandmarkAngle) </span></code></pre></div>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: relativeAngle ~ mini + (1 + mini | ID)
+##    Data: subset(subset_RA, cue == &quot;landmark&quot;)
+## 
+## REML criterion at convergence: 84.3
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -2.0969 -0.7382 -0.1703  0.6549  2.6269 
+## 
+## Random effects:
+##  Groups   Name        Variance  Std.Dev. Corr 
+##  ID       (Intercept) 0.0065886 0.08117       
+##           mini        0.0004984 0.02232  -0.12
+##  Residual             0.0597956 0.24453       
+## Number of obs: 855, groups:  ID, 36
+## 
+## Fixed effects:
+##              Estimate Std. Error t value
+## (Intercept)  0.376991   0.015908  23.698
+## mini        -0.070415   0.008354  -8.429
+## 
+## Correlation of Fixed Effects:
+##      (Intr)
+## mini -0.044</code></pre>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="angle-estimation-analysis.html#cb229-1"></a>formulaMiniControl &lt;-<span class="st"> &quot;relativeAngle ~ 1 + (1+mini|ID)&quot;</span> </span>
+<span id="cb229-2"><a href="angle-estimation-analysis.html#cb229-2"></a>modelMiniLandmarkControl &lt;-<span class="st"> </span>lme4<span class="op">::</span><span class="kw">lmer</span>(<span class="dt">formula =</span> formulaMiniControl, <span class="dt">data=</span><span class="kw">subset</span>(subset_RA, cue<span class="op">==</span><span class="st">&quot;landmark&quot;</span>))</span>
+<span id="cb229-3"><a href="angle-estimation-analysis.html#cb229-3"></a>ratioMiniLandmark =<span class="st"> </span><span class="kw">anova</span>(modelMiniblocksLandmarkAngle, modelMiniLandmarkControl)</span></code></pre></div>
+<pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
+<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="angle-estimation-analysis.html#cb231-1"></a>ratioMiniLandmark</span></code></pre></div>
+<pre><code>## Data: subset(subset_RA, cue == &quot;landmark&quot;)
+## Models:
+## modelMiniLandmarkControl: relativeAngle ~ 1 + (1 + mini | ID)
+## modelMiniblocksLandmarkAngle: relativeAngle ~ mini + (1 + mini | ID)
+##                              npar     AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)    
+## modelMiniLandmarkControl        5 119.927 143.68 -54.963  109.927                         
+## modelMiniblocksLandmarkAngle    6  82.126 110.63 -35.063   70.126 39.801  1  2.812e-10 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="angle-estimation-analysis.html#cb233-1"></a>formulaMiniblocksAngle &lt;-<span class="st"> &quot;relativeAngle ~ mini + (1+mini|ID)&quot;</span> </span>
+<span id="cb233-2"><a href="angle-estimation-analysis.html#cb233-2"></a>modelMiniblocksBoundaryAngle &lt;-<span class="st"> </span>lme4<span class="op">::</span><span class="kw">lmer</span>(<span class="dt">formula =</span> formulaMiniblocksAngle, <span class="dt">data=</span><span class="kw">subset</span>(subset_RA,cue<span class="op">==</span><span class="st">&quot;boundary&quot;</span>))</span></code></pre></div>
+<pre><code>## boundary (singular) fit: see ?isSingular</code></pre>
+<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="angle-estimation-analysis.html#cb235-1"></a><span class="kw">summary</span>(modelMiniblocksBoundaryAngle)</span></code></pre></div>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: relativeAngle ~ mini + (1 + mini | ID)
+##    Data: subset(subset_RA, cue == &quot;boundary&quot;)
+## 
+## REML criterion at convergence: 122.4
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -2.4376 -0.7092  0.1334  0.7970  1.7836 
+## 
+## Random effects:
+##  Groups   Name        Variance  Std.Dev. Corr 
+##  ID       (Intercept) 1.674e-03 0.040913      
+##           mini        6.254e-06 0.002501 -1.00
+##  Residual             6.522e-02 0.255384      
+## Number of obs: 854, groups:  ID, 36
+## 
+## Fixed effects:
+##             Estimate Std. Error t value
+## (Intercept) 0.584996   0.011088  52.762
+## mini        0.024989   0.007821   3.195
+## 
+## Correlation of Fixed Effects:
+##      (Intr)
+## mini -0.034
+## optimizer (nloptwrap) convergence code: 0 (OK)
+## boundary (singular) fit: see ?isSingular</code></pre>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="angle-estimation-analysis.html#cb237-1"></a>formulaMiniControl &lt;-<span class="st"> &quot;relativeAngle ~ 1 + (1+mini|ID)&quot;</span> </span>
+<span id="cb237-2"><a href="angle-estimation-analysis.html#cb237-2"></a>modelMiniBoundaryControl &lt;-<span class="st"> </span>lme4<span class="op">::</span><span class="kw">lmer</span>(<span class="dt">formula =</span> formulaMiniControl, <span class="dt">data=</span><span class="kw">subset</span>(subset_RA, cue<span class="op">==</span><span class="st">&quot;boundary&quot;</span>))</span>
+<span id="cb237-3"><a href="angle-estimation-analysis.html#cb237-3"></a>ratioMiniBoundary =<span class="st"> </span><span class="kw">anova</span>(modelMiniblocksBoundaryAngle, modelMiniBoundaryControl)</span></code></pre></div>
+<pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
+<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="angle-estimation-analysis.html#cb239-1"></a>ratioMiniBoundary</span></code></pre></div>
+<pre><code>## Data: subset(subset_RA, cue == &quot;boundary&quot;)
+## Models:
+## modelMiniBoundaryControl: relativeAngle ~ 1 + (1 + mini | ID)
+## modelMiniblocksBoundaryAngle: relativeAngle ~ mini + (1 + mini | ID)
+##                              npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)   
+## modelMiniBoundaryControl        5 126.59 150.34 -58.296   116.59                        
+## modelMiniblocksBoundaryAngle    6 119.31 147.81 -53.654   107.31 9.2834  1   0.002312 **
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="angle-estimation-analysis.html#cb241-1"></a>summary_miniblock_A &lt;-<span class="st"> </span>subset_RA <span class="op">%&gt;%</span></span>
+<span id="cb241-2"><a href="angle-estimation-analysis.html#cb241-2"></a><span class="st">  </span><span class="kw">group_by</span>(ID, miniblock, cue, age) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb241-3"><a href="angle-estimation-analysis.html#cb241-3"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">angleErr =</span> <span class="kw">mean</span>(<span class="kw">abs</span>(angleError)), </span>
+<span id="cb241-4"><a href="angle-estimation-analysis.html#cb241-4"></a>            <span class="dt">aeSD =</span> <span class="kw">sd</span>(<span class="kw">abs</span>(angleError)), </span>
+<span id="cb241-5"><a href="angle-estimation-analysis.html#cb241-5"></a>            <span class="dt">relativeAng =</span> <span class="kw">mean</span>(relativeAngle), </span>
+<span id="cb241-6"><a href="angle-estimation-analysis.html#cb241-6"></a>            <span class="dt">raSD =</span> <span class="kw">sd</span>(relativeAngle),</span>
+<span id="cb241-7"><a href="angle-estimation-analysis.html#cb241-7"></a>            <span class="dt">.groups =</span> <span class="st">&quot;drop&quot;</span>)</span>
+<span id="cb241-8"><a href="angle-estimation-analysis.html#cb241-8"></a></span>
+<span id="cb241-9"><a href="angle-estimation-analysis.html#cb241-9"></a>g_miniAng &lt;-<span class="st"> </span><span class="kw">ggplot</span>(summary_miniblock_A, <span class="kw">aes</span>(miniblock, relativeAng, <span class="dt">group=</span><span class="kw">interaction</span>(cue, ID), <span class="dt">color=</span>cue)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb241-10"><a href="angle-estimation-analysis.html#cb241-10"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">size=</span><span class="fl">0.8</span>, <span class="dt">alpha =</span> <span class="fl">0.3</span>) <span class="op">+</span></span>
+<span id="cb241-11"><a href="angle-estimation-analysis.html#cb241-11"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">data=</span> <span class="kw">subset</span>(summary_miniblock_A, cue<span class="op">==</span><span class="st">&quot;boundary&quot;</span>), <span class="dt">fun.data=</span>mean_se, </span>
+<span id="cb241-12"><a href="angle-estimation-analysis.html#cb241-12"></a>               <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom=</span><span class="st">&quot;errorbar&quot;</span>, <span class="dt">width=</span><span class="fl">0.1</span>, <span class="dt">position =</span> <span class="kw">position_nudge</span>(<span class="dt">x=</span><span class="fl">0.01</span>)) <span class="op">+</span></span>
+<span id="cb241-13"><a href="angle-estimation-analysis.html#cb241-13"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">data=</span> <span class="kw">subset</span>(summary_miniblock_A, cue<span class="op">==</span><span class="st">&quot;landmark&quot;</span>), <span class="dt">fun.data=</span>mean_se, </span>
+<span id="cb241-14"><a href="angle-estimation-analysis.html#cb241-14"></a>               <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom=</span><span class="st">&quot;errorbar&quot;</span>,  <span class="dt">width=</span><span class="fl">0.1</span>, <span class="dt">position=</span><span class="kw">position_nudge</span>(<span class="dt">x=</span><span class="op">-</span><span class="fl">0.01</span>)) <span class="op">+</span></span>
+<span id="cb241-15"><a href="angle-estimation-analysis.html#cb241-15"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">fun=</span>mean, <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>, <span class="dt">size =</span> <span class="fl">1.5</span>) <span class="op">+</span></span>
+<span id="cb241-16"><a href="angle-estimation-analysis.html#cb241-16"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">fun=</span>mean, <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom=</span><span class="st">&quot;point&quot;</span>, <span class="dt">size=</span><span class="dv">2</span>) <span class="op">+</span></span>
+<span id="cb241-17"><a href="angle-estimation-analysis.html#cb241-17"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="fl">0.5</span>, <span class="dt">linetype =</span> <span class="dv">2</span>) <span class="op">+</span></span>
+<span id="cb241-18"><a href="angle-estimation-analysis.html#cb241-18"></a><span class="st">  </span><span class="kw">theme_cowplot</span>() <span class="op">+</span></span>
+<span id="cb241-19"><a href="angle-estimation-analysis.html#cb241-19"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span> <span class="st">&quot;Miniblock&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Relative Influence (0-1)&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Averaged across Blocks&quot;</span>, <span class="dt">color =</span> <span class="st">&quot;Cue&quot;</span>) <span class="op">+</span></span>
+<span id="cb241-20"><a href="angle-estimation-analysis.html#cb241-20"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">12</span>, <span class="dt">face=</span><span class="st">&quot;italic&quot;</span>), </span>
+<span id="cb241-21"><a href="angle-estimation-analysis.html#cb241-21"></a>        <span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>),</span>
+<span id="cb241-22"><a href="angle-estimation-analysis.html#cb241-22"></a>        <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>)) <span class="op">+</span></span>
+<span id="cb241-23"><a href="angle-estimation-analysis.html#cb241-23"></a><span class="st">  </span><span class="kw">scale_color_scico_d</span>(<span class="dt">palette =</span> <span class="st">&#39;tokyo&#39;</span>, <span class="dt">begin=</span><span class="fl">0.2</span>, <span class="dt">end=</span><span class="fl">0.8</span>, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Boundary&quot;</span>, <span class="st">&quot;Landmark&quot;</span>)) <span class="op">+</span></span>
+<span id="cb241-24"><a href="angle-estimation-analysis.html#cb241-24"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="dv">1</span>), <span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="op">+</span></span>
+<span id="cb241-25"><a href="angle-estimation-analysis.html#cb241-25"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits =</span> <span class="kw">c</span>(<span class="fl">0.5</span>, <span class="fl">4.5</span>), <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb241-26"><a href="angle-estimation-analysis.html#cb241-26"></a></span>
+<span id="cb241-27"><a href="angle-estimation-analysis.html#cb241-27"></a>g_miniAng</span></code></pre></div>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="angle-estimation-analysis.html#cb242-1"></a><span class="co">#data summarizing</span></span>
+<span id="cb242-2"><a href="angle-estimation-analysis.html#cb242-2"></a>summary_objectTrial_A &lt;-<span class="st"> </span>subset_RA <span class="op">%&gt;%</span></span>
+<span id="cb242-3"><a href="angle-estimation-analysis.html#cb242-3"></a><span class="st">  </span><span class="kw">group_by</span>(ID, objectTrial, cue) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb242-4"><a href="angle-estimation-analysis.html#cb242-4"></a><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">relativeAng =</span> <span class="kw">mean</span>(relativeAngle), </span>
+<span id="cb242-5"><a href="angle-estimation-analysis.html#cb242-5"></a>            <span class="dt">raSD =</span> <span class="kw">sd</span>(relativeAngle), <span class="dt">.groups=</span><span class="st">&quot;drop&quot;</span>)</span>
+<span id="cb242-6"><a href="angle-estimation-analysis.html#cb242-6"></a></span>
+<span id="cb242-7"><a href="angle-estimation-analysis.html#cb242-7"></a><span class="co">#graph</span></span>
+<span id="cb242-8"><a href="angle-estimation-analysis.html#cb242-8"></a>g_objTrialAng &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">data=</span>summary_objectTrial_A, <span class="kw">aes</span>(objectTrial, relativeAng, <span class="dt">group=</span><span class="kw">interaction</span>(cue, ID), <span class="dt">color=</span>cue)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb242-9"><a href="angle-estimation-analysis.html#cb242-9"></a><span class="st">  </span><span class="kw">theme_cowplot</span>() <span class="op">+</span></span>
+<span id="cb242-10"><a href="angle-estimation-analysis.html#cb242-10"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data=</span> <span class="kw">subset</span>(summary_objectTrial_A, objectTrial <span class="op">&lt;</span><span class="st"> </span><span class="dv">9</span>), <span class="dt">size=</span><span class="fl">0.8</span>, <span class="dt">alpha =</span> <span class="fl">0.3</span>) <span class="op">+</span></span>
+<span id="cb242-11"><a href="angle-estimation-analysis.html#cb242-11"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data=</span> <span class="kw">subset</span>(summary_objectTrial_A, objectTrial <span class="op">&lt;</span><span class="st"> </span><span class="dv">13</span> <span class="op">&amp;</span><span class="st"> </span>objectTrial <span class="op">&gt;</span><span class="st"> </span><span class="dv">8</span>), <span class="dt">size=</span><span class="fl">0.8</span>, <span class="dt">alpha =</span> <span class="fl">0.3</span>) <span class="op">+</span></span>
+<span id="cb242-12"><a href="angle-estimation-analysis.html#cb242-12"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data=</span> <span class="kw">subset</span>(summary_objectTrial_A, objectTrial <span class="op">&gt;</span><span class="st"> </span><span class="dv">12</span>), <span class="dt">size=</span><span class="fl">0.8</span>, <span class="dt">alpha =</span> <span class="fl">0.3</span>) <span class="op">+</span></span>
+<span id="cb242-13"><a href="angle-estimation-analysis.html#cb242-13"></a><span class="st">  </span><span class="kw">scale_color_scico_d</span>(<span class="dt">palette =</span> <span class="st">&#39;tokyo&#39;</span>, <span class="dt">begin=</span><span class="fl">0.2</span>, <span class="dt">end=</span><span class="fl">0.8</span>, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Boundary, Landmark&quot;</span>)) <span class="op">+</span></span>
+<span id="cb242-14"><a href="angle-estimation-analysis.html#cb242-14"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span> <span class="st">&quot;Miniblock&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Relative Influence (0-1)&quot;</span>, <span class="dt">title=</span> <span class="st">&quot;Separately per Block&quot;</span>, <span class="dt">color=</span> <span class="st">&quot;Cue&quot;</span>) <span class="op">+</span></span>
+<span id="cb242-15"><a href="angle-estimation-analysis.html#cb242-15"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">data =</span> <span class="kw">subset</span>(summary_objectTrial_A, objectTrial <span class="op">&lt;</span><span class="st"> </span><span class="dv">9</span>), <span class="dt">fun=</span>mean, <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>, <span class="dt">size =</span> <span class="fl">1.5</span>) <span class="op">+</span></span>
+<span id="cb242-16"><a href="angle-estimation-analysis.html#cb242-16"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">data =</span> <span class="kw">subset</span>(summary_objectTrial_A, objectTrial  <span class="op">&lt;</span><span class="st"> </span><span class="dv">13</span> <span class="op">&amp;</span><span class="st"> </span>objectTrial <span class="op">&gt;</span><span class="st"> </span><span class="dv">8</span>), <span class="dt">fun=</span>mean, <span class="kw">aes</span>(<span class="dt">group=</span>cue), </span>
+<span id="cb242-17"><a href="angle-estimation-analysis.html#cb242-17"></a>               <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>, <span class="dt">size =</span> <span class="fl">1.5</span>) <span class="op">+</span></span>
+<span id="cb242-18"><a href="angle-estimation-analysis.html#cb242-18"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">data =</span> <span class="kw">subset</span>(summary_objectTrial_A, objectTrial <span class="op">&gt;</span><span class="st"> </span><span class="dv">12</span>), <span class="dt">fun=</span>mean, <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>, <span class="dt">size =</span> <span class="fl">1.5</span>) <span class="op">+</span></span>
+<span id="cb242-19"><a href="angle-estimation-analysis.html#cb242-19"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">data=</span> <span class="kw">subset</span>(summary_objectTrial_A, cue<span class="op">==</span><span class="st">&quot;boundary&quot;</span>), <span class="dt">fun.data =</span> mean_se, </span>
+<span id="cb242-20"><a href="angle-estimation-analysis.html#cb242-20"></a>               <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom =</span> <span class="st">&quot;errorbar&quot;</span>, <span class="dt">width=</span><span class="fl">0.1</span>, <span class="dt">position =</span> <span class="kw">position_nudge</span>(<span class="dt">x=</span><span class="op">+</span><span class="fl">0.01</span>)) <span class="op">+</span></span>
+<span id="cb242-21"><a href="angle-estimation-analysis.html#cb242-21"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">data=</span> <span class="kw">subset</span>(summary_objectTrial_A, cue<span class="op">==</span><span class="st">&quot;landmark&quot;</span>), <span class="dt">fun.data =</span> mean_se, </span>
+<span id="cb242-22"><a href="angle-estimation-analysis.html#cb242-22"></a>               <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom =</span> <span class="st">&quot;errorbar&quot;</span>, <span class="dt">width=</span><span class="fl">0.1</span>, <span class="dt">position =</span> <span class="kw">position_nudge</span>(<span class="dt">x=</span><span class="op">-</span><span class="fl">0.01</span>)) <span class="op">+</span></span>
+<span id="cb242-23"><a href="angle-estimation-analysis.html#cb242-23"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">fun=</span>mean, <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom=</span><span class="st">&quot;point&quot;</span>, <span class="dt">size=</span><span class="dv">2</span>) <span class="op">+</span></span>
+<span id="cb242-24"><a href="angle-estimation-analysis.html#cb242-24"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="fl">0.5</span>, <span class="dt">linetype =</span> <span class="dv">2</span>) <span class="op">+</span></span>
+<span id="cb242-25"><a href="angle-estimation-analysis.html#cb242-25"></a><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="fl">8.9</span>, <span class="dt">alpha =</span> <span class="fl">0.7</span>, <span class="dt">linetype=</span><span class="dv">3</span>) <span class="op">+</span></span>
+<span id="cb242-26"><a href="angle-estimation-analysis.html#cb242-26"></a><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="fl">12.9</span>, <span class="dt">alpha =</span> <span class="fl">0.7</span>, <span class="dt">linetype=</span><span class="dv">3</span>) <span class="op">+</span></span>
+<span id="cb242-27"><a href="angle-estimation-analysis.html#cb242-27"></a><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="fl">4.9</span>, <span class="dt">alpha =</span> <span class="fl">0.7</span>, <span class="dt">linetype=</span><span class="dv">3</span>) <span class="op">+</span></span>
+<span id="cb242-28"><a href="angle-estimation-analysis.html#cb242-28"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="dv">1</span>), <span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="op">+</span></span>
+<span id="cb242-29"><a href="angle-estimation-analysis.html#cb242-29"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">10</span>, <span class="dv">11</span>, <span class="dv">12</span>, <span class="dv">13</span>, <span class="dv">14</span>, <span class="dv">15</span>, <span class="dv">16</span>), </span>
+<span id="cb242-30"><a href="angle-estimation-analysis.html#cb242-30"></a>                     <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>, <span class="st">&quot;3&quot;</span>, <span class="st">&quot;4&quot;</span>, <span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>, <span class="st">&quot;3&quot;</span>, <span class="st">&quot;4&quot;</span>, <span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>, <span class="st">&quot;3&quot;</span>, <span class="st">&quot;4&quot;</span>)) <span class="op">+</span></span>
+<span id="cb242-31"><a href="angle-estimation-analysis.html#cb242-31"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dt">label =</span> <span class="st">&quot;Block 2&quot;</span>, <span class="dt">x =</span> <span class="fl">5.6</span>, <span class="dt">y =</span> <span class="dv">1</span>, <span class="dt">size =</span> <span class="dv">3</span>) <span class="op">+</span></span>
+<span id="cb242-32"><a href="angle-estimation-analysis.html#cb242-32"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dt">label =</span> <span class="st">&quot;Block 3&quot;</span>, <span class="dt">x =</span> <span class="fl">9.6</span>, <span class="dt">y =</span> <span class="dv">1</span>, <span class="dt">size =</span> <span class="dv">3</span>) <span class="op">+</span></span>
+<span id="cb242-33"><a href="angle-estimation-analysis.html#cb242-33"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dt">label =</span> <span class="st">&quot;Block 4&quot;</span>, <span class="dt">x =</span> <span class="fl">13.6</span>, <span class="dt">y =</span> <span class="dv">1</span>, <span class="dt">size =</span> <span class="dv">3</span>) <span class="op">+</span></span>
+<span id="cb242-34"><a href="angle-estimation-analysis.html#cb242-34"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb242-35"><a href="angle-estimation-analysis.html#cb242-35"></a></span>
+<span id="cb242-36"><a href="angle-estimation-analysis.html#cb242-36"></a></span>
+<span id="cb242-37"><a href="angle-estimation-analysis.html#cb242-37"></a>g_objTrialAng </span></code></pre></div>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
+<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="angle-estimation-analysis.html#cb243-1"></a>layout &lt;-<span class="st"> &quot;</span></span>
+<span id="cb243-2"><a href="angle-estimation-analysis.html#cb243-2"></a><span class="st">AAAAAA</span></span>
+<span id="cb243-3"><a href="angle-estimation-analysis.html#cb243-3"></a><span class="st">AAAAAA</span></span>
+<span id="cb243-4"><a href="angle-estimation-analysis.html#cb243-4"></a><span class="st">AAAAAA</span></span>
+<span id="cb243-5"><a href="angle-estimation-analysis.html#cb243-5"></a><span class="st">BB####</span></span>
+<span id="cb243-6"><a href="angle-estimation-analysis.html#cb243-6"></a><span class="st">BB#C##</span></span>
+<span id="cb243-7"><a href="angle-estimation-analysis.html#cb243-7"></a><span class="st">BB####</span></span>
+<span id="cb243-8"><a href="angle-estimation-analysis.html#cb243-8"></a><span class="st">&quot;</span></span>
+<span id="cb243-9"><a href="angle-estimation-analysis.html#cb243-9"></a></span>
+<span id="cb243-10"><a href="angle-estimation-analysis.html#cb243-10"></a>g_leg &lt;-<span class="st"> </span><span class="kw">guide_area</span>()</span>
+<span id="cb243-11"><a href="angle-estimation-analysis.html#cb243-11"></a>g_minAng &lt;-<span class="st"> </span>g_objTrialAng <span class="op">+</span><span class="st"> </span>g_miniAng <span class="op">+</span><span class="st"> </span>g_leg <span class="op">+</span></span>
+<span id="cb243-12"><a href="angle-estimation-analysis.html#cb243-12"></a><span class="st">  </span><span class="kw">plot_layout</span>(<span class="dt">design =</span> layout, <span class="dt">guides =</span> <span class="st">&quot;collect&quot;</span>) <span class="op">&amp;</span></span>
+<span id="cb243-13"><a href="angle-estimation-analysis.html#cb243-13"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>), <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>), </span>
+<span id="cb243-14"><a href="angle-estimation-analysis.html#cb243-14"></a>        <span class="dt">legend.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>), <span class="dt">legend.text =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>),</span>
+<span id="cb243-15"><a href="angle-estimation-analysis.html#cb243-15"></a>        <span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">12</span>, <span class="dt">face=</span><span class="st">&quot;italic&quot;</span>),</span>
+<span id="cb243-16"><a href="angle-estimation-analysis.html#cb243-16"></a>        <span class="dt">plot.tag =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">face=</span><span class="st">&quot;bold&quot;</span>)) <span class="op">&amp;</span></span>
+<span id="cb243-17"><a href="angle-estimation-analysis.html#cb243-17"></a><span class="st">  </span><span class="kw">plot_annotation</span>(<span class="dt">title =</span> <span class="st">&#39;Pointing Error&#39;</span>,</span>
+<span id="cb243-18"><a href="angle-estimation-analysis.html#cb243-18"></a>                  <span class="dt">theme =</span> <span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">12</span>, <span class="dt">face=</span><span class="st">&quot;bold&quot;</span>)),</span>
+<span id="cb243-19"><a href="angle-estimation-analysis.html#cb243-19"></a>                  <span class="dt">tag_levels =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&#39;C&#39;</span>, <span class="st">&#39;D&#39;</span>)))</span>
+<span id="cb243-20"><a href="angle-estimation-analysis.html#cb243-20"></a></span>
+<span id="cb243-21"><a href="angle-estimation-analysis.html#cb243-21"></a>g_minAng</span></code></pre></div>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="angle-estimation-analysis.html#cb244-1"></a><span class="kw">ggsave</span>(<span class="st">&quot;relativeAngle_min.pdf&quot;</span>, <span class="dt">plot=</span>g_minAng, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="dv">15</span>, <span class="dt">height =</span> <span class="dv">13</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> cairo_pdf, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span>
+<span id="cb244-2"><a href="angle-estimation-analysis.html#cb244-2"></a><span class="kw">ggsave</span>(<span class="st">&quot;relativeAngle_min.png&quot;</span>, <span class="dt">plot=</span>g_minAng, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="dv">15</span>, <span class="dt">height =</span> <span class="dv">13</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> <span class="st">&quot;png&quot;</span>, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span></code></pre></div>
+<p>AGE</p>
+<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="angle-estimation-analysis.html#cb245-1"></a>Age_c &lt;-<span class="st"> </span>subset_RA <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb245-2"><a href="angle-estimation-analysis.html#cb245-2"></a><span class="st">  </span><span class="kw">group_by</span>(ID) <span class="op">%&gt;%</span></span>
+<span id="cb245-3"><a href="angle-estimation-analysis.html#cb245-3"></a><span class="st">  </span><span class="kw">distinct</span>(age) <span class="op">%&gt;%</span></span>
+<span id="cb245-4"><a href="angle-estimation-analysis.html#cb245-4"></a><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></span>
+<span id="cb245-5"><a href="angle-estimation-analysis.html#cb245-5"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">age_c =</span> <span class="kw">scale</span>(age, <span class="dt">center=</span><span class="ot">TRUE</span>, <span class="dt">scale=</span><span class="ot">FALSE</span>))</span>
+<span id="cb245-6"><a href="angle-estimation-analysis.html#cb245-6"></a></span>
+<span id="cb245-7"><a href="angle-estimation-analysis.html#cb245-7"></a>subset_RA &lt;-<span class="st"> </span><span class="kw">inner_join</span>(subset_RA, Age_c<span class="op">%&gt;%</span><span class="kw">select</span>(ID, age_c), <span class="dt">by=</span><span class="st">&quot;ID&quot;</span>) </span>
+<span id="cb245-8"><a href="angle-estimation-analysis.html#cb245-8"></a>subset_RA &lt;-<span class="st"> </span><span class="kw">rename</span>(subset_RA, <span class="dt">age_c=</span>age_c.x)</span>
+<span id="cb245-9"><a href="angle-estimation-analysis.html#cb245-9"></a></span>
+<span id="cb245-10"><a href="angle-estimation-analysis.html#cb245-10"></a>formulaFinalAngle &lt;-<span class="st"> &quot;relativeAngle ~ age_c*cueMM+(1+cueMM|ID)&quot;</span> </span>
+<span id="cb245-11"><a href="angle-estimation-analysis.html#cb245-11"></a>modelFinalAngle &lt;-<span class="st"> </span>lme4<span class="op">::</span><span class="kw">lmer</span>(<span class="dt">formula =</span> formulaFinalAngle, <span class="dt">data=</span>subset_RA)</span>
+<span id="cb245-12"><a href="angle-estimation-analysis.html#cb245-12"></a><span class="kw">summary</span>(modelFinalAngle)</span></code></pre></div>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: relativeAngle ~ age_c * cueMM + (1 + cueMM | ID)
+##    Data: subset_RA
+## 
+## REML criterion at convergence: 298
+## 
+## Scaled residuals: 
+##      Min       1Q   Median       3Q      Max 
+## -2.32041 -0.76424  0.00073  0.75256  2.72064 
+## 
+## Random effects:
+##  Groups   Name        Variance  Std.Dev. Corr 
+##  ID       (Intercept) 0.0009999 0.03162       
+##           cueMM       0.0028800 0.05367  -0.74
+##  Residual             0.0663887 0.25766       
+## Number of obs: 1709, groups:  ID, 36
+## 
+## Fixed effects:
+##              Estimate Std. Error t value
+## (Intercept) 0.4808813  0.0081688  58.868
+## age_c       0.0004211  0.0035473   0.119
+## cueMM       0.1032919  0.0109096   9.468
+## age_c:cueMM 0.0079208  0.0047331   1.673
+## 
+## Correlation of Fixed Effects:
+##             (Intr) age_c  cueMM 
+## age_c       -0.035              
+## cueMM       -0.392  0.010       
+## age_c:cueMM  0.010 -0.390 -0.032</code></pre>
+<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="angle-estimation-analysis.html#cb247-1"></a>controlFinal &lt;-<span class="st"> &quot;relativeAngle ~ age_c+cueMM+(1+cueMM|ID)&quot;</span></span>
+<span id="cb247-2"><a href="angle-estimation-analysis.html#cb247-2"></a>modelControl &lt;-<span class="st"> </span>lme4<span class="op">::</span><span class="kw">lmer</span>(<span class="dt">formula =</span> controlFinal, <span class="dt">data=</span>subset_RA)</span>
+<span id="cb247-3"><a href="angle-estimation-analysis.html#cb247-3"></a>ratioFinalAngle &lt;-<span class="st"> </span><span class="kw">anova</span>(modelFinalAngle, modelControl)</span></code></pre></div>
+<pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
+<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="angle-estimation-analysis.html#cb249-1"></a>ratioFinalAngle</span></code></pre></div>
+<pre><code>## Data: subset_RA
+## Models:
+## modelControl: relativeAngle ~ age_c + cueMM + (1 + cueMM | ID)
+## modelFinalAngle: relativeAngle ~ age_c * cueMM + (1 + cueMM | ID)
+##                 npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)  
+## modelControl       7 281.12 319.22 -133.56   267.12                       
+## modelFinalAngle    8 280.26 323.81 -132.13   264.26 2.8538  1    0.09116 .
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="angle-estimation-analysis.html#cb251-1"></a>formulaAgeLandmark &lt;-<span class="st"> &quot;relativeAngle ~ age_c + (1|ID)&quot;</span></span>
+<span id="cb251-2"><a href="angle-estimation-analysis.html#cb251-2"></a>modelAgeLandmark &lt;-<span class="st"> </span>lme4<span class="op">::</span><span class="kw">lmer</span>(<span class="dt">formula =</span> formulaAgeLandmark, <span class="dt">data=</span><span class="kw">subset</span>(subset_RA, cue<span class="op">==</span><span class="st">&quot;landmark&quot;</span>))</span>
+<span id="cb251-3"><a href="angle-estimation-analysis.html#cb251-3"></a><span class="kw">summary</span>(modelAgeLandmark)</span></code></pre></div>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: relativeAngle ~ age_c + (1 | ID)
+##    Data: subset(subset_RA, cue == &quot;landmark&quot;)
+## 
+## REML criterion at convergence: 167.9
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -1.7349 -0.8084 -0.1823  0.6595  2.6945 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  ID       (Intercept) 0.006381 0.07988 
+##  Residual             0.066803 0.25846 
+## Number of obs: 855, groups:  ID, 36
+## 
+## Fixed effects:
+##              Estimate Std. Error t value
+## (Intercept)  0.377666   0.015992  23.615
+## age_c       -0.007531   0.006936  -1.086
+## 
+## Correlation of Fixed Effects:
+##       (Intr)
+## age_c -0.031</code></pre>
+<div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="angle-estimation-analysis.html#cb253-1"></a>controlAgeLandmark &lt;-<span class="st"> &quot;relativeAngle ~ 1 + (1 |ID)&quot;</span></span>
+<span id="cb253-2"><a href="angle-estimation-analysis.html#cb253-2"></a>modelControlAgeLandmark &lt;-<span class="st"> </span>lme4<span class="op">::</span><span class="kw">lmer</span>(<span class="dt">formula =</span> controlAgeLandmark, <span class="dt">data=</span><span class="kw">subset</span>(subset_RA, cue<span class="op">==</span><span class="st">&quot;landmark&quot;</span>))</span>
+<span id="cb253-3"><a href="angle-estimation-analysis.html#cb253-3"></a>ratioAgeLandmark &lt;-<span class="st"> </span><span class="kw">anova</span>(modelAgeLandmark, modelControlAgeLandmark)</span></code></pre></div>
+<pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
+<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="angle-estimation-analysis.html#cb255-1"></a>ratioAgeLandmark</span></code></pre></div>
+<pre><code>## Data: subset(subset_RA, cue == &quot;landmark&quot;)
+## Models:
+## modelControlAgeLandmark: relativeAngle ~ 1 + (1 | ID)
+## modelAgeLandmark: relativeAngle ~ age_c + (1 | ID)
+##                         npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)
+## modelControlAgeLandmark    3 160.53 174.79 -77.266   154.53                     
+## modelAgeLandmark           4 161.31 180.31 -76.653   153.31 1.2255  1     0.2683</code></pre>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="angle-estimation-analysis.html#cb257-1"></a>formulaAgeBoundary &lt;-<span class="st"> &quot;relativeAngle ~ age_c +(1|ID)&quot;</span></span>
+<span id="cb257-2"><a href="angle-estimation-analysis.html#cb257-2"></a>modelAgeBoundary &lt;-<span class="st"> </span>lme4<span class="op">::</span><span class="kw">lmer</span>(<span class="dt">formula =</span> formulaAgeBoundary, <span class="dt">data=</span><span class="kw">subset</span>(subset_RA, cue<span class="op">==</span><span class="st">&quot;boundary&quot;</span>))</span>
+<span id="cb257-3"><a href="angle-estimation-analysis.html#cb257-3"></a><span class="kw">summary</span>(modelAgeBoundary)</span></code></pre></div>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: relativeAngle ~ age_c + (1 | ID)
+##    Data: subset(subset_RA, cue == &quot;boundary&quot;)
+## 
+## REML criterion at convergence: 130.6
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -2.3196 -0.6919  0.1403  0.7831  1.7043 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  ID       (Intercept) 0.001391 0.03729 
+##  Residual             0.065968 0.25684 
+## Number of obs: 854, groups:  ID, 36
+## 
+## Fixed effects:
+##             Estimate Std. Error t value
+## (Intercept) 0.584309   0.010775  54.230
+## age_c       0.008243   0.004682   1.761
+## 
+## Correlation of Fixed Effects:
+##       (Intr)
+## age_c -0.037</code></pre>
+<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="angle-estimation-analysis.html#cb259-1"></a>controlAgeBoundary &lt;-<span class="st"> &quot;relativeAngle ~ 1 + (1 |ID)&quot;</span></span>
+<span id="cb259-2"><a href="angle-estimation-analysis.html#cb259-2"></a>modelControlAgeBoundary &lt;-<span class="st"> </span>lme4<span class="op">::</span><span class="kw">lmer</span>(<span class="dt">formula =</span> controlAgeBoundary, <span class="dt">data=</span><span class="kw">subset</span>(subset_RA, cue<span class="op">==</span><span class="st">&quot;boundary&quot;</span>))</span>
+<span id="cb259-3"><a href="angle-estimation-analysis.html#cb259-3"></a>ratioAgeBoundary &lt;-<span class="st"> </span><span class="kw">anova</span>(modelAgeBoundary, modelControlAgeBoundary)</span></code></pre></div>
+<pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="angle-estimation-analysis.html#cb261-1"></a>ratioAgeBoundary</span></code></pre></div>
+<pre><code>## Data: subset(subset_RA, cue == &quot;boundary&quot;)
+## Models:
+## modelControlAgeBoundary: relativeAngle ~ 1 + (1 | ID)
+## modelAgeBoundary: relativeAngle ~ age_c + (1 | ID)
+##                         npar    AIC    BIC  logLik deviance  Chisq Df Pr(&gt;Chisq)  
+## modelControlAgeBoundary    3 123.55 137.80 -58.774   117.55                       
+## modelAgeBoundary           4 122.41 141.41 -57.206   114.41 3.1367  1    0.07655 .
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="angle-estimation-analysis.html#cb263-1"></a>RA_final &lt;-<span class="st"> </span><span class="kw">ggplot</span>(relativeAngleBlocks, <span class="kw">aes</span>(age, relativeAng, <span class="dt">color=</span>cue)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb263-2"><a href="angle-estimation-analysis.html#cb263-2"></a><span class="st">  </span><span class="kw">theme_cowplot</span>() <span class="op">+</span></span>
+<span id="cb263-3"><a href="angle-estimation-analysis.html#cb263-3"></a><span class="st">  </span><span class="kw">scale_color_scico_d</span>(<span class="dt">palette =</span> <span class="st">&#39;tokyo&#39;</span>, <span class="dt">begin=</span><span class="fl">0.2</span>, <span class="dt">end=</span><span class="fl">0.8</span>, <span class="dt">guide =</span> <span class="st">&quot;none&quot;</span>) <span class="op">+</span></span>
+<span id="cb263-4"><a href="angle-estimation-analysis.html#cb263-4"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">fun.data =</span> mean_se,<span class="dt">geom=</span><span class="st">&quot;errorbar&quot;</span>, <span class="dt">size=</span><span class="fl">0.8</span>, <span class="dt">width=</span><span class="fl">0.1</span>, <span class="dt">alpha=</span><span class="fl">0.95</span>) <span class="op">+</span></span>
+<span id="cb263-5"><a href="angle-estimation-analysis.html#cb263-5"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">fun=</span>mean, <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>, <span class="dt">size =</span> <span class="fl">1.5</span>) <span class="op">+</span></span>
+<span id="cb263-6"><a href="angle-estimation-analysis.html#cb263-6"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">fun=</span>mean, <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom=</span><span class="st">&quot;point&quot;</span>, <span class="dt">size =</span> <span class="dv">2</span>) <span class="op">+</span></span>
+<span id="cb263-7"><a href="angle-estimation-analysis.html#cb263-7"></a><span class="st">  </span><span class="kw">new_scale_color</span>() <span class="op">+</span><span class="st"> </span></span>
+<span id="cb263-8"><a href="angle-estimation-analysis.html#cb263-8"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> relativeAngleBlocks, <span class="kw">aes</span>(<span class="dt">color=</span>cue)) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb263-9"><a href="angle-estimation-analysis.html#cb263-9"></a><span class="st">  </span><span class="kw">scale_color_scico_d</span>(<span class="dt">palette =</span> <span class="st">&#39;tokyo&#39;</span>, <span class="dt">begin=</span><span class="fl">0.3</span>, <span class="dt">end=</span><span class="fl">0.7</span>, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Boundary&quot;</span>, <span class="st">&quot;Landmark&quot;</span>)) <span class="op">+</span></span>
+<span id="cb263-10"><a href="angle-estimation-analysis.html#cb263-10"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">13</span>,<span class="dv">14</span>,<span class="dv">15</span>)) <span class="op">+</span></span>
+<span id="cb263-11"><a href="angle-estimation-analysis.html#cb263-11"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits =</span> <span class="kw">c</span>(<span class="fl">0.2</span>, <span class="fl">0.8</span>), <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span>, <span class="fl">0.5</span>, <span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.8</span>, <span class="fl">0.9</span>)) <span class="op">+</span></span>
+<span id="cb263-12"><a href="angle-estimation-analysis.html#cb263-12"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span> <span class="st">&quot;Age&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Relative Influence (0-1)&quot;</span>, </span>
+<span id="cb263-13"><a href="angle-estimation-analysis.html#cb263-13"></a>       <span class="dt">title =</span> <span class="st">&quot;Data&quot;</span>, <span class="dt">color=</span><span class="st">&quot;Cue&quot;</span>) <span class="op">+</span></span>
+<span id="cb263-14"><a href="angle-estimation-analysis.html#cb263-14"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="fl">0.5</span>, <span class="dt">linetype=</span><span class="dv">2</span>, <span class="dt">alpha=</span><span class="fl">0.6</span>)</span>
+<span id="cb263-15"><a href="angle-estimation-analysis.html#cb263-15"></a>  </span>
+<span id="cb263-16"><a href="angle-estimation-analysis.html#cb263-16"></a>  </span>
+<span id="cb263-17"><a href="angle-estimation-analysis.html#cb263-17"></a>RA_final</span></code></pre></div>
+<p><img src="Test-book_files/figure-html/RA_final%20graph-1.png" width="672" /></p>
+<div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb264-1"><a href="angle-estimation-analysis.html#cb264-1"></a>RA_predict &lt;-<span class="st"> </span>ggeffects<span class="op">::</span><span class="kw">ggpredict</span>(modelFinalAngle, <span class="dt">terms =</span> <span class="kw">c</span>(<span class="st">&quot;age_c&quot;</span>, <span class="st">&quot;cueMM&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb264-2"><a href="angle-estimation-analysis.html#cb264-2"></a><span class="st">  </span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span></span>
+<span id="cb264-3"><a href="angle-estimation-analysis.html#cb264-3"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cuePredict =</span> <span class="kw">factor</span>(<span class="kw">if_else</span>(group <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">true =</span> <span class="st">&quot;boundary&quot;</span>, <span class="dt">false =</span> <span class="st">&quot;landmark&quot;</span>),</span>
+<span id="cb264-4"><a href="angle-estimation-analysis.html#cb264-4"></a>                      <span class="dt">levels =</span> <span class="kw">c</span>(<span class="st">&quot;boundary&quot;</span>, <span class="st">&quot;landmark&quot;</span>)))</span>
+<span id="cb264-5"><a href="angle-estimation-analysis.html#cb264-5"></a>  </span>
+<span id="cb264-6"><a href="angle-estimation-analysis.html#cb264-6"></a>RA_model &lt;-<span class="st"> </span><span class="kw">ggplot</span>(RA_predict, <span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> predicted, <span class="dt">colour =</span> cuePredict, <span class="dt">fill =</span> cuePredict)) <span class="op">+</span></span>
+<span id="cb264-7"><a href="angle-estimation-analysis.html#cb264-7"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin =</span> conf.low, <span class="dt">ymax =</span> conf.high), <span class="dt">alpha =</span> <span class="fl">.2</span>, <span class="dt">linetype=</span><span class="dv">0</span>) <span class="op">+</span></span>
+<span id="cb264-8"><a href="angle-estimation-analysis.html#cb264-8"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">size =</span> <span class="fl">0.5</span>) <span class="op">+</span></span>
+<span id="cb264-9"><a href="angle-estimation-analysis.html#cb264-9"></a><span class="st">  </span><span class="kw">scale_color_scico_d</span>(<span class="dt">palette =</span> <span class="st">&#39;tokyo&#39;</span>, <span class="dt">begin=</span><span class="fl">0.2</span>, <span class="dt">end=</span><span class="fl">0.8</span>, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Boundary&quot;</span>, <span class="st">&quot;Landmark&quot;</span>)) <span class="op">+</span></span>
+<span id="cb264-10"><a href="angle-estimation-analysis.html#cb264-10"></a><span class="st">  </span><span class="kw">scale_fill_scico_d</span>(<span class="dt">palette =</span> <span class="st">&#39;tokyo&#39;</span>, <span class="dt">begin=</span><span class="fl">0.2</span>, <span class="dt">end=</span><span class="fl">0.8</span>, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Boundary&quot;</span>, <span class="st">&quot;Landmark&quot;</span>)) <span class="op">+</span></span>
+<span id="cb264-11"><a href="angle-estimation-analysis.html#cb264-11"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">sort</span>(<span class="kw">unique</span>(Age_c<span class="op">$</span>age_c)), <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;8&quot;</span>, <span class="st">&quot;9&quot;</span>, <span class="st">&quot;10&quot;</span>, <span class="st">&quot;11&quot;</span>, <span class="st">&quot;12&quot;</span>, <span class="st">&quot;13&quot;</span>, <span class="st">&quot;14&quot;</span>, <span class="st">&quot;15&quot;</span>)) <span class="op">+</span></span>
+<span id="cb264-12"><a href="angle-estimation-analysis.html#cb264-12"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>(<span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span>, <span class="fl">0.5</span>, <span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.8</span>), <span class="dt">limits =</span> <span class="kw">c</span>(<span class="fl">0.2</span>, <span class="fl">0.8</span>)) <span class="op">+</span></span>
+<span id="cb264-13"><a href="angle-estimation-analysis.html#cb264-13"></a><span class="st">  </span><span class="kw">theme_cowplot</span>() <span class="op">+</span></span>
+<span id="cb264-14"><a href="angle-estimation-analysis.html#cb264-14"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&quot;Age&quot;</span>, <span class="dt">y=</span><span class="st">&quot; &quot;</span>, <span class="dt">color=</span><span class="st">&quot;Cue&quot;</span>, <span class="dt">fill=</span><span class="st">&quot;Cue&quot;</span>, </span>
+<span id="cb264-15"><a href="angle-estimation-analysis.html#cb264-15"></a>       <span class="dt">title =</span> <span class="st">&quot;Mixed Model&quot;</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb264-16"><a href="angle-estimation-analysis.html#cb264-16"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="op">+</span></span>
+<span id="cb264-17"><a href="angle-estimation-analysis.html#cb264-17"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="fl">0.5</span>, <span class="dt">linetype=</span><span class="dv">2</span>, <span class="dt">alpha=</span><span class="fl">0.6</span>)</span>
+<span id="cb264-18"><a href="angle-estimation-analysis.html#cb264-18"></a></span>
+<span id="cb264-19"><a href="angle-estimation-analysis.html#cb264-19"></a>RA_model</span></code></pre></div>
+<p><img src="Test-book_files/figure-html/RA_model%20graph-1.png" width="672" /></p>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="angle-estimation-analysis.html#cb265-1"></a>layout &lt;-<span class="st"> &quot;</span></span>
+<span id="cb265-2"><a href="angle-estimation-analysis.html#cb265-2"></a><span class="st">AAAAA#BBBBBB</span></span>
+<span id="cb265-3"><a href="angle-estimation-analysis.html#cb265-3"></a><span class="st">AAAAA#BBBBBB</span></span>
+<span id="cb265-4"><a href="angle-estimation-analysis.html#cb265-4"></a><span class="st">AAAAA#BBBBBB</span></span>
+<span id="cb265-5"><a href="angle-estimation-analysis.html#cb265-5"></a><span class="st">&quot;</span></span>
+<span id="cb265-6"><a href="angle-estimation-analysis.html#cb265-6"></a></span>
+<span id="cb265-7"><a href="angle-estimation-analysis.html#cb265-7"></a>g_finalAng &lt;-<span class="st"> </span>RA_final <span class="op">+</span><span class="st"> </span>RA_model <span class="op">&amp;</span></span>
+<span id="cb265-8"><a href="angle-estimation-analysis.html#cb265-8"></a><span class="st">  </span><span class="kw">plot_layout</span>(<span class="dt">design=</span>layout) <span class="op">&amp;</span></span>
+<span id="cb265-9"><a href="angle-estimation-analysis.html#cb265-9"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>), <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>), </span>
+<span id="cb265-10"><a href="angle-estimation-analysis.html#cb265-10"></a>        <span class="dt">legend.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>), <span class="dt">legend.text =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>),</span>
+<span id="cb265-11"><a href="angle-estimation-analysis.html#cb265-11"></a>        <span class="dt">legend.position =</span> <span class="st">&quot;bottom&quot;</span>,</span>
+<span id="cb265-12"><a href="angle-estimation-analysis.html#cb265-12"></a>        <span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">12</span>, <span class="dt">face=</span><span class="st">&quot;italic&quot;</span>),</span>
+<span id="cb265-13"><a href="angle-estimation-analysis.html#cb265-13"></a>        <span class="dt">plot.tag =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">face=</span><span class="st">&quot;bold&quot;</span>)) <span class="op">&amp;</span></span>
+<span id="cb265-14"><a href="angle-estimation-analysis.html#cb265-14"></a><span class="st">  </span><span class="kw">plot_annotation</span>(<span class="dt">title =</span> <span class="st">&#39;Pointing &#39;</span>,</span>
+<span id="cb265-15"><a href="angle-estimation-analysis.html#cb265-15"></a>                  <span class="dt">theme =</span> <span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">12</span>, <span class="dt">face=</span><span class="st">&quot;bold&quot;</span>)),</span>
+<span id="cb265-16"><a href="angle-estimation-analysis.html#cb265-16"></a>                  <span class="dt">tag_levels =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&#39;C&#39;</span>, <span class="st">&#39;D&#39;</span>)))</span>
+<span id="cb265-17"><a href="angle-estimation-analysis.html#cb265-17"></a></span>
+<span id="cb265-18"><a href="angle-estimation-analysis.html#cb265-18"></a>g_finalAng</span></code></pre></div>
+<p><img src="Test-book_files/figure-html/RA%20final%20graphs%20together-1.png" width="672" /></p>
+<div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb266-1"><a href="angle-estimation-analysis.html#cb266-1"></a><span class="kw">ggsave</span>(<span class="st">&quot;relativeInfluence_finalAng.pdf&quot;</span>, <span class="dt">plot=</span>g_finalAng, </span>
+<span id="cb266-2"><a href="angle-estimation-analysis.html#cb266-2"></a>       <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="dv">15</span>, <span class="dt">height =</span> <span class="dv">9</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> cairo_pdf, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span>
+<span id="cb266-3"><a href="angle-estimation-analysis.html#cb266-3"></a><span class="kw">ggsave</span>(<span class="st">&quot;relativeInfluence_finalAng.png&quot;</span>, <span class="dt">plot=</span>g_finalAng, </span>
+<span id="cb266-4"><a href="angle-estimation-analysis.html#cb266-4"></a>       <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="dv">15</span>, <span class="dt">height =</span> <span class="dv">9</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> <span class="st">&quot;png&quot;</span>, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span></code></pre></div>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="analysis.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

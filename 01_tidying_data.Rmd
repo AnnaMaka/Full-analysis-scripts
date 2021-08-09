@@ -546,7 +546,7 @@ Sum_angle will contain only columns related to angle estimation task.
 
 ```{r}
 Sum_angle <- Sum_all %>% 
-  select(ID, age, age_c, block, miniblock, mini, objectTrial, trial, cue, object, sec2Beg, sec2Est, sec2End, secTrialEst, trialLen, 
+  select(ID, age, age_c, block, miniblock, mini, objectTrial, trial, cue, cueMM, object, sec2Beg, sec2Est, sec2End, secTrialEst, trialLen, 
          landmarkX, landmarkY, landmarkZ, objX, objY, objZ, charX, charY, charZ, trueAngle, estAngle, angleError, 
          landmarkAngle, boundaryAngle, relativeAngle, correct_RA)
 ```
