@@ -136,7 +136,7 @@ g_anglB1 <- ggplot(Sum_angle %>% filter(block == 1), aes(x = angleError)) +
 g_anglB1
 ```
 
-```{r}
+```{r, eval=FALSE}
 angleEst_B1 <- g_errB1 + g_anglB1 &
   theme(axis.title = element_text(size=12), plot.title = element_text(face="italic", size=12)) &
   plot_annotation(title = 'Pointing Errors', 
@@ -149,7 +149,7 @@ ggsave(file="AngleErrors_B1.png", plot=angleEst_B1, units = "cm", width = 15.9, 
 angleEst_B1
 ```
 
-```{r all grahs for block 1}
+```{r all grahs for block 1, eval=FALSE}
 block1_graphs <- memory_B1 / angleEst_B1 &
   theme(axis.title = element_text(size=10), axis.text = element_text(size=10), 
         plot.title = element_text(face="italic", size=12),
@@ -233,7 +233,7 @@ ggsave("relativeInfluenceAng.png", plot=rel_InfAng, units = "cm", width = 15, he
 rel_InfAng
 ```
 
-```{r}
+```{r, eval=FALSE}
 relative_infl <- rel_Inf / rel_InfAng &
   theme(axis.title = element_text(size=10), axis.text = element_text(size=10), 
         plot.title = element_text(face="italic", size=12),
@@ -283,7 +283,7 @@ ggsave("angleError.png", plot=cue_Ang, units = "cm", width = 15.9, height = 12, 
 cue_Ang
 ```
 
-```{r}
+```{r, eval=FALSE}
 cue_Diff <- g_cue / cue_Ang &
   theme(axis.title = element_text(size=10), axis.text = element_text(size=10), 
         plot.title = element_text(face="italic", size=12),
@@ -505,7 +505,7 @@ ratioAgeBoundary
 ```
 
 
-```{r RA_final graph}
+```{r}
 RA_final <- ggplot(relativeAngleBlocks, aes(age, relativeAng, color=cue)) + 
   theme_cowplot() +
   scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, guide = "none") +
@@ -525,7 +525,7 @@ RA_final <- ggplot(relativeAngleBlocks, aes(age, relativeAng, color=cue)) +
 RA_final
 ```
 
-```{r RA_model graph}
+```{r }
 RA_predict <- ggeffects::ggpredict(modelFinalAngle, terms = c("age_c", "cueMM")) %>% 
   as_tibble() %>%
   mutate(cuePredict = factor(if_else(group == 1, true = "boundary", false = "landmark"),
@@ -547,7 +547,7 @@ RA_model <- ggplot(RA_predict, aes(x = x, y = predicted, colour = cuePredict, fi
 RA_model
 ```
 
-```{r RA final graphs together}
+```{r RA final graphs together, eval=FALSE}
 layout <- "
 AAAAA#BBBBBB
 AAAAA#BBBBBB
@@ -587,7 +587,7 @@ ratioFullModelNext <- anova(modelFullNext, modelControlNext)
 ratioFullModelNext
 ```
 
-```{r RI_final graph next}
+```{r}
 RA_final <- ggplot(relativeAngleBlocks, aes(age, corCueRA, color=cue)) + 
   theme_cowplot() +
   scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, guide = FALSE) +
@@ -609,7 +609,7 @@ RA_final
 ```
 
 
-```{r RI_model graph next}
+```{r }
 RA_predict <- ggeffects::ggpredict(modelFullNext, terms = c("age_c", "cueMM")) %>%
   as_tibble() %>%
   mutate(cuePredict = factor(if_else(group == 1, true = "boundary", false = "landmark"),

@@ -144,8 +144,34 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="2.5" data-path="data-preparation.html"><a href="data-preparation.html#saving-the-compiled-dataset"><i class="fa fa-check"></i><b>2.5</b> Saving the compiled dataset</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="analysis.html"><a href="analysis.html"><i class="fa fa-check"></i><b>3</b> Analysis</a></li>
-<li class="chapter" data-level="4" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html"><i class="fa fa-check"></i><b>4</b> Angle estimation analysis</a></li>
+<li class="chapter" data-level="3" data-path="analysis.html"><a href="analysis.html"><i class="fa fa-check"></i><b>3</b> Analysis</a><ul>
+<li class="chapter" data-level="3.1" data-path="analysis.html"><a href="analysis.html#hypothesis"><i class="fa fa-check"></i><b>3.1</b> Hypothesis</a></li>
+<li class="chapter" data-level="3.2" data-path="analysis.html"><a href="analysis.html#set-up"><i class="fa fa-check"></i><b>3.2</b> Set up</a></li>
+<li class="chapter" data-level="3.3" data-path="analysis.html"><a href="analysis.html#timeout-sessions"><i class="fa fa-check"></i><b>3.3</b> Timeout sessions</a></li>
+<li class="chapter" data-level="3.4" data-path="analysis.html"><a href="analysis.html#exclusion-criteria"><i class="fa fa-check"></i><b>3.4</b> Exclusion criteria</a></li>
+<li class="chapter" data-level="3.5" data-path="analysis.html"><a href="analysis.html#descriptives"><i class="fa fa-check"></i><b>3.5</b> Descriptives</a></li>
+<li class="chapter" data-level="3.6" data-path="analysis.html"><a href="analysis.html#block-1-performance"><i class="fa fa-check"></i><b>3.6</b> Block 1 Performance</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="analysis.html"><a href="analysis.html#recalled-locations"><i class="fa fa-check"></i><b>3.6.1</b> Recalled locations</a></li>
+<li class="chapter" data-level="3.6.2" data-path="analysis.html"><a href="analysis.html#distance-from-remembered-locations-to-other-locations"><i class="fa fa-check"></i><b>3.6.2</b> Distance from remembered locations to other locations</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="analysis.html"><a href="analysis.html#cues-differences"><i class="fa fa-check"></i><b>3.7</b> Cues Differences</a><ul>
+<li class="chapter" data-level="3.7.1" data-path="analysis.html"><a href="analysis.html#relative-influence"><i class="fa fa-check"></i><b>3.7.1</b> Relative Influence</a></li>
+<li class="chapter" data-level="3.7.2" data-path="analysis.html"><a href="analysis.html#distance-error-differences"><i class="fa fa-check"></i><b>3.7.2</b> Distance Error Differences</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="analysis.html"><a href="analysis.html#miniblocks-learning"><i class="fa fa-check"></i><b>3.8</b> Miniblocks Learning</a><ul>
+<li class="chapter" data-level="3.8.1" data-path="analysis.html"><a href="analysis.html#graphs"><i class="fa fa-check"></i><b>3.8.1</b> Graphs</a></li>
+<li class="chapter" data-level="3.8.2" data-path="analysis.html"><a href="analysis.html#miniblock-1"><i class="fa fa-check"></i><b>3.8.2</b> Miniblock 1</a></li>
+<li class="chapter" data-level="3.8.3" data-path="analysis.html"><a href="analysis.html#mixed-models"><i class="fa fa-check"></i><b>3.8.3</b> Mixed Models</a></li>
+</ul></li>
+<li class="chapter" data-level="3.9" data-path="analysis.html"><a href="analysis.html#age"><i class="fa fa-check"></i><b>3.9</b> Age</a><ul>
+<li class="chapter" data-level="3.9.1" data-path="analysis.html"><a href="analysis.html#relative-influence-1"><i class="fa fa-check"></i><b>3.9.1</b> Relative Influence</a></li>
+<li class="chapter" data-level="3.9.2" data-path="analysis.html"><a href="analysis.html#recoded-dependent-variable"><i class="fa fa-check"></i><b>3.9.2</b> Recoded dependent variable</a></li>
+<li class="chapter" data-level="3.9.3" data-path="analysis.html"><a href="analysis.html#distance-error"><i class="fa fa-check"></i><b>3.9.3</b> Distance error</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html"><i class="fa fa-check"></i><b>4</b> Angle estimation analysis</a><ul>
+<li class="chapter" data-level="4.1" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#recoded-version-analysis"><i class="fa fa-check"></i><b>4.1</b> recoded version analysis</a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -167,10 +193,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">2</span> Data Preparation</h1>
 <div id="setup" class="section level2">
 <h2><span class="header-section-number">2.1</span> Setup</h2>
-<p>Libraries used for data preparation</p>
+<p>Packages used for data preparation</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="data-preparation.html#cb1-1"></a><span class="kw">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="data-preparation.html#cb1-2"></a><span class="kw">library</span>(here)</span></code></pre></div>
-<p>Functions created for this analysis</p>
+<p>Functions writted for this analysis</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="data-preparation.html#cb2-1"></a><span class="co">#function angleDiff() takes in 2 angles in degrees and gives out the difference between them (0-180) with the proper direction </span></span>
 <span id="cb2-2"><a href="data-preparation.html#cb2-2"></a><span class="co">#(i.e. positive = clockwise, negative = counterclockwise; angle1 being theoretical 0/trueAngle)</span></span>
 <span id="cb2-3"><a href="data-preparation.html#cb2-3"></a>angleDiff &lt;-<span class="st"> </span><span class="cf">function</span>(angle1, angle2){</span>
@@ -188,19 +214,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-15"><a href="data-preparation.html#cb2-15"></a><span class="co">#function angle() takes in 2 locations (a, b) and calculates angle between A-B and A-C (created inside the function)</span></span>
 <span id="cb2-16"><a href="data-preparation.html#cb2-16"></a><span class="co">#a(X, Y) = character position, b(X, Y) = imaginary object position</span></span>
 <span id="cb2-17"><a href="data-preparation.html#cb2-17"></a><span class="co">#necessary for relative influence calculation</span></span>
-<span id="cb2-18"><a href="data-preparation.html#cb2-18"></a></span>
-<span id="cb2-19"><a href="data-preparation.html#cb2-19"></a>angle &lt;-<span class="st"> </span><span class="cf">function</span>(a_X, a_Y, b_X, b_Y) { </span>
-<span id="cb2-20"><a href="data-preparation.html#cb2-20"></a>  c_X =<span class="st"> </span>a_X</span>
-<span id="cb2-21"><a href="data-preparation.html#cb2-21"></a>  c_Y =<span class="st"> </span>a_Y <span class="op">+</span><span class="st"> </span><span class="dv">10</span></span>
-<span id="cb2-22"><a href="data-preparation.html#cb2-22"></a>  c =<span class="st"> </span><span class="kw">dist</span>(a_X, a_Y, b_X, b_Y)</span>
-<span id="cb2-23"><a href="data-preparation.html#cb2-23"></a>  b =<span class="st"> </span><span class="kw">dist</span>(a_X, a_Y, c_X, c_Y)</span>
-<span id="cb2-24"><a href="data-preparation.html#cb2-24"></a>  a =<span class="st"> </span><span class="kw">dist</span>(b_X, b_Y, c_X, c_Y)</span>
-<span id="cb2-25"><a href="data-preparation.html#cb2-25"></a>  cos_A =<span class="st"> </span>(b<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>c<span class="op">^</span><span class="dv">2</span> <span class="op">-</span><span class="st"> </span>a<span class="op">^</span><span class="dv">2</span>) <span class="op">/</span><span class="st"> </span>(<span class="dv">2</span><span class="op">*</span>b<span class="op">*</span>c)</span>
-<span id="cb2-26"><a href="data-preparation.html#cb2-26"></a>  angleRad =<span class="st"> </span><span class="kw">acos</span>(cos_A)</span>
-<span id="cb2-27"><a href="data-preparation.html#cb2-27"></a>  angle =<span class="st"> </span>(<span class="dv">180</span> <span class="op">*</span><span class="st"> </span>angleRad) <span class="op">/</span><span class="st"> </span>pi </span>
-<span id="cb2-28"><a href="data-preparation.html#cb2-28"></a>  <span class="cf">if</span> (a_X <span class="op">&gt;</span><span class="st"> </span>b_X) {angle =<span class="st"> </span><span class="dv">360</span> <span class="op">-</span><span class="st"> </span>angle}</span>
-<span id="cb2-29"><a href="data-preparation.html#cb2-29"></a>  <span class="kw">return</span>(angle)</span>
-<span id="cb2-30"><a href="data-preparation.html#cb2-30"></a>}</span></code></pre></div>
+<span id="cb2-18"><a href="data-preparation.html#cb2-18"></a>angle &lt;-<span class="st"> </span><span class="cf">function</span>(a_X, a_Y, b_X, b_Y) { </span>
+<span id="cb2-19"><a href="data-preparation.html#cb2-19"></a>  c_X =<span class="st"> </span>a_X</span>
+<span id="cb2-20"><a href="data-preparation.html#cb2-20"></a>  c_Y =<span class="st"> </span>a_Y <span class="op">+</span><span class="st"> </span><span class="dv">10</span></span>
+<span id="cb2-21"><a href="data-preparation.html#cb2-21"></a>  c =<span class="st"> </span><span class="kw">dist</span>(a_X, a_Y, b_X, b_Y)</span>
+<span id="cb2-22"><a href="data-preparation.html#cb2-22"></a>  b =<span class="st"> </span><span class="kw">dist</span>(a_X, a_Y, c_X, c_Y)</span>
+<span id="cb2-23"><a href="data-preparation.html#cb2-23"></a>  a =<span class="st"> </span><span class="kw">dist</span>(b_X, b_Y, c_X, c_Y)</span>
+<span id="cb2-24"><a href="data-preparation.html#cb2-24"></a>  cos_A =<span class="st"> </span>(b<span class="op">^</span><span class="dv">2</span> <span class="op">+</span><span class="st"> </span>c<span class="op">^</span><span class="dv">2</span> <span class="op">-</span><span class="st"> </span>a<span class="op">^</span><span class="dv">2</span>) <span class="op">/</span><span class="st"> </span>(<span class="dv">2</span><span class="op">*</span>b<span class="op">*</span>c)</span>
+<span id="cb2-25"><a href="data-preparation.html#cb2-25"></a>  angleRad =<span class="st"> </span><span class="kw">acos</span>(cos_A)</span>
+<span id="cb2-26"><a href="data-preparation.html#cb2-26"></a>  angle =<span class="st"> </span>(<span class="dv">180</span> <span class="op">*</span><span class="st"> </span>angleRad) <span class="op">/</span><span class="st"> </span>pi </span>
+<span id="cb2-27"><a href="data-preparation.html#cb2-27"></a>  <span class="cf">if</span> (a_X <span class="op">&gt;</span><span class="st"> </span>b_X) {angle =<span class="st"> </span><span class="dv">360</span> <span class="op">-</span><span class="st"> </span>angle}</span>
+<span id="cb2-28"><a href="data-preparation.html#cb2-28"></a>  <span class="kw">return</span>(angle)</span>
+<span id="cb2-29"><a href="data-preparation.html#cb2-29"></a>}</span></code></pre></div>
 <p>Creating a list of subject IDs based on presence of summary files for Block 4
 Subsequently, creating list of new random IDs which were used during a transfer of data between computers</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="data-preparation.html#cb3-1"></a>fn &lt;-<span class="st"> </span><span class="kw">list.files</span>(<span class="dt">path =</span>  <span class="kw">here</span>(<span class="st">&quot;data&quot;</span>), <span class="dt">pattern=</span><span class="st">&quot;*_feedbackPhase_block4_Sum&quot;</span>) </span>
@@ -476,185 +501,184 @@ Subsequently, creating list of new random IDs which were used during a transfer 
 <span id="cb5-252"><a href="data-preparation.html#cb5-252"></a>  Sum_all &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(Sum_all, Sum) <span class="co">#join the new participant data to the existing overall data frame</span></span>
 <span id="cb5-253"><a href="data-preparation.html#cb5-253"></a>}</span></code></pre></div>
 <p>Last changes to the summary dataframe</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="data-preparation.html#cb6-1"></a><span class="co">#assigning the correct format to values in columns used for analysis</span></span>
-<span id="cb6-2"><a href="data-preparation.html#cb6-2"></a>Sum_all &lt;-<span class="st"> </span>Sum_all <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb6-3"><a href="data-preparation.html#cb6-3"></a><span class="st">  </span><span class="kw">arrange</span>(ID, objectTrial) <span class="op">%&gt;%</span><span class="st"> </span><span class="co">#ordering the dataframe according to ID and the experiment sequence</span></span>
-<span id="cb6-4"><a href="data-preparation.html#cb6-4"></a><span class="st">  </span><span class="kw">mutate</span>( </span>
-<span id="cb6-5"><a href="data-preparation.html#cb6-5"></a>         <span class="dt">cueMM =</span> <span class="kw">recode</span>(cue, <span class="st">&quot;boundary&quot;</span> =<span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;landmark&quot;</span> =<span class="st"> </span><span class="dv">-1</span>), <span class="co">#recoding cues to 1 and -1, used for mixed model analysis</span></span>
-<span id="cb6-6"><a href="data-preparation.html#cb6-6"></a>         <span class="dt">newID =</span> <span class="kw">as.factor</span>(newID), </span>
-<span id="cb6-7"><a href="data-preparation.html#cb6-7"></a>         <span class="dt">cue =</span> <span class="kw">as.factor</span>(cue), </span>
-<span id="cb6-8"><a href="data-preparation.html#cb6-8"></a>         <span class="dt">age =</span> <span class="kw">as.numeric</span>(age)</span>
-<span id="cb6-9"><a href="data-preparation.html#cb6-9"></a>         ) </span>
-<span id="cb6-10"><a href="data-preparation.html#cb6-10"></a></span>
-<span id="cb6-11"><a href="data-preparation.html#cb6-11"></a><span class="co"># calculating centered age and miniblock (using this more complicated way as opposed to directly do scale() because different subjects can have a different number of rows in the Sum_all tibble)</span></span>
-<span id="cb6-12"><a href="data-preparation.html#cb6-12"></a>Age_c &lt;-<span class="st"> </span>Sum_all <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb6-13"><a href="data-preparation.html#cb6-13"></a><span class="st">  </span><span class="kw">group_by</span>(ID) <span class="op">%&gt;%</span></span>
-<span id="cb6-14"><a href="data-preparation.html#cb6-14"></a><span class="st">  </span><span class="kw">distinct</span>(age) <span class="op">%&gt;%</span></span>
-<span id="cb6-15"><a href="data-preparation.html#cb6-15"></a><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></span>
-<span id="cb6-16"><a href="data-preparation.html#cb6-16"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">age_c =</span> <span class="kw">scale</span>(age, <span class="dt">center=</span><span class="ot">TRUE</span>, <span class="dt">scale=</span><span class="ot">FALSE</span>)) </span>
-<span id="cb6-17"><a href="data-preparation.html#cb6-17"></a></span>
-<span id="cb6-18"><a href="data-preparation.html#cb6-18"></a>Sum_all &lt;-<span class="st"> </span><span class="kw">inner_join</span>(Sum_all, Age_c<span class="op">%&gt;%</span><span class="kw">select</span>(ID, age_c), <span class="dt">by=</span><span class="st">&quot;ID&quot;</span>)</span>
-<span id="cb6-19"><a href="data-preparation.html#cb6-19"></a></span>
-<span id="cb6-20"><a href="data-preparation.html#cb6-20"></a>Mini_c &lt;-<span class="st"> </span>Sum_all <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb6-21"><a href="data-preparation.html#cb6-21"></a><span class="st">  </span><span class="kw">group_by</span>(ID) <span class="op">%&gt;%</span></span>
-<span id="cb6-22"><a href="data-preparation.html#cb6-22"></a><span class="st">  </span><span class="kw">distinct</span>(miniblock) <span class="op">%&gt;%</span></span>
-<span id="cb6-23"><a href="data-preparation.html#cb6-23"></a><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></span>
-<span id="cb6-24"><a href="data-preparation.html#cb6-24"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">mini =</span> <span class="kw">scale</span>(miniblock, <span class="dt">center=</span><span class="ot">TRUE</span>, <span class="dt">scale=</span><span class="ot">FALSE</span>))</span>
-<span id="cb6-25"><a href="data-preparation.html#cb6-25"></a></span>
-<span id="cb6-26"><a href="data-preparation.html#cb6-26"></a>Sum_all &lt;-<span class="st"> </span><span class="kw">inner_join</span>(Sum_all, Mini_c, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;ID&quot;</span>, <span class="st">&quot;miniblock&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="data-preparation.html#cb6-1"></a><span class="co">#Contemporary chunck for having Age_c datafram loaded in for later graphing</span></span>
+<span id="cb6-2"><a href="data-preparation.html#cb6-2"></a><span class="co">#data loading in wll be removed and the chunck will be joined with the following chunck</span></span>
+<span id="cb6-3"><a href="data-preparation.html#cb6-3"></a>Sum_all &lt;-<span class="st"> </span><span class="kw">read_delim</span>(<span class="kw">here</span>(<span class="st">&quot;data&quot;</span> ,<span class="st">&quot;Sum.txt&quot;</span>), <span class="dt">delim =</span> <span class="st">&quot; &quot;</span>, </span>
+<span id="cb6-4"><a href="data-preparation.html#cb6-4"></a>                      <span class="dt">col_names =</span> <span class="ot">TRUE</span>, <span class="dt">col_types =</span> <span class="st">&quot;fdddddddfcdddddddddddddddddddddddddddddddddddddddd&quot;</span>) </span>
+<span id="cb6-5"><a href="data-preparation.html#cb6-5"></a></span>
+<span id="cb6-6"><a href="data-preparation.html#cb6-6"></a><span class="co"># calculating centered age and miniblock (using this more complicated way as opposed to directly do scale() because different subjects can have a different number of rows in the Sum_all tibble)</span></span>
+<span id="cb6-7"><a href="data-preparation.html#cb6-7"></a>Age_c &lt;-<span class="st"> </span>Sum_all <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb6-8"><a href="data-preparation.html#cb6-8"></a><span class="st">  </span><span class="kw">group_by</span>(ID) <span class="op">%&gt;%</span></span>
+<span id="cb6-9"><a href="data-preparation.html#cb6-9"></a><span class="st">  </span><span class="kw">distinct</span>(age) <span class="op">%&gt;%</span></span>
+<span id="cb6-10"><a href="data-preparation.html#cb6-10"></a><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></span>
+<span id="cb6-11"><a href="data-preparation.html#cb6-11"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">age_c =</span> <span class="kw">scale</span>(age, <span class="dt">center=</span><span class="ot">TRUE</span>, <span class="dt">scale=</span><span class="ot">FALSE</span>)) </span>
+<span id="cb6-12"><a href="data-preparation.html#cb6-12"></a></span>
+<span id="cb6-13"><a href="data-preparation.html#cb6-13"></a></span>
+<span id="cb6-14"><a href="data-preparation.html#cb6-14"></a>Mini_c &lt;-<span class="st"> </span>Sum_all <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb6-15"><a href="data-preparation.html#cb6-15"></a><span class="st">  </span><span class="kw">group_by</span>(ID) <span class="op">%&gt;%</span></span>
+<span id="cb6-16"><a href="data-preparation.html#cb6-16"></a><span class="st">  </span><span class="kw">distinct</span>(miniblock) <span class="op">%&gt;%</span></span>
+<span id="cb6-17"><a href="data-preparation.html#cb6-17"></a><span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span></span>
+<span id="cb6-18"><a href="data-preparation.html#cb6-18"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">mini =</span> <span class="kw">scale</span>(miniblock, <span class="dt">center=</span><span class="ot">TRUE</span>, <span class="dt">scale=</span><span class="ot">FALSE</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="data-preparation.html#cb7-1"></a><span class="co">#assigning the correct format to values in columns used for analysis</span></span>
+<span id="cb7-2"><a href="data-preparation.html#cb7-2"></a>Sum_all &lt;-<span class="st"> </span>Sum_all <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-3"><a href="data-preparation.html#cb7-3"></a><span class="st">  </span><span class="kw">arrange</span>(ID, objectTrial) <span class="op">%&gt;%</span><span class="st"> </span><span class="co">#ordering the dataframe according to ID and the experiment sequence</span></span>
+<span id="cb7-4"><a href="data-preparation.html#cb7-4"></a><span class="st">  </span><span class="kw">mutate</span>( </span>
+<span id="cb7-5"><a href="data-preparation.html#cb7-5"></a>         <span class="dt">cueMM =</span> <span class="kw">recode</span>(cue, <span class="st">&quot;boundary&quot;</span> =<span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;landmark&quot;</span> =<span class="st"> </span><span class="dv">-1</span>), <span class="co">#recoding cues to 1 and -1, used for mixed model analysis</span></span>
+<span id="cb7-6"><a href="data-preparation.html#cb7-6"></a>         <span class="dt">newID =</span> <span class="kw">as.factor</span>(newID), </span>
+<span id="cb7-7"><a href="data-preparation.html#cb7-7"></a>         <span class="dt">cue =</span> <span class="kw">as.factor</span>(cue), </span>
+<span id="cb7-8"><a href="data-preparation.html#cb7-8"></a>         <span class="dt">age =</span> <span class="kw">as.numeric</span>(age)</span>
+<span id="cb7-9"><a href="data-preparation.html#cb7-9"></a>         ) </span>
+<span id="cb7-10"><a href="data-preparation.html#cb7-10"></a></span>
+<span id="cb7-11"><a href="data-preparation.html#cb7-11"></a>Sum_all &lt;-<span class="st"> </span><span class="kw">inner_join</span>(Sum_all, Age_c<span class="op">%&gt;%</span><span class="kw">select</span>(ID, age_c), <span class="dt">by=</span><span class="st">&quot;ID&quot;</span>)</span>
+<span id="cb7-12"><a href="data-preparation.html#cb7-12"></a>Sum_all &lt;-<span class="st"> </span><span class="kw">inner_join</span>(Sum_all, Mini_c, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;ID&quot;</span>, <span class="st">&quot;miniblock&quot;</span>))</span></code></pre></div>
 <p>Assigning landmark-dependent/boundary-dependent object 1-2
 (currently not used any further)</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="data-preparation.html#cb7-1"></a>Sum_all &lt;-<span class="st"> </span><span class="kw">mutate</span>(Sum_all, <span class="dt">cue1=</span><span class="ot">NA</span>) <span class="co">#creating new column </span></span>
-<span id="cb7-2"><a href="data-preparation.html#cb7-2"></a></span>
-<span id="cb7-3"><a href="data-preparation.html#cb7-3"></a><span class="cf">for</span> (i_trial <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(Sum_all)) { </span>
-<span id="cb7-4"><a href="data-preparation.html#cb7-4"></a>  <span class="co">#if this is the first time participant sees the object</span></span>
-<span id="cb7-5"><a href="data-preparation.html#cb7-5"></a>  <span class="cf">if</span> (Sum_all<span class="op">$</span>objectTrial[i_trial]<span class="op">==</span><span class="dv">1</span>) {</span>
-<span id="cb7-6"><a href="data-preparation.html#cb7-6"></a>    <span class="co">#creates a dataframe &quot;this&quot; that has 2 lines (1 line = current object/trial + 1 line = other landmark-/boundary-dependent object)</span></span>
-<span id="cb7-7"><a href="data-preparation.html#cb7-7"></a>    this &lt;-<span class="st"> </span><span class="kw">filter</span>(Sum_all, ID <span class="op">==</span><span class="st"> </span>Sum_all<span class="op">$</span>ID[i_trial] <span class="op">&amp;</span><span class="st"> </span>cue <span class="op">==</span><span class="st"> </span>Sum_all<span class="op">$</span>cue[i_trial] <span class="op">&amp;</span><span class="st"> </span>objectTrial <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb7-8"><a href="data-preparation.html#cb7-8"></a><span class="st">      </span><span class="kw">select</span>(ID, objectTrial, cue, cue1)</span>
-<span id="cb7-9"><a href="data-preparation.html#cb7-9"></a>    </span>
-<span id="cb7-10"><a href="data-preparation.html#cb7-10"></a>    <span class="co">#if the first object has not been assigned number yet, then this object/trial is assigned 1, otherwise 2</span></span>
-<span id="cb7-11"><a href="data-preparation.html#cb7-11"></a>    <span class="cf">if</span> (<span class="kw">is.na</span>(this<span class="op">$</span>cue1[<span class="dv">1</span>])) {Sum_all<span class="op">$</span>cue1[i_trial] &lt;-<span class="st"> </span><span class="dv">1</span>} <span class="cf">else</span> {Sum_all<span class="op">$</span>cue1[i_trial] &lt;-<span class="st"> </span><span class="dv">2</span>} </span>
-<span id="cb7-12"><a href="data-preparation.html#cb7-12"></a>    </span>
-<span id="cb7-13"><a href="data-preparation.html#cb7-13"></a>  <span class="co">#retrieves and assigns information about object number from objectTrial 1</span></span>
-<span id="cb7-14"><a href="data-preparation.html#cb7-14"></a>  } <span class="cf">else</span> {</span>
-<span id="cb7-15"><a href="data-preparation.html#cb7-15"></a>    Sum_all<span class="op">$</span>cue1[i_trial] &lt;-<span class="st"> </span>Sum_all<span class="op">$</span>cue1[<span class="kw">which</span>(Sum_all<span class="op">$</span>ID <span class="op">==</span><span class="st"> </span>Sum_all<span class="op">$</span>ID[i_trial] <span class="op">&amp;</span><span class="st"> </span>Sum_all<span class="op">$</span>object <span class="op">==</span><span class="st"> </span>Sum_all<span class="op">$</span>object[i_trial] <span class="op">&amp;</span><span class="st"> </span>Sum_all<span class="op">$</span>objectTrial <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)]</span>
-<span id="cb7-16"><a href="data-preparation.html#cb7-16"></a>  }</span>
-<span id="cb7-17"><a href="data-preparation.html#cb7-17"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="data-preparation.html#cb8-1"></a>Sum_all &lt;-<span class="st"> </span><span class="kw">mutate</span>(Sum_all, <span class="dt">cue1=</span><span class="ot">NA</span>) <span class="co">#creating new column </span></span>
+<span id="cb8-2"><a href="data-preparation.html#cb8-2"></a></span>
+<span id="cb8-3"><a href="data-preparation.html#cb8-3"></a><span class="cf">for</span> (i_trial <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(Sum_all)) { </span>
+<span id="cb8-4"><a href="data-preparation.html#cb8-4"></a>  <span class="co">#if this is the first time participant sees the object</span></span>
+<span id="cb8-5"><a href="data-preparation.html#cb8-5"></a>  <span class="cf">if</span> (Sum_all<span class="op">$</span>objectTrial[i_trial]<span class="op">==</span><span class="dv">1</span>) {</span>
+<span id="cb8-6"><a href="data-preparation.html#cb8-6"></a>    <span class="co">#creates a dataframe &quot;this&quot; that has 2 lines (1 line = current object/trial + 1 line = other landmark-/boundary-dependent object)</span></span>
+<span id="cb8-7"><a href="data-preparation.html#cb8-7"></a>    this &lt;-<span class="st"> </span><span class="kw">filter</span>(Sum_all, ID <span class="op">==</span><span class="st"> </span>Sum_all<span class="op">$</span>ID[i_trial] <span class="op">&amp;</span><span class="st"> </span>cue <span class="op">==</span><span class="st"> </span>Sum_all<span class="op">$</span>cue[i_trial] <span class="op">&amp;</span><span class="st"> </span>objectTrial <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb8-8"><a href="data-preparation.html#cb8-8"></a><span class="st">      </span><span class="kw">select</span>(ID, objectTrial, cue, cue1)</span>
+<span id="cb8-9"><a href="data-preparation.html#cb8-9"></a>    </span>
+<span id="cb8-10"><a href="data-preparation.html#cb8-10"></a>    <span class="co">#if the first object has not been assigned number yet, then this object/trial is assigned 1, otherwise 2</span></span>
+<span id="cb8-11"><a href="data-preparation.html#cb8-11"></a>    <span class="cf">if</span> (<span class="kw">is.na</span>(this<span class="op">$</span>cue1[<span class="dv">1</span>])) {Sum_all<span class="op">$</span>cue1[i_trial] &lt;-<span class="st"> </span><span class="dv">1</span>} <span class="cf">else</span> {Sum_all<span class="op">$</span>cue1[i_trial] &lt;-<span class="st"> </span><span class="dv">2</span>} </span>
+<span id="cb8-12"><a href="data-preparation.html#cb8-12"></a>    </span>
+<span id="cb8-13"><a href="data-preparation.html#cb8-13"></a>  <span class="co">#retrieves and assigns information about object number from objectTrial 1</span></span>
+<span id="cb8-14"><a href="data-preparation.html#cb8-14"></a>  } <span class="cf">else</span> {</span>
+<span id="cb8-15"><a href="data-preparation.html#cb8-15"></a>    Sum_all<span class="op">$</span>cue1[i_trial] &lt;-<span class="st"> </span>Sum_all<span class="op">$</span>cue1[<span class="kw">which</span>(Sum_all<span class="op">$</span>ID <span class="op">==</span><span class="st"> </span>Sum_all<span class="op">$</span>ID[i_trial] <span class="op">&amp;</span><span class="st"> </span>Sum_all<span class="op">$</span>object <span class="op">==</span><span class="st"> </span>Sum_all<span class="op">$</span>object[i_trial] <span class="op">&amp;</span><span class="st"> </span>Sum_all<span class="op">$</span>objectTrial <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)]</span>
+<span id="cb8-16"><a href="data-preparation.html#cb8-16"></a>  }</span>
+<span id="cb8-17"><a href="data-preparation.html#cb8-17"></a>}</span></code></pre></div>
 </div>
 <div id="trajectory-files" class="section level2">
 <h2><span class="header-section-number">2.3</span> Trajectory files</h2>
 <p>Loading in Trajectory files and creating one huge data frame (~30,000 lines per participant)</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="data-preparation.html#cb8-1"></a>Traj =<span class="st"> </span><span class="kw">tibble</span>() <span class="co">#creating an empty where eventually the full dataframe will be stored (&gt;2M lines)</span></span>
-<span id="cb8-2"><a href="data-preparation.html#cb8-2"></a></span>
-<span id="cb8-3"><a href="data-preparation.html#cb8-3"></a><span class="cf">for</span>(i_sub <span class="cf">in</span> subjects){</span>
-<span id="cb8-4"><a href="data-preparation.html#cb8-4"></a>  <span class="cf">for</span> (i_block <span class="cf">in</span> blocks){</span>
-<span id="cb8-5"><a href="data-preparation.html#cb8-5"></a>    <span class="co">#loading in a single trajectory file </span></span>
-<span id="cb8-6"><a href="data-preparation.html#cb8-6"></a>    fn &lt;-<span class="st"> </span><span class="kw">dir</span>(<span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;data&quot;</span>), <span class="dt">pattern =</span> <span class="kw">sprintf</span>(<span class="st">&quot;%s_feedbackPhase_block%s_Traj&quot;</span>, i_sub, i_block),<span class="dt">full.names=</span><span class="ot">TRUE</span>) </span>
-<span id="cb8-7"><a href="data-preparation.html#cb8-7"></a>    sub_dat &lt;-<span class="st"> </span><span class="kw">as_tibble</span>(<span class="kw">read_delim</span>(fn, <span class="dt">delim =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>, <span class="dt">col_names =</span> <span class="ot">FALSE</span>, <span class="dt">col_types =</span> <span class="st">&quot;ddddddddddd&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb8-8"><a href="data-preparation.html#cb8-8"></a><span class="st">      </span><span class="kw">mutate</span>(<span class="dt">ID=</span>i_sub, <span class="dt">newID =</span> <span class="ot">NA</span>, <span class="dt">block=</span>i_block, <span class="dt">miniblock =</span> <span class="ot">NA</span>, <span class="dt">object =</span> <span class="ot">NA</span>, <span class="dt">cue=</span><span class="ot">NA</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb8-9"><a href="data-preparation.html#cb8-9"></a><span class="st">      </span><span class="kw">rename</span>(<span class="dt">trial=</span>X1, <span class="dt">sec2Frame=</span>X2, <span class="dt">charX=</span>X3, <span class="dt">charZ=</span>X4, <span class="dt">charY=</span>X5, <span class="dt">rotQua1=</span>X6, <span class="dt">rotQua2=</span>X7, <span class="dt">rotQua3=</span>X8, <span class="dt">rotQua4=</span>X9, <span class="dt">rotAngle=</span>X10) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb8-10"><a href="data-preparation.html#cb8-10"></a><span class="st">      </span><span class="kw">relocate</span>(ID, newID, block)</span>
-<span id="cb8-11"><a href="data-preparation.html#cb8-11"></a>    </span>
-<span id="cb8-12"><a href="data-preparation.html#cb8-12"></a>    <span class="co">#assigning miniblock</span></span>
-<span id="cb8-13"><a href="data-preparation.html#cb8-13"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(sub_dat)){</span>
-<span id="cb8-14"><a href="data-preparation.html#cb8-14"></a>      <span class="cf">if</span> (sub_dat<span class="op">$</span>trial[i] <span class="op">&lt;</span><span class="st"> </span><span class="dv">5</span>) {</span>
-<span id="cb8-15"><a href="data-preparation.html#cb8-15"></a>        sub_dat<span class="op">$</span>miniblock[i] &lt;-<span class="st"> </span><span class="dv">1</span></span>
-<span id="cb8-16"><a href="data-preparation.html#cb8-16"></a>      } <span class="cf">else</span> <span class="cf">if</span> (sub_dat<span class="op">$</span>trial[i] <span class="op">&lt;</span><span class="st"> </span><span class="dv">9</span>) {</span>
-<span id="cb8-17"><a href="data-preparation.html#cb8-17"></a>        sub_dat<span class="op">$</span>miniblock[i] &lt;-<span class="st"> </span><span class="dv">2</span></span>
-<span id="cb8-18"><a href="data-preparation.html#cb8-18"></a>      } <span class="cf">else</span> <span class="cf">if</span> (sub_dat<span class="op">$</span>trial[i] <span class="op">&lt;</span><span class="st"> </span><span class="dv">13</span>) {</span>
-<span id="cb8-19"><a href="data-preparation.html#cb8-19"></a>        sub_dat<span class="op">$</span>miniblock[i] &lt;-<span class="st"> </span><span class="dv">3</span> </span>
-<span id="cb8-20"><a href="data-preparation.html#cb8-20"></a>      } <span class="cf">else</span> {</span>
-<span id="cb8-21"><a href="data-preparation.html#cb8-21"></a>        sub_dat<span class="op">$</span>miniblock[i] &lt;-<span class="st"> </span><span class="dv">4</span></span>
-<span id="cb8-22"><a href="data-preparation.html#cb8-22"></a>      }</span>
-<span id="cb8-23"><a href="data-preparation.html#cb8-23"></a>    </span>
-<span id="cb8-24"><a href="data-preparation.html#cb8-24"></a>      <span class="co">#sub_dat$objectTrial[i] &lt;- (sub_dat$miniblock[i]+((sub_dat$block[i]-1)*4)) Currently not used so taken out for speed</span></span>
-<span id="cb8-25"><a href="data-preparation.html#cb8-25"></a>      </span>
-<span id="cb8-26"><a href="data-preparation.html#cb8-26"></a>      <span class="co">#retrieving information about object and cue from summary file</span></span>
-<span id="cb8-27"><a href="data-preparation.html#cb8-27"></a>      obj &lt;-<span class="st"> </span><span class="kw">which</span>(Sum_all<span class="op">$</span>ID <span class="op">==</span><span class="st"> </span>sub_dat<span class="op">$</span>ID[i] <span class="op">&amp;</span><span class="st"> </span>Sum_all<span class="op">$</span>block <span class="op">==</span><span class="st"> </span>sub_dat<span class="op">$</span>block[i] <span class="op">&amp;</span><span class="st"> </span>Sum_all<span class="op">$</span>trial <span class="op">==</span><span class="st"> </span>sub_dat<span class="op">$</span>trial[i])</span>
-<span id="cb8-28"><a href="data-preparation.html#cb8-28"></a>      </span>
-<span id="cb8-29"><a href="data-preparation.html#cb8-29"></a>      <span class="co">#some trials in summary files missing therefore it leave the columns as NA is it cannot find the above index</span></span>
-<span id="cb8-30"><a href="data-preparation.html#cb8-30"></a>      <span class="cf">if</span> (<span class="kw">length</span>(obj) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) {</span>
-<span id="cb8-31"><a href="data-preparation.html#cb8-31"></a>        sub_dat<span class="op">$</span>object[i] &lt;-<span class="st"> </span>Sum_all<span class="op">$</span>object[obj]</span>
-<span id="cb8-32"><a href="data-preparation.html#cb8-32"></a>        sub_dat<span class="op">$</span>cue[i] &lt;-<span class="st"> </span>Sum_all<span class="op">$</span>cue[obj]</span>
-<span id="cb8-33"><a href="data-preparation.html#cb8-33"></a>        <span class="co">#sub_dat$cue1[i] &lt;- Sum_all$cue1[obj] currently not used</span></span>
-<span id="cb8-34"><a href="data-preparation.html#cb8-34"></a>      } </span>
-<span id="cb8-35"><a href="data-preparation.html#cb8-35"></a>    }</span>
-<span id="cb8-36"><a href="data-preparation.html#cb8-36"></a>    <span class="co">#assigning newID</span></span>
-<span id="cb8-37"><a href="data-preparation.html#cb8-37"></a>    sub_dat<span class="op">$</span>newID &lt;-<span class="st"> </span>newID[<span class="kw">which</span>(subjects <span class="op">==</span><span class="st"> </span>i_sub)]</span>
-<span id="cb8-38"><a href="data-preparation.html#cb8-38"></a>   </span>
-<span id="cb8-39"><a href="data-preparation.html#cb8-39"></a>    <span class="co"># append to table with data from all subjects</span></span>
-<span id="cb8-40"><a href="data-preparation.html#cb8-40"></a>    Traj &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(sub_dat, Traj)</span>
-<span id="cb8-41"><a href="data-preparation.html#cb8-41"></a>  }</span>
-<span id="cb8-42"><a href="data-preparation.html#cb8-42"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="data-preparation.html#cb9-1"></a>Traj =<span class="st"> </span><span class="kw">tibble</span>() <span class="co">#creating an empty where eventually the full dataframe will be stored (&gt;2M lines)</span></span>
+<span id="cb9-2"><a href="data-preparation.html#cb9-2"></a></span>
+<span id="cb9-3"><a href="data-preparation.html#cb9-3"></a><span class="cf">for</span>(i_sub <span class="cf">in</span> subjects){</span>
+<span id="cb9-4"><a href="data-preparation.html#cb9-4"></a>  <span class="cf">for</span> (i_block <span class="cf">in</span> blocks){</span>
+<span id="cb9-5"><a href="data-preparation.html#cb9-5"></a>    <span class="co">#loading in a single trajectory file </span></span>
+<span id="cb9-6"><a href="data-preparation.html#cb9-6"></a>    fn &lt;-<span class="st"> </span><span class="kw">dir</span>(<span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;data&quot;</span>), <span class="dt">pattern =</span> <span class="kw">sprintf</span>(<span class="st">&quot;%s_feedbackPhase_block%s_Traj&quot;</span>, i_sub, i_block),<span class="dt">full.names=</span><span class="ot">TRUE</span>) </span>
+<span id="cb9-7"><a href="data-preparation.html#cb9-7"></a>    sub_dat &lt;-<span class="st"> </span><span class="kw">as_tibble</span>(<span class="kw">read_delim</span>(fn, <span class="dt">delim =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>, <span class="dt">col_names =</span> <span class="ot">FALSE</span>, <span class="dt">col_types =</span> <span class="st">&quot;ddddddddddd&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb9-8"><a href="data-preparation.html#cb9-8"></a><span class="st">      </span><span class="kw">mutate</span>(<span class="dt">ID=</span>i_sub, <span class="dt">newID =</span> <span class="ot">NA</span>, <span class="dt">block=</span>i_block, <span class="dt">miniblock =</span> <span class="ot">NA</span>, <span class="dt">object =</span> <span class="ot">NA</span>, <span class="dt">cue=</span><span class="ot">NA</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb9-9"><a href="data-preparation.html#cb9-9"></a><span class="st">      </span><span class="kw">rename</span>(<span class="dt">trial=</span>X1, <span class="dt">sec2Frame=</span>X2, <span class="dt">charX=</span>X3, <span class="dt">charZ=</span>X4, <span class="dt">charY=</span>X5, <span class="dt">rotQua1=</span>X6, <span class="dt">rotQua2=</span>X7, <span class="dt">rotQua3=</span>X8, <span class="dt">rotQua4=</span>X9, <span class="dt">rotAngle=</span>X10) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb9-10"><a href="data-preparation.html#cb9-10"></a><span class="st">      </span><span class="kw">relocate</span>(ID, newID, block)</span>
+<span id="cb9-11"><a href="data-preparation.html#cb9-11"></a>    </span>
+<span id="cb9-12"><a href="data-preparation.html#cb9-12"></a>    <span class="co">#assigning miniblock</span></span>
+<span id="cb9-13"><a href="data-preparation.html#cb9-13"></a>    <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(sub_dat)){</span>
+<span id="cb9-14"><a href="data-preparation.html#cb9-14"></a>      <span class="cf">if</span> (sub_dat<span class="op">$</span>trial[i] <span class="op">&lt;</span><span class="st"> </span><span class="dv">5</span>) {</span>
+<span id="cb9-15"><a href="data-preparation.html#cb9-15"></a>        sub_dat<span class="op">$</span>miniblock[i] &lt;-<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb9-16"><a href="data-preparation.html#cb9-16"></a>      } <span class="cf">else</span> <span class="cf">if</span> (sub_dat<span class="op">$</span>trial[i] <span class="op">&lt;</span><span class="st"> </span><span class="dv">9</span>) {</span>
+<span id="cb9-17"><a href="data-preparation.html#cb9-17"></a>        sub_dat<span class="op">$</span>miniblock[i] &lt;-<span class="st"> </span><span class="dv">2</span></span>
+<span id="cb9-18"><a href="data-preparation.html#cb9-18"></a>      } <span class="cf">else</span> <span class="cf">if</span> (sub_dat<span class="op">$</span>trial[i] <span class="op">&lt;</span><span class="st"> </span><span class="dv">13</span>) {</span>
+<span id="cb9-19"><a href="data-preparation.html#cb9-19"></a>        sub_dat<span class="op">$</span>miniblock[i] &lt;-<span class="st"> </span><span class="dv">3</span> </span>
+<span id="cb9-20"><a href="data-preparation.html#cb9-20"></a>      } <span class="cf">else</span> {</span>
+<span id="cb9-21"><a href="data-preparation.html#cb9-21"></a>        sub_dat<span class="op">$</span>miniblock[i] &lt;-<span class="st"> </span><span class="dv">4</span></span>
+<span id="cb9-22"><a href="data-preparation.html#cb9-22"></a>      }</span>
+<span id="cb9-23"><a href="data-preparation.html#cb9-23"></a>    </span>
+<span id="cb9-24"><a href="data-preparation.html#cb9-24"></a>      <span class="co">#sub_dat$objectTrial[i] &lt;- (sub_dat$miniblock[i]+((sub_dat$block[i]-1)*4)) Currently not used so taken out for speed</span></span>
+<span id="cb9-25"><a href="data-preparation.html#cb9-25"></a>      </span>
+<span id="cb9-26"><a href="data-preparation.html#cb9-26"></a>      <span class="co">#retrieving information about object and cue from summary file</span></span>
+<span id="cb9-27"><a href="data-preparation.html#cb9-27"></a>      obj &lt;-<span class="st"> </span><span class="kw">which</span>(Sum_all<span class="op">$</span>ID <span class="op">==</span><span class="st"> </span>sub_dat<span class="op">$</span>ID[i] <span class="op">&amp;</span><span class="st"> </span>Sum_all<span class="op">$</span>block <span class="op">==</span><span class="st"> </span>sub_dat<span class="op">$</span>block[i] <span class="op">&amp;</span><span class="st"> </span>Sum_all<span class="op">$</span>trial <span class="op">==</span><span class="st"> </span>sub_dat<span class="op">$</span>trial[i])</span>
+<span id="cb9-28"><a href="data-preparation.html#cb9-28"></a>      </span>
+<span id="cb9-29"><a href="data-preparation.html#cb9-29"></a>      <span class="co">#some trials in summary files missing therefore it leave the columns as NA is it cannot find the above index</span></span>
+<span id="cb9-30"><a href="data-preparation.html#cb9-30"></a>      <span class="cf">if</span> (<span class="kw">length</span>(obj) <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) {</span>
+<span id="cb9-31"><a href="data-preparation.html#cb9-31"></a>        sub_dat<span class="op">$</span>object[i] &lt;-<span class="st"> </span>Sum_all<span class="op">$</span>object[obj]</span>
+<span id="cb9-32"><a href="data-preparation.html#cb9-32"></a>        sub_dat<span class="op">$</span>cue[i] &lt;-<span class="st"> </span>Sum_all<span class="op">$</span>cue[obj]</span>
+<span id="cb9-33"><a href="data-preparation.html#cb9-33"></a>        <span class="co">#sub_dat$cue1[i] &lt;- Sum_all$cue1[obj] currently not used</span></span>
+<span id="cb9-34"><a href="data-preparation.html#cb9-34"></a>      } </span>
+<span id="cb9-35"><a href="data-preparation.html#cb9-35"></a>    }</span>
+<span id="cb9-36"><a href="data-preparation.html#cb9-36"></a>    <span class="co">#assigning newID</span></span>
+<span id="cb9-37"><a href="data-preparation.html#cb9-37"></a>    sub_dat<span class="op">$</span>newID &lt;-<span class="st"> </span>newID[<span class="kw">which</span>(subjects <span class="op">==</span><span class="st"> </span>i_sub)]</span>
+<span id="cb9-38"><a href="data-preparation.html#cb9-38"></a>   </span>
+<span id="cb9-39"><a href="data-preparation.html#cb9-39"></a>    <span class="co"># append to table with data from all subjects</span></span>
+<span id="cb9-40"><a href="data-preparation.html#cb9-40"></a>    Traj &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(sub_dat, Traj)</span>
+<span id="cb9-41"><a href="data-preparation.html#cb9-41"></a>  }</span>
+<span id="cb9-42"><a href="data-preparation.html#cb9-42"></a>}</span></code></pre></div>
 <p>Getting rid of trajectory locations outside of the arena which have been probably caused by an internet glitch</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="data-preparation.html#cb9-1"></a><span class="co">#removing locations outside of the arena (possibly internet glitch)</span></span>
-<span id="cb9-2"><a href="data-preparation.html#cb9-2"></a>Traj &lt;-<span class="st"> </span><span class="kw">filter</span>(Traj, charX <span class="op">&gt;</span><span class="st"> </span><span class="fl">-27.5</span> <span class="op">&amp;</span><span class="st"> </span>charX <span class="op">&lt;</span><span class="st"> </span><span class="fl">27.5</span> <span class="op">&amp;</span><span class="st"> </span>charY <span class="op">&gt;</span><span class="st"> </span><span class="fl">-27.5</span> <span class="op">&amp;</span><span class="st"> </span>charY <span class="op">&lt;</span><span class="st"> </span><span class="fl">27.5</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="data-preparation.html#cb10-1"></a><span class="co">#removing locations outside of the arena (possibly internet glitch)</span></span>
+<span id="cb10-2"><a href="data-preparation.html#cb10-2"></a>Traj &lt;-<span class="st"> </span><span class="kw">filter</span>(Traj, charX <span class="op">&gt;</span><span class="st"> </span><span class="fl">-27.5</span> <span class="op">&amp;</span><span class="st"> </span>charX <span class="op">&lt;</span><span class="st"> </span><span class="fl">27.5</span> <span class="op">&amp;</span><span class="st"> </span>charY <span class="op">&gt;</span><span class="st"> </span><span class="fl">-27.5</span> <span class="op">&amp;</span><span class="st"> </span>charY <span class="op">&lt;</span><span class="st"> </span><span class="fl">27.5</span>) </span></code></pre></div>
 </div>
 <div id="memory-scores" class="section level2">
 <h2><span class="header-section-number">2.4</span> Memory scores</h2>
 <div id="based-on-randomly-distributed-1000-locations-within-the-arena" class="section level3">
 <h3><span class="header-section-number">2.4.1</span> Based on randomly distributed 1000 locations within the arena</h3>
 <p>Generating 1000 randomly distributed locations within the arena</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="data-preparation.html#cb10-1"></a>thousand_x &lt;-<span class="st"> </span><span class="kw">c</span>()</span>
-<span id="cb10-2"><a href="data-preparation.html#cb10-2"></a>thousand_y &lt;-<span class="st"> </span><span class="kw">c</span>()</span>
-<span id="cb10-3"><a href="data-preparation.html#cb10-3"></a>points &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">1000</span>)</span>
-<span id="cb10-4"><a href="data-preparation.html#cb10-4"></a>circle_r &lt;-<span class="st"> </span><span class="fl">22.5</span> </span>
-<span id="cb10-5"><a href="data-preparation.html#cb10-5"></a><span class="cf">for</span> (i <span class="cf">in</span> points){</span>
-<span id="cb10-6"><a href="data-preparation.html#cb10-6"></a>  </span>
-<span id="cb10-7"><a href="data-preparation.html#cb10-7"></a>  <span class="co"># random angle</span></span>
-<span id="cb10-8"><a href="data-preparation.html#cb10-8"></a>  alpha &lt;-<span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>pi <span class="op">*</span><span class="st"> </span><span class="kw">runif</span>(<span class="dv">1</span>)</span>
-<span id="cb10-9"><a href="data-preparation.html#cb10-9"></a>  </span>
-<span id="cb10-10"><a href="data-preparation.html#cb10-10"></a>  <span class="co"># random radius</span></span>
-<span id="cb10-11"><a href="data-preparation.html#cb10-11"></a>  r &lt;-<span class="st"> </span>circle_r <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">runif</span>(<span class="dv">1</span>))</span>
-<span id="cb10-12"><a href="data-preparation.html#cb10-12"></a>  </span>
-<span id="cb10-13"><a href="data-preparation.html#cb10-13"></a>  <span class="co"># calculating coordinates</span></span>
-<span id="cb10-14"><a href="data-preparation.html#cb10-14"></a>  x &lt;-<span class="st"> </span>r <span class="op">*</span><span class="st"> </span><span class="kw">cos</span>(alpha) </span>
-<span id="cb10-15"><a href="data-preparation.html#cb10-15"></a>  y &lt;-<span class="st"> </span>r <span class="op">*</span><span class="st"> </span><span class="kw">sin</span>(alpha)</span>
-<span id="cb10-16"><a href="data-preparation.html#cb10-16"></a>  </span>
-<span id="cb10-17"><a href="data-preparation.html#cb10-17"></a>  thousand_x &lt;-<span class="st"> </span><span class="kw">c</span>(thousand_x, x)</span>
-<span id="cb10-18"><a href="data-preparation.html#cb10-18"></a>  thousand_y &lt;-<span class="st"> </span><span class="kw">c</span>(thousand_y, y)</span>
-<span id="cb10-19"><a href="data-preparation.html#cb10-19"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="data-preparation.html#cb11-1"></a>thousand_x &lt;-<span class="st"> </span><span class="kw">c</span>()</span>
+<span id="cb11-2"><a href="data-preparation.html#cb11-2"></a>thousand_y &lt;-<span class="st"> </span><span class="kw">c</span>()</span>
+<span id="cb11-3"><a href="data-preparation.html#cb11-3"></a>points &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">1000</span>)</span>
+<span id="cb11-4"><a href="data-preparation.html#cb11-4"></a>circle_r &lt;-<span class="st"> </span><span class="fl">22.5</span> </span>
+<span id="cb11-5"><a href="data-preparation.html#cb11-5"></a><span class="cf">for</span> (i <span class="cf">in</span> points){</span>
+<span id="cb11-6"><a href="data-preparation.html#cb11-6"></a>  </span>
+<span id="cb11-7"><a href="data-preparation.html#cb11-7"></a>  <span class="co"># random angle</span></span>
+<span id="cb11-8"><a href="data-preparation.html#cb11-8"></a>  alpha &lt;-<span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>pi <span class="op">*</span><span class="st"> </span><span class="kw">runif</span>(<span class="dv">1</span>)</span>
+<span id="cb11-9"><a href="data-preparation.html#cb11-9"></a>  </span>
+<span id="cb11-10"><a href="data-preparation.html#cb11-10"></a>  <span class="co"># random radius</span></span>
+<span id="cb11-11"><a href="data-preparation.html#cb11-11"></a>  r &lt;-<span class="st"> </span>circle_r <span class="op">*</span><span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">runif</span>(<span class="dv">1</span>))</span>
+<span id="cb11-12"><a href="data-preparation.html#cb11-12"></a>  </span>
+<span id="cb11-13"><a href="data-preparation.html#cb11-13"></a>  <span class="co"># calculating coordinates</span></span>
+<span id="cb11-14"><a href="data-preparation.html#cb11-14"></a>  x &lt;-<span class="st"> </span>r <span class="op">*</span><span class="st"> </span><span class="kw">cos</span>(alpha) </span>
+<span id="cb11-15"><a href="data-preparation.html#cb11-15"></a>  y &lt;-<span class="st"> </span>r <span class="op">*</span><span class="st"> </span><span class="kw">sin</span>(alpha)</span>
+<span id="cb11-16"><a href="data-preparation.html#cb11-16"></a>  </span>
+<span id="cb11-17"><a href="data-preparation.html#cb11-17"></a>  thousand_x &lt;-<span class="st"> </span><span class="kw">c</span>(thousand_x, x)</span>
+<span id="cb11-18"><a href="data-preparation.html#cb11-18"></a>  thousand_y &lt;-<span class="st"> </span><span class="kw">c</span>(thousand_y, y)</span>
+<span id="cb11-19"><a href="data-preparation.html#cb11-19"></a>}</span></code></pre></div>
 <p>Calculating the memory score based on random distribution of 1000 locations within the arena</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="data-preparation.html#cb11-1"></a>Sum_all &lt;-<span class="st"> </span>Sum_all <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">memoryScoreRand =</span> <span class="ot">NA</span>, <span class="dt">memoryScoreTraj =</span> <span class="ot">NA</span>) <span class="co">#creating 2 new columns in the summary dataframe</span></span>
-<span id="cb11-2"><a href="data-preparation.html#cb11-2"></a></span>
-<span id="cb11-3"><a href="data-preparation.html#cb11-3"></a><span class="cf">for</span> (i_trial <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(Sum_all)) {</span>
-<span id="cb11-4"><a href="data-preparation.html#cb11-4"></a>  farther &lt;-<span class="st"> </span><span class="dv">0</span></span>
-<span id="cb11-5"><a href="data-preparation.html#cb11-5"></a>  <span class="cf">for</span> (i_point <span class="cf">in</span> points) {</span>
-<span id="cb11-6"><a href="data-preparation.html#cb11-6"></a>    <span class="co">#for each location distance to the true location of the cued object is calculated</span></span>
-<span id="cb11-7"><a href="data-preparation.html#cb11-7"></a>    distance =<span class="st"> </span><span class="kw">dist</span>(thousand_x[i_point], thousand_y[i_point], Sum_all<span class="op">$</span>objX[i_trial], Sum_all<span class="op">$</span>objY[i_trial])</span>
-<span id="cb11-8"><a href="data-preparation.html#cb11-8"></a>    </span>
-<span id="cb11-9"><a href="data-preparation.html#cb11-9"></a>    <span class="co">#if the distance is bigger than the distance error then 1 is added to the count &quot;farther&quot;</span></span>
-<span id="cb11-10"><a href="data-preparation.html#cb11-10"></a>    <span class="cf">if</span> (distance <span class="op">&gt;</span><span class="st"> </span>Sum_all<span class="op">$</span>error[i_trial]) {farther &lt;-<span class="st"> </span>farther<span class="op">+</span><span class="dv">1</span>} <span class="cf">else</span> {farther &lt;-<span class="st"> </span>farther}</span>
-<span id="cb11-11"><a href="data-preparation.html#cb11-11"></a>  }</span>
-<span id="cb11-12"><a href="data-preparation.html#cb11-12"></a>  <span class="co">#final score is calculating the proportion of the 1000 locations that are farther from the true location than the remembered location</span></span>
-<span id="cb11-13"><a href="data-preparation.html#cb11-13"></a>  Sum_all<span class="op">$</span>memoryScoreRand[i_trial] &lt;-<span class="st"> </span>farther<span class="op">/</span><span class="dv">1000</span></span>
-<span id="cb11-14"><a href="data-preparation.html#cb11-14"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="data-preparation.html#cb12-1"></a>Sum_all &lt;-<span class="st"> </span>Sum_all <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">memoryScoreRand =</span> <span class="ot">NA</span>, <span class="dt">memoryScoreTraj =</span> <span class="ot">NA</span>) <span class="co">#creating 2 new columns in the summary dataframe</span></span>
+<span id="cb12-2"><a href="data-preparation.html#cb12-2"></a></span>
+<span id="cb12-3"><a href="data-preparation.html#cb12-3"></a><span class="cf">for</span> (i_trial <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(Sum_all)) {</span>
+<span id="cb12-4"><a href="data-preparation.html#cb12-4"></a>  farther &lt;-<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb12-5"><a href="data-preparation.html#cb12-5"></a>  <span class="cf">for</span> (i_point <span class="cf">in</span> points) {</span>
+<span id="cb12-6"><a href="data-preparation.html#cb12-6"></a>    <span class="co">#for each location distance to the true location of the cued object is calculated</span></span>
+<span id="cb12-7"><a href="data-preparation.html#cb12-7"></a>    distance =<span class="st"> </span><span class="kw">dist</span>(thousand_x[i_point], thousand_y[i_point], Sum_all<span class="op">$</span>objX[i_trial], Sum_all<span class="op">$</span>objY[i_trial])</span>
+<span id="cb12-8"><a href="data-preparation.html#cb12-8"></a>    </span>
+<span id="cb12-9"><a href="data-preparation.html#cb12-9"></a>    <span class="co">#if the distance is bigger than the distance error then 1 is added to the count &quot;farther&quot;</span></span>
+<span id="cb12-10"><a href="data-preparation.html#cb12-10"></a>    <span class="cf">if</span> (distance <span class="op">&gt;</span><span class="st"> </span>Sum_all<span class="op">$</span>error[i_trial]) {farther &lt;-<span class="st"> </span>farther<span class="op">+</span><span class="dv">1</span>} <span class="cf">else</span> {farther &lt;-<span class="st"> </span>farther}</span>
+<span id="cb12-11"><a href="data-preparation.html#cb12-11"></a>  }</span>
+<span id="cb12-12"><a href="data-preparation.html#cb12-12"></a>  <span class="co">#final score is calculating the proportion of the 1000 locations that are farther from the true location than the remembered location</span></span>
+<span id="cb12-13"><a href="data-preparation.html#cb12-13"></a>  Sum_all<span class="op">$</span>memoryScoreRand[i_trial] &lt;-<span class="st"> </span>farther<span class="op">/</span><span class="dv">1000</span></span>
+<span id="cb12-14"><a href="data-preparation.html#cb12-14"></a>}</span></code></pre></div>
 </div>
 <div id="based-on-1000-locations-taken-from-the-participants-trajectory" class="section level3">
 <h3><span class="header-section-number">2.4.2</span> Based on 1000 locations taken from the participant’s trajectory</h3>
 <p>Calculating memory scores based on 1000 points taken from the complete trajectory of the participant</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="data-preparation.html#cb12-1"></a><span class="co">#basically row counter</span></span>
-<span id="cb12-2"><a href="data-preparation.html#cb12-2"></a>trials &lt;-<span class="st"> </span><span class="dv">0</span> </span>
-<span id="cb12-3"><a href="data-preparation.html#cb12-3"></a><span class="cf">for</span> (i_sub <span class="cf">in</span> subjects) {</span>
-<span id="cb12-4"><a href="data-preparation.html#cb12-4"></a>  <span class="co">#selecting 1000 random locations from participant&#39;s overall trajectory</span></span>
-<span id="cb12-5"><a href="data-preparation.html#cb12-5"></a>  XY &lt;-<span class="st"> </span><span class="kw">filter</span>(Traj, ID <span class="op">==</span><span class="st"> </span>i_sub) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(ID, charX, charY)</span>
-<span id="cb12-6"><a href="data-preparation.html#cb12-6"></a>  XY &lt;-<span class="st"> </span>XY[<span class="kw">sample</span>(<span class="kw">nrow</span>(XY), <span class="dv">1000</span>), ]</span>
-<span id="cb12-7"><a href="data-preparation.html#cb12-7"></a>  <span class="cf">for</span> (i_trial <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(<span class="kw">filter</span>(Sum_all, ID <span class="op">==</span><span class="st"> </span>i_sub))) {</span>
-<span id="cb12-8"><a href="data-preparation.html#cb12-8"></a>    farther &lt;-<span class="st"> </span><span class="dv">0</span></span>
-<span id="cb12-9"><a href="data-preparation.html#cb12-9"></a>    <span class="cf">for</span> (i_point <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(points)) {</span>
-<span id="cb12-10"><a href="data-preparation.html#cb12-10"></a>      <span class="co">#for each location distance to the true location of the cued object is calculated</span></span>
-<span id="cb12-11"><a href="data-preparation.html#cb12-11"></a>      distance =<span class="st"> </span><span class="kw">dist</span>(XY<span class="op">$</span>charX[i_point], XY<span class="op">$</span>charY[i_point], Sum_all<span class="op">$</span>objX[i_trial<span class="op">+</span>trials], Sum_all<span class="op">$</span>objY[i_trial<span class="op">+</span>trials])</span>
-<span id="cb12-12"><a href="data-preparation.html#cb12-12"></a>      </span>
-<span id="cb12-13"><a href="data-preparation.html#cb12-13"></a>      <span class="co">#if the distance is bigger than the distance error then 1 is added to the count &quot;farther&quot;</span></span>
-<span id="cb12-14"><a href="data-preparation.html#cb12-14"></a>      <span class="cf">if</span> (distance <span class="op">&gt;</span><span class="st"> </span>Sum_all<span class="op">$</span>error[i_trial<span class="op">+</span>trials]) {farther &lt;-<span class="st"> </span>(farther<span class="op">+</span><span class="dv">1</span>)}</span>
-<span id="cb12-15"><a href="data-preparation.html#cb12-15"></a>    }</span>
-<span id="cb12-16"><a href="data-preparation.html#cb12-16"></a>    </span>
-<span id="cb12-17"><a href="data-preparation.html#cb12-17"></a>    <span class="co">#final score is calculating the proportion of the 1000 locations that are farther from the true location than the remembered location</span></span>
-<span id="cb12-18"><a href="data-preparation.html#cb12-18"></a>    Sum_all<span class="op">$</span>memoryScoreTraj[i_trial<span class="op">+</span>trials] &lt;-<span class="st"> </span>farther<span class="op">/</span><span class="dv">1000</span></span>
-<span id="cb12-19"><a href="data-preparation.html#cb12-19"></a>  }</span>
-<span id="cb12-20"><a href="data-preparation.html#cb12-20"></a>  trials &lt;-<span class="st"> </span>trials <span class="op">+</span><span class="st"> </span><span class="kw">nrow</span>(<span class="kw">filter</span>(Sum_all, ID <span class="op">==</span><span class="st"> </span>i_sub))</span>
-<span id="cb12-21"><a href="data-preparation.html#cb12-21"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="data-preparation.html#cb13-1"></a><span class="co">#basically row counter</span></span>
+<span id="cb13-2"><a href="data-preparation.html#cb13-2"></a>trials &lt;-<span class="st"> </span><span class="dv">0</span> </span>
+<span id="cb13-3"><a href="data-preparation.html#cb13-3"></a><span class="cf">for</span> (i_sub <span class="cf">in</span> subjects) {</span>
+<span id="cb13-4"><a href="data-preparation.html#cb13-4"></a>  <span class="co">#selecting 1000 random locations from participant&#39;s overall trajectory</span></span>
+<span id="cb13-5"><a href="data-preparation.html#cb13-5"></a>  XY &lt;-<span class="st"> </span><span class="kw">filter</span>(Traj, ID <span class="op">==</span><span class="st"> </span>i_sub) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(ID, charX, charY)</span>
+<span id="cb13-6"><a href="data-preparation.html#cb13-6"></a>  XY &lt;-<span class="st"> </span>XY[<span class="kw">sample</span>(<span class="kw">nrow</span>(XY), <span class="dv">1000</span>), ]</span>
+<span id="cb13-7"><a href="data-preparation.html#cb13-7"></a>  <span class="cf">for</span> (i_trial <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(<span class="kw">filter</span>(Sum_all, ID <span class="op">==</span><span class="st"> </span>i_sub))) {</span>
+<span id="cb13-8"><a href="data-preparation.html#cb13-8"></a>    farther &lt;-<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb13-9"><a href="data-preparation.html#cb13-9"></a>    <span class="cf">for</span> (i_point <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(points)) {</span>
+<span id="cb13-10"><a href="data-preparation.html#cb13-10"></a>      <span class="co">#for each location distance to the true location of the cued object is calculated</span></span>
+<span id="cb13-11"><a href="data-preparation.html#cb13-11"></a>      distance =<span class="st"> </span><span class="kw">dist</span>(XY<span class="op">$</span>charX[i_point], XY<span class="op">$</span>charY[i_point], Sum_all<span class="op">$</span>objX[i_trial<span class="op">+</span>trials], Sum_all<span class="op">$</span>objY[i_trial<span class="op">+</span>trials])</span>
+<span id="cb13-12"><a href="data-preparation.html#cb13-12"></a>      </span>
+<span id="cb13-13"><a href="data-preparation.html#cb13-13"></a>      <span class="co">#if the distance is bigger than the distance error then 1 is added to the count &quot;farther&quot;</span></span>
+<span id="cb13-14"><a href="data-preparation.html#cb13-14"></a>      <span class="cf">if</span> (distance <span class="op">&gt;</span><span class="st"> </span>Sum_all<span class="op">$</span>error[i_trial<span class="op">+</span>trials]) {farther &lt;-<span class="st"> </span>(farther<span class="op">+</span><span class="dv">1</span>)}</span>
+<span id="cb13-15"><a href="data-preparation.html#cb13-15"></a>    }</span>
+<span id="cb13-16"><a href="data-preparation.html#cb13-16"></a>    </span>
+<span id="cb13-17"><a href="data-preparation.html#cb13-17"></a>    <span class="co">#final score is calculating the proportion of the 1000 locations that are farther from the true location than the remembered location</span></span>
+<span id="cb13-18"><a href="data-preparation.html#cb13-18"></a>    Sum_all<span class="op">$</span>memoryScoreTraj[i_trial<span class="op">+</span>trials] &lt;-<span class="st"> </span>farther<span class="op">/</span><span class="dv">1000</span></span>
+<span id="cb13-19"><a href="data-preparation.html#cb13-19"></a>  }</span>
+<span id="cb13-20"><a href="data-preparation.html#cb13-20"></a>  trials &lt;-<span class="st"> </span>trials <span class="op">+</span><span class="st"> </span><span class="kw">nrow</span>(<span class="kw">filter</span>(Sum_all, ID <span class="op">==</span><span class="st"> </span>i_sub))</span>
+<span id="cb13-21"><a href="data-preparation.html#cb13-21"></a>}</span></code></pre></div>
 </div>
 </div>
 <div id="saving-the-compiled-dataset" class="section level2">
 <h2><span class="header-section-number">2.5</span> Saving the compiled dataset</h2>
 <p>Last changes before saving the datasets into big files</p>
 <p>Rearrange the columns into more cohesive order and replacing the local ID with a new ID that is necessary for data transfer.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="data-preparation.html#cb13-1"></a>Sum_all &lt;-<span class="st"> </span>Sum_all <span class="op">%&gt;%</span></span>
-<span id="cb13-2"><a href="data-preparation.html#cb13-2"></a><span class="st">  </span><span class="kw">relocate</span>(newID, age, age_c, block, miniblock, mini, objectTrial, trial, cue, object, </span>
-<span id="cb13-3"><a href="data-preparation.html#cb13-3"></a>           sec2Beg, dropTime, secTrialRepl, trialLen, sec2End, </span>
-<span id="cb13-4"><a href="data-preparation.html#cb13-4"></a>           landmarkX, landmarkY, landmarkZ, objX, objY, objZ, remLocX, remLocY, remLocZ, </span>
-<span id="cb13-5"><a href="data-preparation.html#cb13-5"></a>           error, distanceTo1, distanceTo2, distanceTo3, averageDist, memoryScoreRand, memoryScoreTraj, </span>
-<span id="cb13-6"><a href="data-preparation.html#cb13-6"></a>           landmarkCuePosX, landmarkCuePosY, boundaryCuePosX, boundaryCuePosY, relativeInfluence, correct_RI, </span>
-<span id="cb13-7"><a href="data-preparation.html#cb13-7"></a>           trueAngle, estAngle, angleError) <span class="op">%&gt;%</span></span>
-<span id="cb13-8"><a href="data-preparation.html#cb13-8"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>ID) <span class="op">%&gt;%</span></span>
-<span id="cb13-9"><a href="data-preparation.html#cb13-9"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">ID =</span> newID)</span></code></pre></div>
-<p>Sum_angle will contain only columns related to angle estimation task.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="data-preparation.html#cb14-1"></a>Sum_angle &lt;-<span class="st"> </span>Sum_all <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb14-2"><a href="data-preparation.html#cb14-2"></a><span class="st">  </span><span class="kw">select</span>(ID, age, age_c, block, miniblock, mini, objectTrial, trial, cue, object, sec2Beg, sec2Est, sec2End, secTrialEst, trialLen, </span>
-<span id="cb14-3"><a href="data-preparation.html#cb14-3"></a>         landmarkX, landmarkY, landmarkZ, objX, objY, objZ, charX, charY, charZ, trueAngle, estAngle, angleError, </span>
-<span id="cb14-4"><a href="data-preparation.html#cb14-4"></a>         landmarkAngle, boundaryAngle, relativeAngle, correct_RA)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="data-preparation.html#cb14-1"></a>Sum_all &lt;-<span class="st"> </span>Sum_all <span class="op">%&gt;%</span></span>
+<span id="cb14-2"><a href="data-preparation.html#cb14-2"></a><span class="st">  </span><span class="kw">relocate</span>(newID, age, age_c, block, miniblock, mini, objectTrial, trial, cue, object, </span>
+<span id="cb14-3"><a href="data-preparation.html#cb14-3"></a>           sec2Beg, dropTime, secTrialRepl, trialLen, sec2End, </span>
+<span id="cb14-4"><a href="data-preparation.html#cb14-4"></a>           landmarkX, landmarkY, landmarkZ, objX, objY, objZ, remLocX, remLocY, remLocZ, </span>
+<span id="cb14-5"><a href="data-preparation.html#cb14-5"></a>           error, distanceTo1, distanceTo2, distanceTo3, averageDist, memoryScoreRand, memoryScoreTraj, </span>
+<span id="cb14-6"><a href="data-preparation.html#cb14-6"></a>           landmarkCuePosX, landmarkCuePosY, boundaryCuePosX, boundaryCuePosY, relativeInfluence, correct_RI, </span>
+<span id="cb14-7"><a href="data-preparation.html#cb14-7"></a>           trueAngle, estAngle, angleError) <span class="op">%&gt;%</span></span>
+<span id="cb14-8"><a href="data-preparation.html#cb14-8"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>ID) <span class="op">%&gt;%</span></span>
+<span id="cb14-9"><a href="data-preparation.html#cb14-9"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">ID =</span> newID)</span></code></pre></div>
 <p>Replacing local ID with a new ID that is necessary for data transfer, this time in Trajectory dataframe.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="data-preparation.html#cb15-1"></a>Traj &lt;-<span class="st"> </span>Traj <span class="op">%&gt;%</span></span>
 <span id="cb15-2"><a href="data-preparation.html#cb15-2"></a><span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>ID) <span class="op">%&gt;%</span></span>
@@ -755,9 +779,8 @@ Subsequently, creating list of new random IDs which were used during a transfer 
 <li>sec2Est - seconds from the beginning of the experiment to the angle estimation</li>
 </ul>
 <p>Saving these into text files into our local data folder.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="data-preparation.html#cb16-1"></a><span class="kw">write.table</span>(Sum_all, <span class="dt">file =</span> <span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Sum.txt&quot;</span>), <span class="dt">sep =</span> <span class="st">&quot; &quot;</span>, <span class="dt">row.names =</span> <span class="ot">FALSE</span>, <span class="dt">col.names =</span> <span class="ot">TRUE</span>) </span>
-<span id="cb16-2"><a href="data-preparation.html#cb16-2"></a><span class="kw">write.table</span>(Sum_angle, <span class="dt">file =</span> <span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;SumAngle.txt&quot;</span>), <span class="dt">sep =</span> <span class="st">&quot; &quot;</span>, <span class="dt">row.names =</span> <span class="ot">FALSE</span>, <span class="dt">col.names =</span> <span class="ot">TRUE</span>)  </span>
-<span id="cb16-3"><a href="data-preparation.html#cb16-3"></a><span class="kw">write.table</span>(Traj, <span class="dt">file =</span> <span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Traj.txt&quot;</span>), <span class="dt">sep =</span> <span class="st">&quot; &quot;</span>, <span class="dt">row.names =</span> <span class="ot">FALSE</span>, <span class="dt">col.names =</span> <span class="ot">TRUE</span>) </span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="data-preparation.html#cb16-1"></a><span class="kw">write.table</span>(Sum_all, <span class="dt">file =</span> <span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Sum.txt&quot;</span>), <span class="dt">sep =</span> <span class="st">&quot; &quot;</span>, <span class="dt">row.names =</span> <span class="ot">FALSE</span>, <span class="dt">col.names =</span> <span class="ot">TRUE</span>)  </span>
+<span id="cb16-2"><a href="data-preparation.html#cb16-2"></a><span class="kw">write.table</span>(Traj, <span class="dt">file =</span> <span class="kw">here</span>(<span class="st">&quot;data&quot;</span>, <span class="st">&quot;Traj.txt&quot;</span>), <span class="dt">sep =</span> <span class="st">&quot; &quot;</span>, <span class="dt">row.names =</span> <span class="ot">FALSE</span>, <span class="dt">col.names =</span> <span class="ot">TRUE</span>) </span></code></pre></div>
 
 </div>
 </div>

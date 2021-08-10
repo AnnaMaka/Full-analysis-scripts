@@ -618,7 +618,7 @@ rel_Inf
 ```
 As a first step towards building a full mixed effects model, we tested a simpliest version with only cue as a fixed effect and a random slope and random intercepts for participants. We did not use cue as a factor but in a recoded version of landmark = -1 and boundary = 1.
 
-```{r simpliest MEM}
+```{r}
 formulaCue <- "relativeInfluence ~ cueMM + (1+cueMM|ID)"
 modelCue <- lme4::lmer(formula = formulaCue, data=subset_RI)
 summary(modelCue)
@@ -626,7 +626,7 @@ summary(modelCue)
 
 To test, whether cue is a significant predictor we ran a likelihood ration test comparing our simpliest model and a model containing only random effects.
 
-```{r control MEM}
+```{r}
 formulaCueControl<- "relativeInfluence ~ 1 + (1+cueMM|ID)"
 modelCueControl <- lme4::lmer(formula = formulaCueControl, data=subset_RI)
 ratioCue <- anova(modelCue, modelCueControl)
@@ -842,7 +842,7 @@ t.test(subset(sub_mini_cue, cue=="landmark")$relInfluence, subset(sub_mini_cue, 
 
 To test the learning throughout a block, we ran mixed effect model with interaction between cue and miniblock (centered) and added miniblock as an independent random slope.
 
-```{r MEM for miniblocks}
+```{r}
 formulaMiniblocksCue <- "relativeInfluence ~ cueMM*mini + (1+mini:cueMM|ID)"
 modelMiniblocksCue <- lme4::lmer(formula = formulaMiniblocksCue, data=subset_RI)
 summary(modelMiniblocksCue)
@@ -850,7 +850,7 @@ summary(modelMiniblocksCue)
 
 To test the significance of the interaction, we ran a likelihood ratio test comparing our model and a model with both cue and miniblock as predictors but without the interaction.
 
-```{r testing interaction significance}
+```{r}
 #control model for interaction
 formulaMiniblocksControl <- "relativeInfluence ~ cueMM+mini + (1+mini:cueMM|ID)"
 modelMiniblocksControl <- lme4::lmer(formula = formulaMiniblocksControl, data=subset_RI)
@@ -861,7 +861,7 @@ ratioMini
 
 To check whether miniblocks are a significant predictor without the cue we ran a model and likelihood ratio test separately for landmark-dependent and boundary-dependent objects.
 
-```{r MEM for miniblocks landmark}
+```{r}
 #landmark-dependent objects 
 formulaMiniblocks <- "relativeInfluence ~ mini + (1+mini|ID)"
 modelMiniblocksLandmark <- lme4::lmer(formula = formulaMiniblocks, data=subset(subset_RI, cue=="landmark"))
@@ -875,7 +875,7 @@ ratioMiniLandmark = anova(modelMiniblocksLandmark, modelMiniLandmarkControl)
 ratioMiniLandmark
 ```
 
-```{r MEM for miniblocks boundary}
+```{r}
 # boundary-dependent objects
 formulaMiniblocks <- "relativeInfluence ~ mini + (1+mini|ID)"
 modelMiniblocksBoundary <- lme4::lmer(formula = formulaMiniblocks, data=subset(subset_RI,cue=="boundary"))
@@ -891,7 +891,7 @@ ratioMiniBoundary
 
 As we decided to recode relative influence score to dCorrect / (dCorrect + dOther), we ran the main model with miniblocks again with the new dependent variable to see if the slope differ despite the same direction of improvement.
 
-```{r MEM for miniblocks}
+```{r}
 #model with new recoded dependent variable
 formulaMiniblocksCue <- "correct_RI ~ cue*miniblock + (0+miniblock:cue|ID)"
 modelMiniblocksCue <- lme4::lmer(formula = formulaMiniblocksCue, data=subset_RI)
@@ -900,7 +900,7 @@ summary(modelMiniblocksCue)
 
 To test the significance of the interaction, we ran a likelihood ratio test comparing our model and a model with both cue and miniblock as predictors but without the interaction.
 
-```{r testing interaction significance}
+```{r}
 #control model for interaction
 formulaMiniblocksControl <- "correct_RI ~ cueMM+mini + (1+mini:cueMM|ID)"
 modelMiniblocksControl <- lme4::lmer(formula = formulaMiniblocksControl, data=subset_RI)
@@ -912,7 +912,7 @@ ratioMini
 
 To see whether the model including cue is better than a miniblock with random effect we ran a likelihood ratio test.
 
-```{r testing interaction significance}
+```{r}
 #control model
 formulaJustCue <- "correct_RI ~ mini + (1+mini:cueMM|ID)"
 modelJustCue <- lme4::lmer(formula = formulaJustCue, data=subset_RI)
@@ -981,7 +981,7 @@ ratioAgeBoundary
 
 The graph below visualizes how the relative influence improves with age as seen in collected data.
 
-```{r RI_final graph}
+```{r}
 RI_final <- ggplot(relativeInfluenceBlocks, aes(age, relativeInf, color=cue)) + 
   # setting up color palette - scico tokyo 
   scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, guide = FALSE) +
@@ -1014,7 +1014,7 @@ RI_final
 
 The graph below visualizes the relative influence age-dependent improvement based on a mixed model predictions.
 
-```{r RI_model graph}
+```{r}
 # calculating values predicted by the mixed model
 RI_predict <- ggeffects::ggpredict(modelFull, terms = c("age_c", "cueMM")) %>%
   as_tibble() %>%
@@ -1044,7 +1044,7 @@ RI_model <- ggplot(RI_predict, aes(x = x, y = predicted, colour = cuePredict, fi
 RI_model
 ```
 
-```{r graphs together}
+```{r}
 # specifying the layout
 layout <- "
 AAAAA#BBBBBB
@@ -1095,7 +1095,7 @@ ratioFullModelNext <- anova(modelFullNext, modelControlNext)
 ratioFullModelNext
 ```
 
-```{r RI_final graph next}
+```{r}
 RI_final <- ggplot(relativeInfluenceBlocks, aes(age, corCueRI, color=cue)) + 
   theme_cowplot() +
   scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, guide = FALSE) +
@@ -1117,7 +1117,7 @@ RI_final
 ```
 
 
-```{r RI_model graph next}
+```{r}
 RI_predict <- ggeffects::ggpredict(modelFullNext, terms = c("age_c", "cueMM")) %>%
   as_tibble() %>%
   mutate(cuePredict = factor(if_else(group == 1, true = "boundary", false = "landmark"),
@@ -1139,7 +1139,7 @@ RI_model <- ggplot(RI_predict, aes(x = x, y = predicted, colour = cuePredict, fi
 RI_model
 ```
 
-```{r graphs together next}
+```{r}
 layout <- "
 AAAAA#BBBBBB
 AAAAA#BBBBBB
@@ -1182,7 +1182,7 @@ ratioFullModelNext <- anova(modelFullNext, modelControlNext)
 ratioFullModelNext
 ```
 
-```{r RI_final graph next}
+```{r}
 distance_final <- ggplot(relativeInfluenceBlocks, aes(age, distanceError, color=cue)) + 
   theme_cowplot() +
   scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, guide = FALSE) +
@@ -1201,7 +1201,7 @@ distance_final
 ```
 
 
-```{r RI_model graph next}
+```{r}
 distance_predict <- ggeffects::ggpredict(modelFullNext, terms = c("age_c", "cueMM")) %>%
   as_tibble() %>%
   mutate(cuePredict = factor(if_else(group == 1, true = "boundary", false = "landmark"),
@@ -1221,7 +1221,7 @@ distance_model <- ggplot(distance_predict, aes(x = x, y = predicted, colour = cu
 distance_model
 ```
 
-```{r graphs together next}
+```{r}
 layout <- "
 AAAAA#BBBBBB
 AAAAA#BBBBBB

@@ -58,7 +58,7 @@ angle <- function(a_X, a_Y, b_X, b_Y) {
 
 Creating a list of subject IDs based on presence of summary files for Block 4 
 Subsequently, creating list of new random IDs which were used during a transfer of data between computers
-```{r ID}
+```{r ID, eval=FALSE}
 fn <- list.files(path =  here("data"), pattern="*_feedbackPhase_block4_Sum") 
 subjects <- c()
 for (i_file in length(fn)) {
@@ -69,7 +69,7 @@ newID <- sample(c(1000:9999), size=length(subjects), replace=FALSE)
 ```
 
 Retrieving participants' age from participants.csv (used for participation tracking purposes, created manually)
-```{r age}
+```{r age, eval=FALSE}
 age <- read.table(here("data", "participants.csv"), sep  = ";", header = TRUE, colClasses = "character") %>% 
   select(study.ID, age, study) %>% 
   filter(study == "yes") 
@@ -83,7 +83,7 @@ Dataframes created along the way:
 - Sum: all data for 1 participant 
 - sub_dat: data from 1 block for 1 participant 
 
-```{r Summary}
+```{r Summary, eval=FALSE}
 blocks <- c(1, 2, 3, 4) #number of blocks in the experiment
 Sum_all = tibble() #creating an empty tibble where eventually will the full dataset be stored
 
@@ -340,8 +340,28 @@ for(i_sub in subjects){
 ```
 
 Last changes to the summary dataframe
-
 ```{r}
+#Contemporary chunck for having Age_c datafram loaded in for later graphing
+#data loading in wll be removed and the chunck will be joined with the following chunck
+Sum_all <- read_delim(here("data" ,"Sum.txt"), delim = " ", 
+                      col_names = TRUE, col_types = "fdddddddfcdddddddddddddddddddddddddddddddddddddddd") 
+
+# calculating centered age and miniblock (using this more complicated way as opposed to directly do scale() because different subjects can have a different number of rows in the Sum_all tibble)
+Age_c <- Sum_all %>% 
+  group_by(ID) %>%
+  distinct(age) %>%
+  ungroup() %>%
+  mutate(age_c = scale(age, center=TRUE, scale=FALSE)) 
+
+
+Mini_c <- Sum_all %>% 
+  group_by(ID) %>%
+  distinct(miniblock) %>%
+  ungroup() %>%
+  mutate(mini = scale(miniblock, center=TRUE, scale=FALSE))
+```
+
+```{r, eval=FALSE}
 #assigning the correct format to values in columns used for analysis
 Sum_all <- Sum_all %>% 
   arrange(ID, objectTrial) %>% #ordering the dataframe according to ID and the experiment sequence
@@ -352,21 +372,7 @@ Sum_all <- Sum_all %>%
          age = as.numeric(age)
          ) 
 
-# calculating centered age and miniblock (using this more complicated way as opposed to directly do scale() because different subjects can have a different number of rows in the Sum_all tibble)
-Age_c <- Sum_all %>% 
-  group_by(ID) %>%
-  distinct(age) %>%
-  ungroup() %>%
-  mutate(age_c = scale(age, center=TRUE, scale=FALSE)) 
-
 Sum_all <- inner_join(Sum_all, Age_c%>%select(ID, age_c), by="ID")
-
-Mini_c <- Sum_all %>% 
-  group_by(ID) %>%
-  distinct(miniblock) %>%
-  ungroup() %>%
-  mutate(mini = scale(miniblock, center=TRUE, scale=FALSE))
-
 Sum_all <- inner_join(Sum_all, Mini_c, by=c("ID", "miniblock"))
 ```
 
@@ -454,7 +460,7 @@ Traj <- filter(Traj, charX > -27.5 & charX < 27.5 & charY > -27.5 & charY < 27.5
 
 Generating 1000 randomly distributed locations within the arena
 
-```{r thousand points}
+```{r thousand points, eval=FALSE}
 thousand_x <- c()
 thousand_y <- c()
 points <- c(1:1000)
@@ -478,7 +484,7 @@ for (i in points){
 
 Calculating the memory score based on random distribution of 1000 locations within the arena
 
-```{r calculating memory score (random)}
+```{r calculating memory score (random), eval=FALSE}
 Sum_all <- Sum_all %>% mutate(memoryScoreRand = NA, memoryScoreTraj = NA) #creating 2 new columns in the summary dataframe
 
 for (i_trial in 1:nrow(Sum_all)) {
@@ -529,7 +535,7 @@ Last changes before saving the datasets into big files
 
 
 Rearrange the columns into more cohesive order and replacing the local ID with a new ID that is necessary for data transfer.
-```{r organising Sum_all better}
+```{r organising Sum_all better, eval=FALSE}
 Sum_all <- Sum_all %>%
   relocate(newID, age, age_c, block, miniblock, mini, objectTrial, trial, cue, object, 
            sec2Beg, dropTime, secTrialRepl, trialLen, sec2End, 
