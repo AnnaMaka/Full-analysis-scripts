@@ -16,13 +16,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Setup
 
-Libraries used for data preparation 
+Packages used for data preparation 
 ```{r libraries}
 library(tidyverse)
 library(here)
 ```
 
-Functions created for this analysis 
+Functions writted for this analysis 
 ```{r functions}
 #function angleDiff() takes in 2 angles in degrees and gives out the difference between them (0-180) with the proper direction 
 #(i.e. positive = clockwise, negative = counterclockwise; angle1 being theoretical 0/trueAngle)
@@ -41,7 +41,6 @@ dist <- function(loc1X, loc1Y, loc2X, loc2Y) {
 #function angle() takes in 2 locations (a, b) and calculates angle between A-B and A-C (created inside the function)
 #a(X, Y) = character position, b(X, Y) = imaginary object position
 #necessary for relative influence calculation
-
 angle <- function(a_X, a_Y, b_X, b_Y) { 
   c_X = a_X
   c_Y = a_Y + 10
@@ -542,15 +541,6 @@ Sum_all <- Sum_all %>%
   rename(ID = newID)
 ```
 
-Sum_angle will contain only columns related to angle estimation task.
-
-```{r}
-Sum_angle <- Sum_all %>% 
-  select(ID, age, age_c, block, miniblock, mini, objectTrial, trial, cue, cueMM, object, sec2Beg, sec2Est, sec2End, secTrialEst, trialLen, 
-         landmarkX, landmarkY, landmarkZ, objX, objY, objZ, charX, charY, charZ, trueAngle, estAngle, angleError, 
-         landmarkAngle, boundaryAngle, relativeAngle, correct_RA)
-```
-
 
 Replacing local ID with a new ID that is necessary for data transfer, this time in Trajectory dataframe. 
 
@@ -616,8 +606,7 @@ Explanations of all columns:
 Saving these into text files into our local data folder.
 
 ```{r writing big file, eval=FALSE}
-write.table(Sum_all, file = here("data", "Sum.txt"), sep = " ", row.names = FALSE, col.names = TRUE) 
-write.table(Sum_angle, file = here("data", "SumAngle.txt"), sep = " ", row.names = FALSE, col.names = TRUE)  
+write.table(Sum_all, file = here("data", "Sum.txt"), sep = " ", row.names = FALSE, col.names = TRUE)  
 write.table(Traj, file = here("data", "Traj.txt"), sep = " ", row.names = FALSE, col.names = TRUE) 
 ```
 

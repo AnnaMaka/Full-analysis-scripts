@@ -7,10 +7,16 @@ output:
 ---
 # Analysis
 
+## Hypothesis
+
+Hypothesis: Boundary-dependent object position memory will improve between 8 and 15 years of age, while landmark-dependent object memory will stay relatively constant.
+
 ## Set up
 ```{r}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+Packages used for data analysis
 
 ```{r}
 library(here)
@@ -27,6 +33,8 @@ library(ggsignif)
 library(patchwork)
 library(Cairo)
 ```
+
+Functions written for this analysis
 
 ```{r}
 #function circleFun() generates locations of 100 points that are in shape of circle
@@ -45,15 +53,22 @@ dist <- function(loc1X, loc1Y, loc2X, loc2Y) {
 }
 ```
 
+Following chunk checks whether a folder "figures" exists and potentially creates one
+
 ```{r, eval=FALSE}
 if (dir.exists(here("figures"))){dir.create(here("figures"))}
 ```
 
+Reading in the two big files containing the full dataset 
+
 ```{r data}
 Sum_all <- read_delim(here("data" ,"Sum.txt"), delim = " ", 
                       col_names = TRUE, col_types = "fdddddddfcdddddddddddddddddddddddddddddddddddddddd") 
-Traj <- read_delim(here("data" ,"Traj.txt"), delim = " ", col_names = TRUE, col_types = "fddddddddddddcd") 
+Traj <- read_delim(here("data" ,"Traj.txt"), delim = " ", 
+                   col_names = TRUE, col_types = "fddddddddddddcd") 
 ```
+
+Creating a list of subject IDs from the full dataset
 
 ```{r}
 #generating subject ID list
@@ -61,7 +76,9 @@ subjects <- unique(Sum_all$ID)
 ```
 
 ## Timeout sessions
-filtering timeout sessions
+
+Identifying and filtering timeout sessions which are encoded as distance error = -1 (an impossible value)
+
 ```{r}
 #summary of timeout trials 
 timeout <- filter(Sum_all, error == -1)
@@ -75,25 +92,31 @@ Sum_all <- filter(Sum_all, error != -1)
 ```
 
 ## Exclusion criteria
-Exclusion of participants according to memory scores in block 1
-```{r visualisation of calculation of memory scores} 
+
+Participants are excluded based on performance in block 1 which is quantified using memory scores. 
+
+Graph below visualizes the calculation of memory score for a single trial. 
+
+```{r visualization of calculation of memory scores} 
 #data sorting
-i_sub = subjects[5]
-XY <- filter(Traj, ID == i_sub) %>% select(ID, charX, charY)
-XY <- XY[sample(nrow(XY), 1000), ]
-graph_sub <- filter(Sum_all, ID == i_sub)
-XY <- mutate(XY, distance = NA, outside = NA)
+i_sub = subjects[5] #randomly selection one participant
+XY <- filter(Traj, ID == i_sub) %>% select(ID, charX, charY) #filtering the full trajectory of the participant
+XY <- XY[sample(nrow(XY), 1000), ] #selecting randomly 1000 frames from the participant's complete trajectory
+graph_sub <- filter(Sum_all, ID == i_sub) #filtering the summary data of the participant
+XY <- mutate(XY, distance = NA, outside = NA) #creating 2 new columsn for the trajectory data frame
 for (i_point in 1:1000){ 
-  dista = dist(XY$charX[i_point], XY$charY[i_point], graph_sub$objX[10], graph_sub$objY[10])
-  XY$distance[i_point] <- dista
+  #calculating the distance between the random trajectory location and the true location of the cued bject in the given trial
+  dista = dist(XY$charX[i_point], XY$charY[i_point], graph_sub$objX[10], graph_sub$objY[10]) 
+  XY$distance[i_point] <- dista #adding the distance value to the dataframe
+  #evaluating whether the distance between the random location and the object is bigger or smaller than the distance error in the given trial
   if (dista > graph_sub$error[10]) {XY$outside[i_point] <- TRUE} else {XY$outside[i_point] <- FALSE}
 }
 
 #final used data
-outside <- filter(XY, outside == TRUE)
-inside <- filter(XY, outside == FALSE)
-littleCircle <- circleFun(center=c(graph_sub$objX[10],graph_sub$objY[10] ), r=graph_sub$error[10])
-circle <- circleFun()
+outside <- filter(XY, outside == TRUE) #creating separate dataframe for locations that are further from the object than the distance error
+inside <- filter(XY, outside == FALSE) #creating separate dataframe for locations that are closer to the object than the distance error
+littleCircle <- circleFun(center=c(graph_sub$objX[10],graph_sub$objY[10] ), r=graph_sub$error[10]) #circle dividing closer/further locations
+circle <- circleFun() #arena border visualization 
 
 #graph
 mem_score <- ggplot(circle, aes(x, y)) +
@@ -124,28 +147,28 @@ ggsave("memory_score_visual.png", plot=mem_score, units = "cm", width = 15, heig
 mem_score
 ```
 
+To be included in the analysis, participant's memory scores from block 1 need to be significantly greater than the chance level 0.5.
 ```{r exclusion t-test}
-exclusion <- c()
+exclusion <- c() #creating empty list that will contain the subject IDs that will be excluded
 for (i_sub in subjects) {
   score <- t.test(subset(Sum_all, ID==i_sub & block==1)$memoryScoreTraj, 
-                  mu=0.5, var.equal = FALSE, alternative = "greater") %>% tidy()
+                  mu=0.5, alternative = "greater") %>% tidy() #one-tailed t.test of block 1 memory scores against chance level 0.5
   if (score$p.value > 0.05) {
     exclusion <- c(exclusion, i_sub)
+    Sum_all <- filter(Sum_all, ID != i_sub)
     }
 }
-print(exclusion)
-
-
-for (i_sub in subjects) {
-  if (i_sub %in% exclusion) {
-    Sum_all <- filter(Sum_all, ID != i_sub)
-  }
-}
+print(sprintf("# participants excluded: %s", length(exclusion)))
+print(sprintf("new overall sample size: %s", length(subjects)-length(exclusion)))
 ```
 
 
 ## Descriptives
+
+Graph below shows the age distribution of our participants.
+
 ```{r}
+#summarising data to get a single line for each participant
 age <- Sum_all %>%
   group_by(ID, age) %>%
   summarise(n = n(), .groups="drop")
@@ -153,168 +176,354 @@ age <- Sum_all %>%
 ggplot(age, aes(x=age)) + 
   geom_bar(fill=scico(1, palette="acton", begin=0.8)) +
   theme_cowplot() +
-  background_grid(major="y") +
+  background_grid(major="y", minor="y") +
   scale_x_continuous(breaks = c(8,9,10,11,12,13,14,15)) +
   theme(legend.position = "none") +
   labs(x="Age", y="Count", title="Distribution of age")
 ```
-
+Next, we looked into reaction time (seconds between angle estimation and location estimation). 
 ```{r}
 #average RT 
 reaction_time_dat <- Sum_all %>%
-  mutate(posResponse = secTrialRepl - secTrialEst) %>%
+  mutate(posResponse = secTrialRepl - secTrialEst) %>% #calculating the seconds between angle estimation and location estimation
   group_by(ID, age) %>%
   summarise(posiMemResponse = mean(posResponse), .groups="drop") 
 
-#graph showing distribution, 1 point per participant
+#raincloud graph showing distribution of RT, 1 point per participant
 ggplot(reaction_time_dat, aes(x=0, y=posiMemResponse)) +
   geom_half_violin(aes(x=-0.05), fill=scico(1, palette = "acton", begin = 0.45), alpha =0.5, color=NA) +
   geom_point(aes(x=0.105, color=age), position = position_jitter(width =0.05, height = 0), shape=16, size = 2) +
   scale_color_scico(palette = "acton") +
   geom_boxplot(width = .08, outlier.shape = NA) +
   theme_cowplot() +
-  ylab('RT') + xlab('') +  
+  ylab('RT') + xlab('') + ggtitle('Average reaction time for each participant across the entire experiment') +
   theme(axis.text.x = element_blank(), 
         axis.ticks.x = element_blank(),
         aspect.ratio =1, 
         plot.title = element_text(face="italic", size=12))
 
-#actual average RT and sd
+#average RT and sd for the full dataset
 reaction_time <- summarise(reaction_time_dat, 
-                           mean = mean(posResponse), sd=sd(posResponse), min=min(posResponse), max=max(posResponse))
+                           mean = mean(posiMemResponse), sd=sd(posiMemResponse), min=min(posiMemResponse), max=max(posiMemResponse)) 
 
 reaction_time
+
+print(sprintf("The average reaction time was %s seconds (sd = %s).", round(reaction_time$mean, 3), round(reaction_time$sd, 3)))
 ```
 
+We also calculated the average length of a single trial.
 
-Hypothesis: Boundary-dependent object position memory will improve between 8 and 15 years of age, while landmark-dependent object memory will stay relatively constant.
+```{r}
+#average trial length for the full dataset
+trial_length <- Sum_all %>% 
+  summarise(mean = mean(trialLen), sd = sd(trialLen), min = min(trialLen), max = max(trialLen))
 
-Block 1
-Were they completing the study?
+trial_length
+
+print(sprintf("The average trial length was %s seconds (sd = %s).", round(trial_length$mean, 3), round(trial_length$sd, 3)))
+```
+
+## Block 1 Performance
+
+This subsection of the analysis aims to answer whether the participants completed the basic task according to the instructions before any manipulation was introduced.
+
+### Recalled locations 
+First, we wanted to visualize the recalled locations relative to the object location so we calculated a new "error location" as if the cued object was at coordinate 0,0 inside the arena and created a heat map. The boundary of the arena is drawn in white.
+```{r heat map}
+#creating a smaller data frame for trials only in block 1 and calculating the new error coordinates (newX, newY)
+heatMapDat <- Sum_all %>%
+  filter(block==1) %>% 
+  select(ID, miniblock, objX, objY, remLocX, remLocY, cue, block) %>% 
+  mutate(newX = remLocX-objX, newY = remLocY - objY) 
+
+#graphing
+heat_map_B1 <- ggplot(heatMapDat, aes(x=newX, y=newY)) + 
+  # creating a heat map
+  stat_density_2d(aes(fill = ..density..), geom = "raster", contour = FALSE, na.rm=TRUE) +
+  # setting a color palette from scico package
+  scale_fill_scico(palette = 'lajolla', begin=1, end=0, name = "Density") +
+  # adding individual error locations on top in white
+  geom_point(alpha=0.2, color="white", size=0.05) +
+  # adding the boundary of the arena (as a reference for distance)
+  geom_path(data = circle, aes(x, y), color="grey") +
+  # plotting the x and y axis on 0,0 to visualize the center of the arena
+  geom_hline(yintercept = 0) +
+  geom_vline(xintercept = 0) +
+  #changing titles 
+  labs(x = "Error on X (vm)", y = "Error on Y (vm)", title="Centralised Distribution of Error") +
+  # aesthetical changes
+  theme_cowplot() +
+  theme(aspect.ratio=1,
+        plot.title = element_text(face="italic", size=12),
+        legend.title = element_text(size=10),
+        legend.text = element_text(size=10)) +
+  # adjusting axis limits and breaks
+  scale_x_continuous(limits = c(-33, 33), breaks = c(-30, -20, -10, 0, 10, 20, 30)) + 
+  scale_y_continuous(limits = c(-33, 33), breaks = c(-30, -20, -10, 0, 10, 20, 30)) 
+
+#saving the graph as pdf and png 
+ggsave("heatMap_block1.pdf", plot=heat_map_B1, units = "cm", width = 10, height = 10, dpi = "retina", 
+       device = cairo_pdf, path = here("figures"))
+ggsave("heatMap_block1.png", plot=heat_map_B1, units = "cm", width = 10, height = 10, dpi = "retina", 
+       device = "png", path = here("figures"))
+
+#show the graph
+heat_map_B1
+```
+### Memory score
+
 ```{r summarise data for block 1}
+#creating dataset that only contains data from block 1 and summarizing for each participant
 summaryBlock1 <- Sum_all %>% 
   filter(block==1) %>% 
   group_by(ID, block) %>% 
   summarise(memoryScore = mean(memoryScoreTraj), distanceOther = mean(averageDist), distanceTrue = mean(error), .groups="drop")
 ```
 
+To tested whether the memory scores are above chance level 0.5, we ran one sample, one tail t-test.
+
 ```{r memory score vs 0.5, one-sample t-test}
-t.test(summaryBlock1$memoryScore, mu = 0.5) %>% tidy()
+t.test(summaryBlock1$memoryScore, mu = 0.5, alternative="greater") %>% tidy()
 ```
+
+Raincloud graph below visualizes the distribution of average memory scores in block 1 (1 point per participant)
 
 ```{r memory score graph}
 mem_score_B1 <- ggplot(summaryBlock1, aes(x=block, y= memoryScore)) + 
+  # violin plot
   geom_half_violin(aes(x=block-0.06), fill=scico(1, palette = "lajolla", begin = 0.45), alpha =0.5, color=NA) +
+  # single subject data points (1 per participant) with horizontal jitter
   geom_point(aes(x=block+0.08), position = position_jitter(width =0.01, height = 0), shape=16, size = 1) +
+  # boxplot of distribution (median, 1st and 3rd quartile)
   geom_boxplot(width = .05, outlier.shape = NA) +
-  theme_cowplot() +
+  # adding plot of mean and SEM  
+  stat_summary(fun = mean, geom = "point", size=1, shape = 16,
+               position = position_nudge(-.06), colour = "black") + 
+  stat_summary(fun.data = mean_se, geom = "errorbar",
+               position = position_nudge(-.06), colour = "black", width = 0, size = 0.5) +
+  # adding horizontal line at chance level 0.5 with annotation
   geom_hline(yintercept = 0.5, linetype=2) +
-  ylab('Memory Score (0-1)') + xlab('') + 
-  ggtitle("Memory Score") + 
+  annotate("text", label="chance = 0.5", x=1.2, y=0.52, size=3) +
+  # correcting labels
+  labs(x = '', y = 'Memory Score (0-1)', title = 'Memory score') +
+  # aesthetical changes
+  theme_cowplot() +
   theme(axis.text.x = element_blank(), 
         axis.ticks.x = element_blank(),
-        aspect.ratio =1, 
-        plot.title = element_text(face="italic", size=12)) +
-  annotate("text", label="chance = 0.5", x=1.2, y=0.52, size=3) 
+        aspect.ratio = 1, 
+        plot.title = element_text(face="italic", size=12)) 
 
+#saving the graph as pdf and png
 ggsave("memory_score_B1.pdf", plot=mem_score_B1, units = "cm", width = 10, height = 7, 
        dpi = "retina", device = cairo_pdf, path = here("figures"))
 ggsave("memory_score_B1.png", plot=mem_score_B1, units = "cm", width = 10, height = 7, 
        dpi = "retina", device = "png", path = here("figures"))
 
+#show the graph 
 mem_score_B1
 ```
 
-```{r heat map}
-heatMapDat <- Sum_all %>%
-  filter(block==1) %>% 
-  select(ID, miniblock, objX, objY, remLocX, remLocY, cue, block) %>% 
-  mutate(newX = remLocX-objX, newY = remLocY - objY) 
 
-heat_map_B1 <- ggplot(heatMapDat, aes(x=newX, y=newY)) + # JB: Please follow up on the warnings that are returned!
-  theme_cowplot() +
-  stat_density_2d(aes(fill = ..density..), geom = "raster", contour = FALSE) +
-  geom_point(alpha=0.2, color="white", size=0.05) +
-  scale_fill_scico(palette = 'lajolla', begin=1, end=0, name = "Density") +
-  theme(aspect.ratio=1,
-        plot.title = element_text(face="italic", size=12),
-        legend.title = element_text(size=10),
-        legend.text = element_text(size=10)) +
-  geom_hline(yintercept = 0) +
-  geom_vline(xintercept = 0) +
-  labs(x = "Error on X (vm)", y = "Error on Y (vm)", title="Centralised Distribution of Error") +
-  scale_x_continuous(limits = c(-32, 32), breaks = c(-30, -20, -10, 0, 10, 20, 30)) + 
-  scale_y_continuous(limits = c(-32, 32), breaks = c(-30, -20, -10, 0, 10, 20, 30)) +
-  geom_path(data = circle, aes(x, y), color="grey") 
-
-ggsave("heatMap_block1.pdf", plot=heat_map_B1, units = "cm", width = 10, height = 10, dpi = "retina", 
-       device = cairo_pdf, path = here("figures"))
-ggsave("heatMap_block1.png", plot=heat_map_B1, units = "cm", width = 10, height = 10, dpi = "retina", 
-       device = "png", path = here("figures"))
-
-heat_map_B1
-```
-
-```{r}
+```{r, eval=FALSE}
+# using patchwork package to combine 2 separate graphs 
 memory_B1 <- mem_score_B1 + heat_map_B1 &
   theme(axis.text = element_text(size=10), 
-        axis.title=element_text(size=10), 
+        axis.title = element_text(size=10), 
         plot.title = element_text(size=12)) &
   plot_annotation(title = 'Memory Performance in Block 1',
                   theme = theme(plot.title = element_text(size = 12, face="bold"))) 
 
-
+# saving the compiled graphs as pdf and png
 ggsave("Block1_loc.pdf", plot=memory_B1, units = "cm", width = 15.9, height = 10, dpi = "retina", device = cairo_pdf, path = here("figures"))
 ggsave("Block1_loc.png", plot=memory_B1, units = "cm", width = 15.9, height = 10, dpi = "retina", device = "png", path = here("figures"))
 
+# show the compiled graphs
 memory_B1
 ```
 
+### Distance from remembered locations to other locations
+
+We wanted to check that participants tried to recall the location of the correct object and did not mistake it with other 3 objects on regular basis so we calculated the average distance from the recalled location to the other objects' locations (distanceToOther1 + distanceToOther2 + distanceToOther3 / 3) and compared it to the distance error to the true location of the cued object. This calculation is visualized in a graph below for a single example trial. 
+
+```{r}
+#filtering for only trials in 1 miniblock for simplicity
+graph_sub <- graph_sub %>% 
+  filter(objectTrial == 5)
+
+distance_other <- ggplot(circle, aes(x, y)) +
+  # creating arena boundary
+  geom_path() +
+  # true location of cued object 
+  geom_point(data=graph_sub, aes(x=objX[2], y=objY[2], color="True Object Location"), size = 2.5) +
+  # line visualizing the distance error (between recalled location and true location)
+  geom_segment(data=graph_sub, aes(x=remLocX[2], y=remLocY[2], xend= objX[2], yend= objY[2], color="True Object Location"), alpha=.5) +
+  # location of other object 1 & distance to the recalled location
+  geom_point(data=graph_sub, aes(x=remLocX[1], y=remLocY[1], color="Other Object Location"), size=2.5) +
+  geom_segment(data=graph_sub, aes(x=remLocX[1], y=remLocY[1], xend= remLocX[2], yend= remLocY[2], color="Other Object Location"), alpha=.5) +
+  # location of other object 2 & distance to the recalled location
+  geom_point(data=graph_sub, aes(x=remLocX[3], y=remLocY[3], color="Other Object Location"), size=2.5) +
+  geom_segment(data=graph_sub, aes(x=remLocX[3], y=remLocY[3], xend= remLocX[2], yend= remLocY[2], color="Other Object Location"), alpha=.5) +
+  # location of other object 3 & distance to the recalled location
+  geom_point(data=graph_sub, aes(x=remLocX[4], y=remLocY[4], color="Other Object Location"), size=2.5) +
+  geom_segment(data=graph_sub, aes(x=remLocX[4], y=remLocY[4], xend= remLocX[2], yend= remLocY[2], color="Other Object Location"), alpha=.5) +
+  # recalled location of the cued object
+  geom_point(data=graph_sub, aes(x=remLocX[2], y=remLocY[2], color="Remembered Object Location"), size=2.5) +
+  # aesthetical changes
+  theme_cowplot() +
+  theme(aspect.ratio=1, 
+        axis.title = element_text(size=10), axis.text = element_text(size=10), 
+        plot.title = element_text(size=12), plot.subtitle = element_text(size = 11)) +
+  # changing labels and title
+  labs(title = "Distance from remembered location to other locations", 
+       subtitle = paste(sprintf("Distance Error: %s vm", graph_sub$error[2]), 
+                        sprintf("Average Distance to Other Objects: %s vm", round(graph_sub$averageDist[2], 2)), sep="\n"),  
+       x= 'X (vm)',  y= 'Y (vm)') +
+  # specifying colors manually 
+  scale_color_manual(name = " ", 
+                     values= c("True Object Location" = "#883E3A", "Remembered Object Location" = "#E37D50", 
+                               "Other Object Location" = "#F6D868"))
+
+# saving graph as pdf and png
+ggsave(filename="distance_other_visual.pdf", plot=distance_other, units = "cm", width = 15, height = 11, dpi = "retina", 
+       device = cairo_pdf, path = here("figures"))
+ggsave("distance_other_visual.png", plot=distance_other, units = "cm", width = 15, height = 11, 
+       dpi = "retina", device = "png", path = here("figures"))
+
+# show the graph
+distance_other
+```
+To test this, we ran paired t-test which showed that on average there is a difference between these 2 distances.
+
 ```{r distance to incorrect objects vs the cued object t-test}
-t.test(summaryBlock1$distanceOther, summaryBlock1$distanceTrue, var.equal = FALSE, paired = TRUE) %>% tidy()
+t.test(summaryBlock1$distanceOther, summaryBlock1$distanceTrue, paired = TRUE) %>% tidy()
 ```
 
+Graph visualizing this comparison is below.
+
 ```{r pivoting the summary for the graph}
+#necessary pivoting of the dataset for the following graph
 summaryBlock1 <- pivot_longer(summaryBlock1, cols=c(distanceTrue, distanceOther))
 ```
 
-```{r distance error visualisation}
+```{r distance error visualization}
 distance_B1 <- ggplot(summaryBlock1, aes(x=name, y= value)) + 
+  # specifying axis limits and breaks
   scale_x_discrete(limits = c('distanceTrue', 'distanceOther'),
                    labels = c('to Correct Location', 'to Other Object Locations')) + 
-  scale_y_continuous(breaks = c(5, 10, 15, 20 , 25), limits = c(0, 28)) +
+  scale_y_continuous(limits = c(0, 28), breaks = c(5, 10, 15, 20 , 25)) +
+  # violin plot 
   gghalves::geom_half_violin(data=summaryBlock1 %>% filter(name=="distanceOther"), 
                              position=position_nudge(+0.2), aes(fill=name),alpha =0.7, color=NA, side="r") +
   gghalves::geom_half_violin(data=summaryBlock1 %>% filter(name=="distanceTrue"), 
                              position=position_nudge(-0.2), aes(fill=name),alpha =0.7, color=NA, side="l") + 
+  # scico palette lajolla for violin plot fill
   scale_fill_scico_d(palette = 'lajolla', begin=0.2, end=0.75) +
+  # single subject data points (1 per participant)
   geom_point(shape=16, size = 1) +
+  # boxplot of distribution (median, 1st and 3rd quartile)
   geom_boxplot(data=summaryBlock1 %>% filter(name=="distanceOther"), 
                position=position_nudge(+0.1), width = .1, outlier.shape = NA) +
   geom_boxplot(data=summaryBlock1 %>% filter(name=="distanceTrue"), 
                position=position_nudge(-0.1), width = .1, outlier.shape = NA) +
+  # adding plot of mean and SEM  
+  stat_summary(data=summaryBlock1 %>% filter(name=="distanceOther"), 
+               position=position_nudge(+0.2), fun = mean, geom = "point", size=1, shape = 16, colour = "black") + 
+  stat_summary(data=summaryBlock1 %>% filter(name=="distanceOther"), 
+               position=position_nudge(+0.2), fun.data = mean_se, geom = "errorbar", colour = "black", width = 0, size = 0.5) +
+  stat_summary(data=summaryBlock1 %>% filter(name=="distanceTrue"), 
+               position=position_nudge(-0.2), fun = mean, geom = "point", size=1, shape = 16, colour = "black") + 
+  stat_summary(data=summaryBlock1 %>% filter(name=="distanceTrue"), 
+               position=position_nudge(-0.2), fun.data = mean_se, geom = "errorbar", colour = "black", width = 0, size = 0.5) +
+  # line connecting individual participants' values 
   geom_line(aes(group=ID), alpha=0.5) +
-  theme_cowplot() +
-  labs(x = " ", y = "Distance (Virtual Meters)", subtitle = "In Block 1", 
+  # changing title and labels
+  labs(x = " ", y = "Distance (vm)", subtitle = "In Block 1", 
        title = "Distance from Remembered Location to Object Locations") + 
+  # aesthetical changes
+  theme_cowplot() +
   theme(legend.position = "none", 
         plot.title = element_text(size=12, lineheight = 1.1), 
         plot.subtitle = element_text(face = "bold", lineheight = 1.1),
         aspect.ratio = 0.55,
         axis.title = element_text(size=12)) +
+  # visualizing the significance of the t-test
   geom_signif(comparisons = list(c("distanceTrue", "distanceOther")), test="t.test", 
               test.args=list(alternative = "two.sided", var.equal = FALSE, paired=TRUE),
               map_signif_level = TRUE, tip_length = 0, extend_line = 0.045, y_position = 26)
 
-
+# saving the graph as pdf and png
 ggsave("distances_B1.pdf", plot=distance_B1, units = "cm", width = 13, height = 10, dpi = "retina", device = cairo_pdf, path = here("figures"))
 ggsave("distances_B1.png", plot=distance_B1, units = "cm", width = 13, height = 10, dpi = "retina", device = "png", path = here("figures"))
 
+# show the graph
 distance_B1
 ```
 
+## Cues Differences
 
-Cues
+Next we wanted to investigate whether the participants followed the cues in block 2-4 after landmark and landmark-dependent object movement. 
+Also, is there performance difference between landmark- vs boundary-dependent objects?
+
+### Relative Influence
+
+Relative Influence has been used in the field for over a decade now, initially introduced in paper by Doeller, King and Burgess (2008). 
+
+"For blocks 2–4, we attempted to quantify the relative influence of either cue on each response location. In a pilot study, we noticed that incorrect responses tended to be clustered around locations previously associated with the incorrect cue: either during block 1 or during the immediately preceding block. Accordingly, we calculated the relative influence of boundary versus landmark in blocks 2–4 as d L/(d L + d B), where d L is the distance of the response from the location predicted by the landmark and d B is the distance from the location predicted by the boundary. This measure varies between 0 (using the landmark) and 1 (using the boundary). On the basis of our pilot data the incorrect cue potentially predicts two different locations in blocks 3 and 4 (reflecting the object's positions relative to it in the preceding block and in block 1): we used whichever was closest to the response location."
+
+```{r}
+#loading a data from block 2-4 for a single participant
+graph_sub <- filter(Sum_all, ID == i_sub & block != 1) 
+i <- 47
+
+relativeInf_graph <- ggplot(circle, aes(x, y)) +
+  # creating arena boundary
+  geom_path() +
+  # location predicted by landmark
+  geom_point(data=graph_sub, aes(x=landmarkCuePosX[i], y=landmarkCuePosY[i], color="Location Predicted by Landmark"), size = 2.5) +
+  # line visualizing the distance error (between recalled location and landmark-predicted location)
+  geom_segment(data=graph_sub, aes(x=remLocX[i], y=remLocY[i], xend= landmarkCuePosX[i], yend=landmarkCuePosY[i], 
+                                   color="Location Predicted by Landmark"), alpha=.5) +
+  # adding dL label
+  annotate("text", label="dL", x=-7.8, y=-9.5, size=4, color="#C6F1B1", fontface =2) +
+  # location predicted by boundary
+  geom_point(data=graph_sub, aes(x=boundaryCuePosX[i], y=boundaryCuePosY[i], color="Location Predicted by Boundary"), size = 2.5) +
+  # line visualizing the distance error (between recalled location and true location)
+  geom_segment(data=graph_sub, aes(x=boundaryCuePosX[i], y=boundaryCuePosY[i], xend= remLocX[i], yend= remLocY[i],
+                                   color="Location Predicted by Boundary"), alpha=.5) +
+  # adding dB label
+  annotate("text", label="dB", x=10, y=3, size=4, color="#592758", fontface =2) +
+  #recalled location
+  geom_point(data=graph_sub, aes(x=remLocX[i], y=remLocY[i], color = "Remembered Object Location"), size = 2.5) +
+  #landmark location 
+  geom_point(data=graph_sub, aes(x=landmarkX[i], y=landmarkY[i]), shape = 15, color = "#94A98F", size=3) +
+  annotate("text", label="Landmark", x= -16, y = -3.5, size=3.5, color= "#94A98F") +
+  # aesthetical changes
+  theme_cowplot() +
+  theme(aspect.ratio=1, 
+        axis.title = element_text(size=10), axis.text = element_text(size=10), 
+        plot.title = element_text(size=12), plot.subtitle = element_text(size = 11)) +
+  # changing labels and title
+  labs(title = "Relative Influence Calculation", 
+       subtitle = paste("dL / (dL + dB) ", 
+                        sprintf("Relative Influence: %s ", round(graph_sub$relativeInfluence[i], 2)), sep="\n"),  
+       x= 'X (vm)',  y= 'Y (vm)') +
+  # specifying colors manually 
+  scale_color_manual(name = " ", 
+                     values= c("Location Predicted by Boundary" = "#592758", "Location Predicted by Landmark" = "#C6F1B1", 
+                               "Remembered Object Location" = "red"))
+
+# saving graph as pdf and png
+ggsave(filename="relative_influence_visual.pdf", plot=relativeInf_graph, units = "cm", width = 15, height = 11, dpi = "retina", 
+       device = cairo_pdf, path = here("figures"))
+ggsave("relative_influence_visual.png", plot=relativeInf_graph, units = "cm", width = 15, height = 11, 
+       dpi = "retina", device = "png", path = here("figures"))
+
+# show the graph
+relativeInf_graph
+```
+
+First, let's create a subset dataframe that has data only from block 2-4 and get rid of us currently unnecessary columns. Then we summarize relative influence score, correct cue influence and distance error.
+
 ```{r summarise the data for rest of the analysis}
 subset_RI <- Sum_all %>% 
   filter(block!=1) %>% 
@@ -329,97 +538,93 @@ relativeInfluenceBlocks <- subset_RI %>%
             .groups="drop") 
 ```
 
+As score 0.5 points towards location between the location predicted by landmark and location predicted by boundary, we ran a one sample, one tail t-test to test whether the relative scores for landmark-dependent objects are less than 0.5.
+
 ```{r t-test of RI vs 0.5 landmark}
 t.test(subset(relativeInfluenceBlocks, cue=="landmark")$relativeInf, 
        mu = 0.5, alternative = "less") %>% tidy()
 ```
+
+After we ran a one sample, one tail t-test to test whether the relative scores for boundary-dependent objects are higher than 0.5.
 
 ```{r t-test of RI vs 0.5 boundary}
 t.test(subset(relativeInfluenceBlocks, cue=="boundary")$relativeInf, 
        mu = 0.5, alternative = "greater") %>% tidy()
 ```
 
+We also tested these two groups against each other to see if the scores are significantly different. 
+
 ```{r t-test RI boundary vs landmark}
 t.test(subset(relativeInfluenceBlocks, cue=="boundary")$relativeInf, 
        subset(relativeInfluenceBlocks, cue=="landmark")$relativeInf, paired=TRUE) %>% tidy()
 ```
 
+This difference in relative influence scores between boundary-dependent objects and landmark-dependent objects is visualiyed in a graph below. 
+
 ```{r relative influence block 2-4 graph}
 rel_Inf <- ggplot(relativeInfluenceBlocks, aes(x=cue, y=relativeInf)) + 
+  # changing labels and titles
   scale_x_discrete(labels = c('Boundary', 'Landmark')) +
+  labs(x = " ", y = "Relative Influence (0-1)", 
+       title = "Positional Memory") + 
+  # violin plots
   gghalves::geom_half_violin(data=relativeInfluenceBlocks %>% filter(cue=="landmark"), 
                              position=position_nudge(+0.2), aes(fill=cue),alpha =0.7, color=NA, side="r") +
   gghalves::geom_half_violin(data=relativeInfluenceBlocks %>% filter(cue=="boundary"), 
                              position=position_nudge(-0.2), aes(fill=cue),alpha =0.7, color=NA, side="l") + 
+  # scico palette tokyo
   scale_fill_scico_d(palette = 'tokyo', begin=0.15, end=0.85) +
+  # single subject data points (1 per participant)
   geom_point(shape=16, size = 1) +
+  # line connecting individual participants' values 
+  geom_line(aes(group=ID), alpha=0.5) +
+  # boxplot of distribution (median, 1st and 3rd quartile)
   geom_boxplot(data=relativeInfluenceBlocks %>% filter(cue=="landmark"), 
                position=position_nudge(+0.1), width = .1, outlier.shape = NA) +
   geom_boxplot(data= relativeInfluenceBlocks %>% filter(cue=="boundary"), 
                position=position_nudge(-0.1), width = .1, outlier.shape = NA) +
-  geom_line(aes(group=ID), alpha=0.5) +
+  # adding plot of mean and SEM  
+  stat_summary(data=relativeInfluenceBlocks %>% filter(cue=="landmark"), 
+               position=position_nudge(+0.2), fun = mean, geom = "point", size=1, shape = 16, colour = "black") + 
+  stat_summary(data=relativeInfluenceBlocks %>% filter(cue=="landmark"), 
+               position=position_nudge(+0.2), fun.data = mean_se, geom = "errorbar", colour = "black", width = 0, size = 0.5) +
+  stat_summary(data=relativeInfluenceBlocks %>% filter(cue=="boundary"), 
+               position=position_nudge(-0.2), fun = mean, geom = "point", size=1, shape = 16, colour = "black") + 
+  stat_summary(data=relativeInfluenceBlocks %>% filter(cue=="boundary"), 
+               position=position_nudge(-0.2), fun.data = mean_se, geom = "errorbar", colour = "black", width = 0, size = 0.5) +
+  # aesthetical changes
   theme_cowplot() +
-  labs(x = " ", y = "Relative Influence (0-1)", 
-       title = "Positional Memory") + 
   theme(legend.position = "none", 
         plot.title = element_text(size=12, lineheight = 1.1), 
         axis.title = element_text(size=10)) +
+  # visualizing the significance of the t-test
   geom_signif(comparisons = list(c("landmark", "boundary")), test="t.test", 
               test.args=list(alternative = "two.sided", paired=TRUE), 
               map_signif_level = TRUE, tip_length = 0, extend_line = 0.045, y_position = 0.85) +
+  # adding line at 0.5 (not-following either cue)
   geom_hline(yintercept=0.5, linetype=2, alpha=0.6) +
+  # chaning limits and breaks of y-axis
   scale_y_continuous(limits=c(0.1, 0.9), breaks = c(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9)) +
-  annotate("text", label="*", size=2, y=0.8, x=1) +
-  annotate("text", label="*", size=2, y=0.2, x=2) 
+  # adding annotation of significance level of individual t-tests
+  annotate("text", label="***", size=3, y=0.8, x=0.9, fontface =2) +
+  annotate("text", label="***", size=3, y=0.15, x=2.1, fontface =2) 
 
+# saving graphs as  pdf and png
 ggsave("relativeInfluence.pdf", plot=rel_Inf, units = "cm", width = 15, height = 11, dpi = "retina", device = cairo_pdf, path = here("figures"))
 ggsave("relativeInfluence.png", plot=rel_Inf, units = "cm", width = 15, height = 11, dpi = "retina", device = "png", path = here("figures"))
 
+# show the graph
 rel_Inf
 ```
-
-```{r t-test distance error boundary vs landmark}
-t.test(subset(relativeInfluenceBlocks, cue=="boundary")$distanceError, 
-       subset(relativeInfluenceBlocks, cue=="landmark")$distanceError, paired=TRUE) %>% tidy()
-```
-
-
-```{r distance error graph}
-g_cue <- ggplot(relativeInfluenceBlocks, aes(x=cue, y= distanceError)) + 
-  scale_x_discrete(labels = c('Boundary', 'Landmark')) +
-  gghalves::geom_half_violin(data=relativeInfluenceBlocks %>% filter(cue=="landmark"), 
-                             position=position_nudge(+0.2), aes(fill=cue),alpha =0.7, color=NA, side="r") +
-  gghalves::geom_half_violin(data=relativeInfluenceBlocks %>% filter(cue=="boundary"), 
-                             position=position_nudge(-0.2), aes(fill=cue),alpha =0.7, color=NA, side="l") + 
-  scale_fill_scico_d(palette = 'tokyo', begin=0.15, end=0.85) +
-  geom_point(shape=16, size = 1) +
-  geom_boxplot(data=relativeInfluenceBlocks %>% filter(cue=="landmark"), 
-               position=position_nudge(+0.1), width = .1, outlier.shape = NA) +
-  geom_boxplot(data=relativeInfluenceBlocks %>% filter(cue=="boundary"), 
-               position=position_nudge(-0.1), width = .1, outlier.shape = NA) +
-  geom_line(aes(group=ID), alpha=0.5) +
-  theme_cowplot() +
-  labs(x = " ", y = "Distance Error (vm)", title = "Positional Memory") +
-  theme(legend.position = "none", 
-        plot.title = element_text(size=12, lineheight = 1.1), 
-        aspect.ratio = 0.55,
-        axis.title = element_text(size=12)) +
-  geom_signif(comparisons = list(c("landmark", "boundary")),  test="t.test", 
-              test.args=list(alternative = "two.sided", paired=TRUE),
-              map_signif_level = TRUE, tip_length = 0, extend_line = 0.045, y_position = 26)
-
-
-ggsave("distancesError.pdf", plot=g_cue, units = "cm", width = 15, height = 11, dpi = "retina", device = cairo_pdf, path = here("figures"))
-ggsave("distancesError.png", plot=g_cue, units = "cm", width = 15, height = 11, dpi = "retina", device = "png", path = here("figures"))
-
-g_cue
-```
+As a first step towards building a full mixed effects model, we tested a simpliest version with only cue as a fixed effect and a random slope and random intercepts for participants. We did not use cue as a factor but in a recoded version of landmark = -1 and boundary = 1.
 
 ```{r simpliest MEM}
 formulaCue <- "relativeInfluence ~ cueMM + (1+cueMM|ID)"
 modelCue <- lme4::lmer(formula = formulaCue, data=subset_RI)
 summary(modelCue)
 ```
+
+To test, whether cue is a significant predictor we ran a likelihood ration test comparing our simpliest model and a model containing only random effects.
 
 ```{r control MEM}
 formulaCueControl<- "relativeInfluence ~ 1 + (1+cueMM|ID)"
@@ -428,74 +633,100 @@ ratioCue <- anova(modelCue, modelCueControl)
 ratioCue
 ```
 
+### Distance Error Differences 
 
-Miniblocks learning
-```{r MEM for miniblocks}
-formulaMiniblocksCue <- "relativeInfluence ~ cueMM*mini + (1+mini:cueMM|ID)"
-modelMiniblocksCue <- lme4::lmer(formula = formulaMiniblocksCue, data=subset_RI)
-summary(modelMiniblocksCue)
+Previously, Julian et al (2019) showed that there is a difference in distance error between boundary-dependent and landmark-dependent objects so we ran a paired t-test to replicate these findings in this new participant demographic. 
 
+```{r t-test distance error boundary vs landmark}
+t.test(subset(relativeInfluenceBlocks, cue=="boundary")$distanceError, 
+       subset(relativeInfluenceBlocks, cue=="landmark")$distanceError, paired=TRUE) %>% tidy()
 ```
 
-```{r testing interaction significance}
-formulaMiniblocksControl <- "relativeInfluence ~ cueMM+mini + (1+mini:cueMM|ID)"
-modelMiniblocksControl <- lme4::lmer(formula = formulaMiniblocksControl, data=subset_RI)
+We did not replicate these findings and the lack of difference is evident in the graph below. 
 
-ratioMini <- anova(modelMiniblocksCue, modelMiniblocksControl)
-ratioMini
+```{r distance error graph}
+g_cue <- ggplot(relativeInfluenceBlocks, aes(x=cue, y= distanceError)) + 
+  # changing labels and title
+  scale_x_discrete(labels = c('Boundary', 'Landmark')) +
+  labs(x = " ", y = "Distance Error (vm)", title = "Positional Memory") +
+  # violin plot
+  gghalves::geom_half_violin(data=relativeInfluenceBlocks %>% filter(cue=="landmark"), 
+                             position=position_nudge(+0.2), aes(fill=cue),alpha =0.7, color=NA, side="r") +
+  gghalves::geom_half_violin(data=relativeInfluenceBlocks %>% filter(cue=="boundary"), 
+                             position=position_nudge(-0.2), aes(fill=cue),alpha =0.7, color=NA, side="l") + 
+  # scico palette tokyo
+  scale_fill_scico_d(palette = 'tokyo', begin=0.15, end=0.85) +
+  # single subject data points (1 per participant)
+  geom_point(shape=16, size = 1) +
+  # line connecting individual participants' values
+  geom_line(aes(group=ID), alpha=0.5) +
+  # boxplot of distribution (median, 1st and 3rd quartile)
+  geom_boxplot(data=relativeInfluenceBlocks %>% filter(cue=="landmark"), 
+               position=position_nudge(+0.1), width = .1, outlier.shape = NA) +
+  geom_boxplot(data=relativeInfluenceBlocks %>% filter(cue=="boundary"), 
+               position=position_nudge(-0.1), width = .1, outlier.shape = NA) +
+  # aesthetical changes
+  theme_cowplot() +
+  theme(legend.position = "none", 
+        plot.title = element_text(size=12, lineheight = 1.1), 
+        aspect.ratio = 0.55,
+        axis.title = element_text(size=12)) +
+  # visualizing the significance level of the t-test
+  geom_signif(comparisons = list(c("landmark", "boundary")),  test="t.test", 
+              test.args=list(alternative = "two.sided", paired=TRUE),
+              map_signif_level = TRUE, tip_length = 0, extend_line = 0.045, y_position = 26)
+
+# saving the graph as pdf and png
+ggsave("distancesError.pdf", plot=g_cue, units = "cm", width = 15, height = 11, dpi = "retina", device = cairo_pdf, path = here("figures"))
+ggsave("distancesError.png", plot=g_cue, units = "cm", width = 15, height = 11, dpi = "retina", device = "png", path = here("figures"))
+
+# show the plot
+g_cue
 ```
 
-```{r MEM for miniblocks landmark}
-formulaMiniblocks <- "relativeInfluence ~ mini + (1+mini|ID)"
-modelMiniblocksLandmark <- lme4::lmer(formula = formulaMiniblocks, data=subset(subset_RI, cue=="landmark"))
-summary(modelMiniblocksLandmark)
+## Miniblocks Learning
 
-formulaMiniControl <- "relativeInfluence ~ 1 + (1+mini|ID)" 
-modelMiniLandmarkControl <- lme4::lmer(formula = formulaMiniControl, data=subset(subset_RI, cue=="landmark"))
-ratioMiniLandmark = anova(modelMiniblocksLandmark, modelMiniLandmarkControl)
-ratioMiniLandmark
-```
 
-```{r MEM for miniblocks boundary}
-formulaMiniblocks <- "relativeInfluence ~ mini + (1+mini|ID)"
-modelMiniblocksBoundary <- lme4::lmer(formula = formulaMiniblocks, data=subset(subset_RI,cue=="boundary"))
-summary(modelMiniblocksBoundary) 
+### Graphs
 
-formulaMiniControl <- "relativeAngle ~ 1 + (1+mini|ID)" 
-modelMiniBoundaryControl <- lme4::lmer(formula = formulaMiniControl, data=subset(subset_RI, cue=="boundary"))
-ratioMiniBoundary = anova(modelMiniblocksBoundary, modelMiniBoundaryControl)
-ratioMiniBoundary
-```
+The graph below shows the relative influence scores averaged for each miniblock in block 2-4 (averaging over 6 scores for each miniblock)
 
 ```{r} 
-summary_miniblock <- subset_RI %>% # JB: add comments please!
-  group_by(ID, miniblock, cue, age) %>% 
+# necessary summarizing for the graph below
+summary_miniblock <- subset_RI %>% 
+  group_by(ID, miniblock, cue) %>% 
   summarise(relativeInf = mean(relativeInfluence), 
             riSD = sd(relativeInfluence), 
             .groups = "drop")
 
 g_mini <- ggplot(summary_miniblock, aes(miniblock, relativeInf, group=interaction(cue, ID), color=cue)) + 
+  # connects the mean values for each participant 
   geom_line(size=0.8, alpha = 0.3) +
-  stat_summary(data= subset(summary_miniblock, cue=="boundary"), fun.data=mean_se, aes(group=cue), 
-               geom="errorbar", size=0.8, width=0.1, alpha=0.95, position = position_nudge(x=0.01)) +
-  stat_summary(data= subset(summary_miniblock, cue=="landmark"), fun.data=mean_se, aes(group=cue),  
-               geom="errorbar", size=0.8, width=0.1, alpha=0.95, position=position_nudge(x=-0.01)) +
-  stat_summary(fun=mean, aes(group=cue), geom="line", size = 1.5) +
+  # overall mean and se 
   stat_summary(fun=mean, aes(group=cue), geom="point", size=2) +
+  stat_summary(dfun.data=mean_se, aes(group=cue), geom="errorbar", size=0.8, width=0.1, alpha=0.95) +
+  # connects the overall mean to show the improvement
+  stat_summary(fun=mean, aes(group=cue), geom="line", size = 1.5) +
+  # line showing 0.5 neutral relative score for reference
   geom_hline(yintercept = 0.5, linetype = 2) +
-  theme_cowplot() +
+  # changing labels and titles
   labs(x= "Miniblock", y = "Relative Influence (0-1)", title = "Averaged across Blocks", color = "Cue") +
-  theme(plot.title = element_text(size=12, face="italic"), 
-        axis.title = element_text(size=10),
-        axis.text = element_text(size=10)) +
+  # aesthitical changes
+  theme_cowplot() +
+  # assigning scico palette tokyo as a color palatte
   scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
-  scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1), limits = c(0,1)) +
+  # changing limits and breaks on both axis
+  scale_y_continuous(limits = c(0,1), breaks = c(0, 0.25, 0.5, 0.75, 1)) +
   scale_x_continuous(limits = c(0.5, 4.5), breaks = c(1,2,3,4))
 
+#show the graph
 g_mini
 ```
 
+The graph below shows the relative influence scores for each miniblock throughout block 2-4 (averaging only over 2 scores per miniblock)
+
 ```{r}
+#necessary summarizing for the graph below
 summary_objectTrial <- subset_RI %>%
   group_by(ID, objectTrial, cue) %>% 
   summarise(relativeInf = mean(relativeInfluence), 
@@ -503,41 +734,46 @@ summary_objectTrial <- subset_RI %>%
             .groups = "drop")
 
 g_objTrial <- ggplot(summary_objectTrial, aes(objectTrial, relativeInf, group=interaction(cue, ID), color=cue)) + 
-  theme_cowplot() +
+  # connects the mean values for each participant within each block 
   geom_line(data= subset(summary_objectTrial, objectTrial < 9), size=0.8, alpha = 0.3) +
   geom_line(data= subset(summary_objectTrial, objectTrial < 13 & objectTrial > 8), size=0.8, alpha = 0.3) +
   geom_line(data= subset(summary_objectTrial, objectTrial > 12), size=0.8, alpha = 0.3) +
-  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary, Landmark")) +
-  theme( 
-        plot.title = element_text(size=12, face="italic"), 
-        axis.title = element_text(size=10),
-        axis.text = element_text(size=10)) +
-  labs(x= "Miniblock", y = "Relative Influence (0-1)", title= "Separately per Block", color= "Cue") +
+  # overall mean and se 
+  stat_summary(fun=mean, aes(group=cue), geom="point", size=2) +
   stat_summary(fun.data=mean_se, aes(group=cue),  
                geom="errorbar", size=0.8, width=0.1, alpha=0.95, position = position_nudge(x=0.01)) +
+  # line connecting the average values within each block
   stat_summary(data = subset(summary_objectTrial, objectTrial < 9), fun=mean, aes(group=cue), geom="line", size = 1.5) +
-  stat_summary(data = subset(summary_objectTrial, objectTrial  < 13 & objectTrial > 8), fun=mean, aes(group=cue), 
-               geom="line", size = 1.5) +
+  stat_summary(data = subset(summary_objectTrial, objectTrial  < 13 & objectTrial > 8), fun=mean, aes(group=cue), geom="line", size = 1.5) +
   stat_summary(data = subset(summary_objectTrial, objectTrial > 12), fun=mean, aes(group=cue), geom="line", size = 1.5) +
-  stat_summary(fun=mean, aes(group=cue), geom="point", size=2) +
+  # assigning scico palette tokyo as a color palatte
+  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary, Landmark")) +
+  # line showing 0.5 neutral relative score for reference
   geom_hline(yintercept = 0.5, linetype = 2) +
-  geom_vline(xintercept = 8.9, alpha = 0.7, linetype=3) +
-  geom_vline(xintercept = 12.9, alpha = 0.7, linetype=3) +
+  # adding a vertical lines showing the start of a new block with a proper label
   geom_vline(xintercept = 4.9, alpha = 0.7, linetype=3) +
+  annotate("text", label = "Block 2", x = 5.6, y = 1, size = 4) +
+  geom_vline(xintercept = 8.9, alpha = 0.7, linetype=3) +
+  annotate("text", label = "Block 3", x = 9.6, y = 1, size = 4) +
+  geom_vline(xintercept = 12.9, alpha = 0.7, linetype=3) +
+  annotate("text", label = "Block 4", x = 13.6, y = 1, size = 4) +
+  # changing labels and titles
+  labs(x= "Miniblock", y = "Relative Influence (0-1)", title= "Separately per Block", color= "Cue") +
+  # changing limits and breaks and its labels of both axis
   scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1), limits = c(0,1)) +
   scale_x_continuous(breaks = c(5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), 
                      labels = c("1", "2", "3", "4", "1", "2", "3", "4", "1", "2", "3", "4")) +
-  annotate("text", label = "Block 2", x = 5.6, y = 1, size = 4) +
-  annotate("text", label = "Block 3", x = 9.6, y = 1, size = 4) +
-  annotate("text", label = "Block 4", x = 13.6, y = 1, size = 4) +
-  theme(legend.position = "none")
+  # aesthetical changes
+  theme_cowplot() 
 
+#show the graph
 g_objTrial
-
-
 ```
 
+The two graphs created above are composed into a single layout for better, more wholesome visualisation.
+
 ```{r}
+# specifying the layout
 layout <- "
 AAAAAA
 AAAAAA
@@ -547,107 +783,269 @@ BB#C##
 BB####
 "
 
+# assigning a variable for legend
 g_leg <- guide_area()
+
 g_min <- g_objTrial + g_mini + g_leg +
+  # indicating the layout and gathering the legends
   plot_layout(design = layout, guides = "collect") &
+  # unifying aesthetical aspects, mainly text size and style
   theme(axis.title = element_text(size = 10), axis.text = element_text(size=10), 
         legend.title = element_text(size=10), legend.text = element_text(size=10),
         plot.title = element_text(size=12, face="italic"),
         plot.tag = element_text(size = 10, face="bold")) &
+  # adding title and tags
   plot_annotation(title = 'Positional Memory',
                   theme = theme(plot.title = element_text(size = 12, face="bold")),
                   tag_levels = list(c('A', 'B')))
 
-g_min
-
+# savvign the assembly as pd and png
 ggsave("relativeInfluence_min.pdf", plot=g_min, units = "cm", width = 15.9, height = 13, 
        dpi = "retina", device = cairo_pdf, path = here("figures"))
 ggsave("relativeInfluence_min.png", plot=g_min, units = "cm", width = 15.9, height = 13, 
        dpi = "retina", device = "png", path = here("figures"))
 
+# show the assembled graphs
+g_min
 ```
 
-Age
+### Miniblock 1 
+
+We noticed that there is a tendency for relative influence score to be above regardless cue-dependency so we wanted to test this statistically so we ran a one-sided, one sample t-test against 0.5.
+
 ```{r}
+# summarizing by ID for all miniblocks 1 (in block 2-4)
+sub_mini_1 <- subset_RI %>%
+  filter(miniblock == 1) %>%
+  group_by(ID) %>%
+  summarise(relInfluence = mean(relativeInfluence), .groups ="drop")
+
+# one-tailed, one sample t-test
+t.test(sub_mini_1$relInfluence, mu=0.5, alternative = "greater") %>% tidy()
+```
+
+As it seems the relative influence in miniblock is indeed higher than 0.5, therefore they are more likely following boundary as a cue (its old location). Next, we wanted to ensure that there is indeed no difference between the relative influence score between landmark-dependent and boundary-dependent objects in miniblock 1. 
+
+```{r}
+# summarizing by ID and cue for all miniblocks 1 (in blocks 2-4)
+sub_mini_cue <- subset_RI %>%
+  filter(miniblock == 1) %>%
+  group_by(ID, cue) %>%
+  summarise(relInfluence = mean(relativeInfluence), .groups ="drop")
+
+# two-tailed, paired sample t-test
+t.test(subset(sub_mini_cue, cue=="landmark")$relInfluence, subset(sub_mini_cue, cue=="boundary")$relInfluence, paired=TRUE) %>% tidy()
+```
+
+
+### Mixed Models
+
+To test the learning throughout a block, we ran mixed effect model with interaction between cue and miniblock (centered) and added miniblock as an independent random slope.
+
+```{r MEM for miniblocks}
+formulaMiniblocksCue <- "relativeInfluence ~ cueMM*mini + (1+mini:cueMM|ID)"
+modelMiniblocksCue <- lme4::lmer(formula = formulaMiniblocksCue, data=subset_RI)
+summary(modelMiniblocksCue)
+```
+
+To test the significance of the interaction, we ran a likelihood ratio test comparing our model and a model with both cue and miniblock as predictors but without the interaction.
+
+```{r testing interaction significance}
+#control model for interaction
+formulaMiniblocksControl <- "relativeInfluence ~ cueMM+mini + (1+mini:cueMM|ID)"
+modelMiniblocksControl <- lme4::lmer(formula = formulaMiniblocksControl, data=subset_RI)
+#likelihood ratio test
+ratioMini <- anova(modelMiniblocksCue, modelMiniblocksControl)
+ratioMini
+```
+
+To check whether miniblocks are a significant predictor without the cue we ran a model and likelihood ratio test separately for landmark-dependent and boundary-dependent objects.
+
+```{r MEM for miniblocks landmark}
+#landmark-dependent objects 
+formulaMiniblocks <- "relativeInfluence ~ mini + (1+mini|ID)"
+modelMiniblocksLandmark <- lme4::lmer(formula = formulaMiniblocks, data=subset(subset_RI, cue=="landmark"))
+summary(modelMiniblocksLandmark)
+
+#control model 
+formulaMiniControl <- "relativeInfluence ~ 1 + (1+mini|ID)" 
+modelMiniLandmarkControl <- lme4::lmer(formula = formulaMiniControl, data=subset(subset_RI, cue=="landmark"))
+#likelihood ratio test
+ratioMiniLandmark = anova(modelMiniblocksLandmark, modelMiniLandmarkControl)
+ratioMiniLandmark
+```
+
+```{r MEM for miniblocks boundary}
+# boundary-dependent objects
+formulaMiniblocks <- "relativeInfluence ~ mini + (1+mini|ID)"
+modelMiniblocksBoundary <- lme4::lmer(formula = formulaMiniblocks, data=subset(subset_RI,cue=="boundary"))
+summary(modelMiniblocksBoundary) 
+
+#control model 
+formulaMiniControl <- "relativeAngle ~ 1 + (1+mini|ID)" 
+modelMiniBoundaryControl <- lme4::lmer(formula = formulaMiniControl, data=subset(subset_RI, cue=="boundary"))
+#likelihood ratio test
+ratioMiniBoundary = anova(modelMiniblocksBoundary, modelMiniBoundaryControl)
+ratioMiniBoundary
+```
+
+As we decided to recode relative influence score to dCorrect / (dCorrect + dOther), we ran the main model with miniblocks again with the new dependent variable to see if the slope differ despite the same direction of improvement.
+
+```{r MEM for miniblocks}
+#model with new recoded dependent variable
+formulaMiniblocksCue <- "correct_RI ~ cue*miniblock + (0+miniblock:cue|ID)"
+modelMiniblocksCue <- lme4::lmer(formula = formulaMiniblocksCue, data=subset_RI)
+summary(modelMiniblocksCue)
+```
+
+To test the significance of the interaction, we ran a likelihood ratio test comparing our model and a model with both cue and miniblock as predictors but without the interaction.
+
+```{r testing interaction significance}
+#control model for interaction
+formulaMiniblocksControl <- "correct_RI ~ cueMM+mini + (1+mini:cueMM|ID)"
+modelMiniblocksControl <- lme4::lmer(formula = formulaMiniblocksControl, data=subset_RI)
+summary(modelMiniblocksControl)
+#likelihood ratio test
+ratioMini <- anova(modelMiniblocksCue, modelMiniblocksControl)
+ratioMini
+```
+
+To see whether the model including cue is better than a miniblock with random effect we ran a likelihood ratio test.
+
+```{r testing interaction significance}
+#control model
+formulaJustCue <- "correct_RI ~ mini + (1+mini:cueMM|ID)"
+modelJustCue <- lme4::lmer(formula = formulaJustCue, data=subset_RI)
+summary(modelJustCue)
+#likelihood ratio test
+ratioMini <- anova(modelMiniblocksControl, modelJustCue)
+ratioMini
+```
+
+## Age
+
+To test our main hypothesis, we ran mixed model including age and cue as main predictors with interaction.
+
+### Relative Influence
+
+#### Mixed Models
+```{r}
+#full model
 formulaFull <- "relativeInfluence ~ age_c*cueMM + ( 1 + cueMM | ID)" 
 modelFull <- lmer(formula = formulaFull, data=subset_RI)
 summary(modelFull)
 ```
 
+The significance of the interaction was tested using likelihood ratio test. 
 
-```{r ratio Test} 
+```{r} 
+#control model
 controlFinalInt <- "relativeInfluence ~ age_c + cueMM + (1 + cueMM | ID)" 
 modelControl <- lmer(formula = controlFinalInt, data=subset_RI)
+#likelihood ratio test
 ratioFullModel <- anova(modelFull, modelControl)
 ratioFullModel
 ```
 
+To see if age remains a significant predictor without cue, we ran mixed models separately for boundary-dependent and landmark-dependent objects and tested them with likelihood ratio test including only random intercepts for participants.
 
 ```{r age model landmark}
+#landmark-dependent objects
 formulaAgeLandmark <- "relativeInfluence ~ age_c + (1|ID)"
 modelAgeLandmark <- lme4::lmer(formula = formulaAgeLandmark, data=subset(subset_RI, cue=="landmark"))
 summary(modelAgeLandmark)
 
+#control model
 controlAgeLandmark <- "relativeInfluence ~ 1 + (1 |ID)"
 modelControlAgeLandmark <- lme4::lmer(formula = controlAgeLandmark, data=subset(subset_RI, cue=="landmark"))
+#likelihood ratio test
 ratioAgeLandmark <- anova(modelAgeLandmark, modelControlAgeLandmark)
 ratioAgeLandmark
 ```
 
 ```{r age model boundary}
+#boundary-dependent objects
 formulaAgeBoundary <- "relativeInfluence ~ age_c +(1|ID)"
 modelAgeBoundary <- lme4::lmer(formula = formulaAgeBoundary, data=subset(subset_RI, cue=="boundary"))
 summary(modelAgeBoundary)
 
+#control model
 controlAgeBoundary <- "relativeInfluence ~ 1 + (1 |ID)"
 modelControlAgeBoundary <- lme4::lmer(formula = controlAgeBoundary, data=subset(subset_RI, cue=="boundary"))
+#likelihood ratio test 
 ratioAgeBoundary <- anova(modelAgeBoundary, modelControlAgeBoundary)
 ratioAgeBoundary
 ```
 
+#### Graphs
+
+The graph below visualizes how the relative influence improves with age as seen in collected data.
+
 ```{r RI_final graph}
 RI_final <- ggplot(relativeInfluenceBlocks, aes(age, relativeInf, color=cue)) + 
-  theme_cowplot() +
+  # setting up color palette - scico tokyo 
   scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, guide = FALSE) +
-  stat_summary(fun=mean, aes(group=cue), geom="line", size = 1.5) +
+  # overall mean and se
   stat_summary(fun=mean, aes(group=cue), geom="point", size = 2) +
   stat_summary(fun.data=mean_se, aes(group=cue),  
                geom="errorbar", size=0.8, width=0.1, alpha=0.95) +
+  # line connecting the avergae values
+  stat_summary(fun=mean, aes(group=cue), geom="line", size = 1.5) +
+  # setting up a new color scale for better visibility of individual geom_points
   new_scale_color() + 
+  # single  subject data points (1 per participant)
   geom_point(aes(color=cue)) + 
+  # new color scale - also scico tokyo but in smaller range
   scale_color_scico_d(palette = 'tokyo', begin=0.3, end=0.7, labels = c("Boundary", "Landmark")) +
+  # 0.5 neutral score for reference
+  geom_hline(yintercept = 0.5, linetype=2, alpha=0.6) +
+  # chaning breaks and limits of both axis
   scale_x_continuous(breaks = c(8,9,10,11,12,13,14,15)) +
   scale_y_continuous(limits = c(0.2, 0.8), breaks = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)) +
+  # changing labels and title
   labs(x= "Age", y = "Relative Influence (0-1)", 
        title = "Data", color="Cue") +
-  
-  geom_hline(yintercept = 0.5, linetype=2, alpha=0.6)
-  
+  # background setting
+  theme_cowplot() 
+
+# show the graph
 RI_final
 ```
+
+The graph below visualizes the relative influence age-dependent improvement based on a mixed model predictions.
+
 ```{r RI_model graph}
+# calculating values predicted by the mixed model
 RI_predict <- ggeffects::ggpredict(modelFull, terms = c("age_c", "cueMM")) %>%
   as_tibble() %>%
   mutate(cuePredict = factor(if_else(group == 1, true = "boundary", false = "landmark"),
                       levels = c("boundary", "landmark")))
-  
+ 
 RI_model <- ggplot(RI_predict, aes(x = x, y = predicted, colour = cuePredict, fill = cuePredict)) +
-  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .2, linetype=0) +
+  # plotting the prediction
   geom_line(size = 0.5) +
+  # plotting the confidence levels
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .2, linetype=0) +
+  # setting up color and fill palette - scico tokyo 
   scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
   scale_fill_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
+  # changing limits, breaks and labels of both axis 
   scale_x_continuous(breaks = sort(unique(Age_c$age_c)), labels = c("8", "9", "10", "11", "12", "13", "14", "15")) +
   scale_y_continuous(breaks = c(0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8), limits = c(0.2, 0.8)) +
+  # background setting
   theme_cowplot() +
+  # changing labels and title
   labs(x="Age", y=" ", color="Cue", fill="Cue", 
        title = "Mixed Model") + 
-  theme(legend.position = "none") +
+  # 0.5 neutral score for reference
   geom_hline(yintercept = 0.5, linetype=2, alpha=0.6)
 
+#show the graph
 RI_model
 ```
 
 ```{r graphs together}
+# specifying the layout
 layout <- "
 AAAAA#BBBBBB
 AAAAA#BBBBBB
@@ -656,24 +1054,31 @@ AAAAA#BBBBBB
 
 g_final <- RI_final + RI_model &
   plot_layout(design=layout) &
+  # unifying aesthetical aspects, mainly text size and style
   theme(axis.title = element_text(size = 10), axis.text = element_text(size=10), 
         legend.title = element_text(size=10), legend.text = element_text(size=10),
         legend.position = "bottom",
         plot.title = element_text(size=12, face="italic"),
         plot.tag = element_text(size = 10, face="bold")) &
+  # adding title and tags
   plot_annotation(title = 'Positional Memory',
                   theme = theme(plot.title = element_text(size = 12, face="bold")),
                   tag_levels = list(c('A', 'B')))
 
-g_final
-
+#saving the graph assembly as pdf and png
 ggsave("relativeInfluence_final.pdf", plot=g_final, units = "cm", width = 15, height = 9, 
        dpi = "retina", device = cairo_pdf, path = here("figures"))
 ggsave("relativeInfluence_final.png", plot=g_final, units = "cm", width = 15, height = 9, 
        dpi = "retina", device = "png", path = here("figures"))
+
+#show the plot
+g_final 
 ```
 
-#recoded relative influence
+
+### Recoded dependent variable
+
+Next, we tested whether the effect of age and age and cue interaction remain when using the new recoded relative influence score as dependent variable. 
 
 ```{r}
 formulaFullNext <- "correct_RI ~ age_c*cueMM + ( 1 + cueMM | ID)" 
@@ -682,8 +1087,10 @@ summary(modelFullNext)
 ```
 
 ```{r} 
+#control model for interaction
 controlFinalNext <- "correct_RI ~ age_c + cueMM + (1 + cueMM | ID)" 
 modelControlNext <- lmer(formula = controlFinalNext, data=subset_RI)
+#likelihood ratio test
 ratioFullModelNext <- anova(modelFullNext, modelControlNext)
 ratioFullModelNext
 ```
@@ -757,4 +1164,90 @@ ggsave("relativeInfluence_finalNew.pdf", plot=g_final_next, units = "cm", width 
 ggsave("relativeInfluence_finalNew.png", plot=g_final_next, units = "cm", width = 15, height = 9, 
        dpi = "retina", device = "png", path = here("figures"))
 ```
+
+### Distance error
+
+```{r}
+formulaFullNext <- "error ~ age_c*cueMM + ( 1 + cueMM | ID)" 
+modelFullNext <- lmer(formula = formulaFullNext, data=subset_RI)
+summary(modelFullNext)
+```
+
+```{r} 
+#control model for interaction
+controlFinalNext <- "error ~ age_c + cueMM + (1 + cueMM | ID)" 
+modelControlNext <- lmer(formula = controlFinalNext, data=subset_RI)
+#likelihood ratio test
+ratioFullModelNext <- anova(modelFullNext, modelControlNext)
+ratioFullModelNext
+```
+
+```{r RI_final graph next}
+distance_final <- ggplot(relativeInfluenceBlocks, aes(age, distanceError, color=cue)) + 
+  theme_cowplot() +
+  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, guide = FALSE) +
+  stat_summary(fun=mean, aes(group=cue), geom="line", size = 1.5) +
+  stat_summary(fun=mean, aes(group=cue), geom="point", size = 2) +
+  stat_summary(fun.data=mean_se, aes(group=cue),  
+               geom="errorbar", size=0.8, width=0.1, alpha=0.95) +
+  new_scale_color() + 
+  geom_point(aes(color=cue)) + 
+  scale_color_scico_d(palette = 'tokyo', begin=0.3, end=0.7, labels = c("Boundary", "Landmark")) +
+  scale_x_continuous(breaks = c(8,9,10,11,12,13,14,15)) +
+  labs(x= "Age", y = "Distance error (vm)", 
+       title = "Data", color="Cue") 
+  
+distance_final
+```
+
+
+```{r RI_model graph next}
+distance_predict <- ggeffects::ggpredict(modelFullNext, terms = c("age_c", "cueMM")) %>%
+  as_tibble() %>%
+  mutate(cuePredict = factor(if_else(group == 1, true = "boundary", false = "landmark"),
+                      levels = c("boundary", "landmark")))
+  
+distance_model <- ggplot(distance_predict, aes(x = x, y = predicted, colour = cuePredict, fill = cuePredict)) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .2, linetype=0) +
+  geom_line(size = 0.5) +
+  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
+  scale_fill_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
+  scale_x_continuous(breaks = sort(unique(Age_c$age_c)), labels = c("8", "9", "10", "11", "12", "13", "14", "15")) +
+  theme_cowplot() +
+  labs(x="Age", y=" ", color="Cue", fill="Cue", 
+       title = "Mixed Model") + 
+  theme(legend.position = "none") 
+
+distance_model
+```
+
+```{r graphs together next}
+layout <- "
+AAAAA#BBBBBB
+AAAAA#BBBBBB
+AAAAA#BBBBBB
+"
+
+g_final_distance <- distance_final + distance_model &
+  plot_layout(design=layout) &
+  theme(axis.title = element_text(size = 10), axis.text = element_text(size=10), 
+        legend.title = element_text(size=10), legend.text = element_text(size=10),
+        legend.position = "bottom",
+        plot.title = element_text(size=12, face="italic"),
+        plot.tag = element_text(size = 10, face="bold")) &
+  plot_annotation(title = 'Positional Memory',
+                  theme = theme(plot.title = element_text(size = 12, face="bold")),
+                  tag_levels = list(c('A', 'B')))
+
+g_final
+
+ggsave("distanceError_final.pdf", plot=g_final_distance, units = "cm", width = 15, height = 9, 
+       dpi = "retina", device = cairo_pdf, path = here("figures"))
+ggsave("distanceError_final.png", plot=g_final_distance, units = "cm", width = 15, height = 9, 
+       dpi = "retina", device = "png", path = here("figures"))
+```
+
+
+
+
 
