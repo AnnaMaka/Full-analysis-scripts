@@ -58,7 +58,7 @@ angle <- function(a_X, a_Y, b_X, b_Y) {
 
 Creating a list of subject IDs based on presence of summary files for Block 4 
 Subsequently, creating list of new random IDs which were used during a transfer of data between computers
-```{r ID, eval=FALSE}
+```{r ID}
 fn <- list.files(path =  here("data"), pattern="*_feedbackPhase_block4_Sum") 
 subjects <- c()
 for (i_file in length(fn)) {
@@ -69,7 +69,7 @@ newID <- sample(c(1000:9999), size=length(subjects), replace=FALSE)
 ```
 
 Retrieving participants' age from participants.csv (used for participation tracking purposes, created manually)
-```{r age, eval=FALSE}
+```{r age}
 age <- read.table(here("data", "participants.csv"), sep  = ";", header = TRUE, colClasses = "character") %>% 
   select(study.ID, age, study) %>% 
   filter(study == "yes") 
@@ -83,7 +83,7 @@ Dataframes created along the way:
 - Sum: all data for 1 participant 
 - sub_dat: data from 1 block for 1 participant 
 
-```{r Summary, eval=FALSE}
+```{r Summary}
 blocks <- c(1, 2, 3, 4) #number of blocks in the experiment
 Sum_all = tibble() #creating an empty tibble where eventually will the full dataset be stored
 
@@ -341,7 +341,7 @@ for(i_sub in subjects){
 
 Last changes to the dataframe to make it ready for analysis.
 
-```{r, eval=FALSE}
+```{r}
 #assigning the correct format to values in columns used for analysis
 Sum_all <- Sum_all %>% 
   arrange(ID, objectTrial) %>% #ordering the dataframe according to ID and the experiment sequence
@@ -396,7 +396,7 @@ for (i_trial in 1:nrow(Sum_all)) {
 
 Loading in Trajectory files and creating one huge data frame (~30,000 lines per participant)
 
-```{r Trajectory, eval=FALSE}
+```{r Trajectory}
 Traj = tibble() #creating an empty where eventually the full dataframe will be stored (>2M lines)
 
 for(i_sub in subjects){
@@ -443,7 +443,7 @@ for(i_sub in subjects){
 
 Getting rid of trajectory locations outside of the arena which have been probably caused by an internet glitch 
 
-```{r Traj filtering, eval=FALSE}
+```{r Traj filtering}
 #removing locations outside of the arena (possibly internet glitch)
 Traj <- filter(Traj, charX > -27.5 & charX < 27.5 & charY > -27.5 & charY < 27.5) 
 ```
@@ -454,7 +454,7 @@ Traj <- filter(Traj, charX > -27.5 & charX < 27.5 & charY > -27.5 & charY < 27.5
 
 Generating 1000 randomly distributed locations within the arena
 
-```{r thousand points, eval=FALSE}
+```{r thousand points}
 thousand_x <- c()
 thousand_y <- c()
 points <- c(1:1000)
@@ -478,7 +478,7 @@ for (i in points){
 
 Calculating the memory score based on random distribution of 1000 locations within the arena
 
-```{r calculating memory score (random), eval=FALSE}
+```{r calculating memory score (random)}
 Sum_all <- Sum_all %>% mutate(memoryScoreRand = NA, memoryScoreTraj = NA) #creating 2 new columns in the summary dataframe
 
 for (i_trial in 1:nrow(Sum_all)) {
@@ -499,7 +499,7 @@ for (i_trial in 1:nrow(Sum_all)) {
 
 Calculating memory scores based on 1000 points taken from the complete trajectory of the participant
 
-```{r calculating memory score (trajectory), eval=FALSE}
+```{r calculating memory score (trajectory)}
 #basically row counter
 trials <- 0 
 for (i_sub in subjects) {
@@ -529,7 +529,7 @@ Last changes before saving the datasets into big files
 
 
 Rearrange the columns into more cohesive order and replacing the local ID with a new ID that is necessary for data transfer.
-```{r organising Sum_all better, eval=FALSE}
+```{r organising Sum_all better}
 Sum_all <- Sum_all %>%
   relocate(newID, age, age_c, block, miniblock, mini, objectTrial, trial, cue, object, 
            sec2Beg, dropTime, secTrialRepl, trialLen, sec2End, 
@@ -544,7 +544,7 @@ Sum_all <- Sum_all %>%
 
 Replacing local ID with a new ID that is necessary for data transfer, this time in Trajectory dataframe. 
 
-```{r, eval=FALSE}
+```{r}
 Traj <- Traj %>%
   select(-ID) %>%
   rename(ID = newID)
@@ -607,7 +607,7 @@ Explanations of all columns:
 
 Saving these into text files into our local data folder.
 
-```{r writing big file, eval=FALSE}
+```{r writing big file}
 write.table(Sum_all, file = here("data", "Sum.txt"), sep = " ", row.names = FALSE, col.names = TRUE)  
 write.table(Traj, file = here("data", "Traj.txt"), sep = " ", row.names = FALSE, col.names = TRUE) 
 ```

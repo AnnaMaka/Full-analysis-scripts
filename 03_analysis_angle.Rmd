@@ -332,14 +332,14 @@ Let's subset and summarize data for blocks 2-4.
 ```{r filtering and summarising the data}
 subset_RA <- Sum_all %>% 
   filter(block!=1) %>% 
-  select(ID, age, age_c, block, miniblock, mini, objectTrial, trial, cue, cueMM, angleError, relativeAngle, correct_RA) 
+  select(ID, age, age_c, block, miniblock, mini, objectTrial, trial, cue, cueMM, angleError, relativeAngle, cueDissonanceAngle) 
 
 relativeAngleBlocks <- subset_RA %>%
   group_by(ID, cue, age) %>% 
   summarise(angleErr = mean(abs(angleError)), 
             relativeAng = mean(relativeAngle), 
             raSD = sd(relativeAngle), 
-            corCueRA = mean(correct_RA),
+            cueDisA = mean(cueDissonanceAngle),
             .groups="drop")
 ```
 
@@ -741,7 +741,7 @@ As we decided to recode relative influence score to dCorrect / (dCorrect + dOthe
 
 ```{r}
 #model with new recoded dependent variable - cue dissonance
-formulaCueDis_mini <- "correct_RA ~ cueMM*mini + (1+mini+cueMM||ID)"
+formulaCueDis_mini <- "cueDissonanceAngle ~ cueMM*mini + (1+mini+cueMM||ID)"
 modelCueDis_mini <- lme4::lmer(formula = formulaCueDis_mini, data=subset_RA)
 summary(modelCueDis_mini)
 ```
@@ -750,7 +750,7 @@ To test the significance of the interaction, we ran a likelihood ratio test comp
 
 ```{r}
 #control model for interaction
-formulaCueDis_miniControl <- "correct_RA ~ cueMM+mini + (1+mini+cueMM|ID)"
+formulaCueDis_miniControl <- "cueDissonanceAngle ~ cueMM+mini + (1+mini+cueMM|ID)"
 modelCueDis_miniControl <- lme4::lmer(formula = formulaCueDis_miniControl, data=subset_RA)
 
 #likelihood ratio test
@@ -762,7 +762,7 @@ To see whether the model including cue is better than a miniblock with random ef
 
 ```{r}
 #control model
-formulaJustCue <- "correct_RA ~ mini + (1+mini+cueMM|ID)"
+formulaJustCue <- "cueDissonanceAngle ~ mini + (1+mini+cueMM|ID)"
 modelJustCue <- lme4::lmer(formula = formulaJustCue, data=subset_RA)
 summary(modelJustCue)
 
@@ -914,14 +914,14 @@ ggsave("relativeInfluence_finalAng.png", plot=g_finalAng,
 Next, we tested whether the effect of age and age and cue interaction remain when using the new variable - cue dissonance (one direction recoded relative influence score) as dependent variable. 
 
 ```{r}
-formulaCueDis_A <- "correct_RA ~ age_c*cueMM + ( 1 + cueMM | ID)" 
+formulaCueDis_A <- "cueDissonanceAngle ~ age_c*cueMM + ( 1 + cueMM | ID)" 
 modelCueDis_A <- lmer(formula = formulaCueDis_A, data=subset_RA)
 summary(modelCueDis_A)
 ```
 
 ```{r} 
 #control model for interaction
-controlCueDis_A <- "correct_RA ~ age_c + cueMM + (1 + cueMM | ID)" 
+controlCueDis_A <- "cueDissonanceAngle ~ age_c + cueMM + (1 + cueMM | ID)" 
 modelControlCueDis_A <- lmer(formula = controlCueDis_A, data=subset_RA)
 #likelihood ratio test
 ratioCueDis_A <- anova(modelCueDis_A, modelControlCueDis_A)
@@ -934,7 +934,7 @@ Is cue even significant predictor?
 
 ```{r} 
 #control model for cue as predictor
-controlCueDis_cueA <- "correct_RA ~ age_c + (1 + cueMM | ID)" 
+controlCueDis_cueA <- "cueDissonanceAngle ~ age_c + (1 + cueMM | ID)" 
 modelCueDis_cueControlA <- lmer(formula = controlCueDis_cueA, data=subset_RA)
 
 #likelihood ratio test
@@ -946,7 +946,7 @@ Adding miniblock as a predictor instead to find the best model.
 
 ```{r} 
 #control model for miniblock as predictor
-miniFullCueDis_A<- "correct_RA ~ age_c + mini + (1 + cueMM | ID)" 
+miniFullCueDis_A<- "cueDissonanceAngle ~ age_c + mini + (1 + cueMM | ID)" 
 modelCueDis_miniFullA <- lmer(formula = miniFullCueDis_A, data=subset_RA)
 summary(modelCueDis_miniFullA)
 
@@ -960,7 +960,7 @@ ratioCueDis_fullMiniA
 The graph below visualizes how the cue dissonance improves with age as seen in collected data.
 
 ```{r}
-CueDisA_final <- ggplot(relativeAngleBlocks, aes(age, corCueRA, color=cue)) + 
+CueDisA_final <- ggplot(relativeAngleBlocks, aes(age, cueDisA, color=cue)) + 
   theme_cowplot() +
   scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, guide = FALSE) +
   stat_summary(fun=mean, aes(group=cue), geom="line", size = 1.5) +
