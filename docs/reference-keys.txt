@@ -35,6 +35,7 @@ exclusion-criteria-1
 descriptives-1
 block-1-performance-1
 raw-angle-error-visualization
+angle-error-stats
 cue-differences-1
 relative-influence-2
 angle-error-difference

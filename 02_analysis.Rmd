@@ -489,7 +489,7 @@ Below, the calculation of relative influence score is visualised.
 
 ```{r}
 #loading a data from block 2-4 for a single participant
-graph_sub <- filter(Sum_all, ID == i_sub & block == 4 & trial==15) 
+graph_sub <- filter(Sum_all, ID == subjects[5] & block == 4 & trial==15) 
 
 
 relativeInf_graph <- ggplot(data=graph_sub) +
@@ -690,6 +690,15 @@ cue_Dist <- ggplot(relativeInfluenceBlocks, aes(x=cue, y= distanceError)) +
                position=position_nudge(+0.1), width = .1, outlier.shape = NA) +
   geom_boxplot(data=relativeInfluenceBlocks %>% filter(cue=="boundary"), 
                position=position_nudge(-0.1), width = .1, outlier.shape = NA) +
+  # adding plot of mean and SEM  
+  stat_summary(data=relativeInfluenceBlocks %>% filter(cue=="landmark"), 
+               position=position_nudge(+0.2), fun = mean, geom = "point", size=1, shape = 16, colour = "black") + 
+  stat_summary(data=relativeInfluenceBlocks %>% filter(cue=="landmark"), 
+               position=position_nudge(+0.2), fun.data = mean_se, geom = "errorbar", colour = "black", width = 0, size = 0.5) +
+  stat_summary(data=relativeInfluenceBlocks %>% filter(cue=="boundary"), 
+               position=position_nudge(-0.2), fun = mean, geom = "point", size=1, shape = 16, colour = "black") + 
+  stat_summary(data=relativeInfluenceBlocks %>% filter(cue=="boundary"), 
+               position=position_nudge(-0.2), fun.data = mean_se, geom = "errorbar", colour = "black", width = 0, size = 0.5) +
   # aesthetical changes
   theme_cowplot() +
   theme(legend.position = "none", 
@@ -772,7 +781,7 @@ g_objTrial <- ggplot(summary_objectTrial, aes(objectTrial, relativeInf, group=in
   stat_summary(data = subset(summary_objectTrial, objectTrial  < 13 & objectTrial > 8), fun=mean, aes(group=cue), geom="line", size = 1.5) +
   stat_summary(data = subset(summary_objectTrial, objectTrial > 12), fun=mean, aes(group=cue), geom="line", size = 1.5) +
   # assigning scico palette tokyo as a color palatte
-  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary, Landmark")) +
+  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
   # line showing 0.5 neutral relative score for reference
   geom_hline(yintercept = 0.5, linetype = 2) +
   # adding a vertical lines showing the start of a new block with a proper label

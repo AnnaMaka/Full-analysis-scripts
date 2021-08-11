@@ -164,6 +164,7 @@ g_anglB1 <- ggplot(Sum_all %>% filter(block == 1), aes(x = angleError)) +
   
 g_anglB1
 ```
+
 ### Angle Error Stats
 
 Data summarizing for each participant for block 1.

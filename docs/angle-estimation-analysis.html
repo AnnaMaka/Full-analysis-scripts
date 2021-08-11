@@ -179,6 +179,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.2" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#descriptives-1"><i class="fa fa-check"></i><b>4.2</b> Descriptives</a></li>
 <li class="chapter" data-level="4.3" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#block-1-performance-1"><i class="fa fa-check"></i><b>4.3</b> Block 1 Performance</a><ul>
 <li class="chapter" data-level="4.3.1" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#raw-angle-error-visualization"><i class="fa fa-check"></i><b>4.3.1</b> Raw Angle Error Visualization</a></li>
+<li class="chapter" data-level="4.3.2" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#angle-error-stats"><i class="fa fa-check"></i><b>4.3.2</b> Angle Error Stats</a></li>
 </ul></li>
 <li class="chapter" data-level="4.4" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#cue-differences-1"><i class="fa fa-check"></i><b>4.4</b> Cue Differences</a><ul>
 <li class="chapter" data-level="4.4.1" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#relative-influence-2"><i class="fa fa-check"></i><b>4.4.1</b> Relative Influence</a></li>
@@ -308,7 +309,7 @@ To be included in the analysis, participant’s memory scores from block 1 need 
 <span id="cb189-16"><a href="angle-estimation-analysis.html#cb189-16"></a>        <span class="dt">aspect.ratio =</span><span class="dv">1</span>, </span>
 <span id="cb189-17"><a href="angle-estimation-analysis.html#cb189-17"></a>        <span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">face=</span><span class="st">&quot;italic&quot;</span>, <span class="dt">size=</span><span class="dv">12</span>)) <span class="op">+</span></span>
 <span id="cb189-18"><a href="angle-estimation-analysis.html#cb189-18"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">15</span>))</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
 <div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="angle-estimation-analysis.html#cb190-1"></a><span class="co">#actual average RT and sd</span></span>
 <span id="cb190-2"><a href="angle-estimation-analysis.html#cb190-2"></a>reaction_time &lt;-<span class="st"> </span><span class="kw">summarise</span>(reaction_time_dat, <span class="dt">mean =</span> <span class="kw">mean</span>(estResponse), <span class="dt">sd=</span><span class="kw">sd</span>(estResponse), <span class="dt">min=</span><span class="kw">min</span>(estResponse), <span class="dt">max=</span><span class="kw">max</span>(estResponse))</span>
 <span id="cb190-3"><a href="angle-estimation-analysis.html#cb190-3"></a></span>
@@ -343,8 +344,10 @@ To be included in the analysis, participant’s memory scores from block 1 need 
 <span id="cb194-15"><a href="angle-estimation-analysis.html#cb194-15"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.title.y =</span> <span class="kw">element_text</span>(<span class="dt">hjust =</span> <span class="fl">0.7</span>))</span>
 <span id="cb194-16"><a href="angle-estimation-analysis.html#cb194-16"></a>  </span>
 <span id="cb194-17"><a href="angle-estimation-analysis.html#cb194-17"></a>g_anglB1</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/angle%20estimation%20ech%20trial%20in%20Block%201-1.png" width="672" />
-### Angle Error Stats</p>
+<p><img src="Test-book_files/figure-html/angle%20estimation%20ech%20trial%20in%20Block%201-1.png" width="672" /></p>
+</div>
+<div id="angle-error-stats" class="section level3">
+<h3><span class="header-section-number">4.3.2</span> Angle Error Stats</h3>
 <p>Data summarizing for each participant for block 1.</p>
 <div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="angle-estimation-analysis.html#cb195-1"></a>summaryBlock1_Angle &lt;-<span class="st"> </span>Sum_all <span class="op">%&gt;%</span></span>
 <span id="cb195-2"><a href="angle-estimation-analysis.html#cb195-2"></a><span class="st">  </span><span class="kw">filter</span>(block<span class="op">==</span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -492,7 +495,7 @@ Also, is there performance difference between landmark- vs boundary-dependent ob
 <span id="cb203-59"><a href="angle-estimation-analysis.html#cb203-59"></a></span>
 <span id="cb203-60"><a href="angle-estimation-analysis.html#cb203-60"></a><span class="co"># show the graph</span></span>
 <span id="cb203-61"><a href="angle-estimation-analysis.html#cb203-61"></a>relativeAng_graph</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-59-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-64-1.png" width="672" /></p>
 <p>Let’s subset and summarize data for blocks 2-4.</p>
 <div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="angle-estimation-analysis.html#cb204-1"></a>subset_RA &lt;-<span class="st"> </span>Sum_all <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb204-2"><a href="angle-estimation-analysis.html#cb204-2"></a><span class="st">  </span><span class="kw">filter</span>(block<span class="op">!=</span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -778,7 +781,7 @@ Also, is there performance difference between landmark- vs boundary-dependent ob
 <span id="cb231-23"><a href="angle-estimation-analysis.html#cb231-23"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits =</span> <span class="kw">c</span>(<span class="fl">0.5</span>, <span class="fl">4.5</span>), <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>))</span>
 <span id="cb231-24"><a href="angle-estimation-analysis.html#cb231-24"></a></span>
 <span id="cb231-25"><a href="angle-estimation-analysis.html#cb231-25"></a>g_miniAng</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-64-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-69-1.png" width="672" /></p>
 <p>The graph below shows the relative influence scores for each miniblock throughout block 2-4 (averaging only over 2 scores per miniblock)</p>
 <div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="angle-estimation-analysis.html#cb232-1"></a><span class="co">#data summarizing</span></span>
 <span id="cb232-2"><a href="angle-estimation-analysis.html#cb232-2"></a>summary_objectTrial_A &lt;-<span class="st"> </span>subset_RA <span class="op">%&gt;%</span></span>
@@ -817,7 +820,7 @@ Also, is there performance difference between landmark- vs boundary-dependent ob
 <span id="cb232-35"><a href="angle-estimation-analysis.html#cb232-35"></a></span>
 <span id="cb232-36"><a href="angle-estimation-analysis.html#cb232-36"></a></span>
 <span id="cb232-37"><a href="angle-estimation-analysis.html#cb232-37"></a>g_objTrialAng </span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-65-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-70-1.png" width="672" /></p>
 <p>Assembling the two plots above for more comprehensive visualization.</p>
 <div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="angle-estimation-analysis.html#cb233-1"></a>layout &lt;-<span class="st"> &quot;</span></span>
 <span id="cb233-2"><a href="angle-estimation-analysis.html#cb233-2"></a><span class="st">AAAAAA</span></span>
@@ -840,7 +843,7 @@ Also, is there performance difference between landmark- vs boundary-dependent ob
 <span id="cb233-19"><a href="angle-estimation-analysis.html#cb233-19"></a>                  <span class="dt">tag_levels =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&#39;C&#39;</span>, <span class="st">&#39;D&#39;</span>)))</span>
 <span id="cb233-20"><a href="angle-estimation-analysis.html#cb233-20"></a></span>
 <span id="cb233-21"><a href="angle-estimation-analysis.html#cb233-21"></a>g_minAng</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-66-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-71-1.png" width="672" /></p>
 <div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="angle-estimation-analysis.html#cb234-1"></a><span class="kw">ggsave</span>(<span class="st">&quot;relativeAngle_min.pdf&quot;</span>, <span class="dt">plot=</span>g_minAng, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="dv">15</span>, <span class="dt">height =</span> <span class="dv">13</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> cairo_pdf, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span>
 <span id="cb234-2"><a href="angle-estimation-analysis.html#cb234-2"></a><span class="kw">ggsave</span>(<span class="st">&quot;relativeAngle_min.png&quot;</span>, <span class="dt">plot=</span>g_minAng, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="dv">15</span>, <span class="dt">height =</span> <span class="dv">13</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> <span class="st">&quot;png&quot;</span>, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span></code></pre></div>
 </div>
@@ -1285,7 +1288,7 @@ Also, is there performance difference between landmark- vs boundary-dependent ob
 <span id="cb289-15"><a href="angle-estimation-analysis.html#cb289-15"></a>  </span>
 <span id="cb289-16"><a href="angle-estimation-analysis.html#cb289-16"></a>  </span>
 <span id="cb289-17"><a href="angle-estimation-analysis.html#cb289-17"></a>RA_final</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-80-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-85-1.png" width="672" /></p>
 <p>The graph below visualizes the relative influence age-dependent improvement based on a mixed model predictions.</p>
 <div class="sourceCode" id="cb290"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb290-1"><a href="angle-estimation-analysis.html#cb290-1"></a><span class="co"># calculating values predicted by the mixed model</span></span>
 <span id="cb290-2"><a href="angle-estimation-analysis.html#cb290-2"></a>RA_predict &lt;-<span class="st"> </span>ggeffects<span class="op">::</span><span class="kw">ggpredict</span>(modelFullAngle, <span class="dt">terms =</span> <span class="kw">c</span>(<span class="st">&quot;age_c&quot;</span>, <span class="st">&quot;cueMM&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -1307,7 +1310,7 @@ Also, is there performance difference between landmark- vs boundary-dependent ob
 <span id="cb290-18"><a href="angle-estimation-analysis.html#cb290-18"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="fl">0.5</span>, <span class="dt">linetype=</span><span class="dv">2</span>, <span class="dt">alpha=</span><span class="fl">0.6</span>)</span>
 <span id="cb290-19"><a href="angle-estimation-analysis.html#cb290-19"></a></span>
 <span id="cb290-20"><a href="angle-estimation-analysis.html#cb290-20"></a>RA_model</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-81-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-86-1.png" width="672" /></p>
 <div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb291-1"><a href="angle-estimation-analysis.html#cb291-1"></a>layout &lt;-<span class="st"> &quot;</span></span>
 <span id="cb291-2"><a href="angle-estimation-analysis.html#cb291-2"></a><span class="st">AAAAA#BBBBBB</span></span>
 <span id="cb291-3"><a href="angle-estimation-analysis.html#cb291-3"></a><span class="st">AAAAA#BBBBBB</span></span>
@@ -1466,7 +1469,7 @@ Also, is there performance difference between landmark- vs boundary-dependent ob
 <span id="cb308-16"><a href="angle-estimation-analysis.html#cb308-16"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="fl">0.5</span>, <span class="dt">linetype=</span><span class="dv">2</span>, <span class="dt">alpha=</span><span class="fl">0.6</span>)</span>
 <span id="cb308-17"><a href="angle-estimation-analysis.html#cb308-17"></a>  </span>
 <span id="cb308-18"><a href="angle-estimation-analysis.html#cb308-18"></a>CueDisA_final</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-86-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-91-1.png" width="672" /></p>
 <p>The graph below visualizes the cue dissonance age-dependent improvement based on a mixed model predictions.</p>
 <div class="sourceCode" id="cb309"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb309-1"><a href="angle-estimation-analysis.html#cb309-1"></a>CueDisA_predict &lt;-<span class="st"> </span>ggeffects<span class="op">::</span><span class="kw">ggpredict</span>(modelCueDis_A, <span class="dt">terms =</span> <span class="kw">c</span>(<span class="st">&quot;age_c&quot;</span>, <span class="st">&quot;cueMM&quot;</span>)) <span class="op">%&gt;%</span></span>
 <span id="cb309-2"><a href="angle-estimation-analysis.html#cb309-2"></a><span class="st">  </span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span></span>
@@ -1487,7 +1490,7 @@ Also, is there performance difference between landmark- vs boundary-dependent ob
 <span id="cb309-17"><a href="angle-estimation-analysis.html#cb309-17"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="fl">0.5</span>, <span class="dt">linetype=</span><span class="dv">2</span>, <span class="dt">alpha=</span><span class="fl">0.6</span>)</span>
 <span id="cb309-18"><a href="angle-estimation-analysis.html#cb309-18"></a></span>
 <span id="cb309-19"><a href="angle-estimation-analysis.html#cb309-19"></a>CueDisA_model</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-87-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-92-1.png" width="672" /></p>
 <p>Assembly of the generated graphs.</p>
 <div class="sourceCode" id="cb310"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb310-1"><a href="angle-estimation-analysis.html#cb310-1"></a>layout &lt;-<span class="st"> &quot;</span></span>
 <span id="cb310-2"><a href="angle-estimation-analysis.html#cb310-2"></a><span class="st">AAAAA#BBBBBB</span></span>
