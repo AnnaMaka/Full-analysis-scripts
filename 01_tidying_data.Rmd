@@ -324,13 +324,13 @@ for(i_sub in subjects){
     errorB <- abs(angleDiff(Sum$boundaryAngle[i_trial], Sum$estAngle[i_trial]))
     Sum$relativeAngle[i_trial] <- errorL / (errorL + errorB)
     
-    #calculating the relative influence with a new formula "distCorrect/(distCorrect+distOther)" and creating values in the same direction for both cues
+    #calculating the relative influence with a new formula "distCorrect/(distCorrect+distOther)" and creating values in the same direction for both cues, new variable name - cue dissonance
     if (Sum$cue[i_trial] == "boundary") {
-      Sum$correct_RI[i_trial] <- distB / (distB + distL)
-      Sum$correct_RA[i_trial] <- errorB / (errorL + errorB)
+      Sum$cueDissonance[i_trial] <- distB / (distB + distL)
+      Sum$cueDissonanceAngle[i_trial] <- errorB / (errorL + errorB)
     } else {
-      Sum$correct_RI[i_trial] <- distL / (distL + distB)
-      Sum$correct_RA[i_trial] <- errorL / (errorL + errorB)
+      Sum$cueDissonance[i_trial] <- distL / (distL + distB)
+      Sum$cueDissonanceAngle[i_trial] <- errorL / (errorL + errorB)
     }
     
   }
@@ -339,12 +339,18 @@ for(i_sub in subjects){
 }
 ```
 
-Last changes to the summary dataframe
-```{r}
-#Contemporary chunck for having Age_c datafram loaded in for later graphing
-#data loading in wll be removed and the chunck will be joined with the following chunck
-Sum_all <- read_delim(here("data" ,"Sum.txt"), delim = " ", 
-                      col_names = TRUE, col_types = "fdddddddfcdddddddddddddddddddddddddddddddddddddddd") 
+Last changes to the dataframe to make it ready for analysis.
+
+```{r, eval=FALSE}
+#assigning the correct format to values in columns used for analysis
+Sum_all <- Sum_all %>% 
+  arrange(ID, objectTrial) %>% #ordering the dataframe according to ID and the experiment sequence
+  mutate( 
+         cueMM = recode(cue, "boundary" = 1, "landmark" = -1), #recoding cues to 1 and -1, used for mixed model analysis
+         newID = as.factor(newID), 
+         cue = as.factor(cue), 
+         age = as.numeric(age)
+         ) 
 
 # calculating centered age and miniblock (using this more complicated way as opposed to directly do scale() because different subjects can have a different number of rows in the Sum_all tibble)
 Age_c <- Sum_all %>% 
@@ -359,18 +365,6 @@ Mini_c <- Sum_all %>%
   distinct(miniblock) %>%
   ungroup() %>%
   mutate(mini = scale(miniblock, center=TRUE, scale=FALSE))
-```
-
-```{r, eval=FALSE}
-#assigning the correct format to values in columns used for analysis
-Sum_all <- Sum_all %>% 
-  arrange(ID, objectTrial) %>% #ordering the dataframe according to ID and the experiment sequence
-  mutate( 
-         cueMM = recode(cue, "boundary" = 1, "landmark" = -1), #recoding cues to 1 and -1, used for mixed model analysis
-         newID = as.factor(newID), 
-         cue = as.factor(cue), 
-         age = as.numeric(age)
-         ) 
 
 Sum_all <- inner_join(Sum_all, Age_c%>%select(ID, age_c), by="ID")
 Sum_all <- inner_join(Sum_all, Mini_c, by=c("ID", "miniblock"))
@@ -541,7 +535,7 @@ Sum_all <- Sum_all %>%
            sec2Beg, dropTime, secTrialRepl, trialLen, sec2End, 
            landmarkX, landmarkY, landmarkZ, objX, objY, objZ, remLocX, remLocY, remLocZ, 
            error, distanceTo1, distanceTo2, distanceTo3, averageDist, memoryScoreRand, memoryScoreTraj, 
-           landmarkCuePosX, landmarkCuePosY, boundaryCuePosX, boundaryCuePosY, relativeInfluence, correct_RI, 
+           landmarkCuePosX, landmarkCuePosY, boundaryCuePosX, boundaryCuePosY, relativeInfluence, cueDissonance, 
            trueAngle, estAngle, angleError) %>%
   select(-ID) %>%
   rename(ID = newID)
@@ -596,12 +590,14 @@ Explanations of all columns:
 - boundaryCuePosX - position of the cued object based on boundary (as if boundary-dependent) X coordinate, used for relative influence score  
 - boundaryCuePosY - position of the cued object based on boundary (as if boundary-dependent) Y coordinate, used for relative influence score  
 - relativeInfluence - relative influence score (distance to landmark-dependent location / (distance to landmark-dependent location + distance to boundary-dependent location))  
+- cueDissonance - distance to the correct location/ (distance to the correct location + distance to location predicted by the other cue)
 - trueAngle - correct angle to the cued object from the current participant's location  
 - estAngle - indicated angle to the cued object from the current participant's location  
 - angleError - difference between trueAngle and estAngle  
 - landmarkAngle - angle to a object location predicted by landmark  
 - boundaryAngle - angle to a object location predicted by boundary  
 - relativeAngle - relative influence score of angle estimation (landmarkAngle/ (landmarkAngle+boundaryAngle))  
+- cueDissonanceAngle - angle to the correct location/ (angle to the correct location + angle to location predicted by the other cue)
 - charX - participant's position when estimating the angle X coordinate  
 - charZ - participant's position when estimating the angle Z coordinate  
 - charY - participant's position when estimating the angle Y coordinate  

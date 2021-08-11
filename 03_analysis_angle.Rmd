@@ -7,10 +7,16 @@ documentclass: book
 output:
   bookdown::gitbook: default
 ---
+
 # Angle estimation analysis
+
+## Set up
+
 ```{r}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+Packages used for data analysis
 
 ```{r}
 library(lme4)
@@ -26,53 +32,88 @@ library(ggnewscale)
 library(here) 
 library(effsize)
 library(pwr)
+library(circular)
 ```
+
+Functions written for this analysis
 
 ```{r}
-blocks <- c(1, 2, 3, 4)
-trials <- c(1:16)
-objects <- c("monster", "partyhat", "lamp", "flower")
-```
+#function circleFun() generates locations of 100 points that are in shape of circle
+#used for mapping out the arena in graphs
+circleFun <- function(center = c(0,0), r = 27.5, npoints = 100){
+    tt <- seq(0,2*pi,length.out = npoints)
+    xx <- center[1] + r * cos(tt)
+    yy <- center[2] + r * sin(tt)
+    return(data.frame(x = xx, y = yy))
+}
 
-retrieving subject IDs from the directory
-```{r, eval=FALSE}
-fn <- list.files(path = here("data"), pattern="*_feedbackPhase_block4_Sum") 
-subjects <- c()
-for (i_file in length(fn)) {
-  subjects <- substr(fn,1,4)
+circleSome <- function(centerX, centerY, r = 27.5, npoints = 100, a1, a2){
+    tt <- seq(a1,a2,length.out = npoints)
+    xx <- centerX + r * cos(tt)
+    yy <- centerY + r * sin(tt)
+    return(data.frame(x = xx, y = yy))
 }
 ```
 
+
+Loading in the full dataset
+
 ```{r}
-Sum_angle <- read_delim(here("data" ,"SumAngle.txt"), delim = " ", col_names = TRUE) 
-Sum_all <- read_delim(here("data" ,"Sum.txt"), delim = " ", col_names = TRUE) 
+Sum_all <- read_delim(here("data" ,"Sum.txt"), delim = " ", col_names = TRUE, col_types = "fdddddddfcdddddddddddddddddddddddddddddddddddddddd") 
 ```
+
+Creating a list of subject IDs from the full dataset
 
 ```{r}
 subjects <- unique(Sum_all$ID)
 ```
 
+### Timeout session
+
+Identifying and filtering timeout sessions i.e. trials with time over 59 seconds between trial beginning and angle estimation
+
 ```{r}
-out <- c()
+#summary of timeout trials 
+timeout <- filter(Sum_all, secTrialEst > 59)
+print(sprintf("# timeout trials: %s", nrow(timeout)))
+print(sprintf("# participants with timeout trials: %s", length(unique(timeout$ID))))
+print(sprintf("average # timeout trials per participant with timeout trials: %s", nrow(timeout)/length(unique(timeout$ID))))
+print(sprintf("average # timeout trials per participant: %s", nrow(timeout)/length(subjects)))
+
+#filtering timeout trials as they do not include location estimation
+Sum_all <- filter(Sum_all, secTrialEst < 59)
+```
+
+### Exclusion criteria
+
+Participants are excluded based on positional memory performance in block 1 which is quantified using memory scores. 
+To be included in the analysis, participant's memory scores from block 1 need to be significantly greater than the chance level 0.5.
+
+```{r}
+exclusion <- c() #creating empty list that will contain the subject IDs that will be excluded
 for (i_sub in subjects) {
   score <- t.test(subset(Sum_all, ID==i_sub & block==1)$memoryScoreTraj, 
-                  mu=0.5, var.equal = FALSE, alternative = "greater") %>% tidy()
+                  mu=0.5, alternative = "greater") %>% tidy() #one-tailed t.test of block 1 memory scores against chance level 0.5
   if (score$p.value > 0.05) {
-    out <- c(out, i_sub)
+    exclusion <- c(exclusion, i_sub)
+    Sum_all <- filter(Sum_all, ID != i_sub)
     }
 }
-print(out)
-
-Sum_angle <- filter(Sum_angle, ID != out[1] & ID != out[2])
-Sum_all <-filter(Sum_all, ID != out[1] & ID != out[2])
-
+print(sprintf("# participants excluded: %s", length(exclusion)))
+print(sprintf("new overall sample size: %s", length(subjects)-length(exclusion)))
 ```
+
+## Descriptives
+
+**Reaction Time**
+
+We looked into reaction time (seconds between end of target object display and angle estimation). 
 
 ```{r}
 #average RT 
-reaction_time_dat <- Sum_angle %>%
+reaction_time_dat <- Sum_all %>%
   group_by(ID, age) %>%
-  summarise(estResponse = mean(secTrialEst), .groups = "drop") 
+  summarise(estResponse = mean(secTrialEst-3.5), .groups = "drop") #discounting 3.5s for a target display at the beginning of each trial when participants are locked in their position 
 
 #graph showing distribution, 1 point per participant
 ggplot(reaction_time_dat, aes(x=0, y=estResponse)) +
@@ -85,89 +126,208 @@ ggplot(reaction_time_dat, aes(x=0, y=estResponse)) +
   theme(axis.text.x = element_blank(), 
         axis.ticks.x = element_blank(),
         aspect.ratio =1, 
-        plot.title = element_text(face="italic", size=12))
+        plot.title = element_text(face="italic", size=12)) +
+  scale_y_continuous(limits=c(0, 15))
 
 #actual average RT and sd
 reaction_time <- summarise(reaction_time_dat, mean = mean(estResponse), sd=sd(estResponse), min=min(estResponse), max=max(estResponse))
 
 reaction_time
+
+print(sprintf("The average reaction time for pointing was %s seconds (sd = %s).", round(reaction_time$mean, 3), round(reaction_time$sd, 3)))
 ```
 
-Block 1
-```{r}
-summaryBlock1_Angle <- Sum_angle %>%
-  filter(block==1) %>% 
-  group_by(ID, block) %>% 
-  summarise(angleErr = mean(abs(angleError)), relativeAng = mean(relativeAngle), .groups="drop") 
-```
+## Block 1 Performance
 
-```{r}
-t.test(summaryBlock1_Angle$angleErr, mu = 90, alternative = "less") %>% tidy()
-#cohen.d(d=1, f=NA, data=summaryBlock1_Angle$angleErr, mu=90) 
-```
+This subsection of the analysis aims to answer whether the participants completed the basic task according to the instructions before any manipulation was introduced. Did they understand how to rotate and indicate their angle estimation?
 
-```{r angle estimation block 1 visualisation}
-g_errB1 <- ggplot(summaryBlock1_Angle, aes(x=block, y=angleErr)) + 
-  geom_half_violin(aes(x=block-0.05), fill=scico(1, palette= "lajolla", begin = 0.45), alpha =0.5, color=NA) +
-  geom_point(aes(x=block+0.07), position = position_jitter(width =0.02, height = 0), shape=16, size = 1) +
-  geom_boxplot(width = .05, outlier.shape = NA) +
-  theme_cowplot() +
-  geom_hline(yintercept = 90, linetype=2) +
-  labs(y='Pointing Error (°)', x=' ', title = "Average Absolute Error") + 
-  theme(axis.title = element_text(size=10), axis.text.x = element_blank(), 
-        axis.ticks.x = element_blank(), axis.text.y = element_text(size=10)) +
-  annotate("text", label = "90°", x = 1.3, y = 85, size = 3)
+### Raw Angle Error Visualization
 
-g_errB1
-```
+First, let's look on how participants performed by examining the signed angle error distribution. 0° as "correct angle".
 
 ```{r angle estimation ech trial in Block 1}
-g_anglB1 <- ggplot(Sum_angle %>% filter(block == 1), aes(x = angleError)) +
-  geom_histogram(binwidth = 10, boundary = -7.5, fill = scico(1, palette = "lajolla", begin=0.5), color= "black", size = .25) +
+g_anglB1 <- ggplot(Sum_all %>% filter(block == 1), aes(x = angleError)) +
+  # creating histogram to see the distribution
+  geom_histogram(binwidth = 10, boundary=0, fill = scico(1, palette = "lajolla", begin=0.5), color= "black", size = .25) +
+  # rounding the histogram to 360° circle
   coord_polar(start=pi) +
+  # specifying the limits and breaks
   scale_x_continuous(limits = c(-180,180),
                      breaks = seq(-180, 180, by = 45),
                      minor_breaks = seq(-180, 180, by = 15)) +
+  # background/plot style
   theme_cowplot() +
   background_grid() +
+  # changing labels and title
   labs(x = "Pointing Error (°)", y = "Count", title = "Signed Distribution of Error") +
   theme(axis.title.y = element_text(hjust = 0.7))
   
 g_anglB1
 ```
+### Angle Error Stats
+
+Data summarizing for each participant for block 1.
+
+```{r}
+summaryBlock1_Angle <- Sum_all %>%
+  filter(block==1) %>% 
+  group_by(ID, block) %>% 
+  summarise(angleErr = mean(abs(angleError)), .groups="drop") 
+```
+
+**T-Test**
+
+We took 90° as a threshold of randomness (possible absolute angle error 0-180°). To see whether participants pointed better than on average randomly, we ran a one sample, one-tailed t-test of their average absolute angle error in block 1 against 90. To see the effect size we calculated cohen's d.
+
+```{r}
+t.test(summaryBlock1_Angle$angleErr, mu = 90, alternative = "less") %>% tidy()
+cohen.d(d=summaryBlock1_Angle$angleErr, f=NA, mu=90) 
+```
+
+**Graph**
+
+The graph below shows the average absolute angle error in block 1 for each participant and consequentially the distribution of these values.
+
+```{r angle estimation block 1 visualisation}
+g_errB1 <- ggplot(summaryBlock1_Angle, aes(x=block, y=angleErr)) + 
+  # violin plot
+  geom_half_violin(aes(x=block-0.05), fill=scico(1, palette= "lajolla", begin = 0.45), alpha =0.5, color=NA) +
+  # single subject data points (1 per participant) with horizontal jitter
+  geom_point(aes(x=block+0.07), position = position_jitter(width =0.02, height = 0), shape=16, size = 1) +
+  # boxplot (median, quartiles)
+  geom_boxplot(width = .05, outlier.shape = NA) +
+  # adding plot of mean and SEM  
+  stat_summary(fun = mean, geom = "point", size=1, shape = 16,
+               position = position_nudge(-.05), colour = "black") + 
+  stat_summary(fun.data = mean_se, geom = "errorbar",
+               position = position_nudge(-.05), colour = "black", width = 0, size = 0.5) +
+  geom_hline(yintercept = 90, linetype=2)  +
+  annotate("text", label = "90°", x = 1.3, y = 85, size = 3) +
+  labs(y='Pointing Error (°)', x=' ', title = "Average Absolute Error") + 
+  theme_cowplot() +
+  theme(axis.title = element_text(size=10), axis.text.x = element_blank(), 
+        axis.ticks.x = element_blank(), axis.text.y = element_text(size=10))
+
+#show graph
+g_errB1
+```
+
+Assembly of block 1 graphs for pointing task.
 
 ```{r, eval=FALSE}
 angleEst_B1 <- g_errB1 + g_anglB1 &
+  # unifying aesthetics
   theme(axis.title = element_text(size=12), plot.title = element_text(face="italic", size=12)) &
+  # assembly title
   plot_annotation(title = 'Pointing Errors', 
                   theme = theme(plot.title = element_text(size = 14, face="bold"))) 
 
-
+# saving as pdf and png
 ggsave(file="AngleErrors_B1.pdf", plot=angleEst_B1, units = "cm", width = 15.9, height = 10, dpi = "retina", device = cairo_pdf, path = here("figures"))
 ggsave(file="AngleErrors_B1.png", plot=angleEst_B1, units = "cm", width = 15.9, height = 10, dpi = "retina", device = "png", path = here("figures"))
 
 angleEst_B1
 ```
 
+Assembly of block 1 graphs for positional memory and pointing task.
+
 ```{r all grahs for block 1, eval=FALSE}
 block1_graphs <- memory_B1 / angleEst_B1 &
+  # unifying aesthetics
   theme(axis.title = element_text(size=10), axis.text = element_text(size=10), 
         plot.title = element_text(face="italic", size=12),
         legend.text = element_text(size=10), legend.title = element_text(size=10),
         plot.tag = element_text(size = 10, face="bold")) &
+  # assembly title, subtitle and tags
   plot_annotation(title = 'Block 1 Performance', 
                   subtitle = ' \nPositional Memory',
                   theme = theme(plot.title = element_text(size = 14, face="bold"), plot.subtitle = element_text(size=12, face="bold")),
                   tag_levels = 'A') 
 
-block1_graphs
-
+#saving as pdf and png
 ggsave(file="B1.pdf", plot=block1_graphs, units = "cm", width = 15, height = 16, dpi = "retina", device = cairo_pdf, path = here("figures"))
 ggsave(file="B1.png", plot=block1_graphs, units = "cm", width = 15, height = 16, dpi = "retina", device = "png", path = here("figures"))
 
+block1_graphs
 ```
 
-Cue 
+## Cue Differences
+
+Next we wanted to investigate whether the participants followed the cues in block 2-4 after landmark and landmark-dependent object movement. 
+Also, is there performance difference between landmark- vs boundary-dependent objects?
+
+### Relative Influence
+
+To evaluate, which cue participants are using to remember the direction of target object we used relative influence which was created and first used by Doeller, King and Burgess (2008). However, we were the first to use this measurement for angle estimation/pointing. The graph below shows the calculation.
+
+**Explanation Graph**
+
+```{r}
+#loading a data from block 2-4 for a single participant
+graph_sub <- filter(Sum_all, ID == i_sub & block == 2 & trial==5) 
+# generating points that will form arena boundary
+circle <- circleFun()
+# generating points that will form angle difference between estimated angle and angle predicted by boundary 
+angle1 <- circleSome(centerX= graph_sub$charX, centerY= graph_sub$charY, r=15, a1= 1.5707963268-rad(graph_sub$estAngle), a2=1.5707963268-rad(graph_sub$boundaryAngle))
+# generating points that will form angle difference between estimated angle and angle predicted by landmark
+angle2 <- circleSome(centerX= graph_sub$charX, centerY= graph_sub$charY, r=10, a1= 1.5707963268-rad(graph_sub$estAngle), a2=1.5707963268-rad(graph_sub$landmarkAngle))
+
+relativeAng_graph <- ggplot(data=graph_sub) +
+  # location predicted by landmark
+  geom_point(aes(x=landmarkCuePosX, y=landmarkCuePosY, color="Angle Predicted by Landmark"), size = 1.5, alpha=0.3) +
+  # line visualizing the angle from participant's position to the object location predicted by landmark
+  geom_segment(aes(x=charX, y=charY, xend= landmarkCuePosX, yend=landmarkCuePosY, 
+                                   color="Angle Predicted by Landmark"), alpha=.9) +
+  # adding aL label
+  annotate("text", label="aL", x=-3, y=2, size=4, color="#C6F1B1", fontface =2) +
+  # location predicted by boundary
+  geom_point(aes(x=boundaryCuePosX, y=boundaryCuePosY, color="Angle Predicted by Boundary"), size = 1.5, alpha=0.3) +
+  # line visualizing the angle from participant's position to the object location predicted by boundary
+  geom_segment(aes(x=boundaryCuePosX, y=boundaryCuePosY, xend= charX, yend= charY,
+                                   color="Angle Predicted by Boundary"), alpha=.9) +
+  # adding dB label
+  annotate("text", label="aB", x=-4.5, y=-5, size=4, color="#592758", fontface =2) +
+  #participants location
+  geom_point(aes(x=charX, y=charY, color = "Estimated Angle"), size = 2.5) +
+  annotate("text", label="Participant's location", x= -12, y = 12, size=3.5, color= "red") +
+  #landmark location 
+  geom_point(aes(x=landmarkX, y=landmarkY), shape = 15, color = "#94A98F", size=3) +
+  annotate("text", label="Landmark", x= 14, y = 8.8, size=3.5, color= "#94A98F") +
+  #estimated angle
+  geom_spoke(mapping =aes(x=charX, y=charY, angle = 1.5707963268-rad(estAngle), radius =20), color="red", linetype = 1, alpha=0.8) +
+  # angle difference between angle predicted by boundary and estimated angle
+  geom_path(data=angle1, aes(x,y, color="Angle Predicted by Boundary"))+
+  # angle difference between angle predicted by landmark and estimated angle
+  geom_path(data=angle2, aes(x,y,color="Angle Predicted by Landmark"))+
+  # creating arena boundary
+  geom_path(data=circle, aes(x, y)) +
+  # aesthetical changes
+  theme_cowplot() +
+  theme(aspect.ratio=1, 
+        axis.title = element_text(size=10), axis.text = element_text(size=10), 
+        plot.title = element_text(size=12), plot.subtitle = element_text(size = 11)) +
+  # changing labels and title
+  labs(title = "Relative Influence Calculation for Angle Estimation", 
+       subtitle = paste("aL / (aL + aB) ", 
+                        sprintf("Angle Relative Influence: %s ", round(graph_sub$relativeAngle, 2)), sep="\n"),  
+       x= 'X (vm)',  y= 'Y (vm)') +
+  # specifying colors manually 
+  scale_color_manual(name = " ", 
+                     values= c("Angle Predicted by Boundary" = "#592758", "Angle Predicted by Landmark" = "#C6F1B1", 
+                               "Estimated Angle" = "red"))
+
+# saving graph as pdf and png
+ggsave(filename="relative_angle_visual.pdf", plot=relativeAng_graph, units = "cm", width = 15, height = 11, 
+       dpi = "retina", device = cairo_pdf, path = here("figures"))
+ggsave("relative_angle_visual.png", plot=relativeAng_graph, units = "cm", width = 15, height = 11, 
+       dpi = "retina", device = "png", path = here("figures"))
+
+# show the graph
+relativeAng_graph
+```
+
+Let's subset and summarize data for blocks 2-4.
+
 ```{r filtering and summarising the data}
 subset_RA <- Sum_all %>% 
   filter(block!=1) %>% 
@@ -182,18 +342,25 @@ relativeAngleBlocks <- subset_RA %>%
             .groups="drop")
 ```
 
+**T-Tests**
+
+As score 0.5 points towards angle between the angle predicted by landmark and angle predicted by boundary, we ran a one sample, one tail t-test to test whether the relative scores for landmark-dependent objects are less than 0.5.
+
 ```{r t-test of RA vs 0.5 landmark}
 t.test(subset(relativeAngleBlocks, cue=="landmark")$relativeAng, 
        mu = 0.5, alternative = "less") %>% tidy()
 cohen.d(d=subset(relativeAngleBlocks, cue=="landmark")$relativeAng, f=NA, mu = 0.5)
 ```
 
+After we ran a one sample, one tail t-test to test whether the relative scores for boundary-dependent objects are higher than 0.5.
 
 ```{r t-test of RA vs 0.5 boundary}
 t.test(subset(relativeAngleBlocks, cue=="boundary")$relativeAng, 
        mu = 0.5, alternative = "greater") %>% tidy()
 cohen.d(d=subset(relativeAngleBlocks, cue=="boundary")$relativeAng, f=NA, mu = 0.5)
 ```
+
+We also tested these two groups against each other to see if the scores are significantly different. 
 
 ```{r t-test of RA boundary vs. landmark}
 t.test(subset(relativeAngleBlocks, cue=="boundary")$relativeAng, 
@@ -203,27 +370,51 @@ cohen.d(subset(relativeAngleBlocks, cue=="boundary")$relativeAng,
 pwr.t.test(n = 36, d = 2.532636, sig.level = 0.05, power = NULL, type = c("paired"), alternative = c("two.sided"))
 ```
 
+
+**Graph**
+
+This difference in relative influence scores between boundary-dependent objects and landmark-dependent objects is visualized in a graph below.
+
 ```{r RA block 2-4 graph}
 rel_InfAng <- ggplot(relativeAngleBlocks, aes(x=cue, y=relativeAng)) + 
-  scale_x_discrete(labels = c('Boundary', 'Landmark')) +
+  # violin plots
   gghalves::geom_half_violin(data=relativeAngleBlocks %>% filter(cue=="landmark"), 
                              position=position_nudge(+0.2), aes(fill=cue),alpha =0.7, color=NA, side="r") +
   gghalves::geom_half_violin(data=relativeAngleBlocks %>% filter(cue=="boundary"), 
                              position=position_nudge(-0.2), aes(fill=cue),alpha =0.7, color=NA, side="l") + 
+  # scico palette tokyo
   scale_fill_scico_d(palette = 'tokyo', begin=0.15, end=0.85) +
+  # single subject data points (1 per participant)
   geom_point(shape=16, size = 1) +
+  # line connecting individual participants' values 
+  geom_line(aes(group=ID), alpha=0.5) 
+  # bowplot distribution
   geom_boxplot(data=relativeAngleBlocks %>% filter(cue=="landmark"), 
                position=position_nudge(+0.1), width = .1, outlier.shape = NA) +
   geom_boxplot(data= relativeAngleBlocks %>% filter(cue=="boundary"), 
                position=position_nudge(-0.1), width = .1, outlier.shape = NA) +
-  geom_line(aes(group=ID), alpha=0.5) +
+  # adding plot of mean and SEM  
+  stat_summary(data=relativeAngleBlocks %>% filter(cue=="landmark"), 
+               position=position_nudge(+0.2), fun = mean, geom = "point", size=1, shape = 16, colour = "black") + 
+  stat_summary(data=relativeAngleBlocks %>% filter(cue=="landmark"), 
+               position=position_nudge(+0.2), fun.data = mean_se, geom = "errorbar", colour = "black", width = 0, size = 0.5) +
+  stat_summary(data=relativeAngleBlocks %>% filter(cue=="boundary"), 
+               position=position_nudge(-0.2), fun = mean, geom = "point", size=1, shape = 16, colour = "black") + 
+  stat_summary(data=relativeAngleBlocks %>% filter(cue=="boundary"), 
+               position=position_nudge(-0.2), fun.data = mean_se, geom = "errorbar", colour = "black", width = 0, size = 0.5) +
+    # background setting
   theme_cowplot() +
+  # changing axis labels and title 
   labs(x = " ", y = "Relative Influence (0-1)", 
-       title = "Pointing") + 
+       title = "Pointing") +
+  # visualizing the significance levels of the t-test
   geom_signif(comparisons = list(c("landmark", "boundary")),  test="t.test", 
               test.args=list(alternative = "two.sided", paired=TRUE), 
               map_signif_level = TRUE, tip_length = 0, extend_line = 0.045, y_position = 0.85) +
+  # adding line at 0.5 (not-following either cue)
   geom_hline(yintercept=0.5, linetype=2, alpha=0.6) +
+  # axis labels, limits and breaks
+  scale_x_discrete(labels = c('Boundary', 'Landmark')) +
   scale_y_continuous(limits=c(0.1, 0.9), breaks = c(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9))
 
 
@@ -232,6 +423,8 @@ ggsave("relativeInfluenceAng.png", plot=rel_InfAng, units = "cm", width = 15, he
 
 rel_InfAng
 ```
+
+Assembly of relative influence plots for both positional memory and pointing.
 
 ```{r, eval=FALSE}
 relative_infl <- rel_Inf / rel_InfAng &
@@ -249,31 +442,78 @@ ggsave("relativeInfluenceAll.png", plot=relative_infl, units = "cm", width = 11,
 relative_infl
 ```
 
+**Mixed Model**
+
+As a first step towards building a full mixed effects model, we tested a simpliest version with only cue as a fixed effect and a random slope and random intercepts for participants. We did not use cue as a factor but in a recoded version of landmark = -1 and boundary = 1.
+
+```{r}
+#formula
+formulaCue <- "relativeAngle ~ cueMM + (1+cueMM|ID)"
+#model
+modelCueAngle <- lme4::lmer(formula = formulaCue, data=subset_RA)
+summary(modelCueAngle)
+```
+
+To test, whether cue is a significant predictor we ran a likelihood ratio test comparing our simpliest model and a model containing only random effects.
+
+```{r}
+#control model without cue as a predictor
+formulaControl <- "relativeAngle ~ 1 + (1+cueMM|ID)"
+modelCueControl <- lme4::lmer(formula = formulaControl, data=subset_RA)
+#likelihood ratio test
+ratioCueAngle <- anova(modelCueAngle, modelCueControl)
+ratioCueAngle
+```
+
+
+### Angle Error Difference
+
+Paired, two-tailed t-test to see if the angle error differs between trials with landmark-dependent and boundary-dependent objects.
 
 ```{r angle estimation error difference? nah}
 t.test(subset(relativeAngleBlocks, cue=="boundary")$angleErr, subset(relativeAngleBlocks, cue=="landmark")$angleErr, paired = TRUE) %>% tidy()
 ```
 
+Graph below visualizes the lack of difference.
+
 ```{r angle error graph}
 cue_Ang <- ggplot(relativeAngleBlocks, aes(x=cue, y= angleErr)) + 
-  scale_x_discrete(labels = c('Boundary', 'Landmark')) +
+  #violin plots
   gghalves::geom_half_violin(data=relativeAngleBlocks %>% filter(cue=="landmark"), 
                              position=position_nudge(+0.2), aes(fill=cue),alpha =0.7, color=NA, side="r") +
   gghalves::geom_half_violin(data=relativeAngleBlocks %>% filter(cue=="boundary"), 
                              position=position_nudge(-0.2), aes(fill=cue),alpha =0.7, color=NA, side="l") + 
+  # setting scico palette tokyo as a fill for violin plots
   scale_fill_scico_d(palette = 'tokyo', begin=0.15, end=0.85) +
+  # single subject data points (1 per participant)
   geom_point(shape=16, size = 1) +
+  # line connecting individual participants' values
+  geom_line(aes(group=ID), alpha=0.5) +
+  # boxplots
   geom_boxplot(data=relativeAngleBlocks %>% filter(cue=="landmark"), 
                position=position_nudge(+0.1), width = .1, outlier.shape = NA) +
   geom_boxplot(data=relativeAngleBlocks %>% filter(cue=="boundary"), 
                position=position_nudge(-0.1), width = .1, outlier.shape = NA) +
-  geom_line(aes(group=ID), alpha=0.5) +
-  theme_cowplot() +
-  labs(x = " ", y = "Pointing Error (°)", 
-       title = "Pointing") +
+  # adding plot of mean and SEM  
+  stat_summary(data=relativeAngleBlocks %>% filter(cue=="landmark"), 
+               position=position_nudge(+0.2), fun = mean, geom = "point", size=1, shape = 16, colour = "black") + 
+  stat_summary(data=relativeAngleBlocks %>% filter(cue=="landmark"), 
+               position=position_nudge(+0.2), fun.data = mean_se, geom = "errorbar", colour = "black", width = 0, size = 0.5) +
+  stat_summary(data=relativeAngleBlocks %>% filter(cue=="boundary"), 
+               position=position_nudge(-0.2), fun = mean, geom = "point", size=1, shape = 16, colour = "black") + 
+  stat_summary(data=relativeAngleBlocks %>% filter(cue=="boundary"), 
+               position=position_nudge(-0.2), fun.data = mean_se, geom = "errorbar", colour = "black", width = 0, size = 0.5) +
+  # visualizing the significance level of the t-test
   geom_signif(comparisons = list(c("landmark", "boundary")), test="t.test", 
               test.args=list(alternative = "two.sided", paired=TRUE),
-              map_signif_level = TRUE, tip_length = 0, extend_line = 0.045, y_position = 92) +
+              map_signif_level = TRUE, tip_length = 0, extend_line = 0.045, y_position = 92) +  
+  # background setting
+  theme_cowplot() +
+  # changing axis labels and title
+  labs(x = " ", y = "Pointing Error (°)", 
+       title = "Pointing") +
+  # changing axis limits, breaks and values
+  scale_x_discrete(labels = c('Boundary', 'Landmark')) +
   scale_y_continuous(breaks = c(25, 50, 75, 100), limits = c(9,100))
 
 
@@ -283,8 +523,10 @@ ggsave("angleError.png", plot=cue_Ang, units = "cm", width = 15.9, height = 12, 
 cue_Ang
 ```
 
+Assembling plots with raw error for both positional memory and pointing.
+
 ```{r, eval=FALSE}
-cue_Diff <- g_cue / cue_Ang &
+cue_Diff <- cue_Dist / cue_Ang &
   theme(axis.title = element_text(size=10), axis.text = element_text(size=10), 
         plot.title = element_text(face="italic", size=12),
         plot.tag = element_text(size = 10, face="bold"),
@@ -299,70 +541,18 @@ ggsave("cueDiffAll.png", plot=cue_Diff, units = "cm", width = 11, height = 15, d
 cue_Diff
 ```
 
-```{r}
-formulaCue <- "relativeAngle ~ cueMM + (1+cueMM|ID)"
-modelCueAngle <- lme4::lmer(formula = formulaCue, data=subset_RA)
-summary(modelCueAngle)
-```
 
-```{r}
-formulaControl <- "relativeAngle ~ 1 + (1+cueMM|ID)"
-modelCueControl <- lme4::lmer(formula = formulaControl, data=subset_RA)
-ratioCueAngle <- anova(modelCueAngle, modelCueControl)
-ratioCueAngle
-```
+## Miniblocks Learning
 
 
-MINIBLOCKS
-```{r}
-formulaMiniblocks <- "relativeAngle ~ cue*mini + (1+mini:cueMM|ID)"
-modelMiniblocksCue <- lme4::lmer(formula = formulaMiniblocks, data=subset_RA)
-summary(modelMiniblocksCue)
-```
+### Graphs
 
-```{r}
-formulaMiniControl <- "relativeAngle ~  mini+cueMM + (1+mini:cueMM|ID)" 
-modelMiniControlInt <- lme4::lmer(formula = formulaMiniControl, data=subset_RA)
-
-ratioMiniblocksInt <- anova(modelMiniblocksCue, modelMiniControlInt)
-ratioMiniblocksInt
-```
-
-```{r}
-formulaMiniblocksAngle <- "relativeAngle ~ mini + (1+mini|ID)" 
-modelMiniblocksLandmarkAngle <- lme4::lmer(formula = formulaMiniblocksAngle, data=subset(subset_RA, cue=="landmark"))
-summary(modelMiniblocksLandmarkAngle) 
-```
-
-
-```{r}
-formulaMiniControl <- "relativeAngle ~ 1 + (1+mini|ID)" 
-modelMiniLandmarkControl <- lme4::lmer(formula = formulaMiniControl, data=subset(subset_RA, cue=="landmark"))
-ratioMiniLandmark = anova(modelMiniblocksLandmarkAngle, modelMiniLandmarkControl)
-ratioMiniLandmark
-```
-
-
-```{r}
-formulaMiniblocksAngle <- "relativeAngle ~ mini + (1+mini|ID)" 
-modelMiniblocksBoundaryAngle <- lme4::lmer(formula = formulaMiniblocksAngle, data=subset(subset_RA,cue=="boundary"))
-summary(modelMiniblocksBoundaryAngle)
-```
-
-```{r}
-formulaMiniControl <- "relativeAngle ~ 1 + (1+mini|ID)" 
-modelMiniBoundaryControl <- lme4::lmer(formula = formulaMiniControl, data=subset(subset_RA, cue=="boundary"))
-ratioMiniBoundary = anova(modelMiniblocksBoundaryAngle, modelMiniBoundaryControl)
-ratioMiniBoundary
-```
-
+The graph below shows the relative influence scores averaged for each miniblock in block 2-4 (averaging over 6 scores for each miniblock)
 
 ```{r}
 summary_miniblock_A <- subset_RA %>%
   group_by(ID, miniblock, cue, age) %>% 
-  summarise(angleErr = mean(abs(angleError)), 
-            aeSD = sd(abs(angleError)), 
-            relativeAng = mean(relativeAngle), 
+  summarise(relativeAng = mean(relativeAngle), 
             raSD = sd(relativeAngle),
             .groups = "drop")
 
@@ -386,6 +576,8 @@ g_miniAng <- ggplot(summary_miniblock_A, aes(miniblock, relativeAng, group=inter
 
 g_miniAng
 ```
+
+The graph below shows the relative influence scores for each miniblock throughout block 2-4 (averaging only over 2 scores per miniblock)
 
 ```{r}
 #data summarizing
@@ -427,6 +619,7 @@ g_objTrialAng <- ggplot(data=summary_objectTrial_A, aes(objectTrial, relativeAng
 g_objTrialAng 
 ```
 
+Assembling the two plots above for more comprehensive visualization.
 
 ```{r}
 layout <- "
@@ -456,54 +649,191 @@ ggsave("relativeAngle_min.png", plot=g_minAng, units = "cm", width = 15, height 
 
 ```
 
+### Miniblock 1 
 
+We noticed that there is a tendency for relative influence score to be above regardless cue-dependency so we wanted to test this statistically so we ran a one-sided, one sample t-test against 0.5.
 
-AGE
 ```{r}
-Age_c <- subset_RA %>% 
+# summarizing by ID for all miniblocks 1 (in block 2-4)
+sub_mini_1A <- subset_RA %>%
+  filter(miniblock == 1) %>%
   group_by(ID) %>%
-  distinct(age) %>%
-  ungroup() %>%
-  mutate(age_c = scale(age, center=TRUE, scale=FALSE))
+  summarise(relAngle = mean(relativeAngle), .groups ="drop")
 
-subset_RA <- inner_join(subset_RA, Age_c%>%select(ID, age_c), by="ID") 
-subset_RA <- rename(subset_RA, age_c=age_c.x)
+# one-tailed, one sample t-test
+t.test(sub_mini_1A$relAngle, mu=0.5, alternative = "greater") %>% tidy()
+```
 
-formulaFinalAngle <- "relativeAngle ~ age_c*cueMM+(1+cueMM|ID)" 
-modelFinalAngle <- lme4::lmer(formula = formulaFinalAngle, data=subset_RA)
-summary(modelFinalAngle)
+As it seems the relative influence in miniblock is indeed higher than 0.5, therefore they are more likely following boundary as a cue (its old location). Next, we wanted to ensure that there is indeed no difference between the relative influence score between landmark-dependent and boundary-dependent objects in miniblock 1. 
+
+```{r}
+# summarizing by ID and cue for all miniblocks 1 (in blocks 2-4)
+sub_mini_cueA <- subset_RA %>%
+  filter(miniblock == 1) %>%
+  group_by(ID, cue) %>%
+  summarise(relAngle = mean(relativeAngle), .groups ="drop")
+
+# two-tailed, paired sample t-test
+t.test(subset(sub_mini_cueA, cue=="landmark")$relAngle, subset(sub_mini_cueA, cue=="boundary")$relAngle, paired=TRUE) %>% tidy()
+```
+
+### Mixed Models
+
+**Relative Influence**
+
+To test the learning throughout a block, we ran mixed effect model with interaction between cue and miniblock (centered) and added interaction between miniblock and cue as a random slope.
+
+```{r}
+#formula
+formulaMiniblocks <- "relativeAngle ~ cue*mini + (1+mini:cueMM|ID)"
+#model
+modelMiniblocksCue <- lme4::lmer(formula = formulaMiniblocks, data=subset_RA)
+summary(modelMiniblocksCue)
+```
+
+To test the significance of the interaction, we ran a likelihood ratio test comparing our model and a model with both cue and miniblock as predictors but without the interaction.
+
+```{r}
+#control model
+formulaMiniControl <- "relativeAngle ~  mini+cueMM + (1+mini:cueMM|ID)" 
+modelMiniControlInt <- lme4::lmer(formula = formulaMiniControl, data=subset_RA)
+
+#likelihood ratio test
+ratioMiniblocksInt <- anova(modelMiniblocksCue, modelMiniControlInt)
+ratioMiniblocksInt
+```
+
+**Cue specific analysis**
+
+To check whether miniblocks are a significant predictor without the cue we ran a model and likelihood ratio test separately for landmark-dependent and boundary-dependent objects.
+
+```{r}
+#landmark-dependent objects only model
+formulaMiniblocksAngle <- "relativeAngle ~ mini + (1+mini|ID)" 
+modelMiniblocksLandmarkAngle <- lme4::lmer(formula = formulaMiniblocksAngle, data=subset(subset_RA, cue=="landmark"))
+summary(modelMiniblocksLandmarkAngle) 
+#control model
+formulaMiniControl <- "relativeAngle ~ 1 + (1+mini|ID)" 
+modelMiniLandmarkControl <- lme4::lmer(formula = formulaMiniControl, data=subset(subset_RA, cue=="landmark"))
+#likelihood ratio test 
+ratioMiniLandmark = anova(modelMiniblocksLandmarkAngle, modelMiniLandmarkControl)
+ratioMiniLandmark
 ```
 
 
+```{r}
+#boundary-dependent objects only model
+formulaMiniblocksAngle <- "relativeAngle ~ mini + (1+mini|ID)" 
+modelMiniblocksBoundaryAngle <- lme4::lmer(formula = formulaMiniblocksAngle, data=subset(subset_RA,cue=="boundary"))
+summary(modelMiniblocksBoundaryAngle)
+#control model
+formulaMiniControl <- "relativeAngle ~ 1 + (1+mini|ID)" 
+modelMiniBoundaryControl <- lme4::lmer(formula = formulaMiniControl, data=subset(subset_RA, cue=="boundary"))
+#likelihood ratio test
+ratioMiniBoundary = anova(modelMiniblocksBoundaryAngle, modelMiniBoundaryControl)
+ratioMiniBoundary
+```
+
+**Cue Dissonance**
+
+As we decided to recode relative influence score to dCorrect / (dCorrect + dOther), we ran the main model with miniblocks again with the new dependent variable, cue dissonance, to see if the slope differ despite the same direction of improvement. Random effects could not included interaction as this caused singular fit.
+
+```{r}
+#model with new recoded dependent variable - cue dissonance
+formulaCueDis_mini <- "correct_RA ~ cueMM*mini + (1+mini+cueMM||ID)"
+modelCueDis_mini <- lme4::lmer(formula = formulaCueDis_mini, data=subset_RA)
+summary(modelCueDis_mini)
+```
+
+To test the significance of the interaction, we ran a likelihood ratio test comparing our model and a model with both cue and miniblock as predictors but without the interaction.
+
+```{r}
+#control model for interaction
+formulaCueDis_miniControl <- "correct_RA ~ cueMM+mini + (1+mini+cueMM|ID)"
+modelCueDis_miniControl <- lme4::lmer(formula = formulaCueDis_miniControl, data=subset_RA)
+
+#likelihood ratio test
+ratioCueDis_mini <- anova(modelCueDis_mini, modelCueDis_miniControl)
+ratioCueDis_mini
+```
+
+To see whether the model including cue is better than a miniblock with random effect we ran a likelihood ratio test.
+
+```{r}
+#control model
+formulaJustCue <- "correct_RA ~ mini + (1+mini+cueMM|ID)"
+modelJustCue <- lme4::lmer(formula = formulaJustCue, data=subset_RA)
+summary(modelJustCue)
+
+#likelihood ratio test
+ratioMini <- anova(modelCueDis_miniControl, modelJustCue) 
+ratioMini
+```
+
+
+## Age
+
+To test our main hypothesis, we ran mixed model including age and cue as main predictors with interaction.
+
+### Relative Influence
+
+**Mixed Model**
+
+As our initial dependent variable, we examine these two predictors (cue, age) first to relative influence scores.
+
+```{r}
+#full model
+formulaFullAngle <- "relativeAngle ~ age_c*cueMM+(1+cueMM|ID)" 
+modelFullAngle <- lme4::lmer(formula = formulaFullAngle, data=subset_RA)
+summary(modelFinalAngle)
+```
+
+The significance of the interaction was tested using likelihood ratio test. 
+
 ```{r} 
+#control model
 controlFinal <- "relativeAngle ~ age_c+cueMM+(1+cueMM|ID)"
 modelControl <- lme4::lmer(formula = controlFinal, data=subset_RA)
+#likelihood ratio test
 ratioFinalAngle <- anova(modelFinalAngle, modelControl)
 ratioFinalAngle
 ```
 
+**Cue specific analysis**
+
+To see if age remains a significant predictor without cue, we ran mixed models separately for boundary-dependent and landmark-dependent objects and tested them with likelihood ratio test including only random intercepts for participants.
+
 ```{r}
+#landmark-dependent objects only model
 formulaAgeLandmark <- "relativeAngle ~ age_c + (1|ID)"
 modelAgeLandmark <- lme4::lmer(formula = formulaAgeLandmark, data=subset(subset_RA, cue=="landmark"))
 summary(modelAgeLandmark)
 
+#control model 
 controlAgeLandmark <- "relativeAngle ~ 1 + (1 |ID)"
 modelControlAgeLandmark <- lme4::lmer(formula = controlAgeLandmark, data=subset(subset_RA, cue=="landmark"))
+#likelihood ratio test
 ratioAgeLandmark <- anova(modelAgeLandmark, modelControlAgeLandmark)
 ratioAgeLandmark
 ```
 
 ```{r}
+#boundary-dependent objects only model
 formulaAgeBoundary <- "relativeAngle ~ age_c +(1|ID)"
 modelAgeBoundary <- lme4::lmer(formula = formulaAgeBoundary, data=subset(subset_RA, cue=="boundary"))
 summary(modelAgeBoundary)
 
+#control model
 controlAgeBoundary <- "relativeAngle ~ 1 + (1 |ID)"
 modelControlAgeBoundary <- lme4::lmer(formula = controlAgeBoundary, data=subset(subset_RA, cue=="boundary"))
+#likelihood ratio test
 ratioAgeBoundary <- anova(modelAgeBoundary, modelControlAgeBoundary)
 ratioAgeBoundary
 ```
 
+**Graphs**
+
+The graph below visualizes how the relative influence improves with age as seen in collected data.
 
 ```{r}
 RA_final <- ggplot(relativeAngleBlocks, aes(age, relativeAng, color=cue)) + 
@@ -525,12 +855,15 @@ RA_final <- ggplot(relativeAngleBlocks, aes(age, relativeAng, color=cue)) +
 RA_final
 ```
 
+The graph below visualizes the relative influence age-dependent improvement based on a mixed model predictions.
+
 ```{r }
+# calculating values predicted by the mixed model
 RA_predict <- ggeffects::ggpredict(modelFinalAngle, terms = c("age_c", "cueMM")) %>% 
   as_tibble() %>%
   mutate(cuePredict = factor(if_else(group == 1, true = "boundary", false = "landmark"),
                       levels = c("boundary", "landmark")))
-  
+
 RA_model <- ggplot(RA_predict, aes(x = x, y = predicted, colour = cuePredict, fill = cuePredict)) +
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .2, linetype=0) +
   geom_line(size = 0.5) +
@@ -573,22 +906,60 @@ ggsave("relativeInfluence_finalAng.png", plot=g_finalAng,
        units = "cm", width = 15, height = 9, dpi = "retina", device = "png", path = here("figures"))
 ```
 
-## recoded version analysis
+### Cue dissonance
+
+**Mixed Model**
+
+Next, we tested whether the effect of age and age and cue interaction remain when using the new variable - cue dissonance (one direction recoded relative influence score) as dependent variable. 
+
 ```{r}
-formulaFullNext <- "correct_RA ~ age_c*cueMM + ( 1 + cueMM | ID)" 
-modelFullNext <- lmer(formula = formulaFullNext, data=subset_RA)
-summary(modelFullNext)
+formulaCueDis_A <- "correct_RA ~ age_c*cueMM + ( 1 + cueMM | ID)" 
+modelCueDis_A <- lmer(formula = formulaCueDis_A, data=subset_RA)
+summary(modelCueDis_A)
 ```
 
 ```{r} 
-controlFinalNext <- "correct_RA ~ age_c + cueMM + (1 + cueMM | ID)" 
-modelControlNext <- lmer(formula = controlFinalNext, data=subset_RA)
-ratioFullModelNext <- anova(modelFullNext, modelControlNext)
-ratioFullModelNext
+#control model for interaction
+controlCueDis_A <- "correct_RA ~ age_c + cueMM + (1 + cueMM | ID)" 
+modelControlCueDis_A <- lmer(formula = controlCueDis_A, data=subset_RA)
+#likelihood ratio test
+ratioCueDis_A <- anova(modelCueDis_A, modelControlCueDis_A)
+ratioCueDis_A
 ```
 
+**Explorative**
+
+Is cue even significant predictor?
+
+```{r} 
+#control model for cue as predictor
+controlCueDis_cueA <- "correct_RA ~ age_c + (1 + cueMM | ID)" 
+modelCueDis_cueControlA <- lmer(formula = controlCueDis_cueA, data=subset_RA)
+
+#likelihood ratio test
+ratioCueDis_cueA <- anova(modelCueDis_cueControlA, modelControlCueDis_A)
+ratioCueDis_cueA
+```
+
+Adding miniblock as a predictor instead to find the best model.
+
+```{r} 
+#control model for miniblock as predictor
+miniFullCueDis_A<- "correct_RA ~ age_c + mini + (1 + cueMM | ID)" 
+modelCueDis_miniFullA <- lmer(formula = miniFullCueDis_A, data=subset_RA)
+summary(modelCueDis_miniFullA)
+
+#likelihood ratio test
+ratioCueDis_fullMiniA <- anova(modelCueDis_miniFullA, modelCueDis_cueControlA)
+ratioCueDis_fullMiniA
+```
+
+**Graphs**
+
+The graph below visualizes how the cue dissonance improves with age as seen in collected data.
+
 ```{r}
-RA_final <- ggplot(relativeAngleBlocks, aes(age, corCueRA, color=cue)) + 
+CueDisA_final <- ggplot(relativeAngleBlocks, aes(age, corCueRA, color=cue)) + 
   theme_cowplot() +
   scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, guide = FALSE) +
   stat_summary(fun=mean, aes(group=cue), geom="line", size = 1.5) +
@@ -600,27 +971,28 @@ RA_final <- ggplot(relativeAngleBlocks, aes(age, corCueRA, color=cue)) +
   scale_color_scico_d(palette = 'tokyo', begin=0.3, end=0.7, labels = c("Boundary", "Landmark")) +
   scale_x_continuous(breaks = c(8,9,10,11,12,13,14,15)) +
   scale_y_continuous(limits = c(0.2, 0.8), breaks = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)) +
-  labs(x= "Age", y = "Relative Influence (0-1)", 
+  labs(x= "Age", y = "Cue Dissonance (0-1)", 
        title = "Data", color="Cue") +
   
   geom_hline(yintercept = 0.5, linetype=2, alpha=0.6)
   
-RA_final
+CueDisA_final
 ```
 
+The graph below visualizes the cue dissonance age-dependent improvement based on a mixed model predictions.
 
 ```{r }
-RA_predict <- ggeffects::ggpredict(modelFullNext, terms = c("age_c", "cueMM")) %>%
+CueDisA_predict <- ggeffects::ggpredict(modelCueDis_A, terms = c("age_c", "cueMM")) %>%
   as_tibble() %>%
   mutate(cuePredict = factor(if_else(group == 1, true = "boundary", false = "landmark"),
                       levels = c("boundary", "landmark")))
   
-RA_model <- ggplot(RA_predict, aes(x = x, y = predicted, colour = cuePredict, fill = cuePredict)) +
+CueDisA_model <- ggplot(CueDisA_predict, aes(x = x, y = predicted, colour = cuePredict, fill = cuePredict)) +
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .2, linetype=0) +
   geom_line(size = 0.5) +
   scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
   scale_fill_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
-  scale_x_continuous(breaks = sort(unique(Age_c$age_c)), labels = c("8", "9", "10", "11", "12", "13", "14", "15")) +
+  scale_x_continuous(breaks = sort(unique(Sum_all$age_c)), labels = c("8", "9", "10", "11", "12", "13", "14", "15")) +
   scale_y_continuous(breaks = c(0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8), limits = c(0.2, 0.8)) +
   theme_cowplot() +
   labs(x="Age", y=" ", color="Cue", fill="Cue", 
@@ -628,6 +1000,33 @@ RA_model <- ggplot(RA_predict, aes(x = x, y = predicted, colour = cuePredict, fi
   theme(legend.position = "none") +
   geom_hline(yintercept = 0.5, linetype=2, alpha=0.6)
 
-RA_model
+CueDisA_model
 ```
 
+Assembly of the generated graphs. 
+
+```{r, eval=FALSE}
+layout <- "
+AAAAA#BBBBBB
+AAAAA#BBBBBB
+AAAAA#BBBBBB
+"
+
+CueDisA_final <- CueDisA_final + CueDisA_model &
+  plot_layout(design=layout) &
+  theme(axis.title = element_text(size = 10), axis.text = element_text(size=10), 
+        legend.title = element_text(size=10), legend.text = element_text(size=10),
+        legend.position = "bottom",
+        plot.title = element_text(size=12, face="italic"),
+        plot.tag = element_text(size = 10, face="bold")) &
+  plot_annotation(title = 'Pointing',
+                  theme = theme(plot.title = element_text(size = 12, face="bold")),
+                  tag_levels = list(c('A', 'B')))
+
+CueDisA_final
+
+ggsave("cueDissonance_fullAngle.pdf", plot=CueDisA_final, units = "cm", width = 15, height = 9, 
+       dpi = "retina", device = cairo_pdf, path = here("figures"))
+ggsave("cueDissonance_fullAngle.png", plot=CueDisA_final, units = "cm", width = 15, height = 9, 
+       dpi = "retina", device = "png", path = here("figures"))
+```

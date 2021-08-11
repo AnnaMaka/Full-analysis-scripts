@@ -75,7 +75,7 @@ Creating a list of subject IDs from the full dataset
 subjects <- unique(Sum_all$ID)
 ```
 
-## Timeout sessions
+### Timeout sessions
 
 Identifying and filtering timeout sessions which are encoded as distance error = -1 (an impossible value)
 
@@ -91,9 +91,11 @@ print(sprintf("average # timeout trials per participant: %s", nrow(timeout)/leng
 Sum_all <- filter(Sum_all, error != -1)
 ```
 
-## Exclusion criteria
+### Exclusion criteria
 
 Participants are excluded based on performance in block 1 which is quantified using memory scores. 
+
+**Explanation graph**
 
 Graph below visualizes the calculation of memory score for a single trial. 
 
@@ -165,6 +167,8 @@ print(sprintf("new overall sample size: %s", length(subjects)-length(exclusion))
 
 ## Descriptives
 
+**Age Distribution**
+
 Graph below shows the age distribution of our participants.
 
 ```{r}
@@ -181,7 +185,11 @@ ggplot(age, aes(x=age)) +
   theme(legend.position = "none") +
   labs(x="Age", y="Count", title="Distribution of age")
 ```
+
+**Reaction Time**
+
 Next, we looked into reaction time (seconds between angle estimation and location estimation). 
+
 ```{r}
 #average RT 
 reaction_time_dat <- Sum_all %>%
@@ -210,6 +218,8 @@ reaction_time
 
 print(sprintf("The average reaction time was %s seconds (sd = %s).", round(reaction_time$mean, 3), round(reaction_time$sd, 3)))
 ```
+
+**Trial Length**
 
 We also calculated the average length of a single trial.
 
@@ -270,6 +280,7 @@ ggsave("heatMap_block1.png", plot=heat_map_B1, units = "cm", width = 10, height 
 #show the graph
 heat_map_B1
 ```
+
 ### Memory score
 
 ```{r summarise data for block 1}
@@ -323,6 +334,7 @@ ggsave("memory_score_B1.png", plot=mem_score_B1, units = "cm", width = 10, heigh
 mem_score_B1
 ```
 
+Assembly of graphs for positional memory in block 1.
 
 ```{r, eval=FALSE}
 # using patchwork package to combine 2 separate graphs 
@@ -392,6 +404,7 @@ ggsave("distance_other_visual.png", plot=distance_other, units = "cm", width = 1
 # show the graph
 distance_other
 ```
+
 To test this, we ran paired t-test which showed that on average there is a difference between these 2 distances.
 
 ```{r distance to incorrect objects vs the cued object t-test}
@@ -459,7 +472,7 @@ ggsave("distances_B1.png", plot=distance_B1, units = "cm", width = 13, height = 
 distance_B1
 ```
 
-## Cues Differences
+## Cue Differences
 
 Next we wanted to investigate whether the participants followed the cues in block 2-4 after landmark and landmark-dependent object movement. 
 Also, is there performance difference between landmark- vs boundary-dependent objects?
@@ -468,35 +481,40 @@ Also, is there performance difference between landmark- vs boundary-dependent ob
 
 Relative Influence has been used in the field for over a decade now, initially introduced in paper by Doeller, King and Burgess (2008). 
 
-"For blocks 2–4, we attempted to quantify the relative influence of either cue on each response location. In a pilot study, we noticed that incorrect responses tended to be clustered around locations previously associated with the incorrect cue: either during block 1 or during the immediately preceding block. Accordingly, we calculated the relative influence of boundary versus landmark in blocks 2–4 as d L/(d L + d B), where d L is the distance of the response from the location predicted by the landmark and d B is the distance from the location predicted by the boundary. This measure varies between 0 (using the landmark) and 1 (using the boundary). On the basis of our pilot data the incorrect cue potentially predicts two different locations in blocks 3 and 4 (reflecting the object's positions relative to it in the preceding block and in block 1): we used whichever was closest to the response location."
+>"For blocks 2–4, we attempted to quantify the relative influence of either cue on each response location. In a pilot study, we noticed that incorrect responses tended to be clustered around locations previously associated with the incorrect cue: either during block 1 or during the immediately preceding block. Accordingly, we calculated the relative influence of boundary versus landmark in blocks 2–4 as d L/(d L + d B), where d L is the distance of the response from the location predicted by the landmark and d B is the distance from the location predicted by the boundary. This measure varies between 0 (using the landmark) and 1 (using the boundary). On the basis of our pilot data the incorrect cue potentially predicts two different locations in blocks 3 and 4 (reflecting the object's positions relative to it in the preceding block and in block 1): we used whichever was closest to the response location."
+
+**Explanation Graph** 
+
+Below, the calculation of relative influence score is visualised. 
 
 ```{r}
 #loading a data from block 2-4 for a single participant
-graph_sub <- filter(Sum_all, ID == i_sub & block != 1) 
-i <- 47
+graph_sub <- filter(Sum_all, ID == i_sub & block == 4 & trial==15) 
 
-relativeInf_graph <- ggplot(circle, aes(x, y)) +
-  # creating arena boundary
-  geom_path() +
+
+relativeInf_graph <- ggplot(data=graph_sub) +
   # location predicted by landmark
-  geom_point(data=graph_sub, aes(x=landmarkCuePosX[i], y=landmarkCuePosY[i], color="Location Predicted by Landmark"), size = 2.5) +
+  geom_point(aes(x=landmarkCuePosX, y=landmarkCuePosY, color="Location Predicted by Landmark"), size = 2.5) +
   # line visualizing the distance error (between recalled location and landmark-predicted location)
-  geom_segment(data=graph_sub, aes(x=remLocX[i], y=remLocY[i], xend= landmarkCuePosX[i], yend=landmarkCuePosY[i], 
+  geom_segment(aes(x=remLocX, y=remLocY, xend= landmarkCuePosX, yend=landmarkCuePosY, 
                                    color="Location Predicted by Landmark"), alpha=.5) +
   # adding dL label
   annotate("text", label="dL", x=-7.8, y=-9.5, size=4, color="#C6F1B1", fontface =2) +
   # location predicted by boundary
-  geom_point(data=graph_sub, aes(x=boundaryCuePosX[i], y=boundaryCuePosY[i], color="Location Predicted by Boundary"), size = 2.5) +
+  geom_point(aes(x=boundaryCuePosX, y=boundaryCuePosY, color="Location Predicted by Boundary"), size = 2.5) +
   # line visualizing the distance error (between recalled location and true location)
-  geom_segment(data=graph_sub, aes(x=boundaryCuePosX[i], y=boundaryCuePosY[i], xend= remLocX[i], yend= remLocY[i],
+  geom_segment(aes(x=boundaryCuePosX, y=boundaryCuePosY, xend= remLocX, yend= remLocY,
                                    color="Location Predicted by Boundary"), alpha=.5) +
   # adding dB label
   annotate("text", label="dB", x=10, y=3, size=4, color="#592758", fontface =2) +
   #recalled location
-  geom_point(data=graph_sub, aes(x=remLocX[i], y=remLocY[i], color = "Remembered Object Location"), size = 2.5) +
+  geom_point(aes(x=remLocX, y=remLocY, color = "Remembered Object Location"), size = 2.5) +
   #landmark location 
-  geom_point(data=graph_sub, aes(x=landmarkX[i], y=landmarkY[i]), shape = 15, color = "#94A98F", size=3) +
+  geom_point(aes(x=landmarkX, y=landmarkY), shape = 15, color = "#94A98F", size=3) +
   annotate("text", label="Landmark", x= -16, y = -3.5, size=3.5, color= "#94A98F") +
+  
+  # creating arena boundary
+  geom_path(data=circle, aes(x, y)) +
   # aesthetical changes
   theme_cowplot() +
   theme(aspect.ratio=1, 
@@ -538,6 +556,8 @@ relativeInfluenceBlocks <- subset_RI %>%
             .groups="drop") 
 ```
 
+**T-Tests**
+
 As score 0.5 points towards location between the location predicted by landmark and location predicted by boundary, we ran a one sample, one tail t-test to test whether the relative scores for landmark-dependent objects are less than 0.5.
 
 ```{r t-test of RI vs 0.5 landmark}
@@ -559,7 +579,9 @@ t.test(subset(relativeInfluenceBlocks, cue=="boundary")$relativeInf,
        subset(relativeInfluenceBlocks, cue=="landmark")$relativeInf, paired=TRUE) %>% tidy()
 ```
 
-This difference in relative influence scores between boundary-dependent objects and landmark-dependent objects is visualiyed in a graph below. 
+**Graph**
+
+This difference in relative influence scores between boundary-dependent objects and landmark-dependent objects is visualized in a graph below. 
 
 ```{r relative influence block 2-4 graph}
 rel_Inf <- ggplot(relativeInfluenceBlocks, aes(x=cue, y=relativeInf)) + 
@@ -597,13 +619,13 @@ rel_Inf <- ggplot(relativeInfluenceBlocks, aes(x=cue, y=relativeInf)) +
   theme(legend.position = "none", 
         plot.title = element_text(size=12, lineheight = 1.1), 
         axis.title = element_text(size=10)) +
-  # visualizing the significance of the t-test
+  # visualizing the significance level of the t-test
   geom_signif(comparisons = list(c("landmark", "boundary")), test="t.test", 
               test.args=list(alternative = "two.sided", paired=TRUE), 
               map_signif_level = TRUE, tip_length = 0, extend_line = 0.045, y_position = 0.85) +
   # adding line at 0.5 (not-following either cue)
   geom_hline(yintercept=0.5, linetype=2, alpha=0.6) +
-  # chaning limits and breaks of y-axis
+  # changing limits and breaks of y-axis
   scale_y_continuous(limits=c(0.1, 0.9), breaks = c(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9)) +
   # adding annotation of significance level of individual t-tests
   annotate("text", label="***", size=3, y=0.8, x=0.9, fontface =2) +
@@ -616,6 +638,9 @@ ggsave("relativeInfluence.png", plot=rel_Inf, units = "cm", width = 15, height =
 # show the graph
 rel_Inf
 ```
+
+**Mixed Models**
+
 As a first step towards building a full mixed effects model, we tested a simpliest version with only cue as a fixed effect and a random slope and random intercepts for participants. We did not use cue as a factor but in a recoded version of landmark = -1 and boundary = 1.
 
 ```{r}
@@ -624,7 +649,7 @@ modelCue <- lme4::lmer(formula = formulaCue, data=subset_RI)
 summary(modelCue)
 ```
 
-To test, whether cue is a significant predictor we ran a likelihood ration test comparing our simpliest model and a model containing only random effects.
+To test, whether cue is a significant predictor we ran a likelihood ratio test comparing our simpliest model and a model containing only random effects.
 
 ```{r}
 formulaCueControl<- "relativeInfluence ~ 1 + (1+cueMM|ID)"
@@ -645,7 +670,7 @@ t.test(subset(relativeInfluenceBlocks, cue=="boundary")$distanceError,
 We did not replicate these findings and the lack of difference is evident in the graph below. 
 
 ```{r distance error graph}
-g_cue <- ggplot(relativeInfluenceBlocks, aes(x=cue, y= distanceError)) + 
+cue_Dist <- ggplot(relativeInfluenceBlocks, aes(x=cue, y= distanceError)) + 
   # changing labels and title
   scale_x_discrete(labels = c('Boundary', 'Landmark')) +
   labs(x = " ", y = "Distance Error (vm)", title = "Positional Memory") +
@@ -677,11 +702,11 @@ g_cue <- ggplot(relativeInfluenceBlocks, aes(x=cue, y= distanceError)) +
               map_signif_level = TRUE, tip_length = 0, extend_line = 0.045, y_position = 26)
 
 # saving the graph as pdf and png
-ggsave("distancesError.pdf", plot=g_cue, units = "cm", width = 15, height = 11, dpi = "retina", device = cairo_pdf, path = here("figures"))
-ggsave("distancesError.png", plot=g_cue, units = "cm", width = 15, height = 11, dpi = "retina", device = "png", path = here("figures"))
+ggsave("distancesError.pdf", plot=cue_Dist, units = "cm", width = 15, height = 11, dpi = "retina", device = cairo_pdf, path = here("figures"))
+ggsave("distancesError.png", plot=cue_Dist, units = "cm", width = 15, height = 11, dpi = "retina", device = "png", path = here("figures"))
 
 # show the plot
-g_cue
+cue_Dist
 ```
 
 ## Miniblocks Learning
@@ -704,7 +729,7 @@ g_mini <- ggplot(summary_miniblock, aes(miniblock, relativeInf, group=interactio
   geom_line(size=0.8, alpha = 0.3) +
   # overall mean and se 
   stat_summary(fun=mean, aes(group=cue), geom="point", size=2) +
-  stat_summary(dfun.data=mean_se, aes(group=cue), geom="errorbar", size=0.8, width=0.1, alpha=0.95) +
+  stat_summary(fun.data=mean_se, aes(group=cue), geom="errorbar", size=0.8, width=0.1, alpha=0.95) +
   # connects the overall mean to show the improvement
   stat_summary(fun=mean, aes(group=cue), geom="line", size = 1.5) +
   # line showing 0.5 neutral relative score for reference
@@ -840,7 +865,9 @@ t.test(subset(sub_mini_cue, cue=="landmark")$relInfluence, subset(sub_mini_cue, 
 
 ### Mixed Models
 
-To test the learning throughout a block, we ran mixed effect model with interaction between cue and miniblock (centered) and added miniblock as an independent random slope.
+**Relative Influence**
+
+To test the learning throughout a block, we ran mixed effect model with interaction between cue and miniblock (centered) and added interaction between cue and miniblock as a random slope.
 
 ```{r}
 formulaMiniblocksCue <- "relativeInfluence ~ cueMM*mini + (1+mini:cueMM|ID)"
@@ -858,6 +885,8 @@ modelMiniblocksControl <- lme4::lmer(formula = formulaMiniblocksControl, data=su
 ratioMini <- anova(modelMiniblocksCue, modelMiniblocksControl)
 ratioMini
 ```
+
+**Cue specific analysis**
 
 To check whether miniblocks are a significant predictor without the cue we ran a model and likelihood ratio test separately for landmark-dependent and boundary-dependent objects.
 
@@ -889,36 +918,39 @@ ratioMiniBoundary = anova(modelMiniblocksBoundary, modelMiniBoundaryControl)
 ratioMiniBoundary
 ```
 
-As we decided to recode relative influence score to dCorrect / (dCorrect + dOther), we ran the main model with miniblocks again with the new dependent variable to see if the slope differ despite the same direction of improvement.
+**Cue Dissonance**
+
+As we decided to recode relative influence score to dCorrect / (dCorrect + dOther), we ran the main model with miniblocks again with the new dependent variable to see if the slope differ despite the same direction of improvement. Random effects could not included interaction as this caused singular fit.
 
 ```{r}
-#model with new recoded dependent variable
-formulaMiniblocksCue <- "correct_RI ~ cue*miniblock + (0+miniblock:cue|ID)"
-modelMiniblocksCue <- lme4::lmer(formula = formulaMiniblocksCue, data=subset_RI)
-summary(modelMiniblocksCue)
+#model with new recoded dependent variable - cue dissonance
+formulaCueDis_mini <- "correct_RI ~ cueMM*mini + (1+mini+cueMM||ID)"
+modelCueDis_mini <- lme4::lmer(formula = formulaCueDis_mini, data=subset_RI)
+summary(modelCueDis_mini)
 ```
 
 To test the significance of the interaction, we ran a likelihood ratio test comparing our model and a model with both cue and miniblock as predictors but without the interaction.
 
 ```{r}
 #control model for interaction
-formulaMiniblocksControl <- "correct_RI ~ cueMM+mini + (1+mini:cueMM|ID)"
-modelMiniblocksControl <- lme4::lmer(formula = formulaMiniblocksControl, data=subset_RI)
-summary(modelMiniblocksControl)
+formulaCueDis_miniControl <- "correct_RI ~ cueMM+mini + (1+mini+cueMM|ID)"
+modelCueDis_miniControl <- lme4::lmer(formula = formulaCueDis_miniControl, data=subset_RI)
+
 #likelihood ratio test
-ratioMini <- anova(modelMiniblocksCue, modelMiniblocksControl)
-ratioMini
+ratioCueDis_mini <- anova(modelCueDis_mini, modelCueDis_miniControl)
+ratioCueDis_mini
 ```
 
 To see whether the model including cue is better than a miniblock with random effect we ran a likelihood ratio test.
 
 ```{r}
 #control model
-formulaJustCue <- "correct_RI ~ mini + (1+mini:cueMM|ID)"
+formulaJustCue <- "correct_RI ~ mini + (1+mini+cueMM|ID)"
 modelJustCue <- lme4::lmer(formula = formulaJustCue, data=subset_RI)
 summary(modelJustCue)
+
 #likelihood ratio test
-ratioMini <- anova(modelMiniblocksControl, modelJustCue)
+ratioMini <- anova(modelCueDis_miniControl, modelJustCue) 
 ratioMini
 ```
 
@@ -928,7 +960,10 @@ To test our main hypothesis, we ran mixed model including age and cue as main pr
 
 ### Relative Influence
 
-#### Mixed Models
+**Mixed Model**
+
+As our initial dependent variable, we examine these two predictors (cue, age) first to relative influence scores.
+
 ```{r}
 #full model
 formulaFull <- "relativeInfluence ~ age_c*cueMM + ( 1 + cueMM | ID)" 
@@ -946,6 +981,8 @@ modelControl <- lmer(formula = controlFinalInt, data=subset_RI)
 ratioFullModel <- anova(modelFull, modelControl)
 ratioFullModel
 ```
+
+**Cue specific analysis**
 
 To see if age remains a significant predictor without cue, we ran mixed models separately for boundary-dependent and landmark-dependent objects and tested them with likelihood ratio test including only random intercepts for participants.
 
@@ -977,7 +1014,7 @@ ratioAgeBoundary <- anova(modelAgeBoundary, modelControlAgeBoundary)
 ratioAgeBoundary
 ```
 
-#### Graphs
+**Graphs**
 
 The graph below visualizes how the relative influence improves with age as seen in collected data.
 
@@ -1030,7 +1067,7 @@ RI_model <- ggplot(RI_predict, aes(x = x, y = predicted, colour = cuePredict, fi
   scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
   scale_fill_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
   # changing limits, breaks and labels of both axis 
-  scale_x_continuous(breaks = sort(unique(Age_c$age_c)), labels = c("8", "9", "10", "11", "12", "13", "14", "15")) +
+  scale_x_continuous(breaks = sort(unique(Sum_all$age_c)), labels = c("8", "9", "10", "11", "12", "13", "14", "15")) +
   scale_y_continuous(breaks = c(0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8), limits = c(0.2, 0.8)) +
   # background setting
   theme_cowplot() +
@@ -1044,7 +1081,7 @@ RI_model <- ggplot(RI_predict, aes(x = x, y = predicted, colour = cuePredict, fi
 RI_model
 ```
 
-```{r}
+```{r, eval=FALSE}
 # specifying the layout
 layout <- "
 AAAAA#BBBBBB
@@ -1076,27 +1113,60 @@ g_final
 ```
 
 
-### Recoded dependent variable
+### Cue dissonance
 
-Next, we tested whether the effect of age and age and cue interaction remain when using the new recoded relative influence score as dependent variable. 
+**Mixed Model**
+
+Next, we tested whether the effect of age and age and cue interaction remain when using the new variable - cue dissonance (one direction recoded relative influence score) as dependent variable. 
 
 ```{r}
-formulaFullNext <- "correct_RI ~ age_c*cueMM + ( 1 + cueMM | ID)" 
-modelFullNext <- lmer(formula = formulaFullNext, data=subset_RI)
-summary(modelFullNext)
+formulaCueDis <- "correct_RI ~ age_c*cueMM + ( 1 + cueMM | ID)" 
+modelCueDis <- lmer(formula = formulaCueDis, data=subset_RI)
+summary(modelCueDis)
 ```
 
 ```{r} 
 #control model for interaction
-controlFinalNext <- "correct_RI ~ age_c + cueMM + (1 + cueMM | ID)" 
-modelControlNext <- lmer(formula = controlFinalNext, data=subset_RI)
+controlCueDis <- "correct_RI ~ age_c + cueMM + (1 + cueMM | ID)" 
+modelControlCueDis <- lmer(formula = controlCueDis, data=subset_RI)
 #likelihood ratio test
-ratioFullModelNext <- anova(modelFullNext, modelControlNext)
+ratioCueDis <- anova(modelCueDis, modelControlCueDis)
+ratioCueDis
+```
+
+**Explorative**
+
+Is cue even significant predictor?
+
+```{r} 
+#control model for cue as predictor
+controlCueDis_cue <- "correct_RI ~ age_c + (1 + cueMM | ID)" 
+modelCueDis_cueControl <- lmer(formula = controlCueDis_cue, data=subset_RI)
+
+#likelihood ratio test
+ratioCueDis_cue <- anova(modelCueDis_cueControl, modelControlCueDis)
+ratioCueDis_cue
+```
+
+Adding miniblock as a predictor instead to find the best model.
+
+```{r} 
+#control model for miniblock as predictor
+miniFullCueDis<- "correct_RI ~ age_c + mini + (1 + cueMM | ID)" 
+modelCueDis_miniFull <- lmer(formula = miniFullCueDis, data=subset_RI)
+summary(modelCueDis_miniFull)
+
+#likelihood ratio test
+ratioFullModelNext <- anova(modelCueDis_miniFull, modelCueDis_cueControl)
 ratioFullModelNext
 ```
 
+**Graphs**
+
+The graph below visualizes how the cue dissonance improves with age as seen in collected data.
+
 ```{r}
-RI_final <- ggplot(relativeInfluenceBlocks, aes(age, corCueRI, color=cue)) + 
+CueDis_final <- ggplot(relativeInfluenceBlocks, aes(age, corCueRI, color=cue)) + 
   theme_cowplot() +
   scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, guide = FALSE) +
   stat_summary(fun=mean, aes(group=cue), geom="line", size = 1.5) +
@@ -1108,27 +1178,28 @@ RI_final <- ggplot(relativeInfluenceBlocks, aes(age, corCueRI, color=cue)) +
   scale_color_scico_d(palette = 'tokyo', begin=0.3, end=0.7, labels = c("Boundary", "Landmark")) +
   scale_x_continuous(breaks = c(8,9,10,11,12,13,14,15)) +
   scale_y_continuous(limits = c(0.2, 0.8), breaks = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)) +
-  labs(x= "Age", y = "Relative Influence (0-1)", 
+  labs(x= "Age", y = "RCue Dissonance (0-1)", 
        title = "Data", color="Cue") +
   
   geom_hline(yintercept = 0.5, linetype=2, alpha=0.6)
   
-RI_final
+CueDis_final
 ```
 
+The graph below visualizes the cue dissonance age-dependent improvement based on a mixed model predictions.
 
 ```{r}
-RI_predict <- ggeffects::ggpredict(modelFullNext, terms = c("age_c", "cueMM")) %>%
+CueDis_predict <- ggeffects::ggpredict(modelCueDis, terms = c("age_c", "cueMM")) %>%
   as_tibble() %>%
   mutate(cuePredict = factor(if_else(group == 1, true = "boundary", false = "landmark"),
                       levels = c("boundary", "landmark")))
   
-RI_model <- ggplot(RI_predict, aes(x = x, y = predicted, colour = cuePredict, fill = cuePredict)) +
+CueDis_model <- ggplot(RI_predict, aes(x = x, y = predicted, colour = cuePredict, fill = cuePredict)) +
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .2, linetype=0) +
   geom_line(size = 0.5) +
   scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
   scale_fill_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
-  scale_x_continuous(breaks = sort(unique(Age_c$age_c)), labels = c("8", "9", "10", "11", "12", "13", "14", "15")) +
+  scale_x_continuous(breaks = sort(unique(Sum_all$age_c)), labels = c("8", "9", "10", "11", "12", "13", "14", "15")) +
   scale_y_continuous(breaks = c(0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8), limits = c(0.2, 0.8)) +
   theme_cowplot() +
   labs(x="Age", y=" ", color="Cue", fill="Cue", 
@@ -1136,17 +1207,19 @@ RI_model <- ggplot(RI_predict, aes(x = x, y = predicted, colour = cuePredict, fi
   theme(legend.position = "none") +
   geom_hline(yintercept = 0.5, linetype=2, alpha=0.6)
 
-RI_model
+CueDis_model
 ```
 
-```{r}
+Assembly of the generated graphs. 
+
+```{r, eval=FALSE}
 layout <- "
 AAAAA#BBBBBB
 AAAAA#BBBBBB
 AAAAA#BBBBBB
 "
 
-g_final_next <- RI_final + RI_model &
+CueDis_final <- CueDis_final + CueDis_model &
   plot_layout(design=layout) &
   theme(axis.title = element_text(size = 10), axis.text = element_text(size=10), 
         legend.title = element_text(size=10), legend.text = element_text(size=10),
@@ -1157,30 +1230,64 @@ g_final_next <- RI_final + RI_model &
                   theme = theme(plot.title = element_text(size = 12, face="bold")),
                   tag_levels = list(c('A', 'B')))
 
-g_final
+CueDis_final
 
-ggsave("relativeInfluence_finalNew.pdf", plot=g_final_next, units = "cm", width = 15, height = 9, 
+ggsave("cueDissonance_full.pdf", plot=CueDis_final, units = "cm", width = 15, height = 9, 
        dpi = "retina", device = cairo_pdf, path = here("figures"))
-ggsave("relativeInfluence_finalNew.png", plot=g_final_next, units = "cm", width = 15, height = 9, 
+ggsave("cueDissonance_full.png", plot=CueDis_final, units = "cm", width = 15, height = 9, 
        dpi = "retina", device = "png", path = here("figures"))
 ```
 
 ### Distance error
 
+**Mixed Model**
+
+To see if age and cue can predict raw distance error, we ran the same analysis as above but with error in virtual meters as a dependent variable.
+
 ```{r}
-formulaFullNext <- "error ~ age_c*cueMM + ( 1 + cueMM | ID)" 
-modelFullNext <- lmer(formula = formulaFullNext, data=subset_RI)
+formulaFullDist <- "error ~ age_c*cueMM + ( 1 + cueMM | ID)" 
+modelFullDist <- lmer(formula = formulaFullDist, data=subset_RI)
 summary(modelFullNext)
 ```
 
 ```{r} 
 #control model for interaction
-controlFinalNext <- "error ~ age_c + cueMM + (1 + cueMM | ID)" 
-modelControlNext <- lmer(formula = controlFinalNext, data=subset_RI)
+controlFullDist<- "error ~ age_c + cueMM + (1 + cueMM | ID)" 
+modelControlFullDist <- lmer(formula = controlFullDist, data=subset_RI)
+
 #likelihood ratio test
-ratioFullModelNext <- anova(modelFullNext, modelControlNext)
+ratioFullModelNext <- anova(modelFullDist, modelControlFullDist)
 ratioFullModelNext
 ```
+
+**Explorative** 
+
+Is cue even significant predictor?
+
+```{r} 
+#control model for cue as predictor
+controlFullDist<- "error ~ age_c + (1 + cueMM | ID)" 
+modelControlFullDist <- lmer(formula = controlFullDist, data=subset_RI)
+
+#likelihood ratio test
+ratioFullModelNext <- anova(modelFullDist, modelControlFullDist)
+ratioFullModelNext
+```
+
+Adding miniblock instead of cue a predictor.
+
+```{r} 
+#control model for miniblock as predictor
+miniFullDist<- "error ~ age_c + mini + (1 + cueMM | ID)" 
+modelMiniFullDist <- lmer(formula = miniFullDist, data=subset_RI)
+summary(modelMiniFullDist)
+
+#likelihood ratio test
+ratioFullModelNext <- anova(modelMiniFullDist, modelControlFullDist)
+ratioFullModelNext
+```
+
+**Graphs**
 
 ```{r}
 distance_final <- ggplot(relativeInfluenceBlocks, aes(age, distanceError, color=cue)) + 
@@ -1212,7 +1319,7 @@ distance_model <- ggplot(distance_predict, aes(x = x, y = predicted, colour = cu
   geom_line(size = 0.5) +
   scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
   scale_fill_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
-  scale_x_continuous(breaks = sort(unique(Age_c$age_c)), labels = c("8", "9", "10", "11", "12", "13", "14", "15")) +
+  scale_x_continuous(breaks = sort(unique(Sum_all$age_c)), labels = c("8", "9", "10", "11", "12", "13", "14", "15")) +
   theme_cowplot() +
   labs(x="Age", y=" ", color="Cue", fill="Cue", 
        title = "Mixed Model") + 
@@ -1221,7 +1328,7 @@ distance_model <- ggplot(distance_predict, aes(x = x, y = predicted, colour = cu
 distance_model
 ```
 
-```{r}
+```{r, eval=FALSE}
 layout <- "
 AAAAA#BBBBBB
 AAAAA#BBBBBB
@@ -1239,7 +1346,7 @@ g_final_distance <- distance_final + distance_model &
                   theme = theme(plot.title = element_text(size = 12, face="bold")),
                   tag_levels = list(c('A', 'B')))
 
-g_final
+g_final_distance
 
 ggsave("distanceError_final.pdf", plot=g_final_distance, units = "cm", width = 15, height = 9, 
        dpi = "retina", device = cairo_pdf, path = here("figures"))
