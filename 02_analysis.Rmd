@@ -1166,8 +1166,8 @@ modelCueDis_miniFull <- lmer(formula = miniFullCueDis, data=subset_RI)
 summary(modelCueDis_miniFull)
 
 #likelihood ratio test
-ratioFullModelNext <- anova(modelCueDis_miniFull, modelCueDis_cueControl)
-ratioFullModelNext
+ratioCueDis_miniFull <- anova(modelCueDis_miniFull, modelCueDis_cueControl)
+ratioCueDis_miniFull
 ```
 
 **Graphs**
@@ -1203,7 +1203,7 @@ CueDis_predict <- ggeffects::ggpredict(modelCueDis, terms = c("age_c", "cueMM"))
   mutate(cuePredict = factor(if_else(group == 1, true = "boundary", false = "landmark"),
                       levels = c("boundary", "landmark")))
   
-CueDis_model <- ggplot(RI_predict, aes(x = x, y = predicted, colour = cuePredict, fill = cuePredict)) +
+CueDis_model <- ggplot(CueDis_predict, aes(x = x, y = predicted, colour = cuePredict, fill = cuePredict)) +
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .2, linetype=0) +
   geom_line(size = 0.5) +
   scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
@@ -1265,8 +1265,8 @@ controlFullDist<- "error ~ age_c + cueMM + (1 + cueMM | ID)"
 modelControlFullDist <- lmer(formula = controlFullDist, data=subset_RI)
 
 #likelihood ratio test
-ratioFullModelNext <- anova(modelFullDist, modelControlFullDist)
-ratioFullModelNext
+ratioFullDist <- anova(modelFullDist, modelControlFullDist)
+ratioFullDist
 ```
 
 **Explorative** 
@@ -1279,8 +1279,8 @@ controlFullDist<- "error ~ age_c + (1 + cueMM | ID)"
 modelControlFullDist <- lmer(formula = controlFullDist, data=subset_RI)
 
 #likelihood ratio test
-ratioFullModelNext <- anova(modelFullDist, modelControlFullDist)
-ratioFullModelNext
+ratioCueDist <- anova(modelFullDist, modelControlFullDist)
+ratioCueDist
 ```
 
 Adding miniblock instead of cue a predictor.
@@ -1292,8 +1292,8 @@ modelMiniFullDist <- lmer(formula = miniFullDist, data=subset_RI)
 summary(modelMiniFullDist)
 
 #likelihood ratio test
-ratioFullModelNext <- anova(modelMiniFullDist, modelControlFullDist)
-ratioFullModelNext
+ratioFullMiniDist <- anova(modelMiniFullDist, modelControlFullDist)
+ratioFullMiniDist
 ```
 
 **Graphs**

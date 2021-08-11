@@ -1,6 +1,6 @@
 ---
 title: "Data Preparation and Analysis"
-author: "Anna Makova (under supervision of Jacob Bellmund)"
+author: "Anna Makova (under supervision of Dr. Jacob Bellmund)"
 date: "05/08/2021"
 site: bookdown::bookdown_site
 documentclass: book
