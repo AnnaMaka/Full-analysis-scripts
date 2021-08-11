@@ -387,7 +387,7 @@ rel_InfAng <- ggplot(relativeAngleBlocks, aes(x=cue, y=relativeAng)) +
   # single subject data points (1 per participant)
   geom_point(shape=16, size = 1) +
   # line connecting individual participants' values 
-  geom_line(aes(group=ID), alpha=0.5) 
+  geom_line(aes(group=ID), alpha=0.5) +
   # bowplot distribution
   geom_boxplot(data=relativeAngleBlocks %>% filter(cue=="landmark"), 
                position=position_nudge(+0.1), width = .1, outlier.shape = NA) +
@@ -785,17 +785,17 @@ As our initial dependent variable, we examine these two predictors (cue, age) fi
 #full model
 formulaFullAngle <- "relativeAngle ~ age_c*cueMM+(1+cueMM|ID)" 
 modelFullAngle <- lme4::lmer(formula = formulaFullAngle, data=subset_RA)
-summary(modelFinalAngle)
+summary(modelFullAngle)
 ```
 
 The significance of the interaction was tested using likelihood ratio test. 
 
 ```{r} 
 #control model
-controlFinal <- "relativeAngle ~ age_c+cueMM+(1+cueMM|ID)"
-modelControl <- lme4::lmer(formula = controlFinal, data=subset_RA)
+controlFullAngle <- "relativeAngle ~ age_c+cueMM+(1+cueMM|ID)"
+modelControlAngle <- lme4::lmer(formula = controlFullAngle, data=subset_RA)
 #likelihood ratio test
-ratioFinalAngle <- anova(modelFinalAngle, modelControl)
+ratioFinalAngle <- anova(modelFullAngle, modelControlAngle)
 ratioFinalAngle
 ```
 
@@ -859,7 +859,7 @@ The graph below visualizes the relative influence age-dependent improvement base
 
 ```{r }
 # calculating values predicted by the mixed model
-RA_predict <- ggeffects::ggpredict(modelFinalAngle, terms = c("age_c", "cueMM")) %>% 
+RA_predict <- ggeffects::ggpredict(modelFullAngle, terms = c("age_c", "cueMM")) %>% 
   as_tibble() %>%
   mutate(cuePredict = factor(if_else(group == 1, true = "boundary", false = "landmark"),
                       levels = c("boundary", "landmark")))
@@ -869,7 +869,7 @@ RA_model <- ggplot(RA_predict, aes(x = x, y = predicted, colour = cuePredict, fi
   geom_line(size = 0.5) +
   scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
   scale_fill_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
-  scale_x_continuous(breaks = sort(unique(Age_c$age_c)), labels = c("8", "9", "10", "11", "12", "13", "14", "15")) +
+  scale_x_continuous(breaks = sort(unique(Sum_all$age_c)), labels = c("8", "9", "10", "11", "12", "13", "14", "15")) +
   scale_y_continuous(breaks = c(0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8), limits = c(0.2, 0.8)) +
   theme_cowplot() +
   labs(x="Age", y=" ", color="Cue", fill="Cue", 

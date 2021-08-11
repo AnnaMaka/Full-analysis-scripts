@@ -523,7 +523,7 @@ relativeInf_graph <- ggplot(data=graph_sub) +
   # changing labels and title
   labs(title = "Relative Influence Calculation", 
        subtitle = paste("dL / (dL + dB) ", 
-                        sprintf("Relative Influence: %s ", round(graph_sub$relativeInfluence[i], 2)), sep="\n"),  
+                        sprintf("Relative Influence: %s ", round(graph_sub$relativeInfluence, 2)), sep="\n"),  
        x= 'X (vm)',  y= 'Y (vm)') +
   # specifying colors manually 
   scale_color_manual(name = " ", 
@@ -1247,7 +1247,7 @@ To see if age and cue can predict raw distance error, we ran the same analysis a
 ```{r}
 formulaFullDist <- "error ~ age_c*cueMM + ( 1 + cueMM | ID)" 
 modelFullDist <- lmer(formula = formulaFullDist, data=subset_RI)
-summary(modelFullNext)
+summary(modelFullDist)
 ```
 
 ```{r} 
@@ -1309,7 +1309,7 @@ distance_final
 
 
 ```{r}
-distance_predict <- ggeffects::ggpredict(modelFullNext, terms = c("age_c", "cueMM")) %>%
+distance_predict <- ggeffects::ggpredict(modelFullDist, terms = c("age_c", "cueMM")) %>%
   as_tibble() %>%
   mutate(cuePredict = factor(if_else(group == 1, true = "boundary", false = "landmark"),
                       levels = c("boundary", "landmark")))
