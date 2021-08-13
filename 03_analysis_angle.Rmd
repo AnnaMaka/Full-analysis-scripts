@@ -786,7 +786,6 @@ formulaMiniblocks <- "relativeAngle ~ cueMM * mini + (1 + cueMM + mini | ID)"
 
 #model
 modelMiniblocksCue <- lme4::lmer(formula = formulaMiniblocks, data=subset_RA)
-summary(modelMiniblocksCue)
 
 tab_model(modelMiniblocksCue, show.p = FALSE, digits.re = 4,
           pred.labels = c("Intercept", "Cue", "Miniblock", "Interaction"),  dv.labels = "Relative Influence", string.ci = "Conf. Int (95%)", 
@@ -913,7 +912,6 @@ As our initial dependent variable, we examine these two predictors (cue, age) fi
 #full model
 formulaFullAngle <- "relativeAngle ~ age_c*cueMM+(1+cueMM|ID)" 
 modelFullAngle <- lme4::lmer(formula = formulaFullAngle, data=subset_RA)
-summary(modelFullAngle)
 
 tab_model(modelFullAngle, show.p = FALSE, digits.re = 4,
           pred.labels = c("Intercept","Age", "Cue", "Interaction"),  dv.labels = "Relative Influence", string.ci = "Conf. Int (95%)", 

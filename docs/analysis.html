@@ -363,7 +363,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb27-10"><a href="analysis.html#cb27-10"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">13</span>,<span class="dv">14</span>,<span class="dv">15</span>)) <span class="op">+</span></span>
 <span id="cb27-11"><a href="analysis.html#cb27-11"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="op">+</span></span>
 <span id="cb27-12"><a href="analysis.html#cb27-12"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&quot;Age&quot;</span>, <span class="dt">y=</span><span class="st">&quot;Count&quot;</span>, <span class="dt">title=</span><span class="st">&quot;Distribution of age&quot;</span>)</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p><strong>Reaction Time</strong></p>
 <p>Next, we looked into reaction time (seconds between angle estimation and location estimation).</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="analysis.html#cb28-1"></a><span class="co">#average RT </span></span>
@@ -384,7 +384,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb28-16"><a href="analysis.html#cb28-16"></a>        <span class="dt">axis.ticks.x =</span> <span class="kw">element_blank</span>(),</span>
 <span id="cb28-17"><a href="analysis.html#cb28-17"></a>        <span class="dt">aspect.ratio =</span><span class="dv">1</span>, </span>
 <span id="cb28-18"><a href="analysis.html#cb28-18"></a>        <span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">face=</span><span class="st">&quot;italic&quot;</span>, <span class="dt">size=</span><span class="dv">12</span>))</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="analysis.html#cb29-1"></a><span class="co">#average RT and sd for the full dataset</span></span>
 <span id="cb29-2"><a href="analysis.html#cb29-2"></a>reaction_time &lt;-<span class="st"> </span><span class="kw">summarise</span>(reaction_time_dat, </span>
 <span id="cb29-3"><a href="analysis.html#cb29-3"></a>                           <span class="dt">mean =</span> <span class="kw">mean</span>(posiMemResponse), <span class="dt">sd=</span><span class="kw">sd</span>(posiMemResponse), <span class="dt">min=</span><span class="kw">min</span>(posiMemResponse), <span class="dt">max=</span><span class="kw">max</span>(posiMemResponse)) </span>
@@ -565,7 +565,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb37-43"><a href="analysis.html#cb37-43"></a></span>
 <span id="cb37-44"><a href="analysis.html#cb37-44"></a><span class="co"># show the graph</span></span>
 <span id="cb37-45"><a href="analysis.html#cb37-45"></a>distance_other</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p>To test this, we ran paired t-test which showed that on average there is a difference between these 2 distances.</p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="analysis.html#cb38-1"></a>dist_stats &lt;-<span class="st"> </span><span class="kw">t.test</span>(summaryBlock1<span class="op">$</span>distanceOther, summaryBlock1<span class="op">$</span>distanceTrue, <span class="dt">paired =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span>
 <span id="cb38-2"><a href="analysis.html#cb38-2"></a></span>
@@ -695,7 +695,7 @@ Also, is there performance difference between landmark- vs boundary-dependent ob
 <span id="cb41-48"><a href="analysis.html#cb41-48"></a></span>
 <span id="cb41-49"><a href="analysis.html#cb41-49"></a><span class="co"># show the graph</span></span>
 <span id="cb41-50"><a href="analysis.html#cb41-50"></a>relativeInf_graph</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <p>First, let’s create a subset dataframe that has data only from block 2-4 and get rid of us currently unnecessary columns. Then we summarize relative influence score, correct cue influence and distance error.</p>
 <div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="analysis.html#cb42-1"></a>subset_RI &lt;-<span class="st"> </span>Sum_all <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb42-2"><a href="analysis.html#cb42-2"></a><span class="st">  </span><span class="kw">filter</span>(block<span class="op">!=</span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -1021,7 +1021,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb53-27"><a href="analysis.html#cb53-27"></a></span>
 <span id="cb53-28"><a href="analysis.html#cb53-28"></a><span class="co">#show the graph</span></span>
 <span id="cb53-29"><a href="analysis.html#cb53-29"></a>g_mini</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p>The graph below shows the relative influence scores for each miniblock throughout block 2-4 (averaging only over 2 scores per miniblock)</p>
 <div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="analysis.html#cb54-1"></a><span class="co">#necessary summarizing for the graph below</span></span>
 <span id="cb54-2"><a href="analysis.html#cb54-2"></a>summary_objectTrial &lt;-<span class="st"> </span>subset_RI <span class="op">%&gt;%</span></span>
@@ -1065,7 +1065,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb54-40"><a href="analysis.html#cb54-40"></a></span>
 <span id="cb54-41"><a href="analysis.html#cb54-41"></a><span class="co">#show the graph</span></span>
 <span id="cb54-42"><a href="analysis.html#cb54-42"></a>g_objTrial</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <p>The two graphs created above are composed into a single layout for better, more wholesome visualisation.</p>
 <div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="analysis.html#cb55-1"></a><span class="co"># specifying the layout</span></span>
 <span id="cb55-2"><a href="analysis.html#cb55-2"></a>layout &lt;-<span class="st"> &quot;</span></span>
@@ -1101,7 +1101,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb55-32"><a href="analysis.html#cb55-32"></a></span>
 <span id="cb55-33"><a href="analysis.html#cb55-33"></a><span class="co"># show the assembled graphs</span></span>
 <span id="cb55-34"><a href="analysis.html#cb55-34"></a>g_min</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 </div>
 <div id="miniblock-1" class="section level3">
 <h3><span class="header-section-number">3.6.2</span> Miniblock 1</h3>
@@ -1997,7 +1997,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb87-26"><a href="analysis.html#cb87-26"></a></span>
 <span id="cb87-27"><a href="analysis.html#cb87-27"></a><span class="co"># show the graph</span></span>
 <span id="cb87-28"><a href="analysis.html#cb87-28"></a>RI_final</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
 <p>The graph below visualizes the relative influence age-dependent improvement based on a mixed model predictions.</p>
 <div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="analysis.html#cb88-1"></a><span class="co"># calculating values predicted by the mixed model</span></span>
 <span id="cb88-2"><a href="analysis.html#cb88-2"></a>RI_predict &lt;-<span class="st"> </span>ggeffects<span class="op">::</span><span class="kw">ggpredict</span>(modelFull, <span class="dt">terms =</span> <span class="kw">c</span>(<span class="st">&quot;age_c&quot;</span>, <span class="st">&quot;cueMM&quot;</span>)) <span class="op">%&gt;%</span></span>
@@ -2026,7 +2026,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb88-25"><a href="analysis.html#cb88-25"></a></span>
 <span id="cb88-26"><a href="analysis.html#cb88-26"></a><span class="co">#show the graph</span></span>
 <span id="cb88-27"><a href="analysis.html#cb88-27"></a>RI_model</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
 <div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="analysis.html#cb89-1"></a><span class="co"># specifying the layout</span></span>
 <span id="cb89-2"><a href="analysis.html#cb89-2"></a>layout &lt;-<span class="st"> &quot;</span></span>
 <span id="cb89-3"><a href="analysis.html#cb89-3"></a><span class="st">AAAAA#BBBBBB</span></span>
@@ -2367,7 +2367,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb101-16"><a href="analysis.html#cb101-16"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="fl">0.5</span>, <span class="dt">linetype=</span><span class="dv">2</span>, <span class="dt">alpha=</span><span class="fl">0.6</span>)</span>
 <span id="cb101-17"><a href="analysis.html#cb101-17"></a>  </span>
 <span id="cb101-18"><a href="analysis.html#cb101-18"></a>CueDis_final</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
 <p>The graph below visualizes the cue dissonance age-dependent improvement based on a mixed model predictions.</p>
 <div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="analysis.html#cb102-1"></a>CueDis_predict &lt;-<span class="st"> </span>ggeffects<span class="op">::</span><span class="kw">ggpredict</span>(modelCueDis, <span class="dt">terms =</span> <span class="kw">c</span>(<span class="st">&quot;age_c&quot;</span>, <span class="st">&quot;cueMM&quot;</span>)) <span class="op">%&gt;%</span></span>
 <span id="cb102-2"><a href="analysis.html#cb102-2"></a><span class="st">  </span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span></span>
@@ -2388,7 +2388,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb102-17"><a href="analysis.html#cb102-17"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="fl">0.5</span>, <span class="dt">linetype=</span><span class="dv">2</span>, <span class="dt">alpha=</span><span class="fl">0.6</span>)</span>
 <span id="cb102-18"><a href="analysis.html#cb102-18"></a></span>
 <span id="cb102-19"><a href="analysis.html#cb102-19"></a>CueDis_model</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
 <p>Assembly of the generated graphs.</p>
 <div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="analysis.html#cb103-1"></a>layout &lt;-<span class="st"> &quot;</span></span>
 <span id="cb103-2"><a href="analysis.html#cb103-2"></a><span class="st">AAAAA#BBBBBB</span></span>
@@ -2721,7 +2721,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb115-13"><a href="analysis.html#cb115-13"></a>       <span class="dt">title =</span> <span class="st">&quot;Data&quot;</span>, <span class="dt">color=</span><span class="st">&quot;Cue&quot;</span>) </span>
 <span id="cb115-14"><a href="analysis.html#cb115-14"></a>  </span>
 <span id="cb115-15"><a href="analysis.html#cb115-15"></a>distance_final</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
 <div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="analysis.html#cb116-1"></a>distance_predict &lt;-<span class="st"> </span>ggeffects<span class="op">::</span><span class="kw">ggpredict</span>(modelFullDist, <span class="dt">terms =</span> <span class="kw">c</span>(<span class="st">&quot;age_c&quot;</span>, <span class="st">&quot;cueMM&quot;</span>)) <span class="op">%&gt;%</span></span>
 <span id="cb116-2"><a href="analysis.html#cb116-2"></a><span class="st">  </span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span></span>
 <span id="cb116-3"><a href="analysis.html#cb116-3"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cuePredict =</span> <span class="kw">factor</span>(<span class="kw">if_else</span>(group <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">true =</span> <span class="st">&quot;boundary&quot;</span>, <span class="dt">false =</span> <span class="st">&quot;landmark&quot;</span>),</span>
@@ -2739,7 +2739,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb116-15"><a href="analysis.html#cb116-15"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>) </span>
 <span id="cb116-16"><a href="analysis.html#cb116-16"></a></span>
 <span id="cb116-17"><a href="analysis.html#cb116-17"></a>distance_model</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
 <div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="analysis.html#cb117-1"></a>layout &lt;-<span class="st"> &quot;</span></span>
 <span id="cb117-2"><a href="analysis.html#cb117-2"></a><span class="st">AAAAA#BBBBBB</span></span>
 <span id="cb117-3"><a href="analysis.html#cb117-3"></a><span class="st">AAAAA#BBBBBB</span></span>
