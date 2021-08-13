@@ -20,6 +20,7 @@ Packages used for data analysis
 
 ```{r}
 library(lme4)
+library(sjPlot)
 library(tidyverse)
 library(broom)
 library(ggsignif)
@@ -31,7 +32,6 @@ library(Cairo)
 library(ggnewscale) 
 library(here) 
 library(effsize)
-library(pwr)
 library(circular)
 ```
 
@@ -59,13 +59,19 @@ circleSome <- function(centerX, centerY, r = 27.5, npoints = 100, a1, a2){
 Loading in the full dataset
 
 ```{r}
-Sum_all <- read_delim(here("data" ,"Sum.txt"), delim = " ", col_names = TRUE, col_types = "fdddddddfcdddddddddddddddddddddddddddddddddddddddd") 
+Sum_all <- read_delim(here("data" ,"Sum.txt"), delim = " ", col_names = TRUE, col_types = "fdddddddfdcddddddddddddddddddddddddddddddddddddddd") 
 ```
 
 Creating a list of subject IDs from the full dataset
 
 ```{r}
 subjects <- unique(Sum_all$ID)
+```
+
+Formatting for results output
+
+```{r}
+low_p <- "<0.001"
 ```
 
 ### Timeout session
@@ -75,14 +81,16 @@ Identifying and filtering timeout sessions i.e. trials with time over 59 seconds
 ```{r}
 #summary of timeout trials 
 timeout <- filter(Sum_all, secTrialEst > 59)
-print(sprintf("# timeout trials: %s", nrow(timeout)))
-print(sprintf("# participants with timeout trials: %s", length(unique(timeout$ID))))
-print(sprintf("average # timeout trials per participant with timeout trials: %s", nrow(timeout)/length(unique(timeout$ID))))
-print(sprintf("average # timeout trials per participant: %s", nrow(timeout)/length(subjects)))
 
 #filtering timeout trials as they do not include location estimation
 Sum_all <- filter(Sum_all, secTrialEst < 59)
 ```
+
+- number of timeout trials: `r nrow(timeout)`
+- number of participants with timeout trials: `r length(unique(timeout$ID))`
+- average number of timeout trials per participant with timeout trials: `r nrow(timeout)/length(unique(timeout$ID))`
+- average number of timeout trials per participant: `r nrow(timeout)/length(subjects)`
+
 
 ### Exclusion criteria
 
@@ -99,9 +107,10 @@ for (i_sub in subjects) {
     Sum_all <- filter(Sum_all, ID != i_sub)
     }
 }
-print(sprintf("# participants excluded: %s", length(exclusion)))
-print(sprintf("new overall sample size: %s", length(subjects)-length(exclusion)))
 ```
+
+- number of participants excluded: `r length(exclusion)`
+- new overall sample size: `r length(subjects)-length(exclusion)`
 
 ## Descriptives
 
@@ -132,10 +141,10 @@ ggplot(reaction_time_dat, aes(x=0, y=estResponse)) +
 #actual average RT and sd
 reaction_time <- summarise(reaction_time_dat, mean = mean(estResponse), sd=sd(estResponse), min=min(estResponse), max=max(estResponse))
 
-reaction_time
-
-print(sprintf("The average reaction time for pointing was %s seconds (sd = %s).", round(reaction_time$mean, 3), round(reaction_time$sd, 3)))
 ```
+
+The average reaction time in pointing task was `r round(reaction_time$mean, 3)` seconds (sd = `r round(reaction_time$sd, 3)`).
+
 
 ## Block 1 Performance
 
@@ -181,9 +190,19 @@ summaryBlock1_Angle <- Sum_all %>%
 We took 90° as a threshold of randomness (possible absolute angle error 0-180°). To see whether participants pointed better than on average randomly, we ran a one sample, one-tailed t-test of their average absolute angle error in block 1 against 90. To see the effect size we calculated cohen's d.
 
 ```{r}
-t.test(summaryBlock1_Angle$angleErr, mu = 90, alternative = "less") %>% tidy()
-cohen.d(d=summaryBlock1_Angle$angleErr, f=NA, mu=90) 
+b1a_stats <- t.test(summaryBlock1_Angle$angleErr, mu = 90, alternative = "less") %>% tidy()
+
+d <- cohen.d(d=summaryBlock1_Angle$angleErr, f=NA, mu=90) 
+
+b1a_stats$d <- d$estimate
+b1a_stats$dCI_low <- d$conf.int[[1]]
+b1a_stats$dCI_high <- d$conf.int[[2]]
 ```
+
+*Block 1 absolute angle error against 90 t-test results:*
+
+t(`r b1a_stats$parameter`)= `r round(b1a_stats$statistic, 2)`, p`r if (b1a_stats$p.value > 0.001) {paste("=", round(b1a_stats$p.value, 3))} else {low_p}`, d=`r round(b1a_stats$d, 2)`,  95% CI [`r round(b1a_stats$dCI_low, 2)`, `r round(b1a_stats$dCI_high, 2)`]
+
 
 **Graph**
 
@@ -343,33 +362,63 @@ relativeAngleBlocks <- subset_RA %>%
             .groups="drop")
 ```
 
+
 **T-Tests**
 
 As score 0.5 points towards angle between the angle predicted by landmark and angle predicted by boundary, we ran a one sample, one tail t-test to test whether the relative scores for landmark-dependent objects are less than 0.5.
 
 ```{r t-test of RA vs 0.5 landmark}
-t.test(subset(relativeAngleBlocks, cue=="landmark")$relativeAng, 
-       mu = 0.5, alternative = "less") %>% tidy()
-cohen.d(d=subset(relativeAngleBlocks, cue=="landmark")$relativeAng, f=NA, mu = 0.5)
+landmarkRA_stats <- t.test(subset(relativeAngleBlocks, cue=="landmark")$relativeAng, mu = 0.5, alternative = "less") %>% tidy()
+
+d <- cohen.d(d=subset(relativeAngleBlocks, cue=="landmark")$relativeAng, f=NA, mu = 0.5)
+
+landmarkRA_stats$d <- d$estimate
+landmarkRA_stats$dCI_low <- d$conf.int[[1]]
+landmarkRA_stats$dCI_high <- d$conf.int[[2]]
 ```
+
+*Landmark-dependent objects' RA against 0.5 t-test results:*
+
+t(`r landmarkRA_stats$parameter`)= `r round(landmarkRA_stats$statistic, 2)`, p`r if (landmarkRA_stats$p.value > 0.001) {paste("=", round(landmarkRA_stats$p.value, 3))} else {low_p}`, d=`r round(landmarkRA_stats$d, 2)`, 95% CI [`r round(landmarkRA_stats$dCI_low, 2)`, `r round(landmarkRA_stats$dCI_high, 2)`]
+
 
 After we ran a one sample, one tail t-test to test whether the relative scores for boundary-dependent objects are higher than 0.5.
 
 ```{r t-test of RA vs 0.5 boundary}
-t.test(subset(relativeAngleBlocks, cue=="boundary")$relativeAng, 
-       mu = 0.5, alternative = "greater") %>% tidy()
-cohen.d(d=subset(relativeAngleBlocks, cue=="boundary")$relativeAng, f=NA, mu = 0.5)
+boundaryRA_stats <- t.test(subset(relativeAngleBlocks, cue=="boundary")$relativeAng, mu = 0.5, alternative = "greater") %>% tidy()
+
+d <- cohen.d(d=subset(relativeAngleBlocks, cue=="boundary")$relativeAng, f=NA, mu = 0.5)
+
+boundaryRA_stats$d <- d$estimate
+boundaryRA_stats$dCI_low <- d$conf.int[[1]]
+boundaryRA_stats$dCI_high <- d$conf.int[[2]]
 ```
+
+*Boundary-dependent objects' RA against 0.5 t-test results:*
+
+t(`r boundaryRA_stats$parameter`)= `r round(boundaryRA_stats$statistic, 2)`, p`r if (boundaryRA_stats$p.value > 0.001) {paste("=", round(boundaryRA_stats$p.value, 3))} else {low_p}`, d=`r round(boundaryRA_stats$d, 2)`, 95% CI [`r round(boundaryRA_stats$dCI_low, 2)`, `r round(boundaryRA_stats$dCI_high, 2)`]
+
 
 We also tested these two groups against each other to see if the scores are significantly different. 
 
 ```{r t-test of RA boundary vs. landmark}
-t.test(subset(relativeAngleBlocks, cue=="boundary")$relativeAng, 
-       subset(relativeAngleBlocks, cue=="landmark")$relativeAng, paired = TRUE) %>% tidy()
-cohen.d(subset(relativeAngleBlocks, cue=="boundary")$relativeAng, 
-       subset(relativeAngleBlocks, cue=="landmark")$relativeAng, paired=TRUE)
-pwr.t.test(n = 36, d = 2.532636, sig.level = 0.05, power = NULL, type = c("paired"), alternative = c("two.sided"))
+RA_stats <- t.test(subset(relativeAngleBlocks, cue=="boundary")$relativeAng, 
+                   subset(relativeAngleBlocks, cue=="landmark")$relativeAng, 
+                   paired = TRUE) %>% tidy()
+
+d <- cohen.d(subset(relativeAngleBlocks, cue=="boundary")$relativeAng, 
+             subset(relativeAngleBlocks, cue=="landmark")$relativeAng, 
+             paired=TRUE)
+
+RA_stats$d <- d$estimate
+RA_stats$dCI_low <- d$conf.int[[1]]
+RA_stats$dCI_high <- d$conf.int[[2]]
 ```
+
+*Boundary-dependent objects' RA vs landmark-dependent objects' RA t-test results:*
+
+t(`r RA_stats$parameter`)= `r round(RA_stats$statistic, 2)`, p`r if (RA_stats$p.value > 0.001) {paste("=", round(RA_stats$p.value, 3))} else {low_p}`, d=`r round(RA_stats$d, 2)`, 95% CI [`r round(RA_stats$dCI_low, 2)`, `r round(RA_stats$dCI_high, 2)`]
+
 
 
 **Graph**
@@ -443,6 +492,7 @@ ggsave("relativeInfluenceAll.png", plot=relative_infl, units = "cm", width = 11,
 relative_infl
 ```
 
+
 **Mixed Model**
 
 As a first step towards building a full mixed effects model, we tested a simpliest version with only cue as a fixed effect and a random slope and random intercepts for participants. We did not use cue as a factor but in a recoded version of landmark = -1 and boundary = 1.
@@ -450,9 +500,13 @@ As a first step towards building a full mixed effects model, we tested a simplie
 ```{r}
 #formula
 formulaCue <- "relativeAngle ~ cueMM + (1+cueMM|ID)"
+
 #model
 modelCueAngle <- lme4::lmer(formula = formulaCue, data=subset_RA)
-summary(modelCueAngle)
+
+tab_model(modelCueAngle, show.p = FALSE, digits.re = 4,
+          pred.labels = c("Intercept", "Cue"),  dv.labels = "Relative Influence", string.ci = "Conf. Int (95%)", 
+          CSS = css_theme("cells")) 
 ```
 
 To test, whether cue is a significant predictor we ran a likelihood ratio test comparing our simpliest model and a model containing only random effects.
@@ -461,10 +515,12 @@ To test, whether cue is a significant predictor we ran a likelihood ratio test c
 #control model without cue as a predictor
 formulaControl <- "relativeAngle ~ 1 + (1+cueMM|ID)"
 modelCueControl <- lme4::lmer(formula = formulaControl, data=subset_RA)
+
 #likelihood ratio test
-ratioCueAngle <- anova(modelCueAngle, modelCueControl)
-ratioCueAngle
+ratioCueAngle <- anova(modelCueAngle, modelCueControl) %>% tidy()
 ```
+
+**$\chi^{2}$(1) = `r round(ratioCueAngle$statistic[2],3)`, p`r if (ratioCueAngle$p.value[2] > 0.001) {paste("=", round(ratioCueAngle$p.value[2], 3))} else {low_p}`**
 
 
 ### Angle Error Difference
@@ -472,8 +528,23 @@ ratioCueAngle
 Paired, two-tailed t-test to see if the angle error differs between trials with landmark-dependent and boundary-dependent objects.
 
 ```{r angle estimation error difference? nah}
-t.test(subset(relativeAngleBlocks, cue=="boundary")$angleErr, subset(relativeAngleBlocks, cue=="landmark")$angleErr, paired = TRUE) %>% tidy()
+angCue_stats <- t.test(subset(relativeAngleBlocks, cue=="boundary")$angleErr, 
+                 subset(relativeAngleBlocks, cue=="landmark")$angleErr, 
+                 paired = TRUE) %>% tidy()
+
+d <- cohen.d(subset(relativeAngleBlocks, cue=="boundary")$angleErr, 
+             subset(relativeAngleBlocks, cue=="landmark")$angleErr, 
+             paired=TRUE) 
+
+angCue_stats$d <- d$estimate
+angCue_stats$dCI_low <- d$conf.int[[1]]
+angCue_stats$dCI_high <- d$conf.int[[2]]
 ```
+
+*Boundary-dependent objects' angle error vs landmark-dependent objects' angle error t-test results:*
+
+t(`r angCue_stats$parameter`)= `r round(angCue_stats$statistic, 2)`, p`r if (angCue_stats$p.value > 0.001) {paste("=", round(angCue_stats$p.value, 3))} else {low_p}`, d=`r round(angCue_stats$d, 2)`, 95% CI [`r round(angCue_stats$dCI_low, 2)`, `r round(angCue_stats$dCI_high, 2)`]
+
 
 Graph below visualizes the lack of difference.
 
@@ -662,8 +733,19 @@ sub_mini_1A <- subset_RA %>%
   summarise(relAngle = mean(relativeAngle), .groups ="drop")
 
 # one-tailed, one sample t-test
-t.test(sub_mini_1A$relAngle, mu=0.5, alternative = "greater") %>% tidy()
+mini1a_stats <- t.test(sub_mini_1A$relAngle, mu=0.5, alternative = "greater") %>% tidy()
+
+d <- cohen.d(sub_mini_1A$relAngle, f=NA, mu=0.5) 
+
+mini1a_stats$d <- d$estimate
+mini1a_stats$dCI_low <- d$conf.int[[1]]
+mini1a_stats$dCI_high <- d$conf.int[[2]]
 ```
+
+*Miniblock 1 RA against 0.5 t-test results:*
+
+t(`r mini1a_stats$parameter`)= `r round(mini1a_stats$statistic, 2)`, p`r if (mini1a_stats$p.value > 0.001) {paste("=", round(mini1a_stats$p.value, 3))} else {low_p}`, d=`r round(mini1a_stats$d, 2)`, 95% CI [`r round(mini1a_stats$dCI_low, 2)`, `r round(mini1a_stats$dCI_high, 2)`]
+
 
 As it seems the relative influence in miniblock is indeed higher than 0.5, therefore they are more likely following boundary as a cue (its old location). Next, we wanted to ensure that there is indeed no difference between the relative influence score between landmark-dependent and boundary-dependent objects in miniblock 1. 
 
@@ -675,8 +757,20 @@ sub_mini_cueA <- subset_RA %>%
   summarise(relAngle = mean(relativeAngle), .groups ="drop")
 
 # two-tailed, paired sample t-test
-t.test(subset(sub_mini_cueA, cue=="landmark")$relAngle, subset(sub_mini_cueA, cue=="boundary")$relAngle, paired=TRUE) %>% tidy()
+mini1a_cue_stats <- t.test(subset(sub_mini_cueA, cue=="landmark")$relAngle, subset(sub_mini_cueA, cue=="boundary")$relAngle, paired=TRUE) %>% tidy()
+
+d <- cohen.d(subset(sub_mini_cueA, cue=="landmark")$relAngle, subset(sub_mini_cueA, cue=="boundary")$relAngle, paired=TRUE) 
+
+mini1a_cue_stats$d <- d$estimate
+mini1a_cue_stats$dCI_low <- d$conf.int[[1]]
+mini1a_cue_stats$dCI_high <- d$conf.int[[2]]
 ```
+
+*Miniblock 1 landmark-dependent objects' RA against boundary-dependent objects' RA t-test results:*
+
+t(`r mini1a_cue_stats$parameter`)= `r round(mini1a_cue_stats$statistic, 2)`, p`r if (mini1a_cue_stats$p.value > 0.001) {paste("=", round(mini1a_cue_stats$p.value, 3))} else {low_p}`, d=`r round(mini1a_cue_stats$d, 2)`, 95% CI [`r round(mini1a_cue_stats$dCI_low, 2)`, `r round(mini1a_cue_stats$dCI_high, 2)`]
+
+
 
 ### Mixed Models
 
@@ -684,25 +778,35 @@ t.test(subset(sub_mini_cueA, cue=="landmark")$relAngle, subset(sub_mini_cueA, cu
 
 To test the learning throughout a block, we ran mixed effect model with interaction between cue and miniblock (centered) and added interaction between miniblock and cue as a random slope.
 
+!!Singular fits!!
+
 ```{r}
 #formula
-formulaMiniblocks <- "relativeAngle ~ cue*mini + (1+mini:cueMM|ID)"
+formulaMiniblocks <- "relativeAngle ~ cueMM * mini + (1 + cueMM + mini | ID)"
+
 #model
 modelMiniblocksCue <- lme4::lmer(formula = formulaMiniblocks, data=subset_RA)
 summary(modelMiniblocksCue)
+
+tab_model(modelMiniblocksCue, show.p = FALSE, digits.re = 4,
+          pred.labels = c("Intercept", "Cue", "Miniblock", "Interaction"),  dv.labels = "Relative Influence", string.ci = "Conf. Int (95%)", 
+          CSS = css_theme("cells")) 
 ```
 
 To test the significance of the interaction, we ran a likelihood ratio test comparing our model and a model with both cue and miniblock as predictors but without the interaction.
 
 ```{r}
 #control model
-formulaMiniControl <- "relativeAngle ~  mini+cueMM + (1+mini:cueMM|ID)" 
+formulaMiniControl <- "relativeAngle ~  cueMM + mini + ( 1 + cueMM + mini | ID)" 
 modelMiniControlInt <- lme4::lmer(formula = formulaMiniControl, data=subset_RA)
 
 #likelihood ratio test
-ratioMiniblocksInt <- anova(modelMiniblocksCue, modelMiniControlInt)
-ratioMiniblocksInt
+ratioMiniInt <- anova(modelMiniblocksCue, modelMiniControlInt) %>% tidy()
 ```
+
+**$\chi^{2}$(1) = `r round(ratioMiniInt$statistic[2],3)`, p`r if (ratioMiniInt$p.value[2] > 0.001) {paste("=", round(ratioMiniInt$p.value[2], 3))} else {low_p}`**
+
+
 
 **Cue specific analysis**
 
@@ -712,28 +816,42 @@ To check whether miniblocks are a significant predictor without the cue we ran a
 #landmark-dependent objects only model
 formulaMiniblocksAngle <- "relativeAngle ~ mini + (1+mini|ID)" 
 modelMiniblocksLandmarkAngle <- lme4::lmer(formula = formulaMiniblocksAngle, data=subset(subset_RA, cue=="landmark"))
-summary(modelMiniblocksLandmarkAngle) 
+
 #control model
 formulaMiniControl <- "relativeAngle ~ 1 + (1+mini|ID)" 
 modelMiniLandmarkControl <- lme4::lmer(formula = formulaMiniControl, data=subset(subset_RA, cue=="landmark"))
+
 #likelihood ratio test 
-ratioMiniLandmark = anova(modelMiniblocksLandmarkAngle, modelMiniLandmarkControl)
-ratioMiniLandmark
+ratioMiniLandmark <- anova(modelMiniblocksLandmarkAngle, modelMiniLandmarkControl) %>% tidy()
 ```
+
+**$\chi^{2}$(1) = `r round(ratioMiniLandmark$statistic[2],3)`, p`r if (ratioMiniLandmark$p.value[2] > 0.001) {paste("=", round(ratioMiniLandmark$p.value[2], 3))} else {low_p}`**
 
 
 ```{r}
 #boundary-dependent objects only model
 formulaMiniblocksAngle <- "relativeAngle ~ mini + (1+mini|ID)" 
 modelMiniblocksBoundaryAngle <- lme4::lmer(formula = formulaMiniblocksAngle, data=subset(subset_RA,cue=="boundary"))
-summary(modelMiniblocksBoundaryAngle)
+
 #control model
 formulaMiniControl <- "relativeAngle ~ 1 + (1+mini|ID)" 
 modelMiniBoundaryControl <- lme4::lmer(formula = formulaMiniControl, data=subset(subset_RA, cue=="boundary"))
+
 #likelihood ratio test
-ratioMiniBoundary = anova(modelMiniblocksBoundaryAngle, modelMiniBoundaryControl)
-ratioMiniBoundary
+ratioMiniBoundary <- anova(modelMiniblocksBoundaryAngle, modelMiniBoundaryControl) %>% tidy()
 ```
+
+**$\chi^{2}$(1) = `r round(ratioMiniBoundary$statistic[2],3)`, p`r if (ratioMiniBoundary$p.value[2] > 0.001) {paste("=", round(ratioMiniBoundary$p.value[2], 3))} else {low_p}`**
+
+
+```{r}
+tab_model(modelMiniblocksLandmarkAngle, modelMiniblocksBoundaryAngle, show.p = FALSE, digits.re = 4,
+          pred.labels = c("Intercept", "Miniblock"),  
+          dv.labels = c("Landmark-dependent", "Boundary-dependent"), string.ci = "Conf. Int (95%)", 
+          CSS = css_theme("cells")) 
+```
+
+
 
 **Cue Dissonance**
 
@@ -741,9 +859,13 @@ As we decided to recode relative influence score to dCorrect / (dCorrect + dOthe
 
 ```{r}
 #model with new recoded dependent variable - cue dissonance
-formulaCueDis_mini <- "cueDissonanceAngle ~ cueMM*mini + (1+mini+cueMM||ID)"
-modelCueDis_mini <- lme4::lmer(formula = formulaCueDis_mini, data=subset_RA)
-summary(modelCueDis_mini)
+formulaCueDis_mini <- "cueDissonanceAngle ~ cueMM*mini + (1+mini+cueMM|ID)"
+modelCueDis_miniA <- lme4::lmer(formula = formulaCueDis_mini, data=subset_RA)
+
+tab_model(modelCueDis_miniA, show.p = FALSE, digits.re = 4,
+          pred.labels = c("Intercept", "Cue", "Miniblock", "Interaction"),  
+          dv.labels = "Relative Influence", string.ci = "Conf. Int (95%)", 
+          CSS = css_theme("cells")) 
 ```
 
 To test the significance of the interaction, we ran a likelihood ratio test comparing our model and a model with both cue and miniblock as predictors but without the interaction.
@@ -751,25 +873,30 @@ To test the significance of the interaction, we ran a likelihood ratio test comp
 ```{r}
 #control model for interaction
 formulaCueDis_miniControl <- "cueDissonanceAngle ~ cueMM+mini + (1+mini+cueMM|ID)"
-modelCueDis_miniControl <- lme4::lmer(formula = formulaCueDis_miniControl, data=subset_RA)
+modelCueDis_miniControlA <- lme4::lmer(formula = formulaCueDis_miniControl, data=subset_RA)
 
 #likelihood ratio test
-ratioCueDis_mini <- anova(modelCueDis_mini, modelCueDis_miniControl)
-ratioCueDis_mini
+ratioCueDis_miniA <- anova(modelCueDis_miniA, modelCueDis_miniControlA) %>% tidy()
 ```
+
+**$\chi^{2}$(1) = `r round(ratioCueDis_miniA$statistic[2],3)`, p`r if (ratioCueDis_miniA$p.value[2] > 0.001) {paste("=", round(ratioCueDis_miniA$p.value[2], 3))} else {low_p}`**
+
+
+**Explorative**
 
 To see whether the model including cue is better than a miniblock with random effect we ran a likelihood ratio test.
 
 ```{r}
 #control model
-formulaJustCue <- "cueDissonanceAngle ~ mini + (1+mini+cueMM|ID)"
-modelJustCue <- lme4::lmer(formula = formulaJustCue, data=subset_RA)
-summary(modelJustCue)
+formulaJustMini <- "cueDissonanceAngle ~ mini + (1+mini+cueMM|ID)"
+modelJustMini <- lme4::lmer(formula = formulaJustMini, data=subset_RA)
 
 #likelihood ratio test
-ratioMini <- anova(modelCueDis_miniControl, modelJustCue) 
-ratioMini
+ratioMini <- anova(modelCueDis_miniControlA, modelJustMini) %>% tidy()
 ```
+
+**$\chi^{2}$(1) = `r round(ratioMini$statistic[2], 3)`, p`r if (ratioMini$p.value[2] > 0.001) {paste("=", round(ratioMini$p.value[2], 3))} else {low_p}`**
+
 
 
 ## Age
@@ -787,6 +914,10 @@ As our initial dependent variable, we examine these two predictors (cue, age) fi
 formulaFullAngle <- "relativeAngle ~ age_c*cueMM+(1+cueMM|ID)" 
 modelFullAngle <- lme4::lmer(formula = formulaFullAngle, data=subset_RA)
 summary(modelFullAngle)
+
+tab_model(modelFullAngle, show.p = FALSE, digits.re = 4,
+          pred.labels = c("Intercept","Age", "Cue", "Interaction"),  dv.labels = "Relative Influence", string.ci = "Conf. Int (95%)", 
+          CSS = css_theme("cells")) 
 ```
 
 The significance of the interaction was tested using likelihood ratio test. 
@@ -795,10 +926,14 @@ The significance of the interaction was tested using likelihood ratio test.
 #control model
 controlFullAngle <- "relativeAngle ~ age_c+cueMM+(1+cueMM|ID)"
 modelControlAngle <- lme4::lmer(formula = controlFullAngle, data=subset_RA)
+
 #likelihood ratio test
-ratioFinalAngle <- anova(modelFullAngle, modelControlAngle)
-ratioFinalAngle
+ratioFullAngle <- anova(modelFullAngle, modelControlAngle) %>% tidy()
 ```
+
+**$\chi^{2}$(1) = `r round(ratioFullAngle$statistic[2],3)`, p`r if (ratioFullAngle$p.value[2] > 0.001) {paste("=", round(ratioFullAngle$p.value[2], 3))} else {low_p}`**
+
+
 
 **Cue specific analysis**
 
@@ -808,29 +943,40 @@ To see if age remains a significant predictor without cue, we ran mixed models s
 #landmark-dependent objects only model
 formulaAgeLandmark <- "relativeAngle ~ age_c + (1|ID)"
 modelAgeLandmark <- lme4::lmer(formula = formulaAgeLandmark, data=subset(subset_RA, cue=="landmark"))
-summary(modelAgeLandmark)
 
 #control model 
 controlAgeLandmark <- "relativeAngle ~ 1 + (1 |ID)"
 modelControlAgeLandmark <- lme4::lmer(formula = controlAgeLandmark, data=subset(subset_RA, cue=="landmark"))
+
 #likelihood ratio test
-ratioAgeLandmark <- anova(modelAgeLandmark, modelControlAgeLandmark)
-ratioAgeLandmark
+ratioAgeLandmark <- anova(modelAgeLandmark, modelControlAgeLandmark) %>% tidy()
 ```
+
+**$\chi^{2}$(1) = `r round(ratioAgeLandmark$statistic[2],3)`, p`r if (ratioAgeLandmark$p.value[2] > 0.001) {paste("=", round(ratioAgeLandmark$p.value[2], 3))} else {low_p}`**
+
 
 ```{r}
 #boundary-dependent objects only model
 formulaAgeBoundary <- "relativeAngle ~ age_c +(1|ID)"
 modelAgeBoundary <- lme4::lmer(formula = formulaAgeBoundary, data=subset(subset_RA, cue=="boundary"))
-summary(modelAgeBoundary)
 
 #control model
 controlAgeBoundary <- "relativeAngle ~ 1 + (1 |ID)"
 modelControlAgeBoundary <- lme4::lmer(formula = controlAgeBoundary, data=subset(subset_RA, cue=="boundary"))
+
 #likelihood ratio test
-ratioAgeBoundary <- anova(modelAgeBoundary, modelControlAgeBoundary)
-ratioAgeBoundary
+ratioAgeBoundary <- anova(modelAgeBoundary, modelControlAgeBoundary) %>% tidy()
 ```
+
+**$\chi^{2}$(1) = `r round(ratioAgeBoundary$statistic[2],3)`, p`r if (ratioAgeBoundary$p.value[2] > 0.001) {paste("=", round(ratioAgeBoundary$p.value[2], 3))} else {low_p}`**
+
+
+```{r}
+tab_model(modelAgeLandmark, modelAgeBoundary, show.p = FALSE, digits.re = 4,
+          pred.labels = c("Intercept", "Age"),  dv.labels = c("Landmark-dependent", "Boundary-dependent"), string.ci = "Conf. Int (95%)", 
+          CSS = css_theme("cells")) 
+```
+
 
 **Graphs**
 
@@ -915,18 +1061,25 @@ Next, we tested whether the effect of age and age and cue interaction remain whe
 
 ```{r}
 formulaCueDis_A <- "cueDissonanceAngle ~ age_c*cueMM + ( 1 + cueMM | ID)" 
-modelCueDis_A <- lmer(formula = formulaCueDis_A, data=subset_RA)
-summary(modelCueDis_A)
+modelCueDis_A <- lme4::lmer(formula = formulaCueDis_A, data=subset_RA)
+
+tab_model(modelCueDis_A, show.p = FALSE, digits.re = 4,
+          pred.labels = c("Intercept", "Age", "Cue", "Interaction"),  dv.labels = "Relative Influence", string.ci = "Conf. Int (95%)", 
+          CSS = css_theme("cells")) 
+
 ```
 
 ```{r} 
 #control model for interaction
 controlCueDis_A <- "cueDissonanceAngle ~ age_c + cueMM + (1 + cueMM | ID)" 
 modelControlCueDis_A <- lmer(formula = controlCueDis_A, data=subset_RA)
+
 #likelihood ratio test
-ratioCueDis_A <- anova(modelCueDis_A, modelControlCueDis_A)
-ratioCueDis_A
+ratioCueDis_A <- anova(modelCueDis_A, modelControlCueDis_A) %>% tidy()
 ```
+
+**$\chi^{2}$(1) = `r round(ratioCueDis_A$statistic[2],3)`, p`r if (ratioCueDis_A$p.value[2] > 0.001) {paste("=", round(ratioCueDis_A$p.value[2], 3))} else {low_p}`**
+
 
 **Explorative**
 
@@ -938,9 +1091,11 @@ controlCueDis_cueA <- "cueDissonanceAngle ~ age_c + (1 + cueMM | ID)"
 modelCueDis_cueControlA <- lmer(formula = controlCueDis_cueA, data=subset_RA)
 
 #likelihood ratio test
-ratioCueDis_cueA <- anova(modelCueDis_cueControlA, modelControlCueDis_A)
-ratioCueDis_cueA
+ratioCueDis_cueA <- anova(modelCueDis_cueControlA, modelControlCueDis_A) %>% tidy()
 ```
+
+**$\chi^{2}$(1) = `r round(ratioCueDis_cueA$statistic[2],3)`, p`r if (ratioCueDis_cueA$p.value[2] > 0.001) {paste("=", round(ratioCueDis_cueA$p.value[2], 3))} else {low_p}`**
+
 
 Adding miniblock as a predictor instead to find the best model.
 
@@ -948,12 +1103,19 @@ Adding miniblock as a predictor instead to find the best model.
 #control model for miniblock as predictor
 miniFullCueDis_A<- "cueDissonanceAngle ~ age_c + mini + (1 + cueMM | ID)" 
 modelCueDis_miniFullA <- lmer(formula = miniFullCueDis_A, data=subset_RA)
-summary(modelCueDis_miniFullA)
+
+tab_model(modelCueDis_A, modelCueDis_miniFullA, show.p = FALSE, digits.re = 4,
+          pred.labels = c("Intercept", "Age", "Cue", "Interaction"),  
+          dv.labels = "Relative Influence", string.ci = "Conf. Int (95%)", 
+          CSS = css_theme("cells")) 
 
 #likelihood ratio test
-ratioCueDis_fullMiniA <- anova(modelCueDis_miniFullA, modelCueDis_cueControlA)
-ratioCueDis_fullMiniA
+ratioCueDis_fullMiniA <- anova(modelCueDis_miniFullA, modelCueDis_cueControlA) %>% tidy()
 ```
+
+**$\chi^{2}$(1) = `r round(ratioCueDis_fullMiniA$statistic[2],3)`, p`r if (ratioCueDis_fullMiniA$p.value[2] > 0.001) {paste("=", round(ratioCueDis_fullMiniA$p.value[2], 3))} else {low_p}`**
+
+
 
 **Graphs**
 

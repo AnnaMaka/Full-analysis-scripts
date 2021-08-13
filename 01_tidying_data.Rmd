@@ -55,10 +55,15 @@ angle <- function(a_X, a_Y, b_X, b_Y) {
 }
 ```
 
+Setting up condition of running the chunks below
+```{r}
+data_here <- nchar(here()) < 50
+```
+
 
 Creating a list of subject IDs based on presence of summary files for Block 4 
 Subsequently, creating list of new random IDs which were used during a transfer of data between computers
-```{r ID}
+```{r ID, eval=data_here}
 fn <- list.files(path =  here("data"), pattern="*_feedbackPhase_block4_Sum") 
 subjects <- c()
 for (i_file in length(fn)) {
@@ -69,7 +74,7 @@ newID <- sample(c(1000:9999), size=length(subjects), replace=FALSE)
 ```
 
 Retrieving participants' age from participants.csv (used for participation tracking purposes, created manually)
-```{r age}
+```{r age, eval=data_here}
 age <- read.table(here("data", "participants.csv"), sep  = ";", header = TRUE, colClasses = "character") %>% 
   select(study.ID, age, study) %>% 
   filter(study == "yes") 
@@ -79,11 +84,12 @@ age <- read.table(here("data", "participants.csv"), sep  = ";", header = TRUE, c
 The files are loaded in and joined into a big data frame containing all information from both summary and angle files for all participants
 
 Dataframes created along the way:
+
 - Sum_all: all participants
 - Sum: all data for 1 participant 
 - sub_dat: data from 1 block for 1 participant 
 
-```{r Summary}
+```{r Summary, eval=data_here}
 blocks <- c(1, 2, 3, 4) #number of blocks in the experiment
 Sum_all = tibble() #creating an empty tibble where eventually will the full dataset be stored
 
@@ -101,8 +107,8 @@ for(i_sub in subjects){
              newID=newID[which(subjects == i_sub)], 
              age=age$age[which(i_sub==age$study.ID)], 
              block=i_block, dropTime = (sec2Beg + secTrialRepl), miniblock = NA, objectTrial = NA, cue=NA,
-             landmarkCuePosX=NA, landmarkCuePosY=NA, boundaryCuePosX=NA, boundaryCuePosY=NA, relativeInfluence=NA, correct_RI = NA, 
-             angleError=NA, landmarkAngle=NA, boundaryAngle=NA, relativeAngle=NA, correct_RA = NA, 
+             landmarkCuePosX=NA, landmarkCuePosY=NA, boundaryCuePosX=NA, boundaryCuePosY=NA, relativeInfluence=NA, cueDissonance = NA, 
+             angleError=NA, landmarkAngle=NA, boundaryAngle=NA, relativeAngle=NA, cueDissonanceAngle = NA, 
              distanceTo1 = NA, distanceTo2=NA, distanceTo3=NA, averageDist=NA) 
     
     #loading in angle data
@@ -341,7 +347,7 @@ for(i_sub in subjects){
 
 Last changes to the dataframe to make it ready for analysis.
 
-```{r}
+```{r, eval=data_here}
 #assigning the correct format to values in columns used for analysis
 Sum_all <- Sum_all %>% 
   arrange(ID, objectTrial) %>% #ordering the dataframe according to ID and the experiment sequence
@@ -396,7 +402,7 @@ for (i_trial in 1:nrow(Sum_all)) {
 
 Loading in Trajectory files and creating one huge data frame (~30,000 lines per participant)
 
-```{r Trajectory}
+```{r Trajectory, eval=data_here}
 Traj = tibble() #creating an empty where eventually the full dataframe will be stored (>2M lines)
 
 for(i_sub in subjects){
@@ -443,7 +449,7 @@ for(i_sub in subjects){
 
 Getting rid of trajectory locations outside of the arena which have been probably caused by an internet glitch 
 
-```{r Traj filtering}
+```{r Traj filtering, eval=data_here}
 #removing locations outside of the arena (possibly internet glitch)
 Traj <- filter(Traj, charX > -27.5 & charX < 27.5 & charY > -27.5 & charY < 27.5) 
 ```
@@ -454,7 +460,7 @@ Traj <- filter(Traj, charX > -27.5 & charX < 27.5 & charY > -27.5 & charY < 27.5
 
 Generating 1000 randomly distributed locations within the arena
 
-```{r thousand points}
+```{r thousand points, eval=data_here}
 thousand_x <- c()
 thousand_y <- c()
 points <- c(1:1000)
@@ -478,7 +484,7 @@ for (i in points){
 
 Calculating the memory score based on random distribution of 1000 locations within the arena
 
-```{r calculating memory score (random)}
+```{r calculating memory score (random), eval=data_here}
 Sum_all <- Sum_all %>% mutate(memoryScoreRand = NA, memoryScoreTraj = NA) #creating 2 new columns in the summary dataframe
 
 for (i_trial in 1:nrow(Sum_all)) {
@@ -499,7 +505,7 @@ for (i_trial in 1:nrow(Sum_all)) {
 
 Calculating memory scores based on 1000 points taken from the complete trajectory of the participant
 
-```{r calculating memory score (trajectory)}
+```{r calculating memory score (trajectory), eval=data_here}
 #basically row counter
 trials <- 0 
 for (i_sub in subjects) {
@@ -529,7 +535,7 @@ Last changes before saving the datasets into big files
 
 
 Rearrange the columns into more cohesive order and replacing the local ID with a new ID that is necessary for data transfer.
-```{r organising Sum_all better}
+```{r organising Sum_all better, eval=data_here}
 Sum_all <- Sum_all %>%
   relocate(newID, age, age_c, block, miniblock, mini, objectTrial, trial, cue, object, 
            sec2Beg, dropTime, secTrialRepl, trialLen, sec2End, 
@@ -544,7 +550,7 @@ Sum_all <- Sum_all %>%
 
 Replacing local ID with a new ID that is necessary for data transfer, this time in Trajectory dataframe. 
 
-```{r}
+```{r, eval=data_here}
 Traj <- Traj %>%
   select(-ID) %>%
   rename(ID = newID)
@@ -562,6 +568,7 @@ Explanations of all columns:
 - objectTrial - 1-16, miniblocks throughout the experiment (in objectTrial 12, participants see a object for 12th time)  
 - trial - 1-16 within block  
 - cue - landmark vs boundary, randomly assigned in an input files  
+- cueMM - i.e. cue fro Mixed Models is a recoded version of cue to -1 and 1
 - cue1 - 1-2, to get rid of object names (landmark object 1, landmark object 2, boundary object 1, boundary object 2)  - currently not generated
 - object - "monster", "partyhat", "lamp", "flower"  
 - sec2Beg - seconds from the beginning of the experiment to the beginning to the trial  
@@ -607,7 +614,7 @@ Explanations of all columns:
 
 Saving these into text files into our local data folder.
 
-```{r writing big file}
+```{r writing big file, eval=data_here}
 write.table(Sum_all, file = here("data", "Sum.txt"), sep = " ", row.names = FALSE, col.names = TRUE)  
 write.table(Traj, file = here("data", "Traj.txt"), sep = " ", row.names = FALSE, col.names = TRUE) 
 ```
