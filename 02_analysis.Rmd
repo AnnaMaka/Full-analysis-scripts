@@ -57,7 +57,7 @@ dist <- function(loc1X, loc1Y, loc2X, loc2Y) {
 Following chunk checks whether a folder "figures" exists and potentially creates one
 
 ```{r, eval=FALSE}
-if (dir.exists(here("figures"))){dir.create(here("figures"))}
+if (!dir.exists(here("figures"))){dir.create(here("figures"))}
 ```
 
 Reading in the two big files containing the full dataset 
@@ -96,8 +96,8 @@ Sum_all <- filter(Sum_all, error != -1)
 
 - number of timeout trials: `r nrow(timeout)`
 - number of participants with timeout trials: `r length(unique(timeout$ID))`
-- average number of timeout trials per participant with timeout trials: `r nrow(timeout)/length(unique(timeout$ID))`
-- average number of timeout trials per participant: `r nrow(timeout)/length(subjects)`
+- average number of timeout trials per participant with timeout trials: `r round(nrow(timeout)/length(unique(timeout$ID)), 3)` (sd = )
+- average number of timeout trials per participant: `r round(nrow(timeout)/length(subjects), 3)` (sd = )
 
 
 ### Exclusion criteria
@@ -615,7 +615,7 @@ After we ran a one sample, one tail t-test to test whether the relative scores f
 boundaryRI_stats <- t.test(subset(relativeInfluenceBlocks, cue=="boundary")$relativeInf, 
        mu = 0.5, alternative = "greater") %>% tidy()
 
-d <- cohen.d(d=subset(relativeInfluenceBlocks, cue=="landmark")$relativeInf, f=NA, mu=0.5) 
+d <- cohen.d(d=subset(relativeInfluenceBlocks, cue=="boundary")$relativeInf, f=NA, mu=0.5) 
 
 boundaryRI_stats$d <- d$estimate
 boundaryRI_stats$dCI_low <- d$conf.int[[1]]
@@ -689,7 +689,7 @@ rel_Inf <- ggplot(relativeInfluenceBlocks, aes(x=cue, y=relativeInf)) +
   # visualizing the significance level of the t-test
   geom_signif(comparisons = list(c("landmark", "boundary")), test="t.test", 
               test.args=list(alternative = "two.sided", paired=TRUE), 
-              map_signif_level = TRUE, tip_length = 0, extend_line = 0.045, y_position = 0.85) +
+              map_signif_level = TRUE, tip_length = 0, extend_line = 0.045, y_position = 0.83) +
   # adding line at 0.5 (not-following either cue)
   geom_hline(yintercept=0.5, linetype=2, alpha=0.6) +
   # changing limits and breaks of y-axis
@@ -788,12 +788,11 @@ cue_Dist <- ggplot(relativeInfluenceBlocks, aes(x=cue, y= distanceError)) +
   theme_cowplot() +
   theme(legend.position = "none", 
         plot.title = element_text(size=12, lineheight = 1.1), 
-        aspect.ratio = 0.55,
         axis.title = element_text(size=12)) +
   # visualizing the significance level of the t-test
   geom_signif(comparisons = list(c("landmark", "boundary")),  test="t.test", 
               test.args=list(alternative = "two.sided", paired=TRUE),
-              map_signif_level = TRUE, tip_length = 0, extend_line = 0.045, y_position = 26)
+              map_signif_level = TRUE, tip_length = 0, extend_line = 0.045, y_position = 20.1, textsize=2.75)
 
 # saving the graph as pdf and png
 ggsave("distancesError.pdf", plot=cue_Dist, units = "cm", width = 15, height = 11, dpi = "retina", device = cairo_pdf, path = here("figures"))
@@ -1111,7 +1110,7 @@ As our initial dependent variable, we examine these two predictors (cue, age) fi
 ```{r}
 #full model
 formulaFull <- "relativeInfluence ~ age_c*cueMM + ( 1 + cueMM | ID)" 
-modelFull <- lmer(formula = formulaFull, data=subset_RI)
+modelFull <- lme4::lmer(formula = formulaFull, data=subset_RI)
 
 tab_model(modelFull, show.p = FALSE, digits.re = 4,
           pred.labels = c("Intercept", "Age", "Cue", "Interaction"),  
@@ -1124,7 +1123,7 @@ The significance of the interaction was tested using likelihood ratio test.
 ```{r} 
 #control model
 controlFinalInt <- "relativeInfluence ~ age_c + cueMM + (1 + cueMM | ID)" 
-modelControl <- lmer(formula = controlFinalInt, data=subset_RI)
+modelControl <- lme4::lmer(formula = controlFinalInt, data=subset_RI)
 
 #likelihood ratio test
 ratioFullModel <- anova(modelFull, modelControl) %>% tidy()
@@ -1285,7 +1284,7 @@ Next, we tested whether the effect of age and age and cue interaction remain whe
 
 ```{r}
 formulaCueDis <- "cueDissonance ~ age_c*cueMM + ( 1 + cueMM | ID)" 
-modelCueDis <- lmer(formula = formulaCueDis, data=subset_RI)
+modelCueDis <- lme4::lmer(formula = formulaCueDis, data=subset_RI)
 
 tab_model(modelCueDis, show.p = FALSE, digits.re = 4,
           pred.labels = c("Intercept", "Age", "Cue", "Interaction"),  dv.labels = "Relative Influence", string.ci = "Conf. Int (95%)", 
@@ -1295,7 +1294,7 @@ tab_model(modelCueDis, show.p = FALSE, digits.re = 4,
 ```{r} 
 #control model for interaction
 controlCueDis <- "cueDissonance ~ age_c + cueMM + (1 + cueMM | ID)" 
-modelControlCueDis <- lmer(formula = controlCueDis, data=subset_RI)
+modelControlCueDis <- lme4::lmer(formula = controlCueDis, data=subset_RI)
 
 #likelihood ratio test
 ratioCueDis <- anova(modelCueDis, modelControlCueDis) %>% tidy()
@@ -1312,7 +1311,7 @@ Is cue even significant predictor?
 ```{r} 
 #control model for cue as predictor
 controlCueDis_cue <- "cueDissonance ~ age_c + (1 + cueMM | ID)" 
-modelCueDis_cueControl <- lmer(formula = controlCueDis_cue, data=subset_RI)
+modelCueDis_cueControl <- lme4::lmer(formula = controlCueDis_cue, data=subset_RI)
 
 #likelihood ratio test
 ratioCueDis_cue <- anova(modelCueDis_cueControl, modelControlCueDis) %>% tidy()
@@ -1326,7 +1325,7 @@ Adding miniblock as a predictor instead to find the best model.
 ```{r} 
 #control model for miniblock as predictor
 miniFullCueDis<- "cueDissonance ~ age_c + mini + (1 + cueMM | ID)" 
-modelCueDis_miniFull <- lmer(formula = miniFullCueDis, data=subset_RI)
+modelCueDis_miniFull <- lme4::lmer(formula = miniFullCueDis, data=subset_RI)
 
 tab_model(modelCueDis_miniFull, show.p = FALSE, digits.re = 4,
           pred.labels = c("Intercept", "Age", "Miniblock"),  dv.labels = "Relative Influence", string.ci = "Conf. Int (95%)", 
@@ -1391,7 +1390,7 @@ CueDis_model
 
 Assembly of the generated graphs. 
 
-```{r, eval=FALSE}
+```{r}
 layout <- "
 AAAAA#BBBBBB
 AAAAA#BBBBBB
@@ -1425,7 +1424,7 @@ To see if age and cue can predict raw distance error, we ran the same analysis a
 
 ```{r}
 formulaFullDist <- "error ~ age_c*cueMM + ( 1 + cueMM | ID)" 
-modelFullDist <- lmer(formula = formulaFullDist, data=subset_RI)
+modelFullDist <- lme4::lmer(formula = formulaFullDist, data=subset_RI)
 
 tab_model(modelFullDist, show.p = FALSE, digits.re = 4,
           pred.labels = c("Intercept", "Age", "Cue", "Interaction"),  dv.labels = "Relative Influence", string.ci = "Conf. Int (95%)", 
@@ -1436,7 +1435,7 @@ tab_model(modelFullDist, show.p = FALSE, digits.re = 4,
 ```{r} 
 #control model for interaction
 controlFullDist<- "error ~ age_c + cueMM + (1 + cueMM | ID)" 
-modelControlFullDist <- lmer(formula = controlFullDist, data=subset_RI)
+modelControlFullDist <- lme4::lmer(formula = controlFullDist, data=subset_RI)
 
 #likelihood ratio test
 ratioFullDist <- anova(modelFullDist, modelControlFullDist) %>% tidy()
@@ -1453,7 +1452,7 @@ Is cue even significant predictor?
 ```{r} 
 #control model for cue as predictor
 controlFullDist<- "error ~ age_c + (1 + cueMM | ID)" 
-modelControlFullDist <- lmer(formula = controlFullDist, data=subset_RI)
+modelControlFullDist <- lme4::lmer(formula = controlFullDist, data=subset_RI)
 
 #likelihood ratio test
 ratioAgeDist <- anova(modelFullDist, modelControlFullDist) %>% tidy()
@@ -1468,7 +1467,7 @@ Adding miniblock instead of cue a predictor.
 ```{r} 
 #control model for miniblock as predictor
 miniFullDist<- "error ~ age_c + mini + (1 + cueMM | ID)" 
-modelMiniFullDist <- lmer(formula = miniFullDist, data=subset_RI)
+modelMiniFullDist <- lme4::lmer(formula = miniFullDist, data=subset_RI)
 
 tab_model(modelMiniFullDist, show.p = FALSE, digits.re = 4,
           pred.labels = c("Intercept", "Age", "Miniblock"),  dv.labels = "Relative Influence", string.ci = "Conf. Int (95%)", 
