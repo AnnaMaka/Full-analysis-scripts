@@ -714,9 +714,9 @@ As a first step towards building a full mixed effects model, we tested a simplie
 formulaCue <- "relativeInfluence ~ cueMM + (1+cueMM|ID)"
 modelCue <- lme4::lmer(formula = formulaCue, data=subset_RI)
 
-tab_model(modelCue, show.p = FALSE, digits.re = 4,
-          pred.labels = c("Intercept", "Cue"),  dv.labels = "Relative Influence", string.ci = "Conf. Int (95%)", 
-          CSS = css_theme("cells")) 
+#tab_model(modelCue, show.p = FALSE, digits.re = 4,
+          #pred.labels = c("Intercept", "Cue"),  dv.labels = "Relative Influence", string.ci = "Conf. Int (95%)", 
+          #CSS = css_theme("cells")) 
 ```
 
 To test, whether cue is a significant predictor we ran a likelihood ratio test comparing our simpliest model and a model containing only random effects.
@@ -819,23 +819,25 @@ summary_miniblock <- subset_RI %>%
 
 g_mini <- ggplot(summary_miniblock, aes(miniblock, relativeInf, group=interaction(cue, ID), color=cue)) + 
   # connects the mean values for each participant 
-  geom_line(size=0.8, alpha = 0.3) +
+  geom_line(size=0.5, alpha = 0.3) +
   # overall mean and se 
-  stat_summary(fun=mean, aes(group=cue), geom="point", size=2) +
-  stat_summary(fun.data=mean_se, aes(group=cue), geom="errorbar", size=0.8, width=0.1, alpha=0.95) +
+  stat_summary(fun=mean, aes(group=cue), geom="point", size=1) +
+  stat_summary(fun.data=mean_se, aes(group=cue), geom="errorbar", width=0.1, alpha=0.95) +
   # connects the overall mean to show the improvement
-  stat_summary(fun=mean, aes(group=cue), geom="line", size = 1.5) +
+  stat_summary(fun=mean, aes(group=cue), geom="line", size = 0.6) +
   # line showing 0.5 neutral relative score for reference
   geom_hline(yintercept = 0.5, linetype = 2) +
   # changing labels and titles
-  labs(x= "Miniblock", y = "Relative Influence (0-1)", title = "Averaged across Blocks", color = "Cue") +
+  labs(x= "Miniblock", y = "Relative Influence (0-1)", subtitle = "Averaged across \nBlocks", title="  ", color = "Cue") +
   # aesthitical changes
   theme_cowplot() +
   # assigning scico palette tokyo as a color palatte
-  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
+  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.75, labels = c("Boundary", "Landmark")) +
   # changing limits and breaks on both axis
   scale_y_continuous(limits = c(0,1), breaks = c(0, 0.25, 0.5, 0.75, 1)) +
-  scale_x_continuous(limits = c(0.5, 4.5), breaks = c(1,2,3,4))
+  scale_x_continuous(limits = c(0.5, 4.5), breaks = c(1,2,3,4)) +
+  theme(axis.title.y = element_blank(),
+        legend.position = "none")
 
 #show the graph
 g_mini
@@ -853,30 +855,29 @@ summary_objectTrial <- subset_RI %>%
 
 g_objTrial <- ggplot(summary_objectTrial, aes(objectTrial, relativeInf, group=interaction(cue, ID), color=cue)) + 
   # connects the mean values for each participant within each block 
-  geom_line(data= subset(summary_objectTrial, objectTrial < 9), size=0.8, alpha = 0.3) +
-  geom_line(data= subset(summary_objectTrial, objectTrial < 13 & objectTrial > 8), size=0.8, alpha = 0.3) +
-  geom_line(data= subset(summary_objectTrial, objectTrial > 12), size=0.8, alpha = 0.3) +
+  geom_line(data= subset(summary_objectTrial, objectTrial < 9), size=0.5, alpha = 0.3) +
+  geom_line(data= subset(summary_objectTrial, objectTrial < 13 & objectTrial > 8), size=0.5, alpha = 0.3) +
+  geom_line(data= subset(summary_objectTrial, objectTrial > 12), size=0.5, alpha = 0.3) +
   # overall mean and se 
-  stat_summary(fun=mean, aes(group=cue), geom="point", size=2) +
-  stat_summary(fun.data=mean_se, aes(group=cue),  
-               geom="errorbar", size=0.8, width=0.1, alpha=0.95, position = position_nudge(x=0.01)) +
+  stat_summary(fun=mean, aes(group=cue), geom="point", size=1) +
+  stat_summary(fun.data=mean_se, aes(group=cue), geom="errorbar", width=0.1, alpha=0.95) +
   # line connecting the average values within each block
-  stat_summary(data = subset(summary_objectTrial, objectTrial < 9), fun=mean, aes(group=cue), geom="line", size = 1.5) +
-  stat_summary(data = subset(summary_objectTrial, objectTrial  < 13 & objectTrial > 8), fun=mean, aes(group=cue), geom="line", size = 1.5) +
-  stat_summary(data = subset(summary_objectTrial, objectTrial > 12), fun=mean, aes(group=cue), geom="line", size = 1.5) +
+  stat_summary(data = subset(summary_objectTrial, objectTrial < 9), fun=mean, aes(group=cue), geom="line", size = 0.6) +
+  stat_summary(data = subset(summary_objectTrial, objectTrial  < 13 & objectTrial > 8), fun=mean, aes(group=cue), geom="line", size = 0.6) +
+  stat_summary(data = subset(summary_objectTrial, objectTrial > 12), fun=mean, aes(group=cue), geom="line", size = 0.6) +
   # assigning scico palette tokyo as a color palatte
-  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
+  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.75, labels = c("Boundary", "Landmark")) +
   # line showing 0.5 neutral relative score for reference
   geom_hline(yintercept = 0.5, linetype = 2) +
   # adding a vertical lines showing the start of a new block with a proper label
-  geom_vline(xintercept = 4.9, alpha = 0.7, linetype=3) +
-  annotate("text", label = "Block 2", x = 5.6, y = 1, size = 4) +
-  geom_vline(xintercept = 8.9, alpha = 0.7, linetype=3) +
-  annotate("text", label = "Block 3", x = 9.6, y = 1, size = 4) +
-  geom_vline(xintercept = 12.9, alpha = 0.7, linetype=3) +
-  annotate("text", label = "Block 4", x = 13.6, y = 1, size = 4) +
+  geom_vline(xintercept = 4.9, alpha = 0.7, linetype=3, size=0.5) +
+  annotate("text", label = "Block 2", x = 5.6, y = 1, size = 3) +
+  geom_vline(xintercept = 8.9, alpha = 0.7, linetype=3, size=0.5) +
+  annotate("text", label = "Block 3", x = 9.6, y = 1, size = 3) +
+  geom_vline(xintercept = 12.9, alpha = 0.7, linetype=3, size=0.5) +
+  annotate("text", label = "Block 4", x = 13.6, y = 1, size = 3) +
   # changing labels and titles
-  labs(x= "Miniblock", y = "Relative Influence (0-1)", title= "Separately per Block", color= "Cue") +
+  labs(x= "Miniblock", y = "Relative Influence (0-1)", subtitle= "Separately per Block", title="Positional Memory", color = "Cue") +
   # changing limits and breaks and its labels of both axis
   scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1), limits = c(0,1)) +
   scale_x_continuous(breaks = c(5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), 
@@ -916,12 +917,6 @@ g_min <- g_objTrial + g_mini + g_leg +
   plot_annotation(title = 'Positional Memory',
                   theme = theme(plot.title = element_text(size = 12, face="bold")),
                   tag_levels = list(c('A', 'B')))
-
-# savvign the assembly as pd and png
-ggsave("relativeInfluence_min.pdf", plot=g_min, units = "cm", width = 15.9, height = 13, 
-       dpi = "retina", device = cairo_pdf, path = here("figures"))
-ggsave("relativeInfluence_min.png", plot=g_min, units = "cm", width = 15.9, height = 13, 
-       dpi = "retina", device = "png", path = here("figures"))
 
 # show the assembled graphs
 g_min

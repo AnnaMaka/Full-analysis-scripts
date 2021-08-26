@@ -38,9 +38,9 @@ library(circular)
 Functions written for this analysis
 
 ```{r}
-#function circleFun() generates locations of 100 points that are in shape of circle
+#function circleFull() generates locations of 100 points that are in shape of circle
 #used for mapping out the arena in graphs
-circleFun <- function(center = c(0,0), r = 27.5, npoints = 100){
+circleFull <- function(center = c(0,0), r = 27.5, npoints = 100){
     tt <- seq(0,2*pi,length.out = npoints)
     xx <- center[1] + r * cos(tt)
     yy <- center[2] + r * sin(tt)
@@ -286,7 +286,7 @@ To evaluate, which cue participants are using to remember the direction of targe
 #loading a data from block 2-4 for a single participant
 graph_sub <- filter(Sum_all, ID == i_sub & block == 2 & trial==5) 
 # generating points that will form arena boundary
-circle <- circleFun()
+circle <- circleFull()
 # generating points that will form angle difference between estimated angle and angle predicted by boundary 
 angle1 <- circleSome(centerX= graph_sub$charX, centerY= graph_sub$charY, r=15, a1= 1.5707963268-rad(graph_sub$estAngle), a2=1.5707963268-rad(graph_sub$boundaryAngle))
 # generating points that will form angle difference between estimated angle and angle predicted by landmark
@@ -507,8 +507,8 @@ formulaCue <- "relativeAngle ~ cueMM + (1+cueMM|ID)"
 #model
 modelCueAngle <- lme4::lmer(formula = formulaCue, data=subset_RA)
 
-tab_model(modelCueAngle, show.p = FALSE, digits.re = 4,
-          pred.labels = c("Intercept", "Cue"),  dv.labels = "Relative Influence", string.ci = "Conf. Int (95%)", 
+tab_model(modelCue, modelCueAngle, show.p = FALSE, digits.re = 4,
+          pred.labels = c("Intercept", "Cue"),  dv.labels = c("Positional Memory", "Pointing"), string.ci = "Conf. Int (95%)", 
           CSS = css_theme("cells")) 
 ```
 
@@ -632,22 +632,18 @@ summary_miniblock_A <- subset_RA %>%
             .groups = "drop")
 
 g_miniAng <- ggplot(summary_miniblock_A, aes(miniblock, relativeAng, group=interaction(cue, ID), color=cue)) + 
-  geom_line(size=0.8, alpha = 0.3) +
-  stat_summary(data= subset(summary_miniblock_A, cue=="boundary"), fun.data=mean_se, 
-               aes(group=cue), geom="errorbar", width=0.1, position = position_nudge(x=0.01)) +
-  stat_summary(data= subset(summary_miniblock_A, cue=="landmark"), fun.data=mean_se, 
-               aes(group=cue), geom="errorbar",  width=0.1, position=position_nudge(x=-0.01)) +
-  stat_summary(fun=mean, aes(group=cue), geom="line", size = 1.5) +
-  stat_summary(fun=mean, aes(group=cue), geom="point", size=2) +
+  geom_line(size=0.5, alpha = 0.3) +
+  stat_summary(fun.data=mean_se, aes(group=cue), geom="errorbar", width=0.05) +
+  stat_summary(fun=mean, aes(group=cue), geom="line", size = 0.6) +
+  stat_summary(fun=mean, aes(group=cue), geom="point", size=1) +
   geom_hline(yintercept = 0.5, linetype = 2) +
   theme_cowplot() +
-  labs(x= "Miniblock", y = "Relative Influence (0-1)", title = "Averaged across Blocks", color = "Cue") +
-  theme(plot.title = element_text(size=12, face="italic"), 
-        axis.title = element_text(size=10),
-        axis.text = element_text(size=10)) +
-  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
+  labs(x= "Miniblock", y = "Relative Influence (0-1)", subtitle = "Averaged across \nBlocks", title= "  ", color = "Cue") +
+  theme(axis.title.y = element_blank()) +
+  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.75, labels = c("Boundary", "Landmark")) +
   scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1), limits = c(0,1)) +
-  scale_x_continuous(limits = c(0.5, 4.5), breaks = c(1,2,3,4))
+  scale_x_continuous(limits = c(0.5, 4.5), breaks = c(1,2,3,4)) +
+  theme(legend.position = "none")
 
 g_miniAng
 ```
@@ -664,24 +660,21 @@ summary_objectTrial_A <- subset_RA %>%
 #graph
 g_objTrialAng <- ggplot(data=summary_objectTrial_A, aes(objectTrial, relativeAng, group=interaction(cue, ID), color=cue)) + 
   theme_cowplot() +
-  geom_line(data= subset(summary_objectTrial_A, objectTrial < 9), size=0.8, alpha = 0.3) +
-  geom_line(data= subset(summary_objectTrial_A, objectTrial < 13 & objectTrial > 8), size=0.8, alpha = 0.3) +
-  geom_line(data= subset(summary_objectTrial_A, objectTrial > 12), size=0.8, alpha = 0.3) +
-  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary, Landmark")) +
-  labs(x= "Miniblock", y = "Relative Influence (0-1)", title= "Separately per Block", color= "Cue") +
-  stat_summary(data = subset(summary_objectTrial_A, objectTrial < 9), fun=mean, aes(group=cue), geom="line", size = 1.5) +
+  geom_line(data= subset(summary_objectTrial_A, objectTrial < 9), size=0.5, alpha = 0.3) +
+  geom_line(data= subset(summary_objectTrial_A, objectTrial < 13 & objectTrial > 8), size=0.5, alpha = 0.3) +
+  geom_line(data= subset(summary_objectTrial_A, objectTrial > 12), size=0.5, alpha = 0.3) +
+  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.75, labels = c("Boundary", "Landmark")) +
+  labs(x= "Miniblock", y = "Relative Influence (0-1)", subtitle= "Separately per Block", title = "Pointing", color= "Cue") +
+  stat_summary(data = subset(summary_objectTrial_A, objectTrial < 9), fun=mean, aes(group=cue), geom="line", size = 0.6) +
   stat_summary(data = subset(summary_objectTrial_A, objectTrial  < 13 & objectTrial > 8), fun=mean, aes(group=cue), 
-               geom="line", size = 1.5) +
-  stat_summary(data = subset(summary_objectTrial_A, objectTrial > 12), fun=mean, aes(group=cue), geom="line", size = 1.5) +
-  stat_summary(data= subset(summary_objectTrial_A, cue=="boundary"), fun.data = mean_se, 
-               aes(group=cue), geom = "errorbar", width=0.1, position = position_nudge(x=+0.01)) +
-  stat_summary(data= subset(summary_objectTrial_A, cue=="landmark"), fun.data = mean_se, 
-               aes(group=cue), geom = "errorbar", width=0.1, position = position_nudge(x=-0.01)) +
-  stat_summary(fun=mean, aes(group=cue), geom="point", size=2) +
+               geom="line", size = 0.6) +
+  stat_summary(data = subset(summary_objectTrial_A, objectTrial > 12), fun=mean, aes(group=cue), geom="line", size = 0.6) +
+  stat_summary(fun.data = mean_se, aes(group=cue), geom = "errorbar", width=0.05) +
+  stat_summary(fun=mean, aes(group=cue), geom="point", size=1) +
   geom_hline(yintercept = 0.5, linetype = 2) +
-  geom_vline(xintercept = 8.9, alpha = 0.7, linetype=3) +
-  geom_vline(xintercept = 12.9, alpha = 0.7, linetype=3) +
-  geom_vline(xintercept = 4.9, alpha = 0.7, linetype=3) +
+  geom_vline(xintercept = 8.9, alpha = 0.7, linetype=3, size=0.5) +
+  geom_vline(xintercept = 12.9, alpha = 0.7, linetype=3, size=0.5) +
+  geom_vline(xintercept = 4.9, alpha = 0.7, linetype=3, size=0.5) +
   scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1), limits = c(0,1)) +
   scale_x_continuous(breaks = c(5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16), 
                      labels = c("1", "2", "3", "4", "1", "2", "3", "4", "1", "2", "3", "4")) +
@@ -694,35 +687,39 @@ g_objTrialAng <- ggplot(data=summary_objectTrial_A, aes(objectTrial, relativeAng
 g_objTrialAng 
 ```
 
-Assembling the two plots above for more comprehensive visualization.
+Assembling the all four plots for more comprehensive visualization of relative influence improvement over miniblocks
 
 ```{r}
 layout <- "
-AAAAAA
-AAAAAA
-AAAAAA
-BB####
-BB#C##
-BB####
+AAAAAABB
+AAAAAABB
+AAAAAABB
+CCCCCCDD
+CCCCCCDD
+CCCCCCDD
+EEEEEEEE
 "
 
 g_leg <- guide_area()
-g_minAng <- g_objTrialAng + g_miniAng + g_leg +
+
+g_miniblocks <- g_objTrial + g_mini + g_objTrialAng + g_miniAng + g_leg + 
   plot_layout(design = layout, guides = "collect") &
-  theme(axis.title = element_text(size = 10), axis.text = element_text(size=10), 
-        legend.title = element_text(size=10), legend.text = element_text(size=10),
-        plot.title = element_text(size=12, face="italic"),
-        plot.tag = element_text(size = 10, face="bold")) &
-  plot_annotation(title = 'Pointing Error',
+  theme(axis.title = element_text(size = 10), axis.text = element_text(size=8), 
+        legend.title = element_text(size=10), legend.text = element_text(size=10), legend.direction = "horizontal", 
+        plot.title = element_text(size=12, face = "bold", vjust = -2),
+        plot.subtitle = element_text(size=11, face="italic"),
+        plot.tag = element_text(size = 10, face="bold", vjust = 4, hjust=-1)) &
+  plot_annotation(title = 'Relative Influence Score Improvement over Miniblocks',
                   theme = theme(plot.title = element_text(size = 12, face="bold")),
-                  tag_levels = list(c('C', 'D')))
+                  tag_levels = 'A')
 
-g_minAng
+g_miniblocks
 
-ggsave("relativeAngle_min.pdf", plot=g_minAng, units = "cm", width = 15, height = 13, dpi = "retina", device = cairo_pdf, path = here("figures"))
-ggsave("relativeAngle_min.png", plot=g_minAng, units = "cm", width = 15, height = 13, dpi = "retina", device = "png", path = here("figures"))
+ggsave("RI_miniblocks.pdf", plot=g_miniblocks, units = "cm", width = 15.9, height = 14, dpi = "retina", device = cairo_pdf, path = here("figures"))
+ggsave("RI_miniblocks.png", plot=g_miniblocks, units = "cm", width = 15.9, height = 14, dpi = "retina", device = "png", path = here("figures"))
 
 ```
+
 
 ### Miniblock 1 
 
@@ -781,33 +778,45 @@ t(`r mini1a_cue_stats$parameter`)= `r round(mini1a_cue_stats$statistic, 2)`, p`r
 
 To test the learning throughout a block, we ran mixed effect model with interaction between cue and miniblock (centered) and added interaction between miniblock and cue as a random slope.
 
-!!Singular fits!!
-
 ```{r}
 #formula
-formulaMiniblocks <- "relativeAngle ~ cueMM * mini + (1 + cueMM + mini | ID)"
+formulaMiniblocksAngle <- "relativeAngle ~ cueMM * mini + (1 + cueMM : mini | ID)"
 
 #model
-modelMiniblocksCue <- lme4::lmer(formula = formulaMiniblocks, data=subset_RA)
+modelMiniblocksAngle <- lme4::lmer(formula = formulaMiniblocksAngle, data=subset_RA)
 
-tab_model(modelMiniblocksCue, show.p = FALSE, digits.re = 4,
-          pred.labels = c("Intercept", "Cue", "Miniblock", "Interaction"),  dv.labels = "Relative Influence", string.ci = "Conf. Int (95%)", 
+
+tab_model(modelMiniblocksAngle, show.p = FALSE, digits.re = 4,
+          pred.labels = c("Intercept", "Cue", "Miniblock", "Interaction"),  
+          dv.labels = "Relative Influence", 
+          string.ci = "Conf. Int (95%)", 
           CSS = css_theme("cells")) 
+
 ```
 
 To test the significance of the interaction, we ran a likelihood ratio test comparing our model and a model with both cue and miniblock as predictors but without the interaction.
 
 ```{r}
 #control model
-formulaMiniControl <- "relativeAngle ~  cueMM + mini + ( 1 + cueMM + mini | ID)" 
+formulaMiniControl <- "relativeAngle ~  cueMM + mini + ( 1 + cueMM : mini | ID)" 
 modelMiniControlInt <- lme4::lmer(formula = formulaMiniControl, data=subset_RA)
 
 #likelihood ratio test
-ratioMiniInt <- anova(modelMiniblocksCue, modelMiniControlInt) %>% tidy()
+ratioMiniInt <- anova(modelMiniblocksAngle, modelMiniControlInt) %>% tidy()
 ```
 
 **$\chi^{2}$(1) = `r round(ratioMiniInt$statistic[2],3)`, p`r if (ratioMiniInt$p.value[2] > 0.001) {paste("=", round(ratioMiniInt$p.value[2], 3))} else {low_p}`**
 
+
+Comparison of mixed model for positional memory and pointing.
+
+```{r}
+tab_model(modelMiniblocksCue, modelMiniblocksAngle, show.p = FALSE, digits.re = 4,
+          pred.labels = c("Intercept", "Cue", "Miniblock", "Interaction"),  
+          dv.labels = c("Positional Memory", "Pointing"), 
+          string.ci = "Conf. Int (95%)", 
+          CSS = css_theme("cells")) 
+```
 
 
 **Cue specific analysis**
@@ -829,14 +838,15 @@ ratioMiniLandmark <- anova(modelMiniblocksLandmarkAngle, modelMiniLandmarkContro
 
 **$\chi^{2}$(1) = `r round(ratioMiniLandmark$statistic[2],3)`, p`r if (ratioMiniLandmark$p.value[2] > 0.001) {paste("=", round(ratioMiniLandmark$p.value[2], 3))} else {low_p}`**
 
+!!Singular fit!!
 
 ```{r}
 #boundary-dependent objects only model
-formulaMiniblocksAngle <- "relativeAngle ~ mini + (1+mini||ID)" 
-modelMiniblocksBoundaryAngle <- lme4::lmer(formula = formulaMiniblocksAngle, data=subset(subset_RA,cue=="boundary"))
+formulaMiniblocksAngle <- "relativeAngle ~ mini + ( 1 + mini | ID)" 
+modelMiniblocksBoundaryAngle <- lme4::lmer(formula = formulaMiniblocksAngle, data=subset(subset_RA, cue=="boundary"))
 
 #control model
-formulaMiniControl <- "relativeAngle ~ 1 + (1+mini||ID)" 
+formulaMiniControl <- "relativeAngle ~ 1 + ( 1 + mini | ID)" 
 modelMiniBoundaryControl <- lme4::lmer(formula = formulaMiniControl, data=subset(subset_RA, cue=="boundary"))
 
 #likelihood ratio test
@@ -846,10 +856,13 @@ ratioMiniBoundary <- anova(modelMiniblocksBoundaryAngle, modelMiniBoundaryContro
 **$\chi^{2}$(1) = `r round(ratioMiniBoundary$statistic[2],3)`, p`r if (ratioMiniBoundary$p.value[2] > 0.001) {paste("=", round(ratioMiniBoundary$p.value[2], 3))} else {low_p}`**
 
 
+Summary with all cue specific mixed models with miniblocks predictors
 ```{r}
-tab_model(modelMiniblocksLandmarkAngle, modelMiniblocksBoundaryAngle, show.p = FALSE, digits.re = 4,
+tab_model(modelMiniblocksLandmark, modelMiniblocksBoundary, modelMiniblocksLandmarkAngle, modelMiniblocksBoundaryAngle, show.p = FALSE, digits.re = 4,
           pred.labels = c("Intercept", "Miniblock"),  
-          dv.labels = c("Landmark-dependent", "Boundary-dependent"), string.ci = "Conf. Int (95%)", 
+          dv.labels = c("Positional Memory:\nLandmark-dependent", "Positional Memory:\nBoundary-dependent", 
+                        "Pointing:\nLandmark-dependent", "Pointing:\nBoundary-dependent"), 
+          string.ci = "Conf. Int (95%)", 
           CSS = css_theme("cells")) 
 ```
 
@@ -882,6 +895,17 @@ ratioCueDis_miniA <- anova(modelCueDis_miniA, modelCueDis_miniControlA) %>% tidy
 ```
 
 **$\chi^{2}$(1) = `r round(ratioCueDis_miniA$statistic[2],3)`, p`r if (ratioCueDis_miniA$p.value[2] > 0.001) {paste("=", round(ratioCueDis_miniA$p.value[2], 3))} else {low_p}`**
+
+
+Comparison of mixed model for positional memory and pointing.
+
+```{r}
+tab_model(modelCueDis_mini, modelCueDis_miniA, show.p = FALSE, digits.re = 4,
+          pred.labels = c("Intercept", "Cue", "Miniblock", "Interaction"),  
+          dv.labels = c("Positional Memory", "Pointing"), 
+          string.ci = "Conf. Int (95%)", 
+          CSS = css_theme("cells")) 
+```
 
 
 **Explorative**

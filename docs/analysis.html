@@ -363,7 +363,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb27-10"><a href="analysis.html#cb27-10"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">13</span>,<span class="dv">14</span>,<span class="dv">15</span>)) <span class="op">+</span></span>
 <span id="cb27-11"><a href="analysis.html#cb27-11"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="op">+</span></span>
 <span id="cb27-12"><a href="analysis.html#cb27-12"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span><span class="st">&quot;Age&quot;</span>, <span class="dt">y=</span><span class="st">&quot;Count&quot;</span>, <span class="dt">title=</span><span class="st">&quot;Distribution of age&quot;</span>)</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-57-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <p><strong>Reaction Time</strong></p>
 <p>Next, we looked into reaction time (seconds between angle estimation and location estimation).</p>
 <div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="analysis.html#cb28-1"></a><span class="co">#average RT </span></span>
@@ -384,7 +384,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb28-16"><a href="analysis.html#cb28-16"></a>        <span class="dt">axis.ticks.x =</span> <span class="kw">element_blank</span>(),</span>
 <span id="cb28-17"><a href="analysis.html#cb28-17"></a>        <span class="dt">aspect.ratio =</span><span class="dv">1</span>, </span>
 <span id="cb28-18"><a href="analysis.html#cb28-18"></a>        <span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">face=</span><span class="st">&quot;italic&quot;</span>, <span class="dt">size=</span><span class="dv">12</span>))</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-58-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="analysis.html#cb29-1"></a><span class="co">#average RT and sd for the full dataset</span></span>
 <span id="cb29-2"><a href="analysis.html#cb29-2"></a>reaction_time &lt;-<span class="st"> </span><span class="kw">summarise</span>(reaction_time_dat, </span>
 <span id="cb29-3"><a href="analysis.html#cb29-3"></a>                           <span class="dt">mean =</span> <span class="kw">mean</span>(posiMemResponse), <span class="dt">sd=</span><span class="kw">sd</span>(posiMemResponse), <span class="dt">min=</span><span class="kw">min</span>(posiMemResponse), <span class="dt">max=</span><span class="kw">max</span>(posiMemResponse)) </span>
@@ -565,7 +565,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb37-43"><a href="analysis.html#cb37-43"></a></span>
 <span id="cb37-44"><a href="analysis.html#cb37-44"></a><span class="co"># show the graph</span></span>
 <span id="cb37-45"><a href="analysis.html#cb37-45"></a>distance_other</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-61-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <p>To test this, we ran paired t-test which showed that on average there is a difference between these 2 distances.</p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="analysis.html#cb38-1"></a>dist_stats &lt;-<span class="st"> </span><span class="kw">t.test</span>(summaryBlock1<span class="op">$</span>distanceOther, summaryBlock1<span class="op">$</span>distanceTrue, <span class="dt">paired =</span> <span class="ot">TRUE</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span>
 <span id="cb38-2"><a href="analysis.html#cb38-2"></a></span>
@@ -695,7 +695,7 @@ Also, is there performance difference between landmark- vs boundary-dependent ob
 <span id="cb41-48"><a href="analysis.html#cb41-48"></a></span>
 <span id="cb41-49"><a href="analysis.html#cb41-49"></a><span class="co"># show the graph</span></span>
 <span id="cb41-50"><a href="analysis.html#cb41-50"></a>relativeInf_graph</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-62-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 <p>First, let’s create a subset dataframe that has data only from block 2-4 and get rid of us currently unnecessary columns. Then we summarize relative influence score, correct cue influence and distance error.</p>
 <div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="analysis.html#cb42-1"></a>subset_RI &lt;-<span class="st"> </span>Sum_all <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb42-2"><a href="analysis.html#cb42-2"></a><span class="st">  </span><span class="kw">filter</span>(block<span class="op">!=</span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -804,115 +804,9 @@ Also, is there performance difference between landmark- vs boundary-dependent ob
 <div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="analysis.html#cb47-1"></a>formulaCue &lt;-<span class="st"> &quot;relativeInfluence ~ cueMM + (1+cueMM|ID)&quot;</span></span>
 <span id="cb47-2"><a href="analysis.html#cb47-2"></a>modelCue &lt;-<span class="st"> </span>lme4<span class="op">::</span><span class="kw">lmer</span>(<span class="dt">formula =</span> formulaCue, <span class="dt">data=</span>subset_RI)</span>
 <span id="cb47-3"><a href="analysis.html#cb47-3"></a></span>
-<span id="cb47-4"><a href="analysis.html#cb47-4"></a><span class="kw">tab_model</span>(modelCue, <span class="dt">show.p =</span> <span class="ot">FALSE</span>, <span class="dt">digits.re =</span> <span class="dv">4</span>,</span>
-<span id="cb47-5"><a href="analysis.html#cb47-5"></a>          <span class="dt">pred.labels =</span> <span class="kw">c</span>(<span class="st">&quot;Intercept&quot;</span>, <span class="st">&quot;Cue&quot;</span>),  <span class="dt">dv.labels =</span> <span class="st">&quot;Relative Influence&quot;</span>, <span class="dt">string.ci =</span> <span class="st">&quot;Conf. Int (95%)&quot;</span>, </span>
-<span id="cb47-6"><a href="analysis.html#cb47-6"></a>          <span class="dt">CSS =</span> <span class="kw">css_theme</span>(<span class="st">&quot;cells&quot;</span>)) </span></code></pre></div>
-<table style="border-collapse:collapse; border:none;">
-<tr>
-<th style="border:1px solid black; border-bottom:1px solid black; text-align:left; ">
- 
-</th>
-<th colspan="2" style="border:1px solid black; border-bottom:1px solid black;">
-Relative Influence
-</th>
-</tr>
-<tr>
-<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; text-align:left; ">
-Predictors
-</td>
-<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
-Estimates
-</td>
-<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
-Conf. Int (95%)
-</td>
-</tr>
-<tr>
-<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-Intercept
-</td>
-<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.51
-</td>
-<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.50 – 0.52
-</td>
-</tr>
-<tr>
-<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-Cue
-</td>
-<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.13
-</td>
-<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.10 – 0.15
-</td>
-</tr>
-<tr>
-<td colspan="3" style="font-weight:bold; text-align:left; padding-top:.8em;">
-Random Effects
-</td>
-</tr>
-<tr>
-<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
-σ<sup>2</sup>
-</td>
-<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
-0.0407
-</td>
-<tr>
-<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
-τ<sub>00</sub> <sub>ID</sub>
-</td>
-<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
-0.0009
-</td>
-<tr>
-<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
-τ<sub>11</sub> <sub>ID.cueMM</sub>
-</td>
-<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
-0.0043
-</td>
-<tr>
-<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
-ρ<sub>01</sub> <sub>ID</sub>
-</td>
-<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
--0.0876
-</td>
-<tr>
-<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
-ICC
-</td>
-<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
-0.1127
-</td>
-<tr>
-<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
-N <sub>ID</sub>
-</td>
-<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
-36
-</td>
-<tr>
-<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
-Observations
-</td>
-<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center; border-top:1px solid;" colspan="2">
-1691
-</td>
-</tr>
-<tr>
-<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
-Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
-</td>
-<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
-0.260 / 0.344
-</td>
-</tr>
-</table>
+<span id="cb47-4"><a href="analysis.html#cb47-4"></a><span class="co">#tab_model(modelCue, show.p = FALSE, digits.re = 4,</span></span>
+<span id="cb47-5"><a href="analysis.html#cb47-5"></a>          <span class="co">#pred.labels = c(&quot;Intercept&quot;, &quot;Cue&quot;),  dv.labels = &quot;Relative Influence&quot;, string.ci = &quot;Conf. Int (95%)&quot;, </span></span>
+<span id="cb47-6"><a href="analysis.html#cb47-6"></a>          <span class="co">#CSS = css_theme(&quot;cells&quot;)) </span></span></code></pre></div>
 <p>To test, whether cue is a significant predictor we ran a likelihood ratio test comparing our simpliest model and a model containing only random effects.</p>
 <div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="analysis.html#cb48-1"></a>formulaCueControl&lt;-<span class="st"> &quot;relativeInfluence ~ 1 + (1+cueMM|ID)&quot;</span></span>
 <span id="cb48-2"><a href="analysis.html#cb48-2"></a>modelCueControl &lt;-<span class="st"> </span>lme4<span class="op">::</span><span class="kw">lmer</span>(<span class="dt">formula =</span> formulaCueControl, <span class="dt">data=</span>subset_RI)</span>
@@ -999,27 +893,29 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb53-7"><a href="analysis.html#cb53-7"></a></span>
 <span id="cb53-8"><a href="analysis.html#cb53-8"></a>g_mini &lt;-<span class="st"> </span><span class="kw">ggplot</span>(summary_miniblock, <span class="kw">aes</span>(miniblock, relativeInf, <span class="dt">group=</span><span class="kw">interaction</span>(cue, ID), <span class="dt">color=</span>cue)) <span class="op">+</span><span class="st"> </span></span>
 <span id="cb53-9"><a href="analysis.html#cb53-9"></a><span class="st">  </span><span class="co"># connects the mean values for each participant </span></span>
-<span id="cb53-10"><a href="analysis.html#cb53-10"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">size=</span><span class="fl">0.8</span>, <span class="dt">alpha =</span> <span class="fl">0.3</span>) <span class="op">+</span></span>
+<span id="cb53-10"><a href="analysis.html#cb53-10"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">size=</span><span class="fl">0.5</span>, <span class="dt">alpha =</span> <span class="fl">0.3</span>) <span class="op">+</span></span>
 <span id="cb53-11"><a href="analysis.html#cb53-11"></a><span class="st">  </span><span class="co"># overall mean and se </span></span>
-<span id="cb53-12"><a href="analysis.html#cb53-12"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">fun=</span>mean, <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom=</span><span class="st">&quot;point&quot;</span>, <span class="dt">size=</span><span class="dv">2</span>) <span class="op">+</span></span>
-<span id="cb53-13"><a href="analysis.html#cb53-13"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">fun.data=</span>mean_se, <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom=</span><span class="st">&quot;errorbar&quot;</span>, <span class="dt">size=</span><span class="fl">0.8</span>, <span class="dt">width=</span><span class="fl">0.1</span>, <span class="dt">alpha=</span><span class="fl">0.95</span>) <span class="op">+</span></span>
+<span id="cb53-12"><a href="analysis.html#cb53-12"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">fun=</span>mean, <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom=</span><span class="st">&quot;point&quot;</span>, <span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span></span>
+<span id="cb53-13"><a href="analysis.html#cb53-13"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">fun.data=</span>mean_se, <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom=</span><span class="st">&quot;errorbar&quot;</span>, <span class="dt">width=</span><span class="fl">0.1</span>, <span class="dt">alpha=</span><span class="fl">0.95</span>) <span class="op">+</span></span>
 <span id="cb53-14"><a href="analysis.html#cb53-14"></a><span class="st">  </span><span class="co"># connects the overall mean to show the improvement</span></span>
-<span id="cb53-15"><a href="analysis.html#cb53-15"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">fun=</span>mean, <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>, <span class="dt">size =</span> <span class="fl">1.5</span>) <span class="op">+</span></span>
+<span id="cb53-15"><a href="analysis.html#cb53-15"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">fun=</span>mean, <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>, <span class="dt">size =</span> <span class="fl">0.6</span>) <span class="op">+</span></span>
 <span id="cb53-16"><a href="analysis.html#cb53-16"></a><span class="st">  </span><span class="co"># line showing 0.5 neutral relative score for reference</span></span>
 <span id="cb53-17"><a href="analysis.html#cb53-17"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="fl">0.5</span>, <span class="dt">linetype =</span> <span class="dv">2</span>) <span class="op">+</span></span>
 <span id="cb53-18"><a href="analysis.html#cb53-18"></a><span class="st">  </span><span class="co"># changing labels and titles</span></span>
-<span id="cb53-19"><a href="analysis.html#cb53-19"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span> <span class="st">&quot;Miniblock&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Relative Influence (0-1)&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Averaged across Blocks&quot;</span>, <span class="dt">color =</span> <span class="st">&quot;Cue&quot;</span>) <span class="op">+</span></span>
+<span id="cb53-19"><a href="analysis.html#cb53-19"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span> <span class="st">&quot;Miniblock&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Relative Influence (0-1)&quot;</span>, <span class="dt">subtitle =</span> <span class="st">&quot;Averaged across </span><span class="ch">\n</span><span class="st">Blocks&quot;</span>, <span class="dt">title=</span><span class="st">&quot;  &quot;</span>, <span class="dt">color =</span> <span class="st">&quot;Cue&quot;</span>) <span class="op">+</span></span>
 <span id="cb53-20"><a href="analysis.html#cb53-20"></a><span class="st">  </span><span class="co"># aesthitical changes</span></span>
 <span id="cb53-21"><a href="analysis.html#cb53-21"></a><span class="st">  </span><span class="kw">theme_cowplot</span>() <span class="op">+</span></span>
 <span id="cb53-22"><a href="analysis.html#cb53-22"></a><span class="st">  </span><span class="co"># assigning scico palette tokyo as a color palatte</span></span>
-<span id="cb53-23"><a href="analysis.html#cb53-23"></a><span class="st">  </span><span class="kw">scale_color_scico_d</span>(<span class="dt">palette =</span> <span class="st">&#39;tokyo&#39;</span>, <span class="dt">begin=</span><span class="fl">0.2</span>, <span class="dt">end=</span><span class="fl">0.8</span>, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Boundary&quot;</span>, <span class="st">&quot;Landmark&quot;</span>)) <span class="op">+</span></span>
+<span id="cb53-23"><a href="analysis.html#cb53-23"></a><span class="st">  </span><span class="kw">scale_color_scico_d</span>(<span class="dt">palette =</span> <span class="st">&#39;tokyo&#39;</span>, <span class="dt">begin=</span><span class="fl">0.2</span>, <span class="dt">end=</span><span class="fl">0.75</span>, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Boundary&quot;</span>, <span class="st">&quot;Landmark&quot;</span>)) <span class="op">+</span></span>
 <span id="cb53-24"><a href="analysis.html#cb53-24"></a><span class="st">  </span><span class="co"># changing limits and breaks on both axis</span></span>
 <span id="cb53-25"><a href="analysis.html#cb53-25"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="dv">1</span>)) <span class="op">+</span></span>
-<span id="cb53-26"><a href="analysis.html#cb53-26"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits =</span> <span class="kw">c</span>(<span class="fl">0.5</span>, <span class="fl">4.5</span>), <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>))</span>
-<span id="cb53-27"><a href="analysis.html#cb53-27"></a></span>
-<span id="cb53-28"><a href="analysis.html#cb53-28"></a><span class="co">#show the graph</span></span>
-<span id="cb53-29"><a href="analysis.html#cb53-29"></a>g_mini</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-65-1.png" width="672" /></p>
+<span id="cb53-26"><a href="analysis.html#cb53-26"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">limits =</span> <span class="kw">c</span>(<span class="fl">0.5</span>, <span class="fl">4.5</span>), <span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>)) <span class="op">+</span></span>
+<span id="cb53-27"><a href="analysis.html#cb53-27"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.title.y =</span> <span class="kw">element_blank</span>(),</span>
+<span id="cb53-28"><a href="analysis.html#cb53-28"></a>        <span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
+<span id="cb53-29"><a href="analysis.html#cb53-29"></a></span>
+<span id="cb53-30"><a href="analysis.html#cb53-30"></a><span class="co">#show the graph</span></span>
+<span id="cb53-31"><a href="analysis.html#cb53-31"></a>g_mini</span></code></pre></div>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <p>The graph below shows the relative influence scores for each miniblock throughout block 2-4 (averaging only over 2 scores per miniblock)</p>
 <div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="analysis.html#cb54-1"></a><span class="co">#necessary summarizing for the graph below</span></span>
 <span id="cb54-2"><a href="analysis.html#cb54-2"></a>summary_objectTrial &lt;-<span class="st"> </span>subset_RI <span class="op">%&gt;%</span></span>
@@ -1030,40 +926,39 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb54-7"><a href="analysis.html#cb54-7"></a></span>
 <span id="cb54-8"><a href="analysis.html#cb54-8"></a>g_objTrial &lt;-<span class="st"> </span><span class="kw">ggplot</span>(summary_objectTrial, <span class="kw">aes</span>(objectTrial, relativeInf, <span class="dt">group=</span><span class="kw">interaction</span>(cue, ID), <span class="dt">color=</span>cue)) <span class="op">+</span><span class="st"> </span></span>
 <span id="cb54-9"><a href="analysis.html#cb54-9"></a><span class="st">  </span><span class="co"># connects the mean values for each participant within each block </span></span>
-<span id="cb54-10"><a href="analysis.html#cb54-10"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data=</span> <span class="kw">subset</span>(summary_objectTrial, objectTrial <span class="op">&lt;</span><span class="st"> </span><span class="dv">9</span>), <span class="dt">size=</span><span class="fl">0.8</span>, <span class="dt">alpha =</span> <span class="fl">0.3</span>) <span class="op">+</span></span>
-<span id="cb54-11"><a href="analysis.html#cb54-11"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data=</span> <span class="kw">subset</span>(summary_objectTrial, objectTrial <span class="op">&lt;</span><span class="st"> </span><span class="dv">13</span> <span class="op">&amp;</span><span class="st"> </span>objectTrial <span class="op">&gt;</span><span class="st"> </span><span class="dv">8</span>), <span class="dt">size=</span><span class="fl">0.8</span>, <span class="dt">alpha =</span> <span class="fl">0.3</span>) <span class="op">+</span></span>
-<span id="cb54-12"><a href="analysis.html#cb54-12"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data=</span> <span class="kw">subset</span>(summary_objectTrial, objectTrial <span class="op">&gt;</span><span class="st"> </span><span class="dv">12</span>), <span class="dt">size=</span><span class="fl">0.8</span>, <span class="dt">alpha =</span> <span class="fl">0.3</span>) <span class="op">+</span></span>
+<span id="cb54-10"><a href="analysis.html#cb54-10"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data=</span> <span class="kw">subset</span>(summary_objectTrial, objectTrial <span class="op">&lt;</span><span class="st"> </span><span class="dv">9</span>), <span class="dt">size=</span><span class="fl">0.5</span>, <span class="dt">alpha =</span> <span class="fl">0.3</span>) <span class="op">+</span></span>
+<span id="cb54-11"><a href="analysis.html#cb54-11"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data=</span> <span class="kw">subset</span>(summary_objectTrial, objectTrial <span class="op">&lt;</span><span class="st"> </span><span class="dv">13</span> <span class="op">&amp;</span><span class="st"> </span>objectTrial <span class="op">&gt;</span><span class="st"> </span><span class="dv">8</span>), <span class="dt">size=</span><span class="fl">0.5</span>, <span class="dt">alpha =</span> <span class="fl">0.3</span>) <span class="op">+</span></span>
+<span id="cb54-12"><a href="analysis.html#cb54-12"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data=</span> <span class="kw">subset</span>(summary_objectTrial, objectTrial <span class="op">&gt;</span><span class="st"> </span><span class="dv">12</span>), <span class="dt">size=</span><span class="fl">0.5</span>, <span class="dt">alpha =</span> <span class="fl">0.3</span>) <span class="op">+</span></span>
 <span id="cb54-13"><a href="analysis.html#cb54-13"></a><span class="st">  </span><span class="co"># overall mean and se </span></span>
-<span id="cb54-14"><a href="analysis.html#cb54-14"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">fun=</span>mean, <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom=</span><span class="st">&quot;point&quot;</span>, <span class="dt">size=</span><span class="dv">2</span>) <span class="op">+</span></span>
-<span id="cb54-15"><a href="analysis.html#cb54-15"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">fun.data=</span>mean_se, <span class="kw">aes</span>(<span class="dt">group=</span>cue),  </span>
-<span id="cb54-16"><a href="analysis.html#cb54-16"></a>               <span class="dt">geom=</span><span class="st">&quot;errorbar&quot;</span>, <span class="dt">size=</span><span class="fl">0.8</span>, <span class="dt">width=</span><span class="fl">0.1</span>, <span class="dt">alpha=</span><span class="fl">0.95</span>, <span class="dt">position =</span> <span class="kw">position_nudge</span>(<span class="dt">x=</span><span class="fl">0.01</span>)) <span class="op">+</span></span>
-<span id="cb54-17"><a href="analysis.html#cb54-17"></a><span class="st">  </span><span class="co"># line connecting the average values within each block</span></span>
-<span id="cb54-18"><a href="analysis.html#cb54-18"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">data =</span> <span class="kw">subset</span>(summary_objectTrial, objectTrial <span class="op">&lt;</span><span class="st"> </span><span class="dv">9</span>), <span class="dt">fun=</span>mean, <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>, <span class="dt">size =</span> <span class="fl">1.5</span>) <span class="op">+</span></span>
-<span id="cb54-19"><a href="analysis.html#cb54-19"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">data =</span> <span class="kw">subset</span>(summary_objectTrial, objectTrial  <span class="op">&lt;</span><span class="st"> </span><span class="dv">13</span> <span class="op">&amp;</span><span class="st"> </span>objectTrial <span class="op">&gt;</span><span class="st"> </span><span class="dv">8</span>), <span class="dt">fun=</span>mean, <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>, <span class="dt">size =</span> <span class="fl">1.5</span>) <span class="op">+</span></span>
-<span id="cb54-20"><a href="analysis.html#cb54-20"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">data =</span> <span class="kw">subset</span>(summary_objectTrial, objectTrial <span class="op">&gt;</span><span class="st"> </span><span class="dv">12</span>), <span class="dt">fun=</span>mean, <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>, <span class="dt">size =</span> <span class="fl">1.5</span>) <span class="op">+</span></span>
-<span id="cb54-21"><a href="analysis.html#cb54-21"></a><span class="st">  </span><span class="co"># assigning scico palette tokyo as a color palatte</span></span>
-<span id="cb54-22"><a href="analysis.html#cb54-22"></a><span class="st">  </span><span class="kw">scale_color_scico_d</span>(<span class="dt">palette =</span> <span class="st">&#39;tokyo&#39;</span>, <span class="dt">begin=</span><span class="fl">0.2</span>, <span class="dt">end=</span><span class="fl">0.8</span>, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Boundary&quot;</span>, <span class="st">&quot;Landmark&quot;</span>)) <span class="op">+</span></span>
-<span id="cb54-23"><a href="analysis.html#cb54-23"></a><span class="st">  </span><span class="co"># line showing 0.5 neutral relative score for reference</span></span>
-<span id="cb54-24"><a href="analysis.html#cb54-24"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="fl">0.5</span>, <span class="dt">linetype =</span> <span class="dv">2</span>) <span class="op">+</span></span>
-<span id="cb54-25"><a href="analysis.html#cb54-25"></a><span class="st">  </span><span class="co"># adding a vertical lines showing the start of a new block with a proper label</span></span>
-<span id="cb54-26"><a href="analysis.html#cb54-26"></a><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="fl">4.9</span>, <span class="dt">alpha =</span> <span class="fl">0.7</span>, <span class="dt">linetype=</span><span class="dv">3</span>) <span class="op">+</span></span>
-<span id="cb54-27"><a href="analysis.html#cb54-27"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dt">label =</span> <span class="st">&quot;Block 2&quot;</span>, <span class="dt">x =</span> <span class="fl">5.6</span>, <span class="dt">y =</span> <span class="dv">1</span>, <span class="dt">size =</span> <span class="dv">4</span>) <span class="op">+</span></span>
-<span id="cb54-28"><a href="analysis.html#cb54-28"></a><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="fl">8.9</span>, <span class="dt">alpha =</span> <span class="fl">0.7</span>, <span class="dt">linetype=</span><span class="dv">3</span>) <span class="op">+</span></span>
-<span id="cb54-29"><a href="analysis.html#cb54-29"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dt">label =</span> <span class="st">&quot;Block 3&quot;</span>, <span class="dt">x =</span> <span class="fl">9.6</span>, <span class="dt">y =</span> <span class="dv">1</span>, <span class="dt">size =</span> <span class="dv">4</span>) <span class="op">+</span></span>
-<span id="cb54-30"><a href="analysis.html#cb54-30"></a><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="fl">12.9</span>, <span class="dt">alpha =</span> <span class="fl">0.7</span>, <span class="dt">linetype=</span><span class="dv">3</span>) <span class="op">+</span></span>
-<span id="cb54-31"><a href="analysis.html#cb54-31"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dt">label =</span> <span class="st">&quot;Block 4&quot;</span>, <span class="dt">x =</span> <span class="fl">13.6</span>, <span class="dt">y =</span> <span class="dv">1</span>, <span class="dt">size =</span> <span class="dv">4</span>) <span class="op">+</span></span>
-<span id="cb54-32"><a href="analysis.html#cb54-32"></a><span class="st">  </span><span class="co"># changing labels and titles</span></span>
-<span id="cb54-33"><a href="analysis.html#cb54-33"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span> <span class="st">&quot;Miniblock&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Relative Influence (0-1)&quot;</span>, <span class="dt">title=</span> <span class="st">&quot;Separately per Block&quot;</span>, <span class="dt">color=</span> <span class="st">&quot;Cue&quot;</span>) <span class="op">+</span></span>
-<span id="cb54-34"><a href="analysis.html#cb54-34"></a><span class="st">  </span><span class="co"># changing limits and breaks and its labels of both axis</span></span>
-<span id="cb54-35"><a href="analysis.html#cb54-35"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="dv">1</span>), <span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="op">+</span></span>
-<span id="cb54-36"><a href="analysis.html#cb54-36"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">10</span>, <span class="dv">11</span>, <span class="dv">12</span>, <span class="dv">13</span>, <span class="dv">14</span>, <span class="dv">15</span>, <span class="dv">16</span>), </span>
-<span id="cb54-37"><a href="analysis.html#cb54-37"></a>                     <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>, <span class="st">&quot;3&quot;</span>, <span class="st">&quot;4&quot;</span>, <span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>, <span class="st">&quot;3&quot;</span>, <span class="st">&quot;4&quot;</span>, <span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>, <span class="st">&quot;3&quot;</span>, <span class="st">&quot;4&quot;</span>)) <span class="op">+</span></span>
-<span id="cb54-38"><a href="analysis.html#cb54-38"></a><span class="st">  </span><span class="co"># aesthetical changes</span></span>
-<span id="cb54-39"><a href="analysis.html#cb54-39"></a><span class="st">  </span><span class="kw">theme_cowplot</span>() </span>
-<span id="cb54-40"><a href="analysis.html#cb54-40"></a></span>
-<span id="cb54-41"><a href="analysis.html#cb54-41"></a><span class="co">#show the graph</span></span>
-<span id="cb54-42"><a href="analysis.html#cb54-42"></a>g_objTrial</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-66-1.png" width="672" /></p>
+<span id="cb54-14"><a href="analysis.html#cb54-14"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">fun=</span>mean, <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom=</span><span class="st">&quot;point&quot;</span>, <span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span></span>
+<span id="cb54-15"><a href="analysis.html#cb54-15"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">fun.data=</span>mean_se, <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom=</span><span class="st">&quot;errorbar&quot;</span>, <span class="dt">width=</span><span class="fl">0.1</span>, <span class="dt">alpha=</span><span class="fl">0.95</span>) <span class="op">+</span></span>
+<span id="cb54-16"><a href="analysis.html#cb54-16"></a><span class="st">  </span><span class="co"># line connecting the average values within each block</span></span>
+<span id="cb54-17"><a href="analysis.html#cb54-17"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">data =</span> <span class="kw">subset</span>(summary_objectTrial, objectTrial <span class="op">&lt;</span><span class="st"> </span><span class="dv">9</span>), <span class="dt">fun=</span>mean, <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>, <span class="dt">size =</span> <span class="fl">0.6</span>) <span class="op">+</span></span>
+<span id="cb54-18"><a href="analysis.html#cb54-18"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">data =</span> <span class="kw">subset</span>(summary_objectTrial, objectTrial  <span class="op">&lt;</span><span class="st"> </span><span class="dv">13</span> <span class="op">&amp;</span><span class="st"> </span>objectTrial <span class="op">&gt;</span><span class="st"> </span><span class="dv">8</span>), <span class="dt">fun=</span>mean, <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>, <span class="dt">size =</span> <span class="fl">0.6</span>) <span class="op">+</span></span>
+<span id="cb54-19"><a href="analysis.html#cb54-19"></a><span class="st">  </span><span class="kw">stat_summary</span>(<span class="dt">data =</span> <span class="kw">subset</span>(summary_objectTrial, objectTrial <span class="op">&gt;</span><span class="st"> </span><span class="dv">12</span>), <span class="dt">fun=</span>mean, <span class="kw">aes</span>(<span class="dt">group=</span>cue), <span class="dt">geom=</span><span class="st">&quot;line&quot;</span>, <span class="dt">size =</span> <span class="fl">0.6</span>) <span class="op">+</span></span>
+<span id="cb54-20"><a href="analysis.html#cb54-20"></a><span class="st">  </span><span class="co"># assigning scico palette tokyo as a color palatte</span></span>
+<span id="cb54-21"><a href="analysis.html#cb54-21"></a><span class="st">  </span><span class="kw">scale_color_scico_d</span>(<span class="dt">palette =</span> <span class="st">&#39;tokyo&#39;</span>, <span class="dt">begin=</span><span class="fl">0.2</span>, <span class="dt">end=</span><span class="fl">0.75</span>, <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;Boundary&quot;</span>, <span class="st">&quot;Landmark&quot;</span>)) <span class="op">+</span></span>
+<span id="cb54-22"><a href="analysis.html#cb54-22"></a><span class="st">  </span><span class="co"># line showing 0.5 neutral relative score for reference</span></span>
+<span id="cb54-23"><a href="analysis.html#cb54-23"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="fl">0.5</span>, <span class="dt">linetype =</span> <span class="dv">2</span>) <span class="op">+</span></span>
+<span id="cb54-24"><a href="analysis.html#cb54-24"></a><span class="st">  </span><span class="co"># adding a vertical lines showing the start of a new block with a proper label</span></span>
+<span id="cb54-25"><a href="analysis.html#cb54-25"></a><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="fl">4.9</span>, <span class="dt">alpha =</span> <span class="fl">0.7</span>, <span class="dt">linetype=</span><span class="dv">3</span>, <span class="dt">size=</span><span class="fl">0.5</span>) <span class="op">+</span></span>
+<span id="cb54-26"><a href="analysis.html#cb54-26"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dt">label =</span> <span class="st">&quot;Block 2&quot;</span>, <span class="dt">x =</span> <span class="fl">5.6</span>, <span class="dt">y =</span> <span class="dv">1</span>, <span class="dt">size =</span> <span class="dv">3</span>) <span class="op">+</span></span>
+<span id="cb54-27"><a href="analysis.html#cb54-27"></a><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="fl">8.9</span>, <span class="dt">alpha =</span> <span class="fl">0.7</span>, <span class="dt">linetype=</span><span class="dv">3</span>, <span class="dt">size=</span><span class="fl">0.5</span>) <span class="op">+</span></span>
+<span id="cb54-28"><a href="analysis.html#cb54-28"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dt">label =</span> <span class="st">&quot;Block 3&quot;</span>, <span class="dt">x =</span> <span class="fl">9.6</span>, <span class="dt">y =</span> <span class="dv">1</span>, <span class="dt">size =</span> <span class="dv">3</span>) <span class="op">+</span></span>
+<span id="cb54-29"><a href="analysis.html#cb54-29"></a><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="fl">12.9</span>, <span class="dt">alpha =</span> <span class="fl">0.7</span>, <span class="dt">linetype=</span><span class="dv">3</span>, <span class="dt">size=</span><span class="fl">0.5</span>) <span class="op">+</span></span>
+<span id="cb54-30"><a href="analysis.html#cb54-30"></a><span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dt">label =</span> <span class="st">&quot;Block 4&quot;</span>, <span class="dt">x =</span> <span class="fl">13.6</span>, <span class="dt">y =</span> <span class="dv">1</span>, <span class="dt">size =</span> <span class="dv">3</span>) <span class="op">+</span></span>
+<span id="cb54-31"><a href="analysis.html#cb54-31"></a><span class="st">  </span><span class="co"># changing labels and titles</span></span>
+<span id="cb54-32"><a href="analysis.html#cb54-32"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x=</span> <span class="st">&quot;Miniblock&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Relative Influence (0-1)&quot;</span>, <span class="dt">subtitle=</span> <span class="st">&quot;Separately per Block&quot;</span>, <span class="dt">title=</span><span class="st">&quot;Positional Memory&quot;</span>, <span class="dt">color =</span> <span class="st">&quot;Cue&quot;</span>) <span class="op">+</span></span>
+<span id="cb54-33"><a href="analysis.html#cb54-33"></a><span class="st">  </span><span class="co"># changing limits and breaks and its labels of both axis</span></span>
+<span id="cb54-34"><a href="analysis.html#cb54-34"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="fl">0.75</span>, <span class="dv">1</span>), <span class="dt">limits =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="op">+</span></span>
+<span id="cb54-35"><a href="analysis.html#cb54-35"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">10</span>, <span class="dv">11</span>, <span class="dv">12</span>, <span class="dv">13</span>, <span class="dv">14</span>, <span class="dv">15</span>, <span class="dv">16</span>), </span>
+<span id="cb54-36"><a href="analysis.html#cb54-36"></a>                     <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>, <span class="st">&quot;3&quot;</span>, <span class="st">&quot;4&quot;</span>, <span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>, <span class="st">&quot;3&quot;</span>, <span class="st">&quot;4&quot;</span>, <span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>, <span class="st">&quot;3&quot;</span>, <span class="st">&quot;4&quot;</span>)) <span class="op">+</span></span>
+<span id="cb54-37"><a href="analysis.html#cb54-37"></a><span class="st">  </span><span class="co"># aesthetical changes</span></span>
+<span id="cb54-38"><a href="analysis.html#cb54-38"></a><span class="st">  </span><span class="kw">theme_cowplot</span>() </span>
+<span id="cb54-39"><a href="analysis.html#cb54-39"></a></span>
+<span id="cb54-40"><a href="analysis.html#cb54-40"></a><span class="co">#show the graph</span></span>
+<span id="cb54-41"><a href="analysis.html#cb54-41"></a>g_objTrial</span></code></pre></div>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <p>The two graphs created above are composed into a single layout for better, more wholesome visualisation.</p>
 <div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="analysis.html#cb55-1"></a><span class="co"># specifying the layout</span></span>
 <span id="cb55-2"><a href="analysis.html#cb55-2"></a>layout &lt;-<span class="st"> &quot;</span></span>
@@ -1091,15 +986,9 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb55-24"><a href="analysis.html#cb55-24"></a>                  <span class="dt">theme =</span> <span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">12</span>, <span class="dt">face=</span><span class="st">&quot;bold&quot;</span>)),</span>
 <span id="cb55-25"><a href="analysis.html#cb55-25"></a>                  <span class="dt">tag_levels =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&#39;A&#39;</span>, <span class="st">&#39;B&#39;</span>)))</span>
 <span id="cb55-26"><a href="analysis.html#cb55-26"></a></span>
-<span id="cb55-27"><a href="analysis.html#cb55-27"></a><span class="co"># savvign the assembly as pd and png</span></span>
-<span id="cb55-28"><a href="analysis.html#cb55-28"></a><span class="kw">ggsave</span>(<span class="st">&quot;relativeInfluence_min.pdf&quot;</span>, <span class="dt">plot=</span>g_min, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="fl">15.9</span>, <span class="dt">height =</span> <span class="dv">13</span>, </span>
-<span id="cb55-29"><a href="analysis.html#cb55-29"></a>       <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> cairo_pdf, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span>
-<span id="cb55-30"><a href="analysis.html#cb55-30"></a><span class="kw">ggsave</span>(<span class="st">&quot;relativeInfluence_min.png&quot;</span>, <span class="dt">plot=</span>g_min, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="fl">15.9</span>, <span class="dt">height =</span> <span class="dv">13</span>, </span>
-<span id="cb55-31"><a href="analysis.html#cb55-31"></a>       <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> <span class="st">&quot;png&quot;</span>, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span>
-<span id="cb55-32"><a href="analysis.html#cb55-32"></a></span>
-<span id="cb55-33"><a href="analysis.html#cb55-33"></a><span class="co"># show the assembled graphs</span></span>
-<span id="cb55-34"><a href="analysis.html#cb55-34"></a>g_min</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-67-1.png" width="672" /></p>
+<span id="cb55-27"><a href="analysis.html#cb55-27"></a><span class="co"># show the assembled graphs</span></span>
+<span id="cb55-28"><a href="analysis.html#cb55-28"></a>g_min</span></code></pre></div>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 </div>
 <div id="miniblock-1" class="section level3">
 <h3><span class="header-section-number">3.6.2</span> Miniblock 1</h3>
@@ -1987,7 +1876,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb87-26"><a href="analysis.html#cb87-26"></a></span>
 <span id="cb87-27"><a href="analysis.html#cb87-27"></a><span class="co"># show the graph</span></span>
 <span id="cb87-28"><a href="analysis.html#cb87-28"></a>RI_final</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-81-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
 <p>The graph below visualizes the relative influence age-dependent improvement based on a mixed model predictions.</p>
 <div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="analysis.html#cb88-1"></a><span class="co"># calculating values predicted by the mixed model</span></span>
 <span id="cb88-2"><a href="analysis.html#cb88-2"></a>RI_predict &lt;-<span class="st"> </span>ggeffects<span class="op">::</span><span class="kw">ggpredict</span>(modelFull, <span class="dt">terms =</span> <span class="kw">c</span>(<span class="st">&quot;age_c&quot;</span>, <span class="st">&quot;cueMM&quot;</span>)) <span class="op">%&gt;%</span></span>
@@ -2016,7 +1905,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb88-25"><a href="analysis.html#cb88-25"></a></span>
 <span id="cb88-26"><a href="analysis.html#cb88-26"></a><span class="co">#show the graph</span></span>
 <span id="cb88-27"><a href="analysis.html#cb88-27"></a>RI_model</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-82-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
 <div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="analysis.html#cb89-1"></a><span class="co"># specifying the layout</span></span>
 <span id="cb89-2"><a href="analysis.html#cb89-2"></a>layout &lt;-<span class="st"> &quot;</span></span>
 <span id="cb89-3"><a href="analysis.html#cb89-3"></a><span class="st">AAAAA#BBBBBB</span></span>
@@ -2354,7 +2243,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb101-16"><a href="analysis.html#cb101-16"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="fl">0.5</span>, <span class="dt">linetype=</span><span class="dv">2</span>, <span class="dt">alpha=</span><span class="fl">0.6</span>)</span>
 <span id="cb101-17"><a href="analysis.html#cb101-17"></a>  </span>
 <span id="cb101-18"><a href="analysis.html#cb101-18"></a>CueDis_final</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-88-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
 <p>The graph below visualizes the cue dissonance age-dependent improvement based on a mixed model predictions.</p>
 <div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="analysis.html#cb102-1"></a>CueDis_predict &lt;-<span class="st"> </span>ggeffects<span class="op">::</span><span class="kw">ggpredict</span>(modelCueDis, <span class="dt">terms =</span> <span class="kw">c</span>(<span class="st">&quot;age_c&quot;</span>, <span class="st">&quot;cueMM&quot;</span>)) <span class="op">%&gt;%</span></span>
 <span id="cb102-2"><a href="analysis.html#cb102-2"></a><span class="st">  </span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span></span>
@@ -2375,7 +2264,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb102-17"><a href="analysis.html#cb102-17"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="fl">0.5</span>, <span class="dt">linetype=</span><span class="dv">2</span>, <span class="dt">alpha=</span><span class="fl">0.6</span>)</span>
 <span id="cb102-18"><a href="analysis.html#cb102-18"></a></span>
 <span id="cb102-19"><a href="analysis.html#cb102-19"></a>CueDis_model</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-89-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
 <p>Assembly of the generated graphs.</p>
 <div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="analysis.html#cb103-1"></a>layout &lt;-<span class="st"> &quot;</span></span>
 <span id="cb103-2"><a href="analysis.html#cb103-2"></a><span class="st">AAAAA#BBBBBB</span></span>
@@ -2395,7 +2284,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb103-16"><a href="analysis.html#cb103-16"></a>                  <span class="dt">tag_levels =</span> <span class="kw">list</span>(<span class="kw">c</span>(<span class="st">&#39;A&#39;</span>, <span class="st">&#39;B&#39;</span>)))</span>
 <span id="cb103-17"><a href="analysis.html#cb103-17"></a></span>
 <span id="cb103-18"><a href="analysis.html#cb103-18"></a>CueDis_final</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-90-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-46-1.png" width="672" /></p>
 <div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="analysis.html#cb104-1"></a><span class="kw">ggsave</span>(<span class="st">&quot;cueDissonance_full.pdf&quot;</span>, <span class="dt">plot=</span>CueDis_final, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="dv">15</span>, <span class="dt">height =</span> <span class="dv">9</span>, </span>
 <span id="cb104-2"><a href="analysis.html#cb104-2"></a>       <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> cairo_pdf, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span>
 <span id="cb104-3"><a href="analysis.html#cb104-3"></a><span class="kw">ggsave</span>(<span class="st">&quot;cueDissonance_full.png&quot;</span>, <span class="dt">plot=</span>CueDis_final, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="dv">15</span>, <span class="dt">height =</span> <span class="dv">9</span>, </span>
@@ -2705,7 +2594,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb116-13"><a href="analysis.html#cb116-13"></a>       <span class="dt">title =</span> <span class="st">&quot;Data&quot;</span>, <span class="dt">color=</span><span class="st">&quot;Cue&quot;</span>) </span>
 <span id="cb116-14"><a href="analysis.html#cb116-14"></a>  </span>
 <span id="cb116-15"><a href="analysis.html#cb116-15"></a>distance_final</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-95-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
 <div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="analysis.html#cb117-1"></a>distance_predict &lt;-<span class="st"> </span>ggeffects<span class="op">::</span><span class="kw">ggpredict</span>(modelFullDist, <span class="dt">terms =</span> <span class="kw">c</span>(<span class="st">&quot;age_c&quot;</span>, <span class="st">&quot;cueMM&quot;</span>)) <span class="op">%&gt;%</span></span>
 <span id="cb117-2"><a href="analysis.html#cb117-2"></a><span class="st">  </span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span></span>
 <span id="cb117-3"><a href="analysis.html#cb117-3"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cuePredict =</span> <span class="kw">factor</span>(<span class="kw">if_else</span>(group <span class="op">==</span><span class="st"> </span><span class="dv">1</span>, <span class="dt">true =</span> <span class="st">&quot;boundary&quot;</span>, <span class="dt">false =</span> <span class="st">&quot;landmark&quot;</span>),</span>
@@ -2723,7 +2612,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb117-15"><a href="analysis.html#cb117-15"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>) </span>
 <span id="cb117-16"><a href="analysis.html#cb117-16"></a></span>
 <span id="cb117-17"><a href="analysis.html#cb117-17"></a>distance_model</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-96-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
 <div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="analysis.html#cb118-1"></a>layout &lt;-<span class="st"> &quot;</span></span>
 <span id="cb118-2"><a href="analysis.html#cb118-2"></a><span class="st">AAAAA#BBBBBB</span></span>
 <span id="cb118-3"><a href="analysis.html#cb118-3"></a><span class="st">AAAAA#BBBBBB</span></span>
