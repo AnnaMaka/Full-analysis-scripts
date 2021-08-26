@@ -310,7 +310,7 @@ To be included in the analysis, participant’s memory scores from block 1 need 
 <span id="cb127-16"><a href="angle-estimation-analysis.html#cb127-16"></a>        <span class="dt">aspect.ratio =</span><span class="dv">1</span>, </span>
 <span id="cb127-17"><a href="angle-estimation-analysis.html#cb127-17"></a>        <span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">face=</span><span class="st">&quot;italic&quot;</span>, <span class="dt">size=</span><span class="dv">12</span>)) <span class="op">+</span></span>
 <span id="cb127-18"><a href="angle-estimation-analysis.html#cb127-18"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">limits=</span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">15</span>))</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-62-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
 <div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="angle-estimation-analysis.html#cb128-1"></a><span class="co">#actual average RT and sd</span></span>
 <span id="cb128-2"><a href="angle-estimation-analysis.html#cb128-2"></a>reaction_time &lt;-<span class="st"> </span><span class="kw">summarise</span>(reaction_time_dat, <span class="dt">mean =</span> <span class="kw">mean</span>(estResponse), <span class="dt">sd=</span><span class="kw">sd</span>(estResponse), <span class="dt">min=</span><span class="kw">min</span>(estResponse), <span class="dt">max=</span><span class="kw">max</span>(estResponse))</span></code></pre></div>
 <p>The average reaction time in pointing task was 6.601 seconds (sd = 2.514).</p>
@@ -484,7 +484,7 @@ Also, is there performance difference between landmark- vs boundary-dependent ob
 <span id="cb135-59"><a href="angle-estimation-analysis.html#cb135-59"></a></span>
 <span id="cb135-60"><a href="angle-estimation-analysis.html#cb135-60"></a><span class="co"># show the graph</span></span>
 <span id="cb135-61"><a href="angle-estimation-analysis.html#cb135-61"></a>relativeAng_graph</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-66-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-64-1.png" width="672" /></p>
 <p>Let’s subset and summarize data for blocks 2-4.</p>
 <div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="angle-estimation-analysis.html#cb136-1"></a>subset_RA &lt;-<span class="st"> </span>Sum_all <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb136-2"><a href="angle-estimation-analysis.html#cb136-2"></a><span class="st">  </span><span class="kw">filter</span>(block<span class="op">!=</span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -875,7 +875,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb149-19"><a href="angle-estimation-analysis.html#cb149-19"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span>
 <span id="cb149-20"><a href="angle-estimation-analysis.html#cb149-20"></a></span>
 <span id="cb149-21"><a href="angle-estimation-analysis.html#cb149-21"></a>g_miniAng</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-71-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-69-1.png" width="672" /></p>
 <p>The graph below shows the relative influence scores for each miniblock throughout block 2-4 (averaging only over 2 scores per miniblock)</p>
 <div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="angle-estimation-analysis.html#cb150-1"></a><span class="co">#data summarizing</span></span>
 <span id="cb150-2"><a href="angle-estimation-analysis.html#cb150-2"></a>summary_objectTrial_A &lt;-<span class="st"> </span>subset_RA <span class="op">%&gt;%</span></span>
@@ -911,7 +911,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb150-32"><a href="angle-estimation-analysis.html#cb150-32"></a></span>
 <span id="cb150-33"><a href="angle-estimation-analysis.html#cb150-33"></a></span>
 <span id="cb150-34"><a href="angle-estimation-analysis.html#cb150-34"></a>g_objTrialAng </span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-72-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-70-1.png" width="672" /></p>
 <p>Assembling the all four plots for more comprehensive visualization of relative influence improvement over miniblocks</p>
 <div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="angle-estimation-analysis.html#cb151-1"></a>layout &lt;-<span class="st"> &quot;</span></span>
 <span id="cb151-2"><a href="angle-estimation-analysis.html#cb151-2"></a><span class="st">AAAAAABB</span></span>
@@ -937,7 +937,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb151-22"><a href="angle-estimation-analysis.html#cb151-22"></a>                  <span class="dt">tag_levels =</span> <span class="st">&#39;A&#39;</span>)</span>
 <span id="cb151-23"><a href="angle-estimation-analysis.html#cb151-23"></a></span>
 <span id="cb151-24"><a href="angle-estimation-analysis.html#cb151-24"></a>g_miniblocks</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-73-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-71-1.png" width="672" /></p>
 <div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="angle-estimation-analysis.html#cb152-1"></a><span class="kw">ggsave</span>(<span class="st">&quot;RI_miniblocks.pdf&quot;</span>, <span class="dt">plot=</span>g_miniblocks, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="fl">15.9</span>, <span class="dt">height =</span> <span class="dv">14</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> cairo_pdf, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span>
 <span id="cb152-2"><a href="angle-estimation-analysis.html#cb152-2"></a><span class="kw">ggsave</span>(<span class="st">&quot;RI_miniblocks.png&quot;</span>, <span class="dt">plot=</span>g_miniblocks, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="fl">15.9</span>, <span class="dt">height =</span> <span class="dv">14</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> <span class="st">&quot;png&quot;</span>, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span></code></pre></div>
 </div>
@@ -1265,7 +1265,7 @@ Random Effects
 τ<sub>11</sub>
 </td>
 <td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
-0.0003 <sub>ID.mini:cueMM</sub>
+0.0003 <sub>ID.cueMM:mini</sub>
 </td>
 <td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
 0.0004 <sub>ID.cueMM:mini</sub>
@@ -1285,7 +1285,7 @@ Random Effects
 ICC
 </td>
 <td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
-0.0229
+0.0316
 </td>
 <td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
 0.0204
@@ -1316,7 +1316,7 @@ Observations
 Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 </td>
 <td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
-0.346 / 0.361
+0.344 / 0.365
 </td>
 <td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
 0.178 / 0.195
@@ -1607,7 +1607,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <p><strong>Cue Dissonance</strong></p>
 <p>As we decided to recode relative influence score to dCorrect / (dCorrect + dOther), we ran the main model with miniblocks again with the new dependent variable, cue dissonance, to see if the slope differ despite the same direction of improvement. Random effects could not included interaction as this caused singular fit.</p>
 <div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="angle-estimation-analysis.html#cb169-1"></a><span class="co">#model with new recoded dependent variable - cue dissonance</span></span>
-<span id="cb169-2"><a href="angle-estimation-analysis.html#cb169-2"></a>formulaCueDis_mini &lt;-<span class="st"> &quot;cueDissonanceAngle ~ cueMM*mini + (1+mini+cueMM|ID)&quot;</span></span>
+<span id="cb169-2"><a href="angle-estimation-analysis.html#cb169-2"></a>formulaCueDis_mini &lt;-<span class="st"> &quot;cueDissonanceAngle ~ cueMM*mini + (1+cueMM+mini|ID)&quot;</span></span>
 <span id="cb169-3"><a href="angle-estimation-analysis.html#cb169-3"></a>modelCueDis_miniA &lt;-<span class="st"> </span>lme4<span class="op">::</span><span class="kw">lmer</span>(<span class="dt">formula =</span> formulaCueDis_mini, <span class="dt">data=</span>subset_RA)</span>
 <span id="cb169-4"><a href="angle-estimation-analysis.html#cb169-4"></a></span>
 <span id="cb169-5"><a href="angle-estimation-analysis.html#cb169-5"></a><span class="kw">tab_model</span>(modelCueDis_miniA, <span class="dt">show.p =</span> <span class="ot">FALSE</span>, <span class="dt">digits.re =</span> <span class="dv">4</span>,</span>
@@ -1699,13 +1699,6 @@ Random Effects
 </td>
 <tr>
 <td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
-τ<sub>11</sub> <sub>ID.mini</sub>
-</td>
-<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
-0.0004
-</td>
-<tr>
-<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
 τ<sub>11</sub> <sub>ID.cueMM</sub>
 </td>
 <td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
@@ -1713,16 +1706,23 @@ Random Effects
 </td>
 <tr>
 <td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+τ<sub>11</sub> <sub>ID.mini</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
+0.0004
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
 ρ<sub>01</sub>
 </td>
 <td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
--0.0725
+-0.6889
 </td>
 <tr>
 <td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
 </td>
 <td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
--0.6889
+-0.0726
 </td>
 <tr>
 <td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
@@ -1757,7 +1757,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 </table>
 <p>To test the significance of the interaction, we ran a likelihood ratio test comparing our model and a model with both cue and miniblock as predictors but without the interaction.</p>
 <div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="angle-estimation-analysis.html#cb170-1"></a><span class="co">#control model for interaction</span></span>
-<span id="cb170-2"><a href="angle-estimation-analysis.html#cb170-2"></a>formulaCueDis_miniControl &lt;-<span class="st"> &quot;cueDissonanceAngle ~ cueMM+mini + (1+mini+cueMM|ID)&quot;</span></span>
+<span id="cb170-2"><a href="angle-estimation-analysis.html#cb170-2"></a>formulaCueDis_miniControl &lt;-<span class="st"> &quot;cueDissonanceAngle ~ cueMM+mini + (1+cueMM+mini|ID)&quot;</span></span>
 <span id="cb170-3"><a href="angle-estimation-analysis.html#cb170-3"></a>modelCueDis_miniControlA &lt;-<span class="st"> </span>lme4<span class="op">::</span><span class="kw">lmer</span>(<span class="dt">formula =</span> formulaCueDis_miniControl, <span class="dt">data=</span>subset_RA)</span>
 <span id="cb170-4"><a href="angle-estimation-analysis.html#cb170-4"></a></span>
 <span id="cb170-5"><a href="angle-estimation-analysis.html#cb170-5"></a><span class="co">#likelihood ratio test</span></span>
@@ -1898,38 +1898,38 @@ Random Effects
 τ<sub>11</sub>
 </td>
 <td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
-0.0004 <sub>ID.mini</sub>
+0.0010 <sub>ID.cueMM</sub>
 </td>
 <td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
-0.0004 <sub>ID.mini</sub>
+0.0010 <sub>ID.cueMM</sub>
 </td>
 <tr>
 <td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
 </td>
 <td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
-0.0010 <sub>ID.cueMM</sub>
+0.0004 <sub>ID.mini</sub>
 </td>
 <td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
-0.0010 <sub>ID.cueMM</sub>
+0.0004 <sub>ID.mini</sub>
 </td>
 <tr>
 <td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
 ρ<sub>01</sub>
 </td>
 <td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
-0.2527
+-0.0640
 </td>
 <td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
--0.0725
+-0.6889
 </td>
 <tr>
 <td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
 </td>
 <td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
--0.0640
+0.2528
 </td>
 <td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="2">
--0.6889
+-0.0726
 </td>
 <tr>
 <td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
@@ -2320,7 +2320,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb188-15"><a href="angle-estimation-analysis.html#cb188-15"></a>  </span>
 <span id="cb188-16"><a href="angle-estimation-analysis.html#cb188-16"></a>  </span>
 <span id="cb188-17"><a href="angle-estimation-analysis.html#cb188-17"></a>RA_final</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-91-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-89-1.png" width="672" /></p>
 <p>The graph below visualizes the relative influence age-dependent improvement based on a mixed model predictions.</p>
 <div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="angle-estimation-analysis.html#cb189-1"></a><span class="co"># calculating values predicted by the mixed model</span></span>
 <span id="cb189-2"><a href="angle-estimation-analysis.html#cb189-2"></a>RA_predict &lt;-<span class="st"> </span>ggeffects<span class="op">::</span><span class="kw">ggpredict</span>(modelFullAngle, <span class="dt">terms =</span> <span class="kw">c</span>(<span class="st">&quot;age_c&quot;</span>, <span class="st">&quot;cueMM&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
@@ -2342,7 +2342,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb189-18"><a href="angle-estimation-analysis.html#cb189-18"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="fl">0.5</span>, <span class="dt">linetype=</span><span class="dv">2</span>, <span class="dt">alpha=</span><span class="fl">0.6</span>)</span>
 <span id="cb189-19"><a href="angle-estimation-analysis.html#cb189-19"></a></span>
 <span id="cb189-20"><a href="angle-estimation-analysis.html#cb189-20"></a>RA_model</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-92-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-90-1.png" width="672" /></p>
 <div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="angle-estimation-analysis.html#cb190-1"></a>layout &lt;-<span class="st"> &quot;</span></span>
 <span id="cb190-2"><a href="angle-estimation-analysis.html#cb190-2"></a><span class="st">AAAAA#BBBBBB</span></span>
 <span id="cb190-3"><a href="angle-estimation-analysis.html#cb190-3"></a><span class="st">AAAAA#BBBBBB</span></span>
@@ -2753,7 +2753,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb203-16"><a href="angle-estimation-analysis.html#cb203-16"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="fl">0.5</span>, <span class="dt">linetype=</span><span class="dv">2</span>, <span class="dt">alpha=</span><span class="fl">0.6</span>)</span>
 <span id="cb203-17"><a href="angle-estimation-analysis.html#cb203-17"></a>  </span>
 <span id="cb203-18"><a href="angle-estimation-analysis.html#cb203-18"></a>CueDisA_final</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-97-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-95-1.png" width="672" /></p>
 <p>The graph below visualizes the cue dissonance age-dependent improvement based on a mixed model predictions.</p>
 <div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="angle-estimation-analysis.html#cb204-1"></a>CueDisA_predict &lt;-<span class="st"> </span>ggeffects<span class="op">::</span><span class="kw">ggpredict</span>(modelCueDis_A, <span class="dt">terms =</span> <span class="kw">c</span>(<span class="st">&quot;age_c&quot;</span>, <span class="st">&quot;cueMM&quot;</span>)) <span class="op">%&gt;%</span></span>
 <span id="cb204-2"><a href="angle-estimation-analysis.html#cb204-2"></a><span class="st">  </span><span class="kw">as_tibble</span>() <span class="op">%&gt;%</span></span>
@@ -2774,7 +2774,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb204-17"><a href="angle-estimation-analysis.html#cb204-17"></a><span class="st">  </span><span class="kw">geom_hline</span>(<span class="dt">yintercept =</span> <span class="fl">0.5</span>, <span class="dt">linetype=</span><span class="dv">2</span>, <span class="dt">alpha=</span><span class="fl">0.6</span>)</span>
 <span id="cb204-18"><a href="angle-estimation-analysis.html#cb204-18"></a></span>
 <span id="cb204-19"><a href="angle-estimation-analysis.html#cb204-19"></a>CueDisA_model</span></code></pre></div>
-<p><img src="Test-book_files/figure-html/unnamed-chunk-98-1.png" width="672" /></p>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-96-1.png" width="672" /></p>
 <p>Assembly of the generated graphs.</p>
 <div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="angle-estimation-analysis.html#cb205-1"></a>layout &lt;-<span class="st"> &quot;</span></span>
 <span id="cb205-2"><a href="angle-estimation-analysis.html#cb205-2"></a><span class="st">AAAAA#BBBBBB</span></span>

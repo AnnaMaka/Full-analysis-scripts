@@ -979,7 +979,7 @@ t(`r mini1_cue_stats$parameter`)= `r round(mini1_cue_stats$statistic, 2)`, p`r i
 To test the learning throughout a block, we ran mixed effect model with interaction between cue and miniblock (centered) and added interaction between cue and miniblock as a random slope.
 
 ```{r}
-formulaMiniblocksCue <- "relativeInfluence ~ cueMM*mini + (1+mini:cueMM|ID)"
+formulaMiniblocksCue <- "relativeInfluence ~ cueMM*mini + (1 + cueMM : mini | ID)"
 modelMiniblocksCue <- lme4::lmer(formula = formulaMiniblocksCue, data=subset_RI)
 
 tab_model(modelMiniblocksCue, show.p = FALSE, digits.re = 4,
@@ -991,7 +991,7 @@ To test the significance of the interaction, we ran a likelihood ratio test comp
 
 ```{r}
 #control model for interaction
-formulaMiniblocksControl <- "relativeInfluence ~ cueMM+mini + (1+mini:cueMM|ID)"
+formulaMiniblocksControl <- "relativeInfluence ~ cueMM+mini + (1 + cueMM : mini | ID)"
 modelMiniblocksControl <- lme4::lmer(formula = formulaMiniblocksControl, data=subset_RI)
 
 #likelihood ratio test
@@ -1052,7 +1052,7 @@ As we decided to recode relative influence score to dCorrect / (dCorrect + dOthe
 
 ```{r}
 #model with new recoded dependent variable - cue dissonance
-formulaCueDis_mini <- "cueDissonance ~ cueMM*mini + (1+mini+cueMM|ID)"
+formulaCueDis_mini <- "cueDissonance ~ cueMM*mini + (1+cueMM+mini|ID)"
 modelCueDis_mini <- lme4::lmer(formula = formulaCueDis_mini, data=subset_RI)
 
 tab_model(modelCueDis_mini, show.p = FALSE, digits.re = 4,
@@ -1064,7 +1064,7 @@ To test the significance of the interaction, we ran a likelihood ratio test comp
 
 ```{r}
 #control model for interaction
-formulaCueDis_miniControl <- "cueDissonance ~ cueMM+mini + (1+mini+cueMM|ID)"
+formulaCueDis_miniControl <- "cueDissonance ~ cueMM+mini + (1+cueMM+mini|ID)"
 modelCueDis_miniControl <- lme4::lmer(formula = formulaCueDis_miniControl, data=subset_RI)
 
 #likelihood ratio test
@@ -1081,7 +1081,7 @@ To see whether the model including cue is better than a miniblock with random ef
 
 ```{r}
 #control model
-formulaJustMini <- "cueDissonance ~ mini + (1+mini+cueMM|ID)"
+formulaJustMini <- "cueDissonance ~ mini + (1+cueMM+mini|ID)"
 modelJustMini <- lme4::lmer(formula = formulaJustMini, data=subset_RI)
 
 #likelihood ratio test

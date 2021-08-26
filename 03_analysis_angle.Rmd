@@ -854,7 +854,7 @@ ratioMiniBoundary <- anova(modelMiniblocksBoundaryAngle, modelMiniBoundaryContro
 ```
 
 **$\chi^{2}$(1) = `r round(ratioMiniBoundary$statistic[2],3)`, p`r if (ratioMiniBoundary$p.value[2] > 0.001) {paste("=", round(ratioMiniBoundary$p.value[2], 3))} else {low_p}`**
-
+ 
 
 Summary with all cue specific mixed models with miniblocks predictors
 ```{r}
@@ -874,7 +874,7 @@ As we decided to recode relative influence score to dCorrect / (dCorrect + dOthe
 
 ```{r}
 #model with new recoded dependent variable - cue dissonance
-formulaCueDis_mini <- "cueDissonanceAngle ~ cueMM*mini + (1+mini+cueMM|ID)"
+formulaCueDis_mini <- "cueDissonanceAngle ~ cueMM*mini + (1+cueMM+mini|ID)"
 modelCueDis_miniA <- lme4::lmer(formula = formulaCueDis_mini, data=subset_RA)
 
 tab_model(modelCueDis_miniA, show.p = FALSE, digits.re = 4,
@@ -887,7 +887,7 @@ To test the significance of the interaction, we ran a likelihood ratio test comp
 
 ```{r}
 #control model for interaction
-formulaCueDis_miniControl <- "cueDissonanceAngle ~ cueMM+mini + (1+mini+cueMM|ID)"
+formulaCueDis_miniControl <- "cueDissonanceAngle ~ cueMM+mini + (1+cueMM+mini|ID)"
 modelCueDis_miniControlA <- lme4::lmer(formula = formulaCueDis_miniControl, data=subset_RA)
 
 #likelihood ratio test
