@@ -30,8 +30,8 @@ cue-dissonance
 distance-error
 angle-estimation-analysis
 set-up-1
-timeout-session
 exclusion-criteria-1
+timeout-session
 descriptives-1
 block-1-performance-1
 raw-angle-error-visualization

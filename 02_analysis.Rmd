@@ -817,7 +817,9 @@ summary_miniblock <- subset_RI %>%
             riSD = sd(relativeInfluence), 
             .groups = "drop")
 
-g_mini <- ggplot(summary_miniblock, aes(miniblock, relativeInf, group=interaction(cue, ID), color=cue)) + 
+g_mini <- ggplot(summary_miniblock, aes(miniblock, relativeInf, group=interaction(cue, ID), color = cue)) + 
+  # assigning scico palette tokyo as a color palette
+  scale_color_scico_d(palette = 'tokyo', begin=0.75, end=0.2, labels = c("Landmark", "Boundary")) +
   # connects the mean values for each participant 
   geom_line(size=0.5, alpha = 0.3) +
   # overall mean and se 
@@ -831,13 +833,10 @@ g_mini <- ggplot(summary_miniblock, aes(miniblock, relativeInf, group=interactio
   labs(x= "Miniblock", y = "Relative Influence (0-1)", subtitle = "Averaged across \nBlocks", title="  ", color = "Cue") +
   # aesthitical changes
   theme_cowplot() +
-  # assigning scico palette tokyo as a color palatte
-  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.75, labels = c("Boundary", "Landmark")) +
   # changing limits and breaks on both axis
   scale_y_continuous(limits = c(0,1), breaks = c(0, 0.25, 0.5, 0.75, 1)) +
   scale_x_continuous(limits = c(0.5, 4.5), breaks = c(1,2,3,4)) +
-  theme(axis.title.y = element_blank(),
-        legend.position = "none")
+  theme(axis.title.y = element_blank(), legend.position = "none")
 
 #show the graph
 g_mini
@@ -865,8 +864,8 @@ g_objTrial <- ggplot(summary_objectTrial, aes(objectTrial, relativeInf, group=in
   stat_summary(data = subset(summary_objectTrial, objectTrial < 9), fun=mean, aes(group=cue), geom="line", size = 0.6) +
   stat_summary(data = subset(summary_objectTrial, objectTrial  < 13 & objectTrial > 8), fun=mean, aes(group=cue), geom="line", size = 0.6) +
   stat_summary(data = subset(summary_objectTrial, objectTrial > 12), fun=mean, aes(group=cue), geom="line", size = 0.6) +
-  # assigning scico palette tokyo as a color palatte
-  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.75, labels = c("Boundary", "Landmark")) +
+  # assigning scico palette tokyo as a color palette
+  scale_color_scico_d(palette = 'tokyo', begin=0.75, end=0.2, labels = c("Landmark", "Boundary")) +
   # line showing 0.5 neutral relative score for reference
   geom_hline(yintercept = 0.5, linetype = 2) +
   # adding a vertical lines showing the start of a new block with a proper label
@@ -970,6 +969,34 @@ mini1_cue_stats$dCI_high <- d$conf.int[[2]]
 *Miniblock 1 landmark-dependent objects' RI against boundary-dependent objects' RI t-test results:*
 
 t(`r mini1_cue_stats$parameter`)= `r round(mini1_cue_stats$statistic, 2)`, p`r if (mini1_cue_stats$p.value > 0.001) {paste("=", round(mini1_cue_stats$p.value, 3))} else {low_p}`, d=`r round(mini1_cue_stats$d, 2)`, 95% CI [`r round(mini1_cue_stats$dCI_low, 2)`, `r round(mini1_cue_stats$dCI_high, 2)`]
+
+HOWEVER!
+```{r}
+#one sample t-test comparing miniblock 1 relative influence scores to 0.5 for landmark objects
+mini1_landmark_stats <- t.test(subset(sub_mini_cue, cue=="landmark")$relInfluence, mu=0.5) %>% tidy()
+
+d <- cohen.d(subset(sub_mini_cue, cue=="landmark")$relInfluence, f=NA, mu=0.5) 
+
+mini1_landmark_stats$d <- d$estimate
+mini1_landmark_stats$dCI_low <- d$conf.int[[1]]
+mini1_landmark_stats$dCI_high <- d$conf.int[[2]]
+```
+
+t(`r mini1_landmark_stats$parameter`)= `r round(mini1_landmark_stats$statistic, 2)`, p`r if (mini1_landmark_stats$p.value > 0.001) {paste("=", round(mini1_landmark_stats$p.value, 3))} else {low_p}`, d=`r round(mini1_landmark_stats$d, 2)`, 95% CI [`r round(mini1_landmark_stats$dCI_low, 2)`, `r round(mini1_landmark_stats$dCI_high, 2)`]
+
+```{r}
+#one sample t-test comparing miniblock 1 relative influence scores to 0.5 for boundary objects
+mini1_boundary_stats <- t.test(subset(sub_mini_cue, cue=="boundary")$relInfluence, mu=0.5) %>% tidy()
+
+d <- cohen.d(subset(sub_mini_cue, cue=="boundary")$relInfluence, f=NA, mu=0.5) 
+
+mini1_boundary_stats$d <- d$estimate
+mini1_boundary_stats$dCI_low <- d$conf.int[[1]]
+mini1_boundary_stats$dCI_high <- d$conf.int[[2]]
+```
+
+t(`r mini1_boundary_stats$parameter`)= `r round(mini1_boundary_stats$statistic, 2)`, p`r if (mini1_boundary_stats$p.value > 0.001) {paste("=", round(mini1_boundary_stats$p.value, 3))} else {low_p}`, d=`r round(mini1_boundary_stats$d, 2)`, 95% CI [`r round(mini1_boundary_stats$dCI_low, 2)`, `r round(mini1_boundary_stats$dCI_high, 2)`]
+
 
 
 ### Mixed Models
@@ -1179,7 +1206,7 @@ The graph below visualizes how the relative influence improves with age as seen 
 ```{r}
 RI_final <- ggplot(relativeInfluenceBlocks, aes(age, relativeInf, color=cue)) + 
   # setting up color palette - scico tokyo 
-  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, guide = FALSE) +
+  scale_color_scico_d(palette = 'tokyo', begin=0.8, end=0.2, guide = FALSE) +
   # overall mean and se
   stat_summary(fun=mean, aes(group=cue), geom="point", size = 2) +
   stat_summary(fun.data=mean_se, aes(group=cue),  
@@ -1191,7 +1218,7 @@ RI_final <- ggplot(relativeInfluenceBlocks, aes(age, relativeInf, color=cue)) +
   # single  subject data points (1 per participant)
   geom_point(aes(color=cue)) + 
   # new color scale - also scico tokyo but in smaller range
-  scale_color_scico_d(palette = 'tokyo', begin=0.3, end=0.7, labels = c("Boundary", "Landmark")) +
+  scale_color_scico_d(palette = 'tokyo', begin=0.7, end=0.3, labels = c("Landmark", "Boundary")) +
   # 0.5 neutral score for reference
   geom_hline(yintercept = 0.5, linetype=2, alpha=0.6) +
   # chaning breaks and limits of both axis
@@ -1341,14 +1368,14 @@ The graph below visualizes how the cue dissonance improves with age as seen in c
 ```{r}
 CueDis_final <- ggplot(relativeInfluenceBlocks, aes(age, cueDis, color=cue)) + 
   theme_cowplot() +
-  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, guide = FALSE) +
+  scale_color_scico_d(palette = 'tokyo', begin=0.8, end=0.2, guide = FALSE) +
   stat_summary(fun=mean, aes(group=cue), geom="line", size = 1.5) +
   stat_summary(fun=mean, aes(group=cue), geom="point", size = 2) +
   stat_summary(fun.data=mean_se, aes(group=cue),  
                geom="errorbar", size=0.8, width=0.1, alpha=0.95) +
   new_scale_color() + 
   geom_point(aes(color=cue)) + 
-  scale_color_scico_d(palette = 'tokyo', begin=0.3, end=0.7, labels = c("Boundary", "Landmark")) +
+  scale_color_scico_d(palette = 'tokyo', begin=0.7, end=0.3, labels = c("Landmark", "Boundary")) +
   scale_x_continuous(breaks = c(8,9,10,11,12,13,14,15)) +
   scale_y_continuous(limits = c(0.2, 0.8), breaks = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)) +
   labs(x= "Age", y = "RCue Dissonance (0-1)", 
@@ -1422,7 +1449,7 @@ formulaFullDist <- "error ~ age_c*cueMM + ( 1 + cueMM | ID)"
 modelFullDist <- lme4::lmer(formula = formulaFullDist, data=subset_RI)
 
 tab_model(modelFullDist, show.p = FALSE, digits.re = 4,
-          pred.labels = c("Intercept", "Age", "Cue", "Interaction"),  dv.labels = "Relative Influence", string.ci = "Conf. Int (95%)", 
+          pred.labels = c("Intercept", "Age", "Cue", "Interaction"),  dv.labels = "Distance Error", string.ci = "Conf. Int (95%)", 
           CSS = css_theme("cells")) 
 
 ```

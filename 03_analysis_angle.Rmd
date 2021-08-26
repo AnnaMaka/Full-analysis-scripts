@@ -74,24 +74,6 @@ Formatting for results output
 low_p <- "<0.001"
 ```
 
-### Timeout session
-
-Identifying and filtering timeout sessions i.e. trials with time over 59 seconds between trial beginning and angle estimation
-
-```{r}
-#summary of timeout trials 
-timeout <- filter(Sum_all, secTrialEst > 59)
-
-#filtering timeout trials as they do not include location estimation
-Sum_all <- filter(Sum_all, secTrialEst < 59)
-```
-
-- number of timeout trials: `r nrow(timeout)`
-- number of participants with timeout trials: `r length(unique(timeout$ID))`
-- average number of timeout trials per participant with timeout trials: `r nrow(timeout)/length(unique(timeout$ID))`
-- average number of timeout trials per participant: `r nrow(timeout)/length(subjects)`
-
-
 ### Exclusion criteria
 
 Participants are excluded based on positional memory performance in block 1 which is quantified using memory scores. 
@@ -111,6 +93,25 @@ for (i_sub in subjects) {
 
 - number of participants excluded: `r length(exclusion)`
 - new overall sample size: `r length(subjects)-length(exclusion)`
+
+
+### Timeout session
+
+Identifying and filtering timeout sessions i.e. trials with time over 59 seconds between trial beginning and angle estimation
+
+```{r}
+#summary of timeout trials 
+timeout <- filter(Sum_all, secTrialEst > 59)
+
+#filtering timeout trials as they do not include location estimation
+Sum_all <- filter(Sum_all, secTrialEst < 59)
+```
+
+- number of timeout trials: `r nrow(timeout)`
+- number of participants with timeout trials: `r length(unique(timeout$ID))`
+- average number of timeout trials per participant with timeout trials: `r nrow(timeout)/length(unique(timeout$ID))`
+- average number of timeout trials per participant: `r nrow(timeout)/length(subjects)`
+
 
 ## Descriptives
 
@@ -640,7 +641,7 @@ g_miniAng <- ggplot(summary_miniblock_A, aes(miniblock, relativeAng, group=inter
   theme_cowplot() +
   labs(x= "Miniblock", y = "Relative Influence (0-1)", subtitle = "Averaged across \nBlocks", title= "  ", color = "Cue") +
   theme(axis.title.y = element_blank()) +
-  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.75, labels = c("Boundary", "Landmark")) +
+  scale_color_scico_d(palette = 'tokyo',begin=0.75, end=0.2, labels = c("Landmark", "Boundary")) +
   scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1), limits = c(0,1)) +
   scale_x_continuous(limits = c(0.5, 4.5), breaks = c(1,2,3,4)) +
   theme(legend.position = "none")
@@ -663,7 +664,7 @@ g_objTrialAng <- ggplot(data=summary_objectTrial_A, aes(objectTrial, relativeAng
   geom_line(data= subset(summary_objectTrial_A, objectTrial < 9), size=0.5, alpha = 0.3) +
   geom_line(data= subset(summary_objectTrial_A, objectTrial < 13 & objectTrial > 8), size=0.5, alpha = 0.3) +
   geom_line(data= subset(summary_objectTrial_A, objectTrial > 12), size=0.5, alpha = 0.3) +
-  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.75, labels = c("Boundary", "Landmark")) +
+  scale_color_scico_d(palette = 'tokyo',begin=0.75, end=0.2, labels = c("Landmark", "Boundary")) +
   labs(x= "Miniblock", y = "Relative Influence (0-1)", subtitle= "Separately per Block", title = "Pointing", color= "Cue") +
   stat_summary(data = subset(summary_objectTrial_A, objectTrial < 9), fun=mean, aes(group=cue), geom="line", size = 0.6) +
   stat_summary(data = subset(summary_objectTrial_A, objectTrial  < 13 & objectTrial > 8), fun=mean, aes(group=cue), 
@@ -733,7 +734,7 @@ sub_mini_1A <- subset_RA %>%
   summarise(relAngle = mean(relativeAngle), .groups ="drop")
 
 # one-tailed, one sample t-test
-mini1a_stats <- t.test(sub_mini_1A$relAngle, mu=0.5, alternative = "greater") %>% tidy()
+mini1a_stats <- t.test(sub_mini_1A$relAngle, mu=0.5, alternative="greater") %>% tidy()
 
 d <- cohen.d(sub_mini_1A$relAngle, f=NA, mu=0.5) 
 
@@ -769,6 +770,33 @@ mini1a_cue_stats$dCI_high <- d$conf.int[[2]]
 *Miniblock 1 landmark-dependent objects' RA against boundary-dependent objects' RA t-test results:*
 
 t(`r mini1a_cue_stats$parameter`)= `r round(mini1a_cue_stats$statistic, 2)`, p`r if (mini1a_cue_stats$p.value > 0.001) {paste("=", round(mini1a_cue_stats$p.value, 3))} else {low_p}`, d=`r round(mini1a_cue_stats$d, 2)`, 95% CI [`r round(mini1a_cue_stats$dCI_low, 2)`, `r round(mini1a_cue_stats$dCI_high, 2)`]
+
+HOWEVER!
+```{r}
+#one sample t-test comparing miniblock 1 relative influence scores to 0.5 for landmark objects
+mini1a_landmark_stats <- t.test(subset(sub_mini_cueA, cue=="landmark")$relAngle, mu=0.5) %>% tidy()
+
+d <- cohen.d(subset(sub_mini_cueA, cue=="landmark")$relAngle, f=NA, mu=0.5) 
+
+mini1a_landmark_stats$d <- d$estimate
+mini1a_landmark_stats$dCI_low <- d$conf.int[[1]]
+mini1a_landmark_stats$dCI_high <- d$conf.int[[2]]
+```
+
+t(`r mini1a_landmark_stats$parameter`)= `r round(mini1a_landmark_stats$statistic, 2)`, p`r if (mini1a_landmark_stats$p.value > 0.001) {paste("=", round(mini1a_landmark_stats$p.value, 3))} else {low_p}`, d=`r round(mini1a_landmark_stats$d, 2)`, 95% CI [`r round(mini1a_landmark_stats$dCI_low, 2)`, `r round(mini1a_landmark_stats$dCI_high, 2)`]
+
+```{r}
+#one sample t-test comparing miniblock 1 relative influence scores to 0.5 for boundary objects
+mini1a_boundary_stats <- t.test(subset(sub_mini_cueA, cue=="boundary")$relAngle, mu=0.5) %>% tidy()
+
+d <- cohen.d(subset(sub_mini_cueA, cue=="boundary")$relAngle, f=NA, mu=0.5) 
+
+mini1a_boundary_stats$d <- d$estimate
+mini1a_boundary_stats$dCI_low <- d$conf.int[[1]]
+mini1a_boundary_stats$dCI_high <- d$conf.int[[2]]
+```
+
+t(`r mini1a_boundary_stats$parameter`)= `r round(mini1a_boundary_stats$statistic, 2)`, p`r if (mini1a_boundary_stats$p.value > 0.001) {paste("=", round(mini1a_boundary_stats$p.value, 3))} else {low_p}`, d=`r round(mini1a_boundary_stats$d, 2)`, 95% CI [`r round(mini1a_boundary_stats$dCI_low, 2)`, `r round(mini1a_boundary_stats$dCI_high, 2)`]
 
 
 
@@ -958,6 +986,13 @@ ratioFullAngle <- anova(modelFullAngle, modelControlAngle) %>% tidy()
 
 **$\chi^{2}$(1) = `r round(ratioFullAngle$statistic[2],3)`, p`r if (ratioFullAngle$p.value[2] > 0.001) {paste("=", round(ratioFullAngle$p.value[2], 3))} else {low_p}`**
 
+Overview table with model for positional memory as well.
+
+```{r}
+tab_model(modelFull, modelFullAngle, show.p = FALSE, digits.re = 4,
+          pred.labels = c("Intercept","Age", "Cue", "Interaction"),  dv.labels = c("Positional Memory", "Pointing"), string.ci = "Conf. Int (95%)", 
+          CSS = css_theme("cells")) 
+```
 
 
 **Cue specific analysis**
@@ -967,14 +1002,14 @@ To see if age remains a significant predictor without cue, we ran mixed models s
 ```{r}
 #landmark-dependent objects only model
 formulaAgeLandmark <- "relativeAngle ~ age_c + (1|ID)"
-modelAgeLandmark <- lme4::lmer(formula = formulaAgeLandmark, data=subset(subset_RA, cue=="landmark"))
+modelAgeLandmarkAngle <- lme4::lmer(formula = formulaAgeLandmark, data=subset(subset_RA, cue=="landmark"))
 
 #control model 
 controlAgeLandmark <- "relativeAngle ~ 1 + (1 |ID)"
 modelControlAgeLandmark <- lme4::lmer(formula = controlAgeLandmark, data=subset(subset_RA, cue=="landmark"))
 
 #likelihood ratio test
-ratioAgeLandmark <- anova(modelAgeLandmark, modelControlAgeLandmark) %>% tidy()
+ratioAgeLandmark <- anova(modelAgeLandmarkAngle, modelControlAgeLandmark) %>% tidy()
 ```
 
 **$\chi^{2}$(1) = `r round(ratioAgeLandmark$statistic[2],3)`, p`r if (ratioAgeLandmark$p.value[2] > 0.001) {paste("=", round(ratioAgeLandmark$p.value[2], 3))} else {low_p}`**
@@ -982,26 +1017,36 @@ ratioAgeLandmark <- anova(modelAgeLandmark, modelControlAgeLandmark) %>% tidy()
 
 ```{r}
 #boundary-dependent objects only model
-formulaAgeBoundary <- "relativeAngle ~ age_c +(1|ID)"
-modelAgeBoundary <- lme4::lmer(formula = formulaAgeBoundary, data=subset(subset_RA, cue=="boundary"))
+formulaAgeBoundary <- "relativeAngle ~ age_c + (1|ID)"
+modelAgeBoundaryAngle <- lme4::lmer(formula = formulaAgeBoundary, data=subset(subset_RA, cue=="boundary"))
 
 #control model
 controlAgeBoundary <- "relativeAngle ~ 1 + (1 |ID)"
 modelControlAgeBoundary <- lme4::lmer(formula = controlAgeBoundary, data=subset(subset_RA, cue=="boundary"))
 
 #likelihood ratio test
-ratioAgeBoundary <- anova(modelAgeBoundary, modelControlAgeBoundary) %>% tidy()
+ratioAgeBoundary <- anova(modelAgeBoundaryAngle, modelControlAgeBoundary) %>% tidy()
 ```
 
 **$\chi^{2}$(1) = `r round(ratioAgeBoundary$statistic[2],3)`, p`r if (ratioAgeBoundary$p.value[2] > 0.001) {paste("=", round(ratioAgeBoundary$p.value[2], 3))} else {low_p}`**
 
 
 ```{r}
-tab_model(modelAgeLandmark, modelAgeBoundary, show.p = FALSE, digits.re = 4,
+tab_model(modelAgeLandmarkAngle, modelAgeBoundaryAngle, show.p = FALSE, digits.re = 4,
           pred.labels = c("Intercept", "Age"),  dv.labels = c("Landmark-dependent", "Boundary-dependent"), string.ci = "Conf. Int (95%)", 
           CSS = css_theme("cells")) 
 ```
 
+Summary with all cue specific mixed models with age as predictor
+
+```{r}
+tab_model(modelAgeLandmark, modelAgeBoundary, modelAgeLandmarkAngle, modelAgeBoundaryAngle, show.p = FALSE, digits.re = 4,
+          pred.labels = c("Intercept", "Age"),  
+          dv.labels = c("Positional Memory:\nLandmark-dependent", "Positional Memory:\nBoundary-dependent", 
+                        "Pointing:\nLandmark-dependent", "Pointing:\nBoundary-dependent"), 
+          string.ci = "Conf. Int (95%)", 
+          CSS = css_theme("cells")) 
+```
 
 **Graphs**
 
@@ -1010,13 +1055,13 @@ The graph below visualizes how the relative influence improves with age as seen 
 ```{r}
 RA_final <- ggplot(relativeAngleBlocks, aes(age, relativeAng, color=cue)) + 
   theme_cowplot() +
-  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, guide = "none") +
+  scale_color_scico_d(palette = 'tokyo', begin=0.8, end=0.2, guide = FALSE) +
   stat_summary(fun.data = mean_se,geom="errorbar", size=0.8, width=0.1, alpha=0.95) +
   stat_summary(fun=mean, aes(group=cue), geom="line", size = 1.5) +
   stat_summary(fun=mean, aes(group=cue), geom="point", size = 2) +
   new_scale_color() + 
   geom_point(data = relativeAngleBlocks, aes(color=cue)) + 
-  scale_color_scico_d(palette = 'tokyo', begin=0.3, end=0.7, labels = c("Boundary", "Landmark")) +
+  scale_color_scico_d(palette = 'tokyo', begin=0.7, end=0.3, labels = c("Landmark", "Boundary")) +
   scale_x_continuous(breaks = c(8,9,10,11,12,13,14,15)) +
   scale_y_continuous(limits = c(0.2, 0.8), breaks = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)) +
   labs(x= "Age", y = "Relative Influence (0-1)", 
@@ -1089,7 +1134,7 @@ formulaCueDis_A <- "cueDissonanceAngle ~ age_c*cueMM + ( 1 + cueMM | ID)"
 modelCueDis_A <- lme4::lmer(formula = formulaCueDis_A, data=subset_RA)
 
 tab_model(modelCueDis_A, show.p = FALSE, digits.re = 4,
-          pred.labels = c("Intercept", "Age", "Cue", "Interaction"),  dv.labels = "Relative Influence", string.ci = "Conf. Int (95%)", 
+          pred.labels = c("Intercept", "Age", "Cue", "Interaction"),  dv.labels = "Cue Dissonance", string.ci = "Conf. Int (95%)", 
           CSS = css_theme("cells")) 
 
 ```
@@ -1104,6 +1149,14 @@ ratioCueDis_A <- anova(modelCueDis_A, modelControlCueDis_A) %>% tidy()
 ```
 
 **$\chi^{2}$(1) = `r round(ratioCueDis_A$statistic[2],3)`, p`r if (ratioCueDis_A$p.value[2] > 0.001) {paste("=", round(ratioCueDis_A$p.value[2], 3))} else {low_p}`**
+
+Overview table with model for positional memory as well.
+
+```{r}
+tab_model(modelCueDis, modelCueDis_A, show.p = FALSE, digits.re = 4,
+          pred.labels = c("Intercept","Age", "Cue", "Interaction"),  dv.labels = c("Positional Memory", "Pointing"), string.ci = "Conf. Int (95%)", 
+          CSS = css_theme("cells")) 
+```
 
 
 **Explorative**
