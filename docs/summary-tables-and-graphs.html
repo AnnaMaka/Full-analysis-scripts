@@ -1,0 +1,1999 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>6 Summary tables and graphs | Data Preparation and Analysis</title>
+  <meta name="description" content="6 Summary tables and graphs | Data Preparation and Analysis" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="6 Summary tables and graphs | Data Preparation and Analysis" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="6 Summary tables and graphs | Data Preparation and Analysis" />
+  
+  
+  
+
+<meta name="author" content="Anna Makova (under supervision of Dr. Jacob Bellmund)" />
+
+
+<meta name="date" content="2021-05-08" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="angle-estimation-analysis.html"/>
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Experiment Overview</a></li>
+<li class="chapter" data-level="2" data-path="randomisation-script.html"><a href="randomisation-script.html"><i class="fa fa-check"></i><b>2</b> Randomisation script</a></li>
+<li class="chapter" data-level="3" data-path="data-preparation.html"><a href="data-preparation.html"><i class="fa fa-check"></i><b>3</b> Data Preparation</a><ul>
+<li class="chapter" data-level="3.1" data-path="data-preparation.html"><a href="data-preparation.html#setup"><i class="fa fa-check"></i><b>3.1</b> Setup</a></li>
+<li class="chapter" data-level="3.2" data-path="data-preparation.html"><a href="data-preparation.html#summary-and-angle-files"><i class="fa fa-check"></i><b>3.2</b> Summary and Angle files</a></li>
+<li class="chapter" data-level="3.3" data-path="data-preparation.html"><a href="data-preparation.html#trajectory-files"><i class="fa fa-check"></i><b>3.3</b> Trajectory files</a></li>
+<li class="chapter" data-level="3.4" data-path="data-preparation.html"><a href="data-preparation.html#memory-scores"><i class="fa fa-check"></i><b>3.4</b> Memory scores</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="data-preparation.html"><a href="data-preparation.html#based-on-randomly-distributed-1000-locations-within-the-arena"><i class="fa fa-check"></i><b>3.4.1</b> Based on randomly distributed 1000 locations within the arena</a></li>
+<li class="chapter" data-level="3.4.2" data-path="data-preparation.html"><a href="data-preparation.html#based-on-1000-locations-taken-from-the-participants-trajectory"><i class="fa fa-check"></i><b>3.4.2</b> Based on 1000 locations taken from the participant’s trajectory</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="data-preparation.html"><a href="data-preparation.html#saving-the-compiled-dataset"><i class="fa fa-check"></i><b>3.5</b> Saving the compiled dataset</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="analysis.html"><a href="analysis.html"><i class="fa fa-check"></i><b>4</b> Analysis</a><ul>
+<li class="chapter" data-level="4.1" data-path="analysis.html"><a href="analysis.html#hypothesis"><i class="fa fa-check"></i><b>4.1</b> Hypothesis</a></li>
+<li class="chapter" data-level="4.2" data-path="analysis.html"><a href="analysis.html#set-up"><i class="fa fa-check"></i><b>4.2</b> Set up</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="analysis.html"><a href="analysis.html#timeout-sessions"><i class="fa fa-check"></i><b>4.2.1</b> Timeout sessions</a></li>
+<li class="chapter" data-level="4.2.2" data-path="analysis.html"><a href="analysis.html#exclusion-criteria"><i class="fa fa-check"></i><b>4.2.2</b> Exclusion criteria</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="analysis.html"><a href="analysis.html#descriptives"><i class="fa fa-check"></i><b>4.3</b> Descriptives</a></li>
+<li class="chapter" data-level="4.4" data-path="analysis.html"><a href="analysis.html#block-1-performance"><i class="fa fa-check"></i><b>4.4</b> Block 1 Performance</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="analysis.html"><a href="analysis.html#recalled-locations"><i class="fa fa-check"></i><b>4.4.1</b> Recalled locations</a></li>
+<li class="chapter" data-level="4.4.2" data-path="analysis.html"><a href="analysis.html#memory-score"><i class="fa fa-check"></i><b>4.4.2</b> Memory score</a></li>
+<li class="chapter" data-level="4.4.3" data-path="analysis.html"><a href="analysis.html#distance-from-remembered-locations-to-other-locations"><i class="fa fa-check"></i><b>4.4.3</b> Distance from remembered locations to other locations</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="analysis.html"><a href="analysis.html#cue-differences"><i class="fa fa-check"></i><b>4.5</b> Cue Differences</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="analysis.html"><a href="analysis.html#relative-influence"><i class="fa fa-check"></i><b>4.5.1</b> Relative Influence</a></li>
+<li class="chapter" data-level="4.5.2" data-path="analysis.html"><a href="analysis.html#distance-error-differences"><i class="fa fa-check"></i><b>4.5.2</b> Distance Error Differences</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="analysis.html"><a href="analysis.html#miniblocks-learning"><i class="fa fa-check"></i><b>4.6</b> Miniblocks Learning</a><ul>
+<li class="chapter" data-level="4.6.1" data-path="analysis.html"><a href="analysis.html#graphs"><i class="fa fa-check"></i><b>4.6.1</b> Graphs</a></li>
+<li class="chapter" data-level="4.6.2" data-path="analysis.html"><a href="analysis.html#miniblock-1"><i class="fa fa-check"></i><b>4.6.2</b> Miniblock 1</a></li>
+<li class="chapter" data-level="4.6.3" data-path="analysis.html"><a href="analysis.html#mixed-models"><i class="fa fa-check"></i><b>4.6.3</b> Mixed Models</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="analysis.html"><a href="analysis.html#age"><i class="fa fa-check"></i><b>4.7</b> Age</a><ul>
+<li class="chapter" data-level="4.7.1" data-path="analysis.html"><a href="analysis.html#relative-influence-1"><i class="fa fa-check"></i><b>4.7.1</b> Relative Influence</a></li>
+<li class="chapter" data-level="4.7.2" data-path="analysis.html"><a href="analysis.html#cue-dissonance"><i class="fa fa-check"></i><b>4.7.2</b> Cue dissonance</a></li>
+<li class="chapter" data-level="4.7.3" data-path="analysis.html"><a href="analysis.html#distance-error"><i class="fa fa-check"></i><b>4.7.3</b> Distance error</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html"><i class="fa fa-check"></i><b>5</b> Angle estimation analysis</a><ul>
+<li class="chapter" data-level="5.1" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#set-up-1"><i class="fa fa-check"></i><b>5.1</b> Set up</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#exclusion-criteria-1"><i class="fa fa-check"></i><b>5.1.1</b> Exclusion criteria</a></li>
+<li class="chapter" data-level="5.1.2" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#timeout-session"><i class="fa fa-check"></i><b>5.1.2</b> Timeout session</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#descriptives-1"><i class="fa fa-check"></i><b>5.2</b> Descriptives</a></li>
+<li class="chapter" data-level="5.3" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#block-1-performance-1"><i class="fa fa-check"></i><b>5.3</b> Block 1 Performance</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#raw-angle-error-visualization"><i class="fa fa-check"></i><b>5.3.1</b> Raw Angle Error Visualization</a></li>
+<li class="chapter" data-level="5.3.2" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#angle-error-stats"><i class="fa fa-check"></i><b>5.3.2</b> Angle Error Stats</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#cue-differences-1"><i class="fa fa-check"></i><b>5.4</b> Cue Differences</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#relative-influence-2"><i class="fa fa-check"></i><b>5.4.1</b> Relative Influence</a></li>
+<li class="chapter" data-level="5.4.2" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#angle-error-difference"><i class="fa fa-check"></i><b>5.4.2</b> Angle Error Difference</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#miniblocks-learning-1"><i class="fa fa-check"></i><b>5.5</b> Miniblocks Learning</a><ul>
+<li class="chapter" data-level="5.5.1" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#graphs-1"><i class="fa fa-check"></i><b>5.5.1</b> Graphs</a></li>
+<li class="chapter" data-level="5.5.2" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#miniblock-1-1"><i class="fa fa-check"></i><b>5.5.2</b> Miniblock 1</a></li>
+<li class="chapter" data-level="5.5.3" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#mixed-models-1"><i class="fa fa-check"></i><b>5.5.3</b> Mixed Models</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#age-1"><i class="fa fa-check"></i><b>5.6</b> Age</a><ul>
+<li class="chapter" data-level="5.6.1" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#relative-influence-3"><i class="fa fa-check"></i><b>5.6.1</b> Relative Influence</a></li>
+<li class="chapter" data-level="5.6.2" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#cue-dissonance-1"><i class="fa fa-check"></i><b>5.6.2</b> Cue dissonance</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="summary-tables-and-graphs.html"><a href="summary-tables-and-graphs.html"><i class="fa fa-check"></i><b>6</b> Summary tables and graphs</a><ul>
+<li class="chapter" data-level="6.1" data-path="summary-tables-and-graphs.html"><a href="summary-tables-and-graphs.html#relative-influence-mixed-model"><i class="fa fa-check"></i><b>6.1</b> Relative Influence Mixed Model</a></li>
+<li class="chapter" data-level="6.2" data-path="summary-tables-and-graphs.html"><a href="summary-tables-and-graphs.html#miniblocks"><i class="fa fa-check"></i><b>6.2</b> Miniblocks</a></li>
+<li class="chapter" data-level="6.3" data-path="summary-tables-and-graphs.html"><a href="summary-tables-and-graphs.html#relative-influence---miniblock-mixed-model"><i class="fa fa-check"></i><b>6.3</b> Relative Influence - Miniblock Mixed Model</a></li>
+<li class="chapter" data-level="6.4" data-path="summary-tables-and-graphs.html"><a href="summary-tables-and-graphs.html#cue-dissonance---miniblock-mixed-model"><i class="fa fa-check"></i><b>6.4</b> Cue Dissonance - Miniblock Mixed Model</a></li>
+<li class="chapter" data-level="6.5" data-path="summary-tables-and-graphs.html"><a href="summary-tables-and-graphs.html#relative-influence---age-mixed-model"><i class="fa fa-check"></i><b>6.5</b> Relative Influence - Age Mixed Model</a></li>
+<li class="chapter" data-level="6.6" data-path="summary-tables-and-graphs.html"><a href="summary-tables-and-graphs.html#cue-dissonance---age-mixed-model"><i class="fa fa-check"></i><b>6.6</b> Cue Dissonance - Age Mixed Model</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Data Preparation and Analysis</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="summary-tables-and-graphs" class="section level1">
+<h1><span class="header-section-number">6</span> Summary tables and graphs</h1>
+<div id="relative-influence-mixed-model" class="section level2">
+<h2><span class="header-section-number">6.1</span> Relative Influence Mixed Model</h2>
+<p><strong>Table</strong></p>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="summary-tables-and-graphs.html#cb261-1"></a><span class="kw">tab_model</span>(modelCue, modelCueAngle, </span>
+<span id="cb261-2"><a href="summary-tables-and-graphs.html#cb261-2"></a>          <span class="dt">show.p =</span> <span class="ot">FALSE</span>, <span class="dt">show.se=</span><span class="ot">TRUE</span>, <span class="dt">show.icc=</span><span class="ot">FALSE</span>,</span>
+<span id="cb261-3"><a href="summary-tables-and-graphs.html#cb261-3"></a>          <span class="dt">digits =</span> <span class="dv">4</span>, <span class="dt">digits.re =</span> <span class="dv">4</span>,</span>
+<span id="cb261-4"><a href="summary-tables-and-graphs.html#cb261-4"></a>          <span class="dt">pred.labels =</span> <span class="kw">c</span>(<span class="st">&quot;Intercept&quot;</span>, <span class="st">&quot;Cue&quot;</span>),  </span>
+<span id="cb261-5"><a href="summary-tables-and-graphs.html#cb261-5"></a>          <span class="dt">dv.labels =</span> <span class="kw">c</span>(<span class="st">&quot;Positional Memory&quot;</span>, <span class="st">&quot;Pointing&quot;</span>), </span>
+<span id="cb261-6"><a href="summary-tables-and-graphs.html#cb261-6"></a>          <span class="dt">string.ci =</span> <span class="st">&quot;Conf. Int (95%)&quot;</span>, </span>
+<span id="cb261-7"><a href="summary-tables-and-graphs.html#cb261-7"></a>          <span class="dt">string.se =</span> <span class="st">&quot;SE&quot;</span>,</span>
+<span id="cb261-8"><a href="summary-tables-and-graphs.html#cb261-8"></a>          <span class="dt">CSS =</span> <span class="kw">css_theme</span>(<span class="st">&quot;cells&quot;</span>))</span></code></pre></div>
+<table style="border-collapse:collapse; border:none;">
+<tr>
+<th style="border:1px solid black; border-bottom:1px solid black; text-align:left; ">
+ 
+</th>
+<th colspan="3" style="border:1px solid black; border-bottom:1px solid black;">
+Positional Memory
+</th>
+<th colspan="3" style="border:1px solid black; border-bottom:1px solid black;">
+Pointing
+</th>
+</tr>
+<tr>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; text-align:left; ">
+Predictors
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+Estimates
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+SE
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+Conf. Int (95%)
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+Estimates
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+SE
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; col7">
+Conf. Int (95%)
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Intercept
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.5108
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0070
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.4970 – 0.5246
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.4814
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0080
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.4656 – 0.4972
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Cue
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.1270
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0119
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.1036 – 0.1504
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.1043
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0111
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.0826 – 0.1261
+</td>
+</tr>
+<tr>
+<td colspan="7" style="font-weight:bold; text-align:left; padding-top:.8em;">
+Random Effects
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+σ<sup>2</sup>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0407
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0664
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+τ<sub>00</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0009 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0009 <sub>ID</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+τ<sub>11</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0043 <sub>ID.cueMM</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0030 <sub>ID.cueMM</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+ρ<sub>01</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+-0.0876 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+-0.7325 <sub>ID</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+N
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+36 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+36 <sub>ID</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
+Observations
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center; border-top:1px solid;" colspan="3">
+1691
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center; border-top:1px solid;" colspan="3">
+1704
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.260 / 0.344
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.134 / 0.183
+</td>
+</tr>
+</table>
+</div>
+<div id="miniblocks" class="section level2">
+<h2><span class="header-section-number">6.2</span> Miniblocks</h2>
+<p><strong>Graph</strong></p>
+<p>Assembling the all four plots for more comprehensive visualization of relative influence improvement over miniblocks.</p>
+<div class="sourceCode" id="cb262"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb262-1"><a href="summary-tables-and-graphs.html#cb262-1"></a>layout &lt;-<span class="st"> &quot;</span></span>
+<span id="cb262-2"><a href="summary-tables-and-graphs.html#cb262-2"></a><span class="st">AAAAAABB</span></span>
+<span id="cb262-3"><a href="summary-tables-and-graphs.html#cb262-3"></a><span class="st">AAAAAABB</span></span>
+<span id="cb262-4"><a href="summary-tables-and-graphs.html#cb262-4"></a><span class="st">AAAAAABB</span></span>
+<span id="cb262-5"><a href="summary-tables-and-graphs.html#cb262-5"></a><span class="st">CCCCCCDD</span></span>
+<span id="cb262-6"><a href="summary-tables-and-graphs.html#cb262-6"></a><span class="st">CCCCCCDD</span></span>
+<span id="cb262-7"><a href="summary-tables-and-graphs.html#cb262-7"></a><span class="st">CCCCCCDD</span></span>
+<span id="cb262-8"><a href="summary-tables-and-graphs.html#cb262-8"></a><span class="st">EEEEEEEE</span></span>
+<span id="cb262-9"><a href="summary-tables-and-graphs.html#cb262-9"></a><span class="st">&quot;</span></span>
+<span id="cb262-10"><a href="summary-tables-and-graphs.html#cb262-10"></a></span>
+<span id="cb262-11"><a href="summary-tables-and-graphs.html#cb262-11"></a>g_leg &lt;-<span class="st"> </span><span class="kw">guide_area</span>()</span>
+<span id="cb262-12"><a href="summary-tables-and-graphs.html#cb262-12"></a></span>
+<span id="cb262-13"><a href="summary-tables-and-graphs.html#cb262-13"></a>g_miniblocks &lt;-<span class="st"> </span>g_objTrial <span class="op">+</span><span class="st"> </span>g_mini <span class="op">+</span><span class="st"> </span>g_objTrialAng <span class="op">+</span><span class="st"> </span>g_miniAng <span class="op">+</span><span class="st"> </span>g_leg <span class="op">+</span><span class="st"> </span></span>
+<span id="cb262-14"><a href="summary-tables-and-graphs.html#cb262-14"></a><span class="st">  </span><span class="kw">plot_layout</span>(<span class="dt">design =</span> layout, <span class="dt">guides =</span> <span class="st">&quot;collect&quot;</span>) <span class="op">&amp;</span></span>
+<span id="cb262-15"><a href="summary-tables-and-graphs.html#cb262-15"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>), <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">8</span>), </span>
+<span id="cb262-16"><a href="summary-tables-and-graphs.html#cb262-16"></a>        <span class="dt">legend.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>), <span class="dt">legend.text =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>), <span class="dt">legend.direction =</span> <span class="st">&quot;horizontal&quot;</span>, </span>
+<span id="cb262-17"><a href="summary-tables-and-graphs.html#cb262-17"></a>        <span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">12</span>, <span class="dt">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="dt">vjust =</span> <span class="dv">-2</span>),</span>
+<span id="cb262-18"><a href="summary-tables-and-graphs.html#cb262-18"></a>        <span class="dt">plot.subtitle =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">11</span>, <span class="dt">face=</span><span class="st">&quot;italic&quot;</span>),</span>
+<span id="cb262-19"><a href="summary-tables-and-graphs.html#cb262-19"></a>        <span class="dt">plot.tag =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">face=</span><span class="st">&quot;bold&quot;</span>, <span class="dt">vjust =</span> <span class="dv">4</span>, <span class="dt">hjust=</span><span class="op">-</span><span class="dv">1</span>)) <span class="op">&amp;</span></span>
+<span id="cb262-20"><a href="summary-tables-and-graphs.html#cb262-20"></a><span class="st">  </span><span class="kw">plot_annotation</span>(<span class="dt">title =</span> <span class="st">&#39;Relative Influence Score Improvement over Miniblocks&#39;</span>,</span>
+<span id="cb262-21"><a href="summary-tables-and-graphs.html#cb262-21"></a>                  <span class="dt">theme =</span> <span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">12</span>, <span class="dt">face=</span><span class="st">&quot;bold&quot;</span>)),</span>
+<span id="cb262-22"><a href="summary-tables-and-graphs.html#cb262-22"></a>                  <span class="dt">tag_levels =</span> <span class="st">&#39;A&#39;</span>)</span>
+<span id="cb262-23"><a href="summary-tables-and-graphs.html#cb262-23"></a></span>
+<span id="cb262-24"><a href="summary-tables-and-graphs.html#cb262-24"></a><span class="kw">ggsave</span>(<span class="st">&quot;RI_miniblocks.pdf&quot;</span>, <span class="dt">plot=</span>g_miniblocks, </span>
+<span id="cb262-25"><a href="summary-tables-and-graphs.html#cb262-25"></a>       <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="fl">15.9</span>, <span class="dt">height =</span> <span class="dv">14</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> cairo_pdf, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span>
+<span id="cb262-26"><a href="summary-tables-and-graphs.html#cb262-26"></a><span class="kw">ggsave</span>(<span class="st">&quot;RI_miniblocks.png&quot;</span>, <span class="dt">plot=</span>g_miniblocks, </span>
+<span id="cb262-27"><a href="summary-tables-and-graphs.html#cb262-27"></a>       <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="fl">15.9</span>, <span class="dt">height =</span> <span class="dv">14</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> <span class="st">&quot;png&quot;</span>, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span>
+<span id="cb262-28"><a href="summary-tables-and-graphs.html#cb262-28"></a></span>
+<span id="cb262-29"><a href="summary-tables-and-graphs.html#cb262-29"></a>g_miniblocks</span></code></pre></div>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-108-1.png" width="672" /></p>
+</div>
+<div id="relative-influence---miniblock-mixed-model" class="section level2">
+<h2><span class="header-section-number">6.3</span> Relative Influence - Miniblock Mixed Model</h2>
+<p><strong>Table</strong>
+Comparison of mixed model for positional memory and pointing.</p>
+<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="summary-tables-and-graphs.html#cb263-1"></a><span class="kw">tab_model</span>(modelMiniblocksCue, modelMiniblocksAngle, </span>
+<span id="cb263-2"><a href="summary-tables-and-graphs.html#cb263-2"></a>          <span class="dt">show.p =</span> <span class="ot">FALSE</span>, <span class="dt">show.se=</span><span class="ot">TRUE</span>, <span class="dt">show.icc=</span><span class="ot">FALSE</span>,</span>
+<span id="cb263-3"><a href="summary-tables-and-graphs.html#cb263-3"></a>          <span class="dt">digits =</span> <span class="dv">4</span>, <span class="dt">digits.re =</span> <span class="dv">4</span>,</span>
+<span id="cb263-4"><a href="summary-tables-and-graphs.html#cb263-4"></a>          <span class="dt">pred.labels =</span> <span class="kw">c</span>(<span class="st">&quot;Intercept&quot;</span>, <span class="st">&quot;Cue&quot;</span>, <span class="st">&quot;Miniblock&quot;</span>, <span class="st">&quot;Interaction&quot;</span>),  </span>
+<span id="cb263-5"><a href="summary-tables-and-graphs.html#cb263-5"></a>          <span class="dt">dv.labels =</span> <span class="kw">c</span>(<span class="st">&quot;Positional Memory&quot;</span>, <span class="st">&quot;Pointing&quot;</span>), </span>
+<span id="cb263-6"><a href="summary-tables-and-graphs.html#cb263-6"></a>          <span class="dt">string.ci =</span> <span class="st">&quot;Conf. Int (95%)&quot;</span>, </span>
+<span id="cb263-7"><a href="summary-tables-and-graphs.html#cb263-7"></a>          <span class="dt">string.se =</span> <span class="st">&quot;SE&quot;</span>,</span>
+<span id="cb263-8"><a href="summary-tables-and-graphs.html#cb263-8"></a>          <span class="dt">CSS =</span> <span class="kw">css_theme</span>(<span class="st">&quot;cells&quot;</span>)) </span></code></pre></div>
+<table style="border-collapse:collapse; border:none;">
+<tr>
+<th style="border:1px solid black; border-bottom:1px solid black; text-align:left; ">
+ 
+</th>
+<th colspan="3" style="border:1px solid black; border-bottom:1px solid black;">
+Positional Memory
+</th>
+<th colspan="3" style="border:1px solid black; border-bottom:1px solid black;">
+Pointing
+</th>
+</tr>
+<tr>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; text-align:left; ">
+Predictors
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+Estimates
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+SE
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+Conf. Int (95%)
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+Estimates
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+SE
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; col7">
+Conf. Int (95%)
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Intercept
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.5110
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0070
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.4973 – 0.5248
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.4814
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0080
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.4658 – 0.4970
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Cue
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.1273
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0048
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.1179 – 0.1368
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.1047
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0062
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.0926 – 0.1169
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Miniblock
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.0266
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0043
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.0350 – -0.0181
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.0230
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0055
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+-0.0339 – -0.0121
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Interaction
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0580
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0052
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0479 – 0.0681
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0478
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0064
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.0353 – 0.0603
+</td>
+</tr>
+<tr>
+<td colspan="7" style="font-weight:bold; text-align:left; padding-top:.8em;">
+Random Effects
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+σ<sup>2</sup>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0394
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0655
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+τ<sub>00</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0009 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0009 <sub>ID</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+τ<sub>11</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0003 <sub>ID.cueMM:mini</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0004 <sub>ID.cueMM:mini</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+ρ<sub>01</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0785 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+-0.0056 <sub>ID</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+N
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+36 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+36 <sub>ID</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
+Observations
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center; border-top:1px solid;" colspan="3">
+1691
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center; border-top:1px solid;" colspan="3">
+1704
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.344 / 0.365
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.178 / 0.195
+</td>
+</tr>
+</table>
+<p>Summary with all cue specific mixed models with miniblocks predictors</p>
+<div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb264-1"><a href="summary-tables-and-graphs.html#cb264-1"></a><span class="kw">tab_model</span>(modelMiniblocksLandmark, modelMiniblocksBoundary, modelMiniblocksLandmarkAngle, modelMiniblocksBoundaryAngle,</span>
+<span id="cb264-2"><a href="summary-tables-and-graphs.html#cb264-2"></a>          <span class="dt">show.p =</span> <span class="ot">FALSE</span>, <span class="dt">show.se=</span><span class="ot">TRUE</span>, <span class="dt">show.icc=</span><span class="ot">FALSE</span>,</span>
+<span id="cb264-3"><a href="summary-tables-and-graphs.html#cb264-3"></a>          <span class="dt">digits =</span> <span class="dv">4</span>, <span class="dt">digits.re =</span> <span class="dv">4</span>,</span>
+<span id="cb264-4"><a href="summary-tables-and-graphs.html#cb264-4"></a>          <span class="dt">pred.labels =</span> <span class="kw">c</span>(<span class="st">&quot;Intercept&quot;</span>, <span class="st">&quot;Miniblock&quot;</span>),  </span>
+<span id="cb264-5"><a href="summary-tables-and-graphs.html#cb264-5"></a>          <span class="dt">dv.labels =</span> <span class="kw">c</span>(<span class="st">&quot;Positional Memory:</span><span class="ch">\n</span><span class="st">Landmark-dependent&quot;</span>, <span class="st">&quot;Positional Memory:</span><span class="ch">\n</span><span class="st">Boundary-dependent&quot;</span>, </span>
+<span id="cb264-6"><a href="summary-tables-and-graphs.html#cb264-6"></a>                        <span class="st">&quot;Pointing:</span><span class="ch">\n</span><span class="st">Landmark-dependent&quot;</span>, <span class="st">&quot;Pointing:</span><span class="ch">\n</span><span class="st">Boundary-dependent&quot;</span>), </span>
+<span id="cb264-7"><a href="summary-tables-and-graphs.html#cb264-7"></a>          <span class="dt">string.ci =</span> <span class="st">&quot;Conf. Int (95%)&quot;</span>, </span>
+<span id="cb264-8"><a href="summary-tables-and-graphs.html#cb264-8"></a>          <span class="dt">string.se =</span> <span class="st">&quot;SE&quot;</span>,</span>
+<span id="cb264-9"><a href="summary-tables-and-graphs.html#cb264-9"></a>          <span class="dt">CSS =</span> <span class="kw">css_theme</span>(<span class="st">&quot;cells&quot;</span>)) </span></code></pre></div>
+<table style="border-collapse:collapse; border:none;">
+<tr>
+<th style="border:1px solid black; border-bottom:1px solid black; text-align:left; ">
+ 
+</th>
+<th colspan="3" style="border:1px solid black; border-bottom:1px solid black;">
+Positional Memory:
+Landmark-dependent
+</th>
+<th colspan="3" style="border:1px solid black; border-bottom:1px solid black;">
+Positional Memory:
+Boundary-dependent
+</th>
+<th colspan="3" style="border:1px solid black; border-bottom:1px solid black;">
+Pointing:
+Landmark-dependent
+</th>
+<th colspan="3" style="border:1px solid black; border-bottom:1px solid black;">
+Pointing:
+Boundary-dependent
+</th>
+</tr>
+<tr>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; text-align:left; ">
+Predictors
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+Estimates
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+SE
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+Conf. Int (95%)
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+Estimates
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+SE
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; col7">
+Conf. Int (95%)
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; col8">
+Estimates
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; col9">
+SE
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; 0">
+Conf. Int (95%)
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; 1">
+Estimates
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; 2">
+SE
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; 3">
+Conf. Int (95%)
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Intercept
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.3834
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0141
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.3558 – 0.4110
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.6377
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0136
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.6110 – 0.6643
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+0.3769
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+0.0159
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.3457 – 0.4081
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+0.5859
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+0.0109
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.5645 – 0.6074
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Miniblock
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.0844
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0070
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.0981 – -0.0707
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0321
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0059
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.0205 – 0.0437
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-0.0704
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+0.0084
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+-0.0868 – -0.0540
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+0.0248
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+0.0079
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.0094 – 0.0402
+</td>
+</tr>
+<tr>
+<td colspan="13" style="font-weight:bold; text-align:left; padding-top:.8em;">
+Random Effects
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+σ<sup>2</sup>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0377
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0323
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0598
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0653
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+τ<sub>00</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0055 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0053 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0066 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0015 <sub>ID</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+τ<sub>11</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0005 <sub>ID.mini</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0001 <sub>ID.mini</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0005 <sub>ID.mini</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0000 <sub>ID.mini</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+ρ<sub>01</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.2725 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+-0.4580 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+-0.1196 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+-1.0000 <sub>ID</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+N
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+36 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+36 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+36 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+36 <sub>ID</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
+Observations
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center; border-top:1px solid;" colspan="3">
+851
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center; border-top:1px solid;" colspan="3">
+840
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center; border-top:1px solid;" colspan="3">
+855
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center; border-top:1px solid;" colspan="3">
+849
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.169 / 0.286
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.033 / 0.173
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.085 / 0.183
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.011 / 0.034
+</td>
+</tr>
+</table>
+</div>
+<div id="cue-dissonance---miniblock-mixed-model" class="section level2">
+<h2><span class="header-section-number">6.4</span> Cue Dissonance - Miniblock Mixed Model</h2>
+<p><strong>Table</strong></p>
+<p>Comparison of mixed model for positional memory and pointing.</p>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="summary-tables-and-graphs.html#cb265-1"></a><span class="kw">tab_model</span>(modelCueDis_mini, modelCueDis_miniA, </span>
+<span id="cb265-2"><a href="summary-tables-and-graphs.html#cb265-2"></a>          <span class="dt">show.p =</span> <span class="ot">FALSE</span>, <span class="dt">show.se=</span><span class="ot">TRUE</span>, <span class="dt">show.icc=</span><span class="ot">FALSE</span>,</span>
+<span id="cb265-3"><a href="summary-tables-and-graphs.html#cb265-3"></a>          <span class="dt">digits =</span> <span class="dv">4</span>, <span class="dt">digits.re =</span> <span class="dv">4</span>,</span>
+<span id="cb265-4"><a href="summary-tables-and-graphs.html#cb265-4"></a>          <span class="dt">pred.labels =</span> <span class="kw">c</span>(<span class="st">&quot;Intercept&quot;</span>, <span class="st">&quot;Cue&quot;</span>, <span class="st">&quot;Miniblock&quot;</span>, <span class="st">&quot;Interaction&quot;</span>),  </span>
+<span id="cb265-5"><a href="summary-tables-and-graphs.html#cb265-5"></a>          <span class="dt">dv.labels =</span> <span class="kw">c</span>(<span class="st">&quot;Positional Memory&quot;</span>, <span class="st">&quot;Pointing&quot;</span>), </span>
+<span id="cb265-6"><a href="summary-tables-and-graphs.html#cb265-6"></a>          <span class="dt">string.ci =</span> <span class="st">&quot;Conf. Int (95%)&quot;</span>, </span>
+<span id="cb265-7"><a href="summary-tables-and-graphs.html#cb265-7"></a>          <span class="dt">string.se =</span> <span class="st">&quot;SE&quot;</span>,</span>
+<span id="cb265-8"><a href="summary-tables-and-graphs.html#cb265-8"></a>          <span class="dt">CSS =</span> <span class="kw">css_theme</span>(<span class="st">&quot;cells&quot;</span>)) </span></code></pre></div>
+<table style="border-collapse:collapse; border:none;">
+<tr>
+<th style="border:1px solid black; border-bottom:1px solid black; text-align:left; ">
+ 
+</th>
+<th colspan="3" style="border:1px solid black; border-bottom:1px solid black;">
+Positional Memory
+</th>
+<th colspan="3" style="border:1px solid black; border-bottom:1px solid black;">
+Pointing
+</th>
+</tr>
+<tr>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; text-align:left; ">
+Predictors
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+Estimates
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+SE
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+Conf. Int (95%)
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+Estimates
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+SE
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; col7">
+Conf. Int (95%)
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Intercept
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.3728
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0119
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.3494 – 0.3962
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.3954
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0111
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.3737 – 0.4171
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Cue
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.0106
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0070
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.0243 – 0.0031
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0186
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0080
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.0030 – 0.0343
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Miniblock
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.0582
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0052
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.0684 – -0.0480
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.0476
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0064
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+-0.0601 – -0.0350
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Interaction
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0262
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0041
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0183 – 0.0342
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0229
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0054
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.0123 – 0.0335
+</td>
+</tr>
+<tr>
+<td colspan="7" style="font-weight:bold; text-align:left; padding-top:.8em;">
+Random Effects
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+σ<sup>2</sup>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0349
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0623
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+τ<sub>00</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0044 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0031 <sub>ID</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+τ<sub>11</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0010 <sub>ID.cueMM</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0010 <sub>ID.cueMM</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0004 <sub>ID.mini</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0004 <sub>ID.mini</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+ρ<sub>01</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+-0.0640
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+-0.6889
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.2528
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+-0.0726
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+N
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+36 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+36 <sub>ID</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
+Observations
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center; border-top:1px solid;" colspan="3">
+1691
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center; border-top:1px solid;" colspan="3">
+1704
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.114 / 0.241
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.054 / 0.119
+</td>
+</tr>
+</table>
+<p><strong>Graph</strong></p>
+<div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb266-1"><a href="summary-tables-and-graphs.html#cb266-1"></a>layout &lt;-<span class="st"> &quot;</span></span>
+<span id="cb266-2"><a href="summary-tables-and-graphs.html#cb266-2"></a><span class="st">AAAAA#BBBBBB</span></span>
+<span id="cb266-3"><a href="summary-tables-and-graphs.html#cb266-3"></a><span class="st">AAAAA#BBBBBB</span></span>
+<span id="cb266-4"><a href="summary-tables-and-graphs.html#cb266-4"></a><span class="st">AAAAA#BBBBBB</span></span>
+<span id="cb266-5"><a href="summary-tables-and-graphs.html#cb266-5"></a><span class="st">CCCCC#DDDDDD</span></span>
+<span id="cb266-6"><a href="summary-tables-and-graphs.html#cb266-6"></a><span class="st">CCCCC#DDDDDD</span></span>
+<span id="cb266-7"><a href="summary-tables-and-graphs.html#cb266-7"></a><span class="st">CCCCC#DDDDDD</span></span>
+<span id="cb266-8"><a href="summary-tables-and-graphs.html#cb266-8"></a><span class="st">&quot;</span></span>
+<span id="cb266-9"><a href="summary-tables-and-graphs.html#cb266-9"></a></span>
+<span id="cb266-10"><a href="summary-tables-and-graphs.html#cb266-10"></a>g_miniCD &lt;-<span class="st"> </span>CueDis_miniblock <span class="op">+</span><span class="st"> </span>CueDis_miniModel <span class="op">+</span><span class="st"> </span>CueDis_miniblock_A <span class="op">+</span><span class="st"> </span>CueDis_miniModel_A <span class="op">+</span></span>
+<span id="cb266-11"><a href="summary-tables-and-graphs.html#cb266-11"></a><span class="st">  </span><span class="kw">plot_layout</span>(<span class="dt">design=</span>layout) <span class="op">&amp;</span></span>
+<span id="cb266-12"><a href="summary-tables-and-graphs.html#cb266-12"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>), <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>), </span>
+<span id="cb266-13"><a href="summary-tables-and-graphs.html#cb266-13"></a>        <span class="dt">legend.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>), <span class="dt">legend.text =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>), </span>
+<span id="cb266-14"><a href="summary-tables-and-graphs.html#cb266-14"></a>        <span class="dt">legend.direction =</span> <span class="st">&quot;horizontal&quot;</span>, </span>
+<span id="cb266-15"><a href="summary-tables-and-graphs.html#cb266-15"></a>        <span class="dt">plot.subtitle =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">12</span>, <span class="dt">face=</span><span class="st">&quot;italic&quot;</span>),</span>
+<span id="cb266-16"><a href="summary-tables-and-graphs.html#cb266-16"></a>        <span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">12</span>, <span class="dt">face=</span><span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb266-17"><a href="summary-tables-and-graphs.html#cb266-17"></a>        <span class="dt">plot.tag =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">face=</span><span class="st">&quot;bold&quot;</span>, <span class="dt">vjust =</span> <span class="dv">3</span>, <span class="dt">hjust=</span><span class="op">-</span><span class="fl">1.5</span>)) <span class="op">&amp;</span></span>
+<span id="cb266-18"><a href="summary-tables-and-graphs.html#cb266-18"></a><span class="st">  </span><span class="kw">plot_annotation</span>(<span class="dt">title =</span> <span class="st">&#39;Cue Dissonance Score Improvement with Miniblock&#39;</span>,</span>
+<span id="cb266-19"><a href="summary-tables-and-graphs.html#cb266-19"></a>                  <span class="dt">theme =</span> <span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">12</span>, <span class="dt">face=</span><span class="st">&quot;bold&quot;</span>)),</span>
+<span id="cb266-20"><a href="summary-tables-and-graphs.html#cb266-20"></a>                  <span class="dt">tag_levels =</span> <span class="st">&#39;A&#39;</span>)</span>
+<span id="cb266-21"><a href="summary-tables-and-graphs.html#cb266-21"></a></span>
+<span id="cb266-22"><a href="summary-tables-and-graphs.html#cb266-22"></a><span class="kw">ggsave</span>(<span class="st">&quot;cueDissonance_mini.pdf&quot;</span>, <span class="dt">plot=</span>g_miniCD, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="fl">15.9</span>, <span class="dt">height =</span> <span class="dv">18</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> cairo_pdf, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span>
+<span id="cb266-23"><a href="summary-tables-and-graphs.html#cb266-23"></a><span class="kw">ggsave</span>(<span class="st">&quot;cueDissonance_mini.png&quot;</span>, <span class="dt">plot=</span>g_miniCD, <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="fl">15.9</span>, <span class="dt">height =</span> <span class="dv">18</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> <span class="st">&quot;png&quot;</span>, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span>
+<span id="cb266-24"><a href="summary-tables-and-graphs.html#cb266-24"></a></span>
+<span id="cb266-25"><a href="summary-tables-and-graphs.html#cb266-25"></a>g_miniCD</span></code></pre></div>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-112-1.png" width="672" /></p>
+</div>
+<div id="relative-influence---age-mixed-model" class="section level2">
+<h2><span class="header-section-number">6.5</span> Relative Influence - Age Mixed Model</h2>
+<p><strong>Table</strong></p>
+<p>Overview table with models for positional memory and pointing.</p>
+<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="summary-tables-and-graphs.html#cb267-1"></a><span class="kw">tab_model</span>(modelFull, modelFullAngle, </span>
+<span id="cb267-2"><a href="summary-tables-and-graphs.html#cb267-2"></a>          <span class="dt">show.p =</span> <span class="ot">FALSE</span>, <span class="dt">show.se=</span><span class="ot">TRUE</span>, <span class="dt">show.icc=</span><span class="ot">FALSE</span>,</span>
+<span id="cb267-3"><a href="summary-tables-and-graphs.html#cb267-3"></a>          <span class="dt">digits =</span> <span class="dv">4</span>, <span class="dt">digits.re =</span> <span class="dv">4</span>,</span>
+<span id="cb267-4"><a href="summary-tables-and-graphs.html#cb267-4"></a>          <span class="dt">pred.labels =</span> <span class="kw">c</span>(<span class="st">&quot;Intercept&quot;</span>,<span class="st">&quot;Age&quot;</span>, <span class="st">&quot;Cue&quot;</span>, <span class="st">&quot;Interaction&quot;</span>),  </span>
+<span id="cb267-5"><a href="summary-tables-and-graphs.html#cb267-5"></a>          <span class="dt">dv.labels =</span> <span class="kw">c</span>(<span class="st">&quot;Positional Memory&quot;</span>, <span class="st">&quot;Pointing&quot;</span>), </span>
+<span id="cb267-6"><a href="summary-tables-and-graphs.html#cb267-6"></a>          <span class="dt">string.ci =</span> <span class="st">&quot;Conf. Int (95%)&quot;</span>, </span>
+<span id="cb267-7"><a href="summary-tables-and-graphs.html#cb267-7"></a>          <span class="dt">string.se =</span> <span class="st">&quot;SE&quot;</span>,</span>
+<span id="cb267-8"><a href="summary-tables-and-graphs.html#cb267-8"></a>          <span class="dt">CSS =</span> <span class="kw">css_theme</span>(<span class="st">&quot;cells&quot;</span>)) </span></code></pre></div>
+<table style="border-collapse:collapse; border:none;">
+<tr>
+<th style="border:1px solid black; border-bottom:1px solid black; text-align:left; ">
+ 
+</th>
+<th colspan="3" style="border:1px solid black; border-bottom:1px solid black;">
+Positional Memory
+</th>
+<th colspan="3" style="border:1px solid black; border-bottom:1px solid black;">
+Pointing
+</th>
+</tr>
+<tr>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; text-align:left; ">
+Predictors
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+Estimates
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+SE
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+Conf. Int (95%)
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+Estimates
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+SE
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; col7">
+Conf. Int (95%)
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Intercept
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.5109
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0069
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.4973 – 0.5245
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.4813
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0082
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.4654 – 0.4973
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Age
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.0011
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0030
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.0070 – 0.0048
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0001
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0035
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+-0.0068 – 0.0071
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Cue
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.1261
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0108
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.1050 – 0.1473
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.1037
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0109
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.0824 – 0.1251
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Interaction
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0123
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0047
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0031 – 0.0214
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0076
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0047
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+-0.0016 – 0.0169
+</td>
+</tr>
+<tr>
+<td colspan="7" style="font-weight:bold; text-align:left; padding-top:.8em;">
+Random Effects
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+σ<sup>2</sup>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0407
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0664
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+τ<sub>00</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0009 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0010 <sub>ID</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+τ<sub>11</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0033 <sub>ID.cueMM</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0029 <sub>ID.cueMM</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+ρ<sub>01</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+-0.0588 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+-0.7601 <sub>ID</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+N
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+36 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+36 <sub>ID</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
+Observations
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center; border-top:1px solid;" colspan="3">
+1691
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center; border-top:1px solid;" colspan="3">
+1704
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.275 / 0.343
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.138 / 0.185
+</td>
+</tr>
+</table>
+<p>Summary with all cue specific mixed models with age as predictor</p>
+<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="summary-tables-and-graphs.html#cb268-1"></a><span class="kw">tab_model</span>(modelAgeLandmark, modelAgeBoundary, modelAgeLandmarkAngle, modelAgeBoundaryAngle, </span>
+<span id="cb268-2"><a href="summary-tables-and-graphs.html#cb268-2"></a>          <span class="dt">show.p =</span> <span class="ot">FALSE</span>, <span class="dt">show.se=</span><span class="ot">TRUE</span>, <span class="dt">show.icc=</span><span class="ot">FALSE</span>,</span>
+<span id="cb268-3"><a href="summary-tables-and-graphs.html#cb268-3"></a>          <span class="dt">digits =</span> <span class="dv">4</span>, <span class="dt">digits.re =</span> <span class="dv">4</span>,</span>
+<span id="cb268-4"><a href="summary-tables-and-graphs.html#cb268-4"></a>          <span class="dt">pred.labels =</span> <span class="kw">c</span>(<span class="st">&quot;Intercept&quot;</span>, <span class="st">&quot;Age&quot;</span>),  </span>
+<span id="cb268-5"><a href="summary-tables-and-graphs.html#cb268-5"></a>          <span class="dt">dv.labels =</span> <span class="kw">c</span>(<span class="st">&quot;Positional Memory:</span><span class="ch">\n</span><span class="st">Landmark-dependent&quot;</span>, <span class="st">&quot;Positional Memory:</span><span class="ch">\n</span><span class="st">Boundary-dependent&quot;</span>, </span>
+<span id="cb268-6"><a href="summary-tables-and-graphs.html#cb268-6"></a>                        <span class="st">&quot;Pointing:</span><span class="ch">\n</span><span class="st">Landmark-dependent&quot;</span>, <span class="st">&quot;Pointing:</span><span class="ch">\n</span><span class="st">Boundary-dependent&quot;</span>), </span>
+<span id="cb268-7"><a href="summary-tables-and-graphs.html#cb268-7"></a>          <span class="dt">string.ci =</span> <span class="st">&quot;Conf. Int (95%)&quot;</span>, </span>
+<span id="cb268-8"><a href="summary-tables-and-graphs.html#cb268-8"></a>          <span class="dt">string.se =</span> <span class="st">&quot;SE&quot;</span>,</span>
+<span id="cb268-9"><a href="summary-tables-and-graphs.html#cb268-9"></a>          <span class="dt">CSS =</span> <span class="kw">css_theme</span>(<span class="st">&quot;cells&quot;</span>)) </span></code></pre></div>
+<table style="border-collapse:collapse; border:none;">
+<tr>
+<th style="border:1px solid black; border-bottom:1px solid black; text-align:left; ">
+ 
+</th>
+<th colspan="3" style="border:1px solid black; border-bottom:1px solid black;">
+Positional Memory:
+Landmark-dependent
+</th>
+<th colspan="3" style="border:1px solid black; border-bottom:1px solid black;">
+Positional Memory:
+Boundary-dependent
+</th>
+<th colspan="3" style="border:1px solid black; border-bottom:1px solid black;">
+Pointing:
+Landmark-dependent
+</th>
+<th colspan="3" style="border:1px solid black; border-bottom:1px solid black;">
+Pointing:
+Boundary-dependent
+</th>
+</tr>
+<tr>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; text-align:left; ">
+Predictors
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+Estimates
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+SE
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+Conf. Int (95%)
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+Estimates
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+SE
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; col7">
+Conf. Int (95%)
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; col8">
+Estimates
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; col9">
+SE
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; 0">
+Conf. Int (95%)
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; 1">
+Estimates
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; 2">
+SE
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; 3">
+Conf. Int (95%)
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Intercept
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.3849
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0134
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.3586 – 0.4111
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.6370
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0130
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.6116 – 0.6625
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+0.3777
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+0.0160
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+0.3463 – 0.4090
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+0.5852
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+0.0107
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+0.5642 – 0.6062
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Age
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.0134
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0058
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.0248 – -0.0020
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0111
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0056
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.0001 – 0.0222
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">
+-0.0075
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">
+0.0069
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">
+-0.0211 – 0.0061
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  1">
+0.0077
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  2">
+0.0047
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  3">
+-0.0015 – 0.0168
+</td>
+</tr>
+<tr>
+<td colspan="13" style="font-weight:bold; text-align:left; padding-top:.8em;">
+Random Effects
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+σ<sup>2</sup>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0475
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0338
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0668
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0660
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+τ<sub>00</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0044 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0046 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0064 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0013 <sub>ID</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+N
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+36 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+36 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+36 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+36 <sub>ID</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
+Observations
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center; border-top:1px solid;" colspan="3">
+851
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center; border-top:1px solid;" colspan="3">
+840
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center; border-top:1px solid;" colspan="3">
+855
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center; border-top:1px solid;" colspan="3">
+849
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.018 / 0.102
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.017 / 0.135
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.004 / 0.091
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.005 / 0.024
+</td>
+</tr>
+</table>
+<p><strong>Graph</strong></p>
+<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="summary-tables-and-graphs.html#cb269-1"></a>layout &lt;-<span class="st"> &quot;</span></span>
+<span id="cb269-2"><a href="summary-tables-and-graphs.html#cb269-2"></a><span class="st">AAAAA#BBBBBB</span></span>
+<span id="cb269-3"><a href="summary-tables-and-graphs.html#cb269-3"></a><span class="st">AAAAA#BBBBBB</span></span>
+<span id="cb269-4"><a href="summary-tables-and-graphs.html#cb269-4"></a><span class="st">AAAAA#BBBBBB</span></span>
+<span id="cb269-5"><a href="summary-tables-and-graphs.html#cb269-5"></a><span class="st">CCCCC#DDDDDD</span></span>
+<span id="cb269-6"><a href="summary-tables-and-graphs.html#cb269-6"></a><span class="st">CCCCC#DDDDDD</span></span>
+<span id="cb269-7"><a href="summary-tables-and-graphs.html#cb269-7"></a><span class="st">CCCCC#DDDDDD</span></span>
+<span id="cb269-8"><a href="summary-tables-and-graphs.html#cb269-8"></a><span class="st">&quot;</span></span>
+<span id="cb269-9"><a href="summary-tables-and-graphs.html#cb269-9"></a></span>
+<span id="cb269-10"><a href="summary-tables-and-graphs.html#cb269-10"></a>g_final &lt;-<span class="st"> </span>RI_final <span class="op">+</span><span class="st"> </span>RI_model <span class="op">+</span><span class="st"> </span>RA_final <span class="op">+</span><span class="st"> </span>RA_model <span class="op">+</span></span>
+<span id="cb269-11"><a href="summary-tables-and-graphs.html#cb269-11"></a><span class="st">  </span><span class="kw">plot_layout</span>(<span class="dt">design=</span>layout) <span class="op">&amp;</span></span>
+<span id="cb269-12"><a href="summary-tables-and-graphs.html#cb269-12"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>), <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>), </span>
+<span id="cb269-13"><a href="summary-tables-and-graphs.html#cb269-13"></a>        <span class="dt">legend.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>), <span class="dt">legend.text =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>), </span>
+<span id="cb269-14"><a href="summary-tables-and-graphs.html#cb269-14"></a>        <span class="dt">legend.direction =</span> <span class="st">&quot;horizontal&quot;</span>, </span>
+<span id="cb269-15"><a href="summary-tables-and-graphs.html#cb269-15"></a>        <span class="dt">plot.subtitle =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">12</span>, <span class="dt">face=</span><span class="st">&quot;italic&quot;</span>),</span>
+<span id="cb269-16"><a href="summary-tables-and-graphs.html#cb269-16"></a>        <span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">12</span>, <span class="dt">face=</span><span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb269-17"><a href="summary-tables-and-graphs.html#cb269-17"></a>        <span class="dt">plot.tag =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">face=</span><span class="st">&quot;bold&quot;</span>, <span class="dt">vjust =</span> <span class="dv">3</span>, <span class="dt">hjust=</span><span class="op">-</span><span class="fl">1.5</span>)) <span class="op">&amp;</span></span>
+<span id="cb269-18"><a href="summary-tables-and-graphs.html#cb269-18"></a><span class="st">  </span><span class="kw">plot_annotation</span>(<span class="dt">title =</span> <span class="st">&#39;Relative Influence Score Improvement with Age&#39;</span>,</span>
+<span id="cb269-19"><a href="summary-tables-and-graphs.html#cb269-19"></a>                  <span class="dt">theme =</span> <span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">12</span>, <span class="dt">face=</span><span class="st">&quot;bold&quot;</span>)),</span>
+<span id="cb269-20"><a href="summary-tables-and-graphs.html#cb269-20"></a>                  <span class="dt">tag_levels =</span> <span class="st">&#39;A&#39;</span>)</span>
+<span id="cb269-21"><a href="summary-tables-and-graphs.html#cb269-21"></a></span>
+<span id="cb269-22"><a href="summary-tables-and-graphs.html#cb269-22"></a><span class="kw">ggsave</span>(<span class="st">&quot;relativeInfluence.pdf&quot;</span>, <span class="dt">plot=</span>g_final, </span>
+<span id="cb269-23"><a href="summary-tables-and-graphs.html#cb269-23"></a>       <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="fl">15.9</span>, <span class="dt">height =</span> <span class="dv">18</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> cairo_pdf, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span>
+<span id="cb269-24"><a href="summary-tables-and-graphs.html#cb269-24"></a><span class="kw">ggsave</span>(<span class="st">&quot;relativeInfluence.png&quot;</span>, <span class="dt">plot=</span>g_final, </span>
+<span id="cb269-25"><a href="summary-tables-and-graphs.html#cb269-25"></a>       <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="fl">15.9</span>, <span class="dt">height =</span> <span class="dv">18</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> <span class="st">&quot;png&quot;</span>, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span>
+<span id="cb269-26"><a href="summary-tables-and-graphs.html#cb269-26"></a></span>
+<span id="cb269-27"><a href="summary-tables-and-graphs.html#cb269-27"></a>g_final</span></code></pre></div>
+<p><img src="Test-book_files/figure-html/RI%20full%20model%20graphs-1.png" width="672" /></p>
+</div>
+<div id="cue-dissonance---age-mixed-model" class="section level2">
+<h2><span class="header-section-number">6.6</span> Cue Dissonance - Age Mixed Model</h2>
+<p><strong>Table</strong></p>
+<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb270-1"><a href="summary-tables-and-graphs.html#cb270-1"></a><span class="kw">tab_model</span>(modelCueDis, modelCueDis_A, </span>
+<span id="cb270-2"><a href="summary-tables-and-graphs.html#cb270-2"></a>          <span class="dt">show.p =</span> <span class="ot">FALSE</span>, <span class="dt">show.se=</span><span class="ot">TRUE</span>, <span class="dt">show.icc=</span><span class="ot">FALSE</span>,</span>
+<span id="cb270-3"><a href="summary-tables-and-graphs.html#cb270-3"></a>          <span class="dt">digits =</span> <span class="dv">4</span>, <span class="dt">digits.re =</span> <span class="dv">4</span>,</span>
+<span id="cb270-4"><a href="summary-tables-and-graphs.html#cb270-4"></a>          <span class="dt">pred.labels =</span> <span class="kw">c</span>(<span class="st">&quot;Intercept&quot;</span>,<span class="st">&quot;Age&quot;</span>, <span class="st">&quot;Cue&quot;</span>, <span class="st">&quot;Interaction&quot;</span>),  </span>
+<span id="cb270-5"><a href="summary-tables-and-graphs.html#cb270-5"></a>          <span class="dt">dv.labels =</span> <span class="kw">c</span>(<span class="st">&quot;Positional Memory&quot;</span>, <span class="st">&quot;Pointing&quot;</span>), </span>
+<span id="cb270-6"><a href="summary-tables-and-graphs.html#cb270-6"></a>          <span class="dt">string.ci =</span> <span class="st">&quot;Conf. Int (95%)&quot;</span>, </span>
+<span id="cb270-7"><a href="summary-tables-and-graphs.html#cb270-7"></a>          <span class="dt">string.se =</span> <span class="st">&quot;SE&quot;</span>,</span>
+<span id="cb270-8"><a href="summary-tables-and-graphs.html#cb270-8"></a>          <span class="dt">CSS =</span> <span class="kw">css_theme</span>(<span class="st">&quot;cells&quot;</span>)) </span></code></pre></div>
+<table style="border-collapse:collapse; border:none;">
+<tr>
+<th style="border:1px solid black; border-bottom:1px solid black; text-align:left; ">
+ 
+</th>
+<th colspan="3" style="border:1px solid black; border-bottom:1px solid black;">
+Positional Memory
+</th>
+<th colspan="3" style="border:1px solid black; border-bottom:1px solid black;">
+Pointing
+</th>
+</tr>
+<tr>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; text-align:left; ">
+Predictors
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+Estimates
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+SE
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+Conf. Int (95%)
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+Estimates
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; ">
+SE
+</td>
+<td style="border:1px solid black; text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal; border-bottom:1px solid black; col7">
+Conf. Int (95%)
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Intercept
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.3739
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0111
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.3521 – 0.3956
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.3963
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0109
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.3749 – 0.4176
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Age
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.0123
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0048
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.0217 – -0.0028
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.0076
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0047
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+-0.0169 – 0.0016
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Cue
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.0109
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0071
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.0248 – 0.0031
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0187
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0082
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+0.0027 – 0.0346
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+Interaction
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0011
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0031
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.0050 – 0.0071
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.0001
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.0035
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">
+-0.0071 – 0.0068
+</td>
+</tr>
+<tr>
+<td colspan="7" style="font-weight:bold; text-align:left; padding-top:.8em;">
+Random Effects
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+σ<sup>2</sup>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0407
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0664
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+τ<sub>00</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0036 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0029 <sub>ID</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+τ<sub>11</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0010 <sub>ID.cueMM</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.0010 <sub>ID.cueMM</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+ρ<sub>01</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+-0.0566 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+-0.7600 <sub>ID</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+N
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+36 <sub>ID</sub>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+36 <sub>ID</sub>
+</td>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
+Observations
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center; border-top:1px solid;" colspan="3">
+1691
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center; border-top:1px solid;" colspan="3">
+1704
+</td>
+</tr>
+<tr>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
+Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.020 / 0.118
+</td>
+<td style="border:1px solid black; padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:center;" colspan="3">
+0.009 / 0.064
+</td>
+</tr>
+</table>
+<p><strong>Graphs</strong></p>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="summary-tables-and-graphs.html#cb271-1"></a>layout &lt;-<span class="st"> &quot;</span></span>
+<span id="cb271-2"><a href="summary-tables-and-graphs.html#cb271-2"></a><span class="st">AAAAA#BBBBBB</span></span>
+<span id="cb271-3"><a href="summary-tables-and-graphs.html#cb271-3"></a><span class="st">AAAAA#BBBBBB</span></span>
+<span id="cb271-4"><a href="summary-tables-and-graphs.html#cb271-4"></a><span class="st">AAAAA#BBBBBB</span></span>
+<span id="cb271-5"><a href="summary-tables-and-graphs.html#cb271-5"></a><span class="st">CCCCC#DDDDDD</span></span>
+<span id="cb271-6"><a href="summary-tables-and-graphs.html#cb271-6"></a><span class="st">CCCCC#DDDDDD</span></span>
+<span id="cb271-7"><a href="summary-tables-and-graphs.html#cb271-7"></a><span class="st">CCCCC#DDDDDD</span></span>
+<span id="cb271-8"><a href="summary-tables-and-graphs.html#cb271-8"></a><span class="st">&quot;</span></span>
+<span id="cb271-9"><a href="summary-tables-and-graphs.html#cb271-9"></a></span>
+<span id="cb271-10"><a href="summary-tables-and-graphs.html#cb271-10"></a>g_finalCD &lt;-<span class="st"> </span>CueDis_final <span class="op">+</span><span class="st"> </span>CueDis_model <span class="op">+</span><span class="st"> </span>CueDisA_final <span class="op">+</span><span class="st"> </span>CueDisA_model <span class="op">+</span></span>
+<span id="cb271-11"><a href="summary-tables-and-graphs.html#cb271-11"></a><span class="st">  </span><span class="kw">plot_layout</span>(<span class="dt">design=</span>layout) <span class="op">&amp;</span></span>
+<span id="cb271-12"><a href="summary-tables-and-graphs.html#cb271-12"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>), <span class="dt">axis.text =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>), </span>
+<span id="cb271-13"><a href="summary-tables-and-graphs.html#cb271-13"></a>        <span class="dt">legend.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>), <span class="dt">legend.text =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">10</span>), </span>
+<span id="cb271-14"><a href="summary-tables-and-graphs.html#cb271-14"></a>        <span class="dt">legend.direction =</span> <span class="st">&quot;horizontal&quot;</span>, </span>
+<span id="cb271-15"><a href="summary-tables-and-graphs.html#cb271-15"></a>        <span class="dt">plot.subtitle =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">12</span>, <span class="dt">face=</span><span class="st">&quot;italic&quot;</span>),</span>
+<span id="cb271-16"><a href="summary-tables-and-graphs.html#cb271-16"></a>        <span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size=</span><span class="dv">12</span>, <span class="dt">face=</span><span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb271-17"><a href="summary-tables-and-graphs.html#cb271-17"></a>        <span class="dt">plot.tag =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">face=</span><span class="st">&quot;bold&quot;</span>, <span class="dt">vjust =</span> <span class="dv">3</span>, <span class="dt">hjust=</span><span class="op">-</span><span class="fl">1.5</span>)) <span class="op">&amp;</span></span>
+<span id="cb271-18"><a href="summary-tables-and-graphs.html#cb271-18"></a><span class="st">  </span><span class="kw">plot_annotation</span>(<span class="dt">title =</span> <span class="st">&#39;Cue Dissonance Score Improvement with Age&#39;</span>,</span>
+<span id="cb271-19"><a href="summary-tables-and-graphs.html#cb271-19"></a>                  <span class="dt">theme =</span> <span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">12</span>, <span class="dt">face=</span><span class="st">&quot;bold&quot;</span>)),</span>
+<span id="cb271-20"><a href="summary-tables-and-graphs.html#cb271-20"></a>                  <span class="dt">tag_levels =</span> <span class="st">&#39;A&#39;</span>)</span>
+<span id="cb271-21"><a href="summary-tables-and-graphs.html#cb271-21"></a></span>
+<span id="cb271-22"><a href="summary-tables-and-graphs.html#cb271-22"></a><span class="kw">ggsave</span>(<span class="st">&quot;cueDissonance.pdf&quot;</span>, <span class="dt">plot=</span>g_finalCD, </span>
+<span id="cb271-23"><a href="summary-tables-and-graphs.html#cb271-23"></a>       <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="fl">15.9</span>, <span class="dt">height =</span> <span class="dv">18</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> cairo_pdf, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span>
+<span id="cb271-24"><a href="summary-tables-and-graphs.html#cb271-24"></a><span class="kw">ggsave</span>(<span class="st">&quot;cueDissonance.png&quot;</span>, <span class="dt">plot=</span>g_finalCD, </span>
+<span id="cb271-25"><a href="summary-tables-and-graphs.html#cb271-25"></a>       <span class="dt">units =</span> <span class="st">&quot;cm&quot;</span>, <span class="dt">width =</span> <span class="fl">15.9</span>, <span class="dt">height =</span> <span class="dv">18</span>, <span class="dt">dpi =</span> <span class="st">&quot;retina&quot;</span>, <span class="dt">device =</span> <span class="st">&quot;png&quot;</span>, <span class="dt">path =</span> <span class="kw">here</span>(<span class="st">&quot;figures&quot;</span>))</span>
+<span id="cb271-26"><a href="summary-tables-and-graphs.html#cb271-26"></a></span>
+<span id="cb271-27"><a href="summary-tables-and-graphs.html#cb271-27"></a>g_finalCD</span></code></pre></div>
+<p><img src="Test-book_files/figure-html/unnamed-chunk-116-1.png" width="672" /></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="angle-estimation-analysis.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

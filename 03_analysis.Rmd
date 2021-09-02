@@ -52,6 +52,7 @@ dist <- function(loc1X, loc1Y, loc2X, loc2Y) {
    d = sqrt(((loc1X-loc2X)**2)+((loc1Y-loc2Y)**2))
    return(d)
 }
+
 ```
 
 Following chunk checks whether a folder "figures" exists and potentially creates one
@@ -143,7 +144,8 @@ mem_score <- ggplot(circle, aes(x, y)) +
         axis.title = element_text(size=10), axis.text = element_text(size=10), 
         plot.title = element_text(size=12), plot.subtitle = element_text(size = 11)) +
   labs(title = "Memory score calculation based on trajectory", 
-       subtitle = paste("Memory score:", graph_sub$memoryScoreTraj[10]), 
+       subtitle = paste("Number of Trajectory Locations Closer / 1000" ,
+                        paste("Memory score:", graph_sub$memoryScoreTraj[10]), sep="\n"), 
        x= 'X (virtual meters)', 
        y= 'Y (virtual meters)') +
   scale_color_manual(name = " ", 
@@ -186,13 +188,21 @@ age <- Sum_all %>%
   group_by(ID, age) %>%
   summarise(n = n(), .groups="drop")
 
-ggplot(age, aes(x=age)) + 
+age_graph <- ggplot(age, aes(x=age)) + 
   geom_bar(fill=scico(1, palette="acton", begin=0.8)) +
   theme_cowplot() +
   background_grid(major="y", minor="y") +
   scale_x_continuous(breaks = c(8,9,10,11,12,13,14,15)) +
-  theme(legend.position = "none") +
-  labs(x="Age", y="Count", title="Distribution of age")
+  theme(legend.position = "none", plot.title = element_text(size=12), axis.title = element_text(size=10)) +
+  labs(x="Age", y="Count", title="Distribution of age") 
+
+#saving the graph as pdf and png 
+ggsave("age.pdf", plot=age_graph, units = "cm", width = 8, height = 6, dpi = "retina", 
+       device = cairo_pdf, path = here("figures"))
+ggsave("age.png", plot=age_graph, units = "cm", width = 8, height = 6, dpi = "retina", 
+       device = "png", path = here("figures"))
+
+age_graph
 ```
 
 **Reaction Time**
@@ -368,8 +378,10 @@ memory_B1 <- mem_score_B1 + heat_map_B1 &
                   theme = theme(plot.title = element_text(size = 12, face="bold"))) 
 
 # saving the compiled graphs as pdf and png
-ggsave("Block1_loc.pdf", plot=memory_B1, units = "cm", width = 15.9, height = 10, dpi = "retina", device = cairo_pdf, path = here("figures"))
-ggsave("Block1_loc.png", plot=memory_B1, units = "cm", width = 15.9, height = 10, dpi = "retina", device = "png", path = here("figures"))
+ggsave("Block1_loc.pdf", plot=memory_B1, 
+       units = "cm", width = 15.9, height = 10, dpi = "retina", device = cairo_pdf, path = here("figures"))
+ggsave("Block1_loc.png", plot=memory_B1, 
+       units = "cm", width = 15.9, height = 10, dpi = "retina", device = "png", path = here("figures"))
 
 # show the compiled graphs
 memory_B1
@@ -498,8 +510,10 @@ distance_B1 <- ggplot(summaryBlock1, aes(x=name, y= value)) +
               map_signif_level = TRUE, tip_length = 0, extend_line = 0.045, y_position = 26)
 
 # saving the graph as pdf and png
-ggsave("distances_B1.pdf", plot=distance_B1, units = "cm", width = 13, height = 10, dpi = "retina", device = cairo_pdf, path = here("figures"))
-ggsave("distances_B1.png", plot=distance_B1, units = "cm", width = 13, height = 10, dpi = "retina", device = "png", path = here("figures"))
+ggsave("distances_B1.pdf", plot=distance_B1, 
+       units = "cm", width = 13, height = 10, dpi = "retina", device = cairo_pdf, path = here("figures"))
+ggsave("distances_B1.png", plot=distance_B1, 
+       units = "cm", width = 13, height = 10, dpi = "retina", device = "png", path = here("figures"))
 
 # show the graph
 distance_B1
@@ -564,9 +578,11 @@ relativeInf_graph <- ggplot(data=graph_sub) +
                                "Remembered Object Location" = "red"))
 
 # saving graph as pdf and png
-ggsave(filename="relative_influence_visual.pdf", plot=relativeInf_graph, units = "cm", width = 15, height = 11, dpi = "retina", 
+ggsave(filename="relative_influence_visual.pdf", plot=relativeInf_graph, 
+       units = "cm", width = 15, height = 11, dpi = "retina", 
        device = cairo_pdf, path = here("figures"))
-ggsave("relative_influence_visual.png", plot=relativeInf_graph, units = "cm", width = 15, height = 11, 
+ggsave("relative_influence_visual.png", plot=relativeInf_graph, 
+       units = "cm", width = 15, height = 11, 
        dpi = "retina", device = "png", path = here("figures"))
 
 # show the graph
@@ -699,8 +715,10 @@ rel_Inf <- ggplot(relativeInfluenceBlocks, aes(x=cue, y=relativeInf)) +
   annotate("text", label="***", size=3, y=0.15, x=2.1, fontface =2) 
 
 # saving graphs as  pdf and png
-ggsave("relativeInfluence.pdf", plot=rel_Inf, units = "cm", width = 15, height = 11, dpi = "retina", device = cairo_pdf, path = here("figures"))
-ggsave("relativeInfluence.png", plot=rel_Inf, units = "cm", width = 15, height = 11, dpi = "retina", device = "png", path = here("figures"))
+ggsave("relativeInfluence.pdf", plot=rel_Inf, 
+       units = "cm", width = 15, height = 11, dpi = "retina", device = cairo_pdf, path = here("figures"))
+ggsave("relativeInfluence.png", plot=rel_Inf, 
+       units = "cm", width = 15, height = 11, dpi = "retina", device = "png", path = here("figures"))
 
 # show the graph
 rel_Inf
@@ -714,9 +732,14 @@ As a first step towards building a full mixed effects model, we tested a simplie
 formulaCue <- "relativeInfluence ~ cueMM + (1+cueMM|ID)"
 modelCue <- lme4::lmer(formula = formulaCue, data=subset_RI)
 
-#tab_model(modelCue, show.p = FALSE, digits.re = 4,
-          #pred.labels = c("Intercept", "Cue"),  dv.labels = "Relative Influence", string.ci = "Conf. Int (95%)", 
-          #CSS = css_theme("cells")) 
+tab_model(modelCue, 
+          show.p = FALSE, show.se=TRUE, show.icc=FALSE,
+          digits = 4, digits.re = 4,
+          pred.labels = c("Intercept", "Cue"),  
+          dv.labels = "Relative Influence", 
+          string.ci = "Conf. Int (95%)", 
+          string.se = "SE",
+          CSS = css_theme("cells")) 
 ```
 
 To test, whether cue is a significant predictor we ran a likelihood ratio test comparing our simpliest model and a model containing only random effects.
@@ -795,8 +818,10 @@ cue_Dist <- ggplot(relativeInfluenceBlocks, aes(x=cue, y= distanceError)) +
               map_signif_level = TRUE, tip_length = 0, extend_line = 0.045, y_position = 20.1, textsize=2.75)
 
 # saving the graph as pdf and png
-ggsave("distancesError.pdf", plot=cue_Dist, units = "cm", width = 15, height = 11, dpi = "retina", device = cairo_pdf, path = here("figures"))
-ggsave("distancesError.png", plot=cue_Dist, units = "cm", width = 15, height = 11, dpi = "retina", device = "png", path = here("figures"))
+ggsave("distancesError.pdf", plot=cue_Dist, 
+       units = "cm", width = 15, height = 11, dpi = "retina", device = cairo_pdf, path = here("figures"))
+ggsave("distancesError.png", plot=cue_Dist, 
+       units = "cm", width = 15, height = 11, dpi = "retina", device = "png", path = here("figures"))
 
 # show the plot
 cue_Dist
@@ -815,6 +840,8 @@ summary_miniblock <- subset_RI %>%
   group_by(ID, miniblock, cue) %>% 
   summarise(relativeInf = mean(relativeInfluence), 
             riSD = sd(relativeInfluence), 
+            cueDis = mean(cueDissonance),
+            cdSD = sd(cueDissonance),
             .groups = "drop")
 
 g_mini <- ggplot(summary_miniblock, aes(miniblock, relativeInf, group=interaction(cue, ID), color = cue)) + 
@@ -957,7 +984,8 @@ sub_mini_cue <- subset_RI %>%
   summarise(relInfluence = mean(relativeInfluence), .groups ="drop")
 
 # two-tailed, paired sample t-test
-mini1_cue_stats <- t.test(subset(sub_mini_cue, cue=="landmark")$relInfluence, subset(sub_mini_cue, cue=="boundary")$relInfluence, paired=TRUE) %>% tidy()
+mini1_cue_stats <- t.test(subset(sub_mini_cue, cue=="landmark")$relInfluence, 
+                          subset(sub_mini_cue, cue=="boundary")$relInfluence, paired=TRUE) %>% tidy()
 
 d <- cohen.d(subset(sub_mini_cue, cue=="landmark")$relInfluence, subset(sub_mini_cue, cue=="boundary")$relInfluence, paired=TRUE) 
 
@@ -1009,8 +1037,13 @@ To test the learning throughout a block, we ran mixed effect model with interact
 formulaMiniblocksCue <- "relativeInfluence ~ cueMM*mini + (1 + cueMM : mini | ID)"
 modelMiniblocksCue <- lme4::lmer(formula = formulaMiniblocksCue, data=subset_RI)
 
-tab_model(modelMiniblocksCue, show.p = FALSE, digits.re = 4,
-          pred.labels = c("Intercept", "Cue", "Miniblocks", "Interaction"),  dv.labels = "Relative Influence", string.ci = "Conf. Int (95%)", 
+tab_model(modelMiniblocksCue, 
+          show.p = FALSE, show.se=TRUE, show.icc=FALSE,
+          digits = 4, digits.re = 4,
+          pred.labels = c("Intercept", "Cue", "Miniblocks", "Interaction"),  
+          dv.labels = "Relative Influence", 
+          string.ci = "Conf. Int (95%)", 
+          string.se = "SE",
           CSS = css_theme("cells")) 
 ```
 
@@ -1067,8 +1100,13 @@ ratioMiniBoundary <- anova(modelMiniblocksBoundary, modelMiniBoundaryControl) %>
 
 ```{r}
 #cue specific models table
-tab_model(modelMiniblocksLandmark, modelMiniblocksBoundary, show.p = FALSE, digits.re = 4,
-          pred.labels = c("Intercept", "Miniblock"),  dv.labels = c("Landmark-dependent", "Boundary-dependent"), string.ci = "Conf. Int (95%)", 
+tab_model(modelMiniblocksLandmark, modelMiniblocksBoundary, 
+          show.p = FALSE, show.se=TRUE, show.icc=FALSE,
+          digits = 4, digits.re = 4,
+          pred.labels = c("Intercept", "Miniblock"),  
+          dv.labels = c("Landmark-dependent", "Boundary-dependent"), 
+          string.ci = "Conf. Int (95%)", 
+          string.se = "SE",
           CSS = css_theme("cells")) 
 ```
 
@@ -1082,8 +1120,13 @@ As we decided to recode relative influence score to dCorrect / (dCorrect + dOthe
 formulaCueDis_mini <- "cueDissonance ~ cueMM*mini + (1+cueMM+mini|ID)"
 modelCueDis_mini <- lme4::lmer(formula = formulaCueDis_mini, data=subset_RI)
 
-tab_model(modelCueDis_mini, show.p = FALSE, digits.re = 4,
-          pred.labels = c("Intercept", "Cue", "Miniblock", "Interaction"),  dv.labels = "Relative Influence", string.ci = "Conf. Int (95%)", 
+tab_model(modelCueDis_mini, 
+          show.p = FALSE, show.se = TRUE, show.icc = FALSE,
+          digits = 4, digits.re = 4,
+          pred.labels = c("Intercept", "Cue", "Miniblock", "Interaction"),  
+          dv.labels = "Cue Dissonance", 
+          string.ci = "Conf. Int (95%)", 
+          string.se = "SE",
           CSS = css_theme("cells")) 
 ```
 
@@ -1101,10 +1144,128 @@ ratioCueDis_mini <- anova(modelCueDis_mini, modelCueDis_miniControl) %>% tidy()
 **$\chi^{2}$(1) = `r round(ratioCueDis_mini$statistic[2], 3)`, p`r if (ratioCueDis_mini$p.value[2] > 0.001) {paste("=", round(ratioCueDis_mini$p.value[2], 3))} else {low_p}`**
 
 
+**Graphs**
+
+```{r}
+CueDis_miniblock <- ggplot(summary_miniblock, aes(miniblock, cueDis, color=cue)) + 
+  theme_cowplot() +
+  geom_point(data=subset(summary_miniblock, cue=="boundary"), 
+             aes(x = as.numeric(miniblock)-.07), colour = '#845777',
+             position = position_jitter(width=0.05), alpha=0.7) + 
+  geom_point(data=subset(summary_miniblock, cue=="landmark"), 
+             aes(x = as.numeric(miniblock)+.07), colour = '#99C095',
+             position = position_jitter(width=0.05), alpha=0.7) + 
+  scale_color_scico_d(palette = 'tokyo', begin=0.8, end=0.2) +
+  stat_summary(fun=mean, aes(group=cue), geom="line", size = 1.5) +
+  stat_summary(fun=mean, data=subset(summary_miniblock, cue=="boundary"), aes(group=cue), 
+               geom="point", size = 2, position = position_nudge(x=-.02)) +
+  stat_summary(fun.data=mean_se, data=subset(summary_miniblock, cue=="boundary"), aes(group=cue), 
+               geom="errorbar", size=0.8, width=0.1, alpha=0.95, position = position_nudge(x=-.02)) +
+  stat_summary(fun=mean, data=subset(summary_miniblock, cue=="landmark"), aes(group=cue), 
+               geom="point", size = 2, position = position_nudge(x=+.02)) +
+  stat_summary(fun.data=mean_se, data=subset(summary_miniblock, cue=="landmark"), aes(group=cue), 
+               geom="errorbar", size=0.8, width=0.1, alpha=0.95, position = position_nudge(x=+.02)) +
+  scale_x_continuous(breaks = c(1,2,3,4)) +
+  scale_y_continuous(limits = c(0.1, 0.9), breaks = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)) +
+  labs(x= "Miniblock", y = "Cue Dissonance (0-1)", 
+       title="Positional Memory", subtitle = "Data", color="Cue") +
+  geom_hline(yintercept = 0.5, linetype=2, alpha=0.6) +
+  theme(legend.position = "none")
+  
+CueDis_miniblock
+```
+
+The graph below visualizes the cue dissonance miniblock-dependent improvement based on a mixed model predictions.
+
+```{r}
+CueDis_predict <- ggeffects::ggpredict(modelCueDis_mini, terms = c("mini", "cueMM")) %>%
+  as_tibble() %>%
+  mutate(cuePredict = factor(if_else(group == 1, true = "boundary", false = "landmark"),
+                      levels = c("boundary", "landmark")))
+  
+CueDis_miniModel <- ggplot(CueDis_predict, aes(x = x, y = predicted, colour = cuePredict, fill = cuePredict)) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .2, linetype=0) +
+  geom_line(size = 0.5) +
+  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
+  scale_fill_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
+  scale_x_continuous(breaks = sort(unique(Sum_all$mini)), labels = c("1", "2", "3", "4")) +
+  scale_y_continuous(breaks = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9), limits = c(0.1, 0.9)) +
+  theme_cowplot() +
+  labs(x="Miniblock", y=" ", color="Cue", fill="Cue", 
+       subtitle = "Mixed Model", title=" ") + 
+  theme(legend.position = "none") +
+  geom_hline(yintercept = 0.5, linetype=2, alpha=0.6)
+
+CueDis_miniModel
+```
+
 
 **Explorative**
 
-To see whether the model including cue is better than a miniblock with random effect we ran a likelihood ratio test.
+Follow up t-tests
+
+```{r}
+#miniblock 1
+m1_cueDis <- t.test(subset(summary_miniblock, cue=="landmark" & miniblock==1)$cueDis, 
+                    subset(summary_miniblock, cue=="boundary" & miniblock==1)$cueDis, paired = TRUE) %>% tidy()
+
+d <- cohen.d(subset(summary_miniblock, cue=="landmark" & miniblock==1)$cueDis, 
+             subset(summary_miniblock, cue=="boundary" & miniblock==1)$cueDis, paired = TRUE) 
+
+m1_cueDis$d <- d$estimate
+m1_cueDis$dCI_low <- d$conf.int[[1]]
+m1_cueDis$dCI_high <- d$conf.int[[2]]
+
+#miniblock 2
+m2_cueDis <- t.test(subset(summary_miniblock, cue=="landmark" & miniblock==2)$cueDis, 
+                    subset(summary_miniblock, cue=="boundary" & miniblock==2)$cueDis, paired = TRUE) %>% tidy()
+
+d <- cohen.d(subset(summary_miniblock, cue=="landmark" & miniblock==2)$cueDis, 
+             subset(summary_miniblock, cue=="boundary" & miniblock==2)$cueDis, paired = TRUE) 
+
+m2_cueDis$d <- d$estimate
+m2_cueDis$dCI_low <- d$conf.int[[1]]
+m2_cueDis$dCI_high <- d$conf.int[[2]]
+
+#miniblock 3
+m3_cueDis <- t.test(subset(summary_miniblock, cue=="landmark" & miniblock==3)$cueDis, 
+                    subset(summary_miniblock, cue=="boundary" & miniblock==3)$cueDis, paired = TRUE) %>% tidy()
+
+d <- cohen.d(subset(summary_miniblock, cue=="landmark" & miniblock==3)$cueDis, 
+             subset(summary_miniblock, cue=="boundary" & miniblock==3)$cueDis, paired = TRUE) 
+
+m3_cueDis$d <- d$estimate
+m3_cueDis$dCI_low <- d$conf.int[[1]]
+m3_cueDis$dCI_high <- d$conf.int[[2]]
+
+#miniblock 4
+m4_cueDis <- t.test(subset(summary_miniblock, cue=="landmark" & miniblock==4)$cueDis, 
+                    subset(summary_miniblock, cue=="boundary" & miniblock==4)$cueDis, paired = TRUE) %>% tidy()
+
+d <- cohen.d(subset(summary_miniblock, cue=="landmark" & miniblock==4)$cueDis, 
+             subset(summary_miniblock, cue=="boundary" & miniblock==4)$cueDis, paired = TRUE) 
+
+m4_cueDis$d <- d$estimate
+m4_cueDis$dCI_low <- d$conf.int[[1]]
+m4_cueDis$dCI_high <- d$conf.int[[2]]
+
+```
+
+*miniblock 1:*
+t(`r m1_cueDis$parameter`)= `r round(m1_cueDis$statistic, 2)`, p`r if (m1_cueDis$p.value > 0.001) {paste("=", round(m1_cueDis$p.value, 3))} else {low_p}`, d=`r round(m1_cueDis$d, 2)`, 95% CI [`r round(m1_cueDis$dCI_low, 2)`, `r round(m1_cueDis$dCI_high, 2)`]
+
+*miniblock 2:*
+t(`r m2_cueDis$parameter`)= `r round(m2_cueDis$statistic, 2)`, p`r if (m2_cueDis$p.value > 0.001) {paste("=", round(m2_cueDis$p.value, 3))} else {low_p}`, d=`r round(m2_cueDis$d, 2)`, 95% CI [`r round(m2_cueDis$dCI_low, 2)`, `r round(m2_cueDis$dCI_high, 2)`]
+
+*miniblock 3:*
+t(`r m3_cueDis$parameter`)= `r round(m3_cueDis$statistic, 2)`, p`r if (m3_cueDis$p.value > 0.001) {paste("=", round(m3_cueDis$p.value, 3))} else {low_p}`, d=`r round(m3_cueDis$d, 2)`, 95% CI [`r round(m3_cueDis$dCI_low, 2)`, `r round(m3_cueDis$dCI_high, 2)`]
+
+*miniblock 4:*
+t(`r m4_cueDis$parameter`)= `r round(m4_cueDis$statistic, 2)`, p`r if (m4_cueDis$p.value > 0.001) {paste("=", round(m4_cueDis$p.value, 3))} else {low_p}`, d=`r round(m4_cueDis$d, 2)`, 95% CI [`r round(m4_cueDis$dCI_low, 2)`, `r round(m4_cueDis$dCI_high, 2)`]
+
+
+
+To see whether the model including cue is better than a miniblock alone with random effect we ran a likelihood ratio test.
 
 ```{r}
 #control model
@@ -1132,12 +1293,17 @@ As our initial dependent variable, we examine these two predictors (cue, age) fi
 ```{r}
 #full model
 formulaFull <- "relativeInfluence ~ age_c*cueMM + ( 1 + cueMM | ID)" 
-modelFull <- lme4::lmer(formula = formulaFull, data=subset_RI)
+modelFull <- lme4::lmer(formula = formulaFull, data=subset_RI, REML = FALSE)
 
-tab_model(modelFull, show.p = FALSE, digits.re = 4,
+#table
+tab_model(modelFull, 
+          show.p = FALSE, show.se=TRUE, show.icc=FALSE,
+          digits = 4, digits.re = 4,
           pred.labels = c("Intercept", "Age", "Cue", "Interaction"),  
-          dv.labels = "Relative Influence", string.ci = "Conf. Int (95%)", 
+          string.ci = "Conf. Int (95%)", 
+          string.se = "SE",
           CSS = css_theme("cells")) 
+
 ```
 
 The significance of the interaction was tested using likelihood ratio test. 
@@ -1192,8 +1358,13 @@ ratioAgeBoundary <- anova(modelAgeBoundary, modelControlAgeBoundary) %>% tidy()
 
 
 ```{r}
-tab_model(modelAgeLandmark, modelAgeBoundary, show.p = FALSE, digits.re = 4,
-          pred.labels = c("Intercept", "Age"),  dv.labels = c("Landmark-dependent", "Boundary-dependent"), string.ci = "Conf. Int (95%)", 
+tab_model(modelAgeLandmark, modelAgeBoundary, 
+          show.p = FALSE, show.se=TRUE, show.icc=FALSE,
+          digits = 4, digits.re = 4,
+          pred.labels = c("Intercept", "Age"), 
+          dv.labels = c("Landmark-dependent", "Boundary-dependent"), 
+          string.ci = "Conf. Int (95%)",  
+          string.se = "SE",
           CSS = css_theme("cells")) 
 ```
 
@@ -1226,9 +1397,10 @@ RI_final <- ggplot(relativeInfluenceBlocks, aes(age, relativeInf, color=cue)) +
   scale_y_continuous(limits = c(0.2, 0.8), breaks = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)) +
   # changing labels and title
   labs(x= "Age", y = "Relative Influence (0-1)", 
-       title = "Data", color="Cue") +
+       title= "Positional Memory", subtitle = "Data", color="Cue") +
   # background setting
-  theme_cowplot() 
+  theme_cowplot() +
+  theme(legend.position = "none")
 
 # show the graph
 RI_final
@@ -1258,44 +1430,15 @@ RI_model <- ggplot(RI_predict, aes(x = x, y = predicted, colour = cuePredict, fi
   theme_cowplot() +
   # changing labels and title
   labs(x="Age", y=" ", color="Cue", fill="Cue", 
-       title = "Mixed Model") + 
+       subtitle = "Mixed Model", title="  ") + 
   # 0.5 neutral score for reference
-  geom_hline(yintercept = 0.5, linetype=2, alpha=0.6)
+  geom_hline(yintercept = 0.5, linetype=2, alpha=0.6) +
+  theme(legend.position = "none")
 
 #show the graph
 RI_model
 ```
 
-```{r, eval=FALSE}
-# specifying the layout
-layout <- "
-AAAAA#BBBBBB
-AAAAA#BBBBBB
-AAAAA#BBBBBB
-"
-
-g_final <- RI_final + RI_model &
-  plot_layout(design=layout) &
-  # unifying aesthetical aspects, mainly text size and style
-  theme(axis.title = element_text(size = 10), axis.text = element_text(size=10), 
-        legend.title = element_text(size=10), legend.text = element_text(size=10),
-        legend.position = "bottom",
-        plot.title = element_text(size=12, face="italic"),
-        plot.tag = element_text(size = 10, face="bold")) &
-  # adding title and tags
-  plot_annotation(title = 'Positional Memory',
-                  theme = theme(plot.title = element_text(size = 12, face="bold")),
-                  tag_levels = list(c('A', 'B')))
-
-#saving the graph assembly as pdf and png
-ggsave("relativeInfluence_final.pdf", plot=g_final, units = "cm", width = 15, height = 9, 
-       dpi = "retina", device = cairo_pdf, path = here("figures"))
-ggsave("relativeInfluence_final.png", plot=g_final, units = "cm", width = 15, height = 9, 
-       dpi = "retina", device = "png", path = here("figures"))
-
-#show the plot
-g_final 
-```
 
 
 ### Cue dissonance
@@ -1308,8 +1451,13 @@ Next, we tested whether the effect of age and age and cue interaction remain whe
 formulaCueDis <- "cueDissonance ~ age_c*cueMM + ( 1 + cueMM | ID)" 
 modelCueDis <- lme4::lmer(formula = formulaCueDis, data=subset_RI)
 
-tab_model(modelCueDis, show.p = FALSE, digits.re = 4,
-          pred.labels = c("Intercept", "Age", "Cue", "Interaction"),  dv.labels = "Relative Influence", string.ci = "Conf. Int (95%)", 
+tab_model(modelCueDis, 
+          show.p = FALSE, show.se=TRUE, show.icc=FALSE, 
+          digits = 4, digits.re = 4,
+          pred.labels = c("Intercept", "Age", "Cue", "Interaction"),  
+          dv.labels = "Relative Influence", 
+          string.ci = "Conf. Int (95%)", 
+          string.se = "SE",
           CSS = css_theme("cells")) 
 ```
 
@@ -1349,8 +1497,13 @@ Adding miniblock as a predictor instead to find the best model.
 miniFullCueDis<- "cueDissonance ~ age_c + mini + (1 + cueMM | ID)" 
 modelCueDis_miniFull <- lme4::lmer(formula = miniFullCueDis, data=subset_RI)
 
-tab_model(modelCueDis_miniFull, show.p = FALSE, digits.re = 4,
-          pred.labels = c("Intercept", "Age", "Miniblock"),  dv.labels = "Relative Influence", string.ci = "Conf. Int (95%)", 
+tab_model(modelCueDis_miniFull, 
+          show.p = FALSE, show.se=TRUE, show.icc=FALSE,
+          digits = 4, digits.re = 4,
+          pred.labels = c("Intercept", "Age", "Miniblock"),  
+          dv.labels = "Relative Influence", 
+          string.ci = "Conf. Int (95%)", 
+          string.se = "SE",
           CSS = css_theme("cells")) 
 
 #likelihood ratio test
@@ -1378,10 +1531,10 @@ CueDis_final <- ggplot(relativeInfluenceBlocks, aes(age, cueDis, color=cue)) +
   scale_color_scico_d(palette = 'tokyo', begin=0.7, end=0.3, labels = c("Landmark", "Boundary")) +
   scale_x_continuous(breaks = c(8,9,10,11,12,13,14,15)) +
   scale_y_continuous(limits = c(0.2, 0.8), breaks = c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)) +
-  labs(x= "Age", y = "RCue Dissonance (0-1)", 
-       title = "Data", color="Cue") +
-  
-  geom_hline(yintercept = 0.5, linetype=2, alpha=0.6)
+  labs(x= "Age", y = "Cue Dissonance (0-1)", 
+       title="Positional Memory", subtitle = "Data", color="Cue") +
+  geom_hline(yintercept = 0.5, linetype=2, alpha=0.6) +
+  theme(legend.position = "none")
   
 CueDis_final
 ```
@@ -1403,40 +1556,13 @@ CueDis_model <- ggplot(CueDis_predict, aes(x = x, y = predicted, colour = cuePre
   scale_y_continuous(breaks = c(0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8), limits = c(0.2, 0.8)) +
   theme_cowplot() +
   labs(x="Age", y=" ", color="Cue", fill="Cue", 
-       title = "Mixed Model") + 
+       subtitle = "Mixed Model", title=" ") + 
   theme(legend.position = "none") +
   geom_hline(yintercept = 0.5, linetype=2, alpha=0.6)
 
 CueDis_model
 ```
 
-Assembly of the generated graphs. 
-
-```{r}
-layout <- "
-AAAAA#BBBBBB
-AAAAA#BBBBBB
-AAAAA#BBBBBB
-"
-
-CueDis_final <- CueDis_final + CueDis_model &
-  plot_layout(design=layout) &
-  theme(axis.title = element_text(size = 10), axis.text = element_text(size=10), 
-        legend.title = element_text(size=10), legend.text = element_text(size=10),
-        legend.position = "bottom",
-        plot.title = element_text(size=12, face="italic"),
-        plot.tag = element_text(size = 10, face="bold")) &
-  plot_annotation(title = 'Positional Memory',
-                  theme = theme(plot.title = element_text(size = 12, face="bold")),
-                  tag_levels = list(c('A', 'B')))
-
-CueDis_final
-
-ggsave("cueDissonance_full.pdf", plot=CueDis_final, units = "cm", width = 15, height = 9, 
-       dpi = "retina", device = cairo_pdf, path = here("figures"))
-ggsave("cueDissonance_full.png", plot=CueDis_final, units = "cm", width = 15, height = 9, 
-       dpi = "retina", device = "png", path = here("figures"))
-```
 
 ### Distance error
 
@@ -1447,9 +1573,15 @@ To see if age and cue can predict raw distance error, we ran the same analysis a
 ```{r}
 formulaFullDist <- "error ~ age_c*cueMM + ( 1 + cueMM | ID)" 
 modelFullDist <- lme4::lmer(formula = formulaFullDist, data=subset_RI)
+summary(modelFullDist)
 
-tab_model(modelFullDist, show.p = FALSE, digits.re = 4,
-          pred.labels = c("Intercept", "Age", "Cue", "Interaction"),  dv.labels = "Distance Error", string.ci = "Conf. Int (95%)", 
+tab_model(modelFullDist, 
+          show.p = FALSE, show.se=TRUE, show.icc=FALSE,
+          digits = 4, digits.re = 4,
+          pred.labels = c("Intercept", "Age", "Cue", "Interaction"),  
+          dv.labels = "Distance Error", 
+          string.ci = "Conf. Int (95%)", 
+          string.se = "SE",
           CSS = css_theme("cells")) 
 
 ```
@@ -1491,8 +1623,13 @@ Adding miniblock instead of cue a predictor.
 miniFullDist<- "error ~ age_c + mini + (1 + cueMM | ID)" 
 modelMiniFullDist <- lme4::lmer(formula = miniFullDist, data=subset_RI)
 
-tab_model(modelMiniFullDist, show.p = FALSE, digits.re = 4,
-          pred.labels = c("Intercept", "Age", "Miniblock"),  dv.labels = "Relative Influence", string.ci = "Conf. Int (95%)", 
+tab_model(modelMiniFullDist, 
+          show.p = FALSE, show.se=TRUE, show.icc=FALSE,
+          digits = 4, digits.re = 4,
+          pred.labels = c("Intercept", "Age", "Miniblock"),  
+          dv.labels = "Relative Influence", 
+          string.ci = "Conf. Int (95%)", 
+          string.se = "SE",
           CSS = css_theme("cells")) 
 
 
@@ -1544,34 +1681,5 @@ distance_model <- ggplot(distance_predict, aes(x = x, y = predicted, colour = cu
 
 distance_model
 ```
-
-```{r, eval=FALSE}
-layout <- "
-AAAAA#BBBBBB
-AAAAA#BBBBBB
-AAAAA#BBBBBB
-"
-
-g_final_distance <- distance_final + distance_model &
-  plot_layout(design=layout) &
-  theme(axis.title = element_text(size = 10), axis.text = element_text(size=10), 
-        legend.title = element_text(size=10), legend.text = element_text(size=10),
-        legend.position = "bottom",
-        plot.title = element_text(size=12, face="italic"),
-        plot.tag = element_text(size = 10, face="bold")) &
-  plot_annotation(title = 'Positional Memory',
-                  theme = theme(plot.title = element_text(size = 12, face="bold")),
-                  tag_levels = list(c('A', 'B')))
-
-g_final_distance
-
-ggsave("distanceError_final.pdf", plot=g_final_distance, units = "cm", width = 15, height = 9, 
-       dpi = "retina", device = cairo_pdf, path = here("figures"))
-ggsave("distanceError_final.png", plot=g_final_distance, units = "cm", width = 15, height = 9, 
-       dpi = "retina", device = "png", path = here("figures"))
-```
-
-
-
 
 
