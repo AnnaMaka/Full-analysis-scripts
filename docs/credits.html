@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>7 Credits | Data Preparation and Analysis</title>
+  <meta name="description" content="7 Credits | Data Preparation and Analysis" />
+  <meta name="generator" content="bookdown 0.22 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="7 Credits | Data Preparation and Analysis" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="7 Credits | Data Preparation and Analysis" />
+  
+  
+  
+
+<meta name="author" content="Anna Makova (under supervision of Dr. Jacob Bellmund)" />
+
+
+<meta name="date" content="2021-05-08" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="summary-tables-and-graphs.html"/>
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Experiment Overview</a></li>
+<li class="chapter" data-level="2" data-path="randomisation-script.html"><a href="randomisation-script.html"><i class="fa fa-check"></i><b>2</b> Randomisation script</a></li>
+<li class="chapter" data-level="3" data-path="data-preparation.html"><a href="data-preparation.html"><i class="fa fa-check"></i><b>3</b> Data Preparation</a><ul>
+<li class="chapter" data-level="3.1" data-path="data-preparation.html"><a href="data-preparation.html#setup"><i class="fa fa-check"></i><b>3.1</b> Setup</a></li>
+<li class="chapter" data-level="3.2" data-path="data-preparation.html"><a href="data-preparation.html#summary-and-angle-files"><i class="fa fa-check"></i><b>3.2</b> Summary and Angle files</a></li>
+<li class="chapter" data-level="3.3" data-path="data-preparation.html"><a href="data-preparation.html#trajectory-files"><i class="fa fa-check"></i><b>3.3</b> Trajectory files</a></li>
+<li class="chapter" data-level="3.4" data-path="data-preparation.html"><a href="data-preparation.html#memory-scores"><i class="fa fa-check"></i><b>3.4</b> Memory scores</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="data-preparation.html"><a href="data-preparation.html#based-on-randomly-distributed-1000-locations-within-the-arena"><i class="fa fa-check"></i><b>3.4.1</b> Based on randomly distributed 1000 locations within the arena</a></li>
+<li class="chapter" data-level="3.4.2" data-path="data-preparation.html"><a href="data-preparation.html#based-on-1000-locations-taken-from-the-participants-trajectory"><i class="fa fa-check"></i><b>3.4.2</b> Based on 1000 locations taken from the participant’s trajectory</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="data-preparation.html"><a href="data-preparation.html#saving-the-compiled-dataset"><i class="fa fa-check"></i><b>3.5</b> Saving the compiled dataset</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="analysis.html"><a href="analysis.html"><i class="fa fa-check"></i><b>4</b> Analysis</a><ul>
+<li class="chapter" data-level="4.1" data-path="analysis.html"><a href="analysis.html#hypothesis"><i class="fa fa-check"></i><b>4.1</b> Hypothesis</a></li>
+<li class="chapter" data-level="4.2" data-path="analysis.html"><a href="analysis.html#set-up"><i class="fa fa-check"></i><b>4.2</b> Set up</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="analysis.html"><a href="analysis.html#exclusion-criteria"><i class="fa fa-check"></i><b>4.2.1</b> Exclusion criteria</a></li>
+<li class="chapter" data-level="4.2.2" data-path="analysis.html"><a href="analysis.html#timeout-sessions"><i class="fa fa-check"></i><b>4.2.2</b> Timeout sessions</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="analysis.html"><a href="analysis.html#incomplete-datasets"><i class="fa fa-check"></i><b>4.3</b> Incomplete datasets</a></li>
+<li class="chapter" data-level="4.4" data-path="analysis.html"><a href="analysis.html#descriptives"><i class="fa fa-check"></i><b>4.4</b> Descriptives</a></li>
+<li class="chapter" data-level="4.5" data-path="analysis.html"><a href="analysis.html#block-1-performance"><i class="fa fa-check"></i><b>4.5</b> Block 1 Performance</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="analysis.html"><a href="analysis.html#recalled-locations"><i class="fa fa-check"></i><b>4.5.1</b> Recalled locations</a></li>
+<li class="chapter" data-level="4.5.2" data-path="analysis.html"><a href="analysis.html#memory-score"><i class="fa fa-check"></i><b>4.5.2</b> Memory score</a></li>
+<li class="chapter" data-level="4.5.3" data-path="analysis.html"><a href="analysis.html#distance-from-remembered-locations-to-other-locations"><i class="fa fa-check"></i><b>4.5.3</b> Distance from remembered locations to other locations</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="analysis.html"><a href="analysis.html#cue-differences"><i class="fa fa-check"></i><b>4.6</b> Cue Differences</a><ul>
+<li class="chapter" data-level="4.6.1" data-path="analysis.html"><a href="analysis.html#relative-influence"><i class="fa fa-check"></i><b>4.6.1</b> Relative Influence</a></li>
+<li class="chapter" data-level="4.6.2" data-path="analysis.html"><a href="analysis.html#distance-error-differences"><i class="fa fa-check"></i><b>4.6.2</b> Distance Error Differences</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="analysis.html"><a href="analysis.html#miniblocks-learning"><i class="fa fa-check"></i><b>4.7</b> Miniblocks Learning</a><ul>
+<li class="chapter" data-level="4.7.1" data-path="analysis.html"><a href="analysis.html#graphs"><i class="fa fa-check"></i><b>4.7.1</b> Graphs</a></li>
+<li class="chapter" data-level="4.7.2" data-path="analysis.html"><a href="analysis.html#miniblock-1"><i class="fa fa-check"></i><b>4.7.2</b> Miniblock 1</a></li>
+<li class="chapter" data-level="4.7.3" data-path="analysis.html"><a href="analysis.html#mixed-models"><i class="fa fa-check"></i><b>4.7.3</b> Mixed Models</a></li>
+</ul></li>
+<li class="chapter" data-level="4.8" data-path="analysis.html"><a href="analysis.html#age"><i class="fa fa-check"></i><b>4.8</b> Age</a><ul>
+<li class="chapter" data-level="4.8.1" data-path="analysis.html"><a href="analysis.html#relative-influence-1"><i class="fa fa-check"></i><b>4.8.1</b> Relative Influence</a></li>
+<li class="chapter" data-level="4.8.2" data-path="analysis.html"><a href="analysis.html#cue-dissonance"><i class="fa fa-check"></i><b>4.8.2</b> Cue dissonance</a></li>
+<li class="chapter" data-level="4.8.3" data-path="analysis.html"><a href="analysis.html#distance-error"><i class="fa fa-check"></i><b>4.8.3</b> Distance error</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html"><i class="fa fa-check"></i><b>5</b> Angle estimation analysis</a><ul>
+<li class="chapter" data-level="5.1" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#set-up-1"><i class="fa fa-check"></i><b>5.1</b> Set up</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#exclusion-criteria-1"><i class="fa fa-check"></i><b>5.1.1</b> Exclusion criteria</a></li>
+<li class="chapter" data-level="5.1.2" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#timeout-session"><i class="fa fa-check"></i><b>5.1.2</b> Timeout session</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#descriptives-1"><i class="fa fa-check"></i><b>5.2</b> Descriptives</a></li>
+<li class="chapter" data-level="5.3" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#block-1-performance-1"><i class="fa fa-check"></i><b>5.3</b> Block 1 Performance</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#raw-angle-error-visualization"><i class="fa fa-check"></i><b>5.3.1</b> Raw Angle Error Visualization</a></li>
+<li class="chapter" data-level="5.3.2" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#angle-error-stats"><i class="fa fa-check"></i><b>5.3.2</b> Angle Error Stats</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#cue-differences-1"><i class="fa fa-check"></i><b>5.4</b> Cue Differences</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#relative-influence-2"><i class="fa fa-check"></i><b>5.4.1</b> Relative Influence</a></li>
+<li class="chapter" data-level="5.4.2" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#angle-error-difference"><i class="fa fa-check"></i><b>5.4.2</b> Angle Error Difference</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#miniblocks-learning-1"><i class="fa fa-check"></i><b>5.5</b> Miniblocks Learning</a><ul>
+<li class="chapter" data-level="5.5.1" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#graphs-1"><i class="fa fa-check"></i><b>5.5.1</b> Graphs</a></li>
+<li class="chapter" data-level="5.5.2" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#miniblock-1-1"><i class="fa fa-check"></i><b>5.5.2</b> Miniblock 1</a></li>
+<li class="chapter" data-level="5.5.3" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#mixed-models-1"><i class="fa fa-check"></i><b>5.5.3</b> Mixed Models</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#age-1"><i class="fa fa-check"></i><b>5.6</b> Age</a><ul>
+<li class="chapter" data-level="5.6.1" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#relative-influence-3"><i class="fa fa-check"></i><b>5.6.1</b> Relative Influence</a></li>
+<li class="chapter" data-level="5.6.2" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#cue-dissonance-1"><i class="fa fa-check"></i><b>5.6.2</b> Cue dissonance</a></li>
+<li class="chapter" data-level="5.6.3" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#angle-error"><i class="fa fa-check"></i><b>5.6.3</b> Angle error</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="summary-tables-and-graphs.html"><a href="summary-tables-and-graphs.html"><i class="fa fa-check"></i><b>6</b> Summary tables and graphs</a><ul>
+<li class="chapter" data-level="6.1" data-path="summary-tables-and-graphs.html"><a href="summary-tables-and-graphs.html#relative-influence-mixed-model"><i class="fa fa-check"></i><b>6.1</b> Relative Influence Mixed Model</a></li>
+<li class="chapter" data-level="6.2" data-path="summary-tables-and-graphs.html"><a href="summary-tables-and-graphs.html#miniblocks"><i class="fa fa-check"></i><b>6.2</b> Miniblocks</a></li>
+<li class="chapter" data-level="6.3" data-path="summary-tables-and-graphs.html"><a href="summary-tables-and-graphs.html#relative-influence---miniblock-mixed-model"><i class="fa fa-check"></i><b>6.3</b> Relative Influence - Miniblock Mixed Model</a></li>
+<li class="chapter" data-level="6.4" data-path="summary-tables-and-graphs.html"><a href="summary-tables-and-graphs.html#cue-dissonance---miniblock-mixed-model"><i class="fa fa-check"></i><b>6.4</b> Cue Dissonance - Miniblock Mixed Model</a></li>
+<li class="chapter" data-level="6.5" data-path="summary-tables-and-graphs.html"><a href="summary-tables-and-graphs.html#relative-influence---age-mixed-model"><i class="fa fa-check"></i><b>6.5</b> Relative Influence - Age Mixed Model</a></li>
+<li class="chapter" data-level="6.6" data-path="summary-tables-and-graphs.html"><a href="summary-tables-and-graphs.html#cue-dissonance---age-mixed-model"><i class="fa fa-check"></i><b>6.6</b> Cue Dissonance - Age Mixed Model</a></li>
+<li class="chapter" data-level="6.7" data-path="summary-tables-and-graphs.html"><a href="summary-tables-and-graphs.html#raw-error---age-mixed-model"><i class="fa fa-check"></i><b>6.7</b> Raw Error - Age Mixed Model</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="credits.html"><a href="credits.html"><i class="fa fa-check"></i><b>7</b> Credits</a><ul>
+<li class="chapter" data-level="" data-path="credits.html"><a href="credits.html#references"><i class="fa fa-check"></i>References</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Data Preparation and Analysis</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="credits" class="section level1">
+<h1><span class="header-section-number">7</span> Credits</h1>
+<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="credits.html#cb251-1"></a><span class="kw">invisible</span>(grateful<span class="op">::</span><span class="kw">cite_packages</span>(<span class="dt">all.pkg =</span> <span class="ot">FALSE</span>, <span class="dt">include.rmd=</span><span class="ot">FALSE</span>, <span class="dt">style =</span> <span class="st">&quot;cell&quot;</span>,</span>
+<span id="cb251-2"><a href="credits.html#cb251-2"></a>                                  <span class="dt">out.format =</span> <span class="st">&quot;md&quot;</span>))</span></code></pre></div>
+<pre><code>## 
+## 
+## processing file: refs.Rmd</code></pre>
+<pre><code>## 
+  |                                                                            
+  |                                                                      |   0%
+  |                                                                            
+  |......................................................................| 100%
+##   ordinary text without R code</code></pre>
+<pre><code>## output file: refs.knit.md</code></pre>
+<pre><code>## /Applications/RStudio.app/Contents/MacOS/pandoc/pandoc +RTS -K512m -RTS refs.knit.md --to markdown_strict-yaml_metadata_block --from markdown+autolink_bare_uris+tex_math_single_backslash --output /Users/makova/Desktop/landmark_boundary/Full-analysis-scripts/citations.md --filter /Applications/RStudio.app/Contents/MacOS/pandoc/pandoc-citeproc</code></pre>
+<pre><code>## 
+## Output created: citations.md</code></pre>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="credits.html#cb257-1"></a>used_pkgs &lt;-<span class="kw">readLines</span>(<span class="kw">here</span>(<span class="st">&quot;citations.md&quot;</span>))</span>
+<span id="cb257-2"><a href="credits.html#cb257-2"></a></span>
+<span id="cb257-3"><a href="credits.html#cb257-3"></a>ref_line &lt;-<span class="st"> </span><span class="kw">which</span>(used_pkgs<span class="op">==</span><span class="st">&quot;References&quot;</span>)</span>
+<span id="cb257-4"><a href="credits.html#cb257-4"></a>used_pkgs[ref_line] &lt;-<span class="st"> &quot;### References {-}&quot;</span></span>
+<span id="cb257-5"><a href="credits.html#cb257-5"></a>used_pkgs[ref_line<span class="op">+</span><span class="dv">1</span>] &lt;-<span class="st"> &quot;&quot;</span></span></code></pre></div>
+<ul>
+<li>base (R Core Team, 2020)</li>
+<li>ggeffects (Lüdecke, 2018)</li>
+<li>reticulate (Ushey et al., 2021)</li>
+<li>grateful (Rodríguez-Sánchez and Hutchins, 2020)</li>
+<li>circular (Agostinelli and Lund, 2017)</li>
+<li>effsize (Torchiano, 2020)</li>
+<li>here (Müller, 2020)</li>
+<li>ggnewscale (Campitelli, 2021)</li>
+<li>Cairo (Urbanek and Horner, 2020)</li>
+<li>scico (Pedersen and Crameri, 2020)</li>
+<li>cowplot (Wilke, 2020)</li>
+<li>gghalves (Tiedemann, 2020)</li>
+<li>patchwork (Pedersen, 2020)</li>
+<li>ggsignif (Constantin and Patil, 2021)</li>
+<li>broom (Robinson et al., 2021)</li>
+<li>forcats (Wickham, 2021a)</li>
+<li>stringr (Wickham, 2019)</li>
+<li>dplyr (Wickham et al., 2021)</li>
+<li>purrr (Henry and Wickham, 2020)</li>
+<li>readr (Wickham and Hester, 2020)</li>
+<li>tidyr (Wickham, 2021b)</li>
+<li>tibble (Müller and Wickham, 2020)</li>
+<li>ggplot2 (Wickham, 2016)</li>
+<li>tidyverse (Wickham et al., 2019)</li>
+<li>sjPlot (Lüdecke, 2021)</li>
+<li>lme4 (Bates et al., 2015)</li>
+<li>Matrix (Bates and Maechler, 2019)</li>
+</ul>
+<div id="references" class="section level3 unnumbered">
+<h3>References</h3>
+<p>Agostinelli, C., and Lund, U. (2017). R package <code>circular</code>: Circular
+statistics (version 0.4-93) (CA: Department of Environmental Sciences,
+Informatics; Statistics, Ca’ Foscari University, Venice, Italy. UL:
+Department of Statistics, California Polytechnic State University, San
+Luis Obispo, California, USA).</p>
+<p>Bates, D., and Maechler, M. (2019). Matrix: Sparse and dense matrix
+classes and methods.</p>
+<p>Bates, D., Mächler, M., Bolker, B., and Walker, S. (2015). Fitting
+linear mixed-effects models using lme4. Journal of Statistical Software
+<em>67</em>, 1–48.</p>
+<p>Campitelli, E. (2021). Ggnewscale: Multiple fill and colour scales in
+’ggplot2’.</p>
+<p>Constantin, A.-E., and Patil, I. (2021). ggsignif: R package for
+displaying significance brackets for ’ggplot2’. PsyArxiv.</p>
+<p>Henry, L., and Wickham, H. (2020). Purrr: Functional programming tools.</p>
+<p>Lüdecke, D. (2018). Ggeffects: Tidy data frames of marginal effects from
+regression models. Journal of Open Source Software <em>3</em>, 772.</p>
+<p>Lüdecke, D. (2021). SjPlot: Data visualization for statistics in social
+science.</p>
+<p>Müller, K. (2020). Here: A simpler way to find your files.</p>
+<p>Müller, K., and Wickham, H. (2020). Tibble: Simple data frames.</p>
+<p>Pedersen, T.L. (2020). Patchwork: The composer of plots.</p>
+<p>Pedersen, T.L., and Crameri, F. (2020). Scico: Colour palettes based on
+the scientific colour-maps.</p>
+<p>R Core Team (2020). R: A language and environment for statistical
+computing (Vienna, Austria: R Foundation for Statistical Computing).</p>
+<p>Robinson, D., Hayes, A., and Couch, S. (2021). Broom: Convert
+statistical objects into tidy tibbles.</p>
+<p>Rodríguez-Sánchez, F., and Hutchins, S.D. (2020). Grateful: Facilitate
+citation of r packages.</p>
+<p>Tiedemann, F. (2020). Gghalves: Compose half-half plots using your
+favourite geoms.</p>
+<p>Torchiano, M. (2020). Effsize: Efficient effect size computation.</p>
+<p>Urbanek, S., and Horner, J. (2020). Cairo: R graphics device using cairo
+graphics library for creating high-quality bitmap (png, jpeg, tiff),
+vector (pdf, svg, postscript) and display (x11 and win32) output.</p>
+<p>Ushey, K., Allaire, J., and Tang, Y. (2021). Reticulate: Interface to
+’python’.</p>
+<p>Wickham, H. (2016). Ggplot2: Elegant graphics for data analysis
+(Springer-Verlag New York).</p>
+<p>Wickham, H. (2019). Stringr: Simple, consistent wrappers for common
+string operations.</p>
+<p>Wickham, H. (2021a). Forcats: Tools for working with categorical
+variables (factors).</p>
+<p>Wickham, H. (2021b). Tidyr: Tidy messy data.</p>
+<p>Wickham, H., and Hester, J. (2020). Readr: Read rectangular text data.</p>
+<p>Wickham, H., Averick, M., Bryan, J., Chang, W., McGowan, L.D., François,
+R., Grolemund, G., Hayes, A., Henry, L., Hester, J., et al. (2019).
+Welcome to the tidyverse. Journal of Open Source Software <em>4</em>, 1686.</p>
+<p>Wickham, H., François, R., Henry, L., and Müller, K. (2021). Dplyr: A
+grammar of data manipulation.</p>
+<p>Wilke, C.O. (2020). Cowplot: Streamlined plot theme and plot annotations
+for ’ggplot2’.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="summary-tables-and-graphs.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

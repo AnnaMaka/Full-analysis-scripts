@@ -11,8 +11,9 @@ saving-the-compiled-dataset
 analysis
 hypothesis
 set-up
-timeout-sessions
 exclusion-criteria
+timeout-sessions
+incomplete-datasets
 descriptives
 block-1-performance
 recalled-locations
@@ -47,6 +48,7 @@ mixed-models-1
 age-1
 relative-influence-3
 cue-dissonance-1
+angle-error
 summary-tables-and-graphs
 relative-influence-mixed-model
 miniblocks
@@ -54,3 +56,5 @@ relative-influence---miniblock-mixed-model
 cue-dissonance---miniblock-mixed-model
 relative-influence---age-mixed-model
 cue-dissonance---age-mixed-model
+raw-error---age-mixed-model
+credits

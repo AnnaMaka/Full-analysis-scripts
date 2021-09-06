@@ -82,25 +82,6 @@ Formatting for results output
 low_p <- "<0.001"
 ```
 
-
-### Timeout sessions
-
-Identifying and filtering timeout sessions which are encoded as distance error = -1 (an impossible value)
-
-```{r}
-#summary of timeout trials 
-timeout <- filter(Sum_all, error == -1)
-
-#filtering timeout trials as they do not include location estimation
-Sum_all <- filter(Sum_all, error != -1)
-```
-
-- number of timeout trials: `r nrow(timeout)`
-- number of participants with timeout trials: `r length(unique(timeout$ID))`
-- average number of timeout trials per participant with timeout trials: `r round(nrow(timeout)/length(unique(timeout$ID)), 3)` (sd = )
-- average number of timeout trials per participant: `r round(nrow(timeout)/length(subjects), 3)` (sd = )
-
-
 ### Exclusion criteria
 
 Participants are excluded based on performance in block 1 which is quantified using memory scores. 
@@ -175,6 +156,39 @@ for (i_sub in subjects) {
 
 - number of participants excluded: `r length(exclusion)`
 - new overall sample size: `r length(subjects)-length(exclusion)`
+
+
+### Timeout sessions
+
+Identifying and filtering timeout sessions which are encoded as distance error = -1 (an impossible value)
+
+```{r}
+#summary of timeout trials 
+timeout <- filter(Sum_all, error == -1)
+
+#filtering timeout trials as they do not include location estimation
+Sum_all <- filter(Sum_all, error != -1)
+```
+
+- number of timeout trials: `r nrow(timeout)`
+- number of participants with timeout trials: `r length(unique(timeout$ID))`
+- average number of timeout trials per participant with timeout trials: `r round(nrow(timeout)/length(unique(timeout$ID)), 3)` (sd = )
+- average number of timeout trials per participant: `r round(nrow(timeout)/length(subjects), 3)` (sd = )
+
+
+## Incomplete datasets
+````{r}
+incomplete <- Sum_all %>%
+  group_by(ID) %>%
+  summarise(n = n())
+
+complete <- length(subset(incomplete, n == 64)$n)
+incomplete <- length(subset(incomplete, n < 64)$n)
+```
+
+- complete datasets: `r complete` 
+- incomplete datasets: `r incomplete` 
+
 
 ## Descriptives
 
@@ -251,6 +265,7 @@ trial_length <- Sum_all %>%
 ```
 
 The average trial length was `r round(trial_length$mean, 3)` seconds (sd = `r round(trial_length$sd, 3)`).
+
 
 ## Block 1 Performance
 
@@ -1597,6 +1612,52 @@ ratioFullDist <- anova(modelFullDist, modelControlFullDist) %>% tidy()
 
 **$\chi^{2}$(1) = `r round(ratioFullDist$statistic[2],3)`, p`r if (ratioFullDist$p.value[2] > 0.001) {paste("=", round(ratioFullDist$p.value[2], 3))} else {low_p}`**
 
+**Cue-specific analysis**
+
+To see if age remains a significant predictor without cue, we ran mixed models separately for boundary-dependent and landmark-dependent objects and tested them with likelihood ratio test including only random intercepts for participants.
+
+```{r}
+#landmark-dependent objects
+formulaAgeLandmark <- "error ~ age_c + (1|ID)"
+modelAgeLandmark_error <- lme4::lmer(formula = formulaAgeLandmark, data=subset(subset_RI, cue=="landmark"))
+
+#control model
+controlAgeLandmark <- "error ~ 1 + (1 |ID)"
+modelControlAgeLandmark_error <- lme4::lmer(formula = controlAgeLandmark, data=subset(subset_RI, cue=="landmark"))
+
+#likelihood ratio test
+ratioAgeLandmark <- anova(modelAgeLandmark_error, modelControlAgeLandmark_error) %>% tidy()
+```
+
+**$\chi^{2}$(1) = `r round(ratioAgeLandmark$statistic[2], 3)`, p`r if (ratioAgeLandmark$p.value[2] > 0.001) {paste("=", round(ratioAgeLandmark$p.value[2], 3))} else {low_p}`**
+
+
+```{r}
+#boundary-dependent objects
+formulaAgeBoundary <- "error ~ age_c +(1|ID)"
+modelAgeBoundary_error <- lme4::lmer(formula = formulaAgeBoundary, data=subset(subset_RI, cue=="boundary"))
+
+#control model
+controlAgeBoundary <- "error ~ 1 + (1 |ID)"
+modelControlAgeBoundary_error <- lme4::lmer(formula = controlAgeBoundary, data=subset(subset_RI, cue=="boundary"))
+
+#likelihood ratio test 
+ratioAgeBoundary <- anova(modelAgeBoundary_error, modelControlAgeBoundary_error) %>% tidy()
+```
+
+**$\chi^{2}$(1) = `r round(ratioAgeBoundary$statistic[2],3)`, p`r if (ratioAgeBoundary$p.value[2] > 0.001) {paste("=", round(ratioAgeBoundary$p.value[2], 3))} else {low_p}`**
+
+
+```{r}
+tab_model(modelAgeLandmark_error, modelAgeBoundary_error, 
+          show.p = FALSE, show.se=TRUE, show.icc=FALSE,
+          digits = 4, digits.re = 4,
+          pred.labels = c("Intercept", "Age"), 
+          dv.labels = c("Landmark-dependent", "Boundary-dependent"), 
+          string.ci = "Conf. Int (95%)",  
+          string.se = "SE",
+          CSS = css_theme("cells")) 
+```
 
 
 **Explorative** 
@@ -1656,7 +1717,8 @@ distance_final <- ggplot(relativeInfluenceBlocks, aes(age, distanceError, color=
   scale_color_scico_d(palette = 'tokyo', begin=0.3, end=0.7, labels = c("Boundary", "Landmark")) +
   scale_x_continuous(breaks = c(8,9,10,11,12,13,14,15)) +
   labs(x= "Age", y = "Distance error (vm)", 
-       title = "Data", color="Cue") 
+       subtitle = "Data", title= "Positional Memory", color="Cue") +
+  theme(legend.position = "none")
   
 distance_final
 ```
@@ -1676,7 +1738,7 @@ distance_model <- ggplot(distance_predict, aes(x = x, y = predicted, colour = cu
   scale_x_continuous(breaks = sort(unique(Sum_all$age_c)), labels = c("8", "9", "10", "11", "12", "13", "14", "15")) +
   theme_cowplot() +
   labs(x="Age", y=" ", color="Cue", fill="Cue", 
-       title = "Mixed Model") + 
+       subtitle = "Mixed Model") + 
   theme(legend.position = "none") 
 
 distance_model

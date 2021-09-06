@@ -33,6 +33,7 @@ library(ggnewscale)
 library(here) 
 library(effsize)
 library(circular)
+library(grateful)
 ```
 
 Functions written for this analysis
@@ -1003,7 +1004,6 @@ m4_cueDisA$d <- d$estimate
 m4_cueDisA$dCI_low <- d$conf.int[[1]]
 m4_cueDisA$dCI_high <- d$conf.int[[2]]
 
-m1_cueDisA
 ```
 
 *miniblock 1:*
@@ -1301,6 +1301,138 @@ CueDisA_model <- ggplot(CueDisA_predict, aes(x = x, y = predicted, colour = cueP
 CueDisA_model
 ```
 
+### Angle error
+
+**Mixed Model**
+
+As our last dependent variable, we examine these two predictors (cue, age)  to absolute angle error.
+
+```{r}
+subset_RA <- mutate(subset_RA, absAngle = abs(angleError))
+  
+#full model
+formulaAngleError <- "absAngle ~ age_c*cueMM+(1+cueMM|ID)" 
+modelAngleError <- lme4::lmer(formula = formulaAngleError, data=subset_RA)
+
+tab_model(modelAngleError, 
+          show.p = FALSE, show.se=TRUE, show.icc=FALSE,
+          digits = 4, digits.re = 4,
+          pred.labels = c("Intercept","Age", "Cue", "Interaction"),  
+          dv.labels = "Angle Error", 
+          string.ci = "Conf. Int (95%)",
+          string.se = "SE", 
+          CSS = css_theme("cells")) 
+```
+
+The significance of the interaction was tested using likelihood ratio test. 
+
+```{r} 
+#control model
+controlAngleError <- "absAngle ~ age_c+cueMM+(1+cueMM|ID)"
+modelControlAngleError <- lme4::lmer(formula = controlAngleError, data=subset_RA)
+
+#likelihood ratio test
+ratioAngleError <- anova(modelAngleError, modelControlAngleError) %>% tidy()
+```
+
+**$\chi^{2}$(1) = `r round(ratioAngleError$statistic[2],3)`, p`r if (ratioAngleError$p.value[2] > 0.001) {paste("=", round(ratioAngleError$p.value[2], 3))} else {low_p}`**
+
+
+**Cue specific analysis**
+
+To see if age remains a significant predictor without cue, we ran mixed models separately for boundary-dependent and landmark-dependent objects and tested them with likelihood ratio test including only random intercepts for participants.
+
+```{r}
+#landmark-dependent objects only model
+formulaAgeLandmark <- "absAngle ~ age_c + (1|ID)"
+modelLandmarkAngleError <- lme4::lmer(formula = formulaAgeLandmark, data=subset(subset_RA, cue=="landmark"))
+
+#control model 
+controlAgeLandmark <- "absAngle ~ 1 + (1 |ID)"
+modelControlLandmarkError <- lme4::lmer(formula = controlAgeLandmark, data=subset(subset_RA, cue=="landmark"))
+
+#likelihood ratio test
+ratioLandmarkError <- anova(modelLandmarkAngleError, modelControlLandmarkError) %>% tidy()
+```
+
+**$\chi^{2}$(1) = `r round(ratioLandmarkError$statistic[2],3)`, p`r if (ratioLandmarkError$p.value[2] > 0.001) {paste("=", round(ratioLandmarkError$p.value[2], 3))} else {low_p}`**
+
+
+```{r}
+#boundary-dependent objects only model
+formulaAgeBoundary <- "absAngle ~ age_c + (1|ID)"
+modelBoundaryAngleError <- lme4::lmer(formula = formulaAgeBoundary, data=subset(subset_RA, cue=="boundary"))
+
+#control model
+controlAgeBoundary <- "absAngle ~ 1 + (1 |ID)"
+modelControlBoundaryError <- lme4::lmer(formula = controlAgeBoundary, data=subset(subset_RA, cue=="boundary"))
+
+#likelihood ratio test
+ratioBoundaryError <- anova(modelBoundaryAngleError, modelControlBoundaryError) %>% tidy()
+```
+
+**$\chi^{2}$(1) = `r round(ratioBoundaryError$statistic[2],3)`, p`r if (ratioBoundaryError$p.value[2] > 0.001) {paste("=", round(ratioBoundaryError$p.value[2], 3))} else {low_p}`**
+
+
+```{r}
+tab_model(modelLandmarkAngleError, modelBoundaryAngleError, 
+          show.p = FALSE, show.se=TRUE, show.icc=FALSE,
+          digits = 4, digits.re = 4,
+          pred.labels = c("Intercept", "Age"),  
+          dv.labels = c("Landmark-dependent", "Boundary-dependent"), 
+          string.ci = "Conf. Int (95%)", 
+          string.se = "SE",
+          CSS = css_theme("cells")) 
+```
+
+
+**Graphs**
+
+The graph below visualizes how the angle error improves with age as seen in collected data.
+
+```{r}
+AE_final <- ggplot(relativeAngleBlocks, aes(age, angleErr, color=cue)) + 
+  theme_cowplot() +
+  scale_color_scico_d(palette = 'tokyo', begin=0.8, end=0.2, guide = FALSE) +
+  stat_summary(fun.data = mean_se,geom="errorbar", size=0.8, width=0.1, alpha=0.95) +
+  stat_summary(fun=mean, aes(group=cue), geom="line", size = 1.5) +
+  stat_summary(fun=mean, aes(group=cue), geom="point", size = 2) +
+  new_scale_color() + 
+  geom_point(data = relativeAngleBlocks, aes(color=cue)) + 
+  scale_color_scico_d(palette = 'tokyo', begin=0.7, end=0.3, labels = c("Landmark", "Boundary"), guide = guide_legend(reverse = TRUE)) +
+  scale_x_continuous(breaks = c(8,9,10,11,12,13,14,15)) +
+  labs(x= "Age", y = "Angle Error (°)", 
+       title= "Pointing", subtitle = "Data", color="Cue") +
+  theme(legend.position = "bottom")
+  
+  
+AE_final
+```
+
+The graph below visualizes the relative influence age-dependent improvement based on a mixed model predictions.
+
+```{r }
+# calculating values predicted by the mixed model
+AE_predict <- ggeffects::ggpredict(modelAngleError, terms = c("age_c", "cueMM")) %>% 
+  as_tibble() %>%
+  mutate(cuePredict = factor(if_else(group == 1, true = "boundary", false = "landmark"),
+                      levels = c("boundary", "landmark")))
+
+AE_model <- ggplot(AE_predict, aes(x = x, y = predicted, colour = cuePredict, fill = cuePredict)) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high), alpha = .2, linetype=0) +
+  geom_line(size = 0.5) +
+  scale_color_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
+  scale_fill_scico_d(palette = 'tokyo', begin=0.2, end=0.8, labels = c("Boundary", "Landmark")) +
+  scale_x_continuous(breaks = sort(unique(Sum_all$age_c)), labels = c("8", "9", "10", "11", "12", "13", "14", "15")) +
+  theme_cowplot() +
+  labs(x="Age", y=" ", color="Cue", fill="Cue", 
+       subtitle = "Mixed Model", title= "  ") + 
+  theme(legend.position = "bottom") 
+
+AE_model
+```
+
+
 # Summary tables and graphs
 
 ## Relative Influence Mixed Model
@@ -1546,3 +1678,82 @@ ggsave("cueDissonance.png", plot=g_finalCD,
 
 g_finalCD
 ```
+
+## Raw Error - Age Mixed Model
+
+**Table**
+
+```{r}
+tab_model(modelFullDist, modelAngleError, 
+          show.p = FALSE, show.se=TRUE, show.icc=FALSE,
+          digits = 4, digits.re = 4,
+          pred.labels = c("Intercept","Age", "Cue", "Interaction"),  
+          dv.labels = c("Positional Memory", "Pointing"), 
+          string.ci = "Conf. Int (95%)", 
+          string.se = "SE",
+          CSS = css_theme("cells")) 
+```
+
+
+Summary with all cue specific mixed models with age as predictor
+
+```{r}
+tab_model(modelAgeLandmark_error, modelAgeBoundary_error, modelLandmarkAngleError, modelBoundaryAngleError, 
+          show.p = FALSE, show.se=TRUE, show.icc=FALSE,
+          digits = 4, digits.re = 4,
+          pred.labels = c("Intercept", "Age"),  
+          dv.labels = c("Positional Memory:\nLandmark-dependent", "Positional Memory:\nBoundary-dependent", 
+                        "Pointing:\nLandmark-dependent", "Pointing:\nBoundary-dependent"), 
+          string.ci = "Conf. Int (95%)", 
+          string.se = "SE",
+          CSS = css_theme("cells")) 
+```
+
+**Graphs**
+
+```{r}
+layout <- "
+AAAAA#BBBBBB
+AAAAA#BBBBBB
+AAAAA#BBBBBB
+CCCCC#DDDDDD
+CCCCC#DDDDDD
+CCCCC#DDDDDD
+"
+
+g_finalRE <- distance_final + distance_model + AE_final + AE_model +
+  plot_layout(design=layout) &
+  theme(axis.title = element_text(size = 10), axis.text = element_text(size=10), 
+        legend.title = element_text(size=10), legend.text = element_text(size=10), 
+        legend.direction = "horizontal", 
+        plot.subtitle = element_text(size=12, face="italic"),
+        plot.title = element_text(size=12, face="bold"),
+        plot.tag = element_text(size = 10, face="bold", vjust = 3, hjust=-1.5)) &
+  plot_annotation(title = 'Raw Error Improvement with Age',
+                  theme = theme(plot.title = element_text(size = 12, face="bold")),
+                  tag_levels = 'A')
+
+ggsave("rawError.pdf", plot=g_finalRE, 
+       units = "cm", width = 15.9, height = 18, dpi = "retina", device = cairo_pdf, path = here("figures"))
+ggsave("rawError.png", plot=g_finalRE, 
+       units = "cm", width = 15.9, height = 18, dpi = "retina", device = "png", path = here("figures"))
+
+g_finalRE
+```
+
+# Credits
+
+```{r}
+invisible(grateful::cite_packages(all.pkg = FALSE, include.rmd=FALSE, style = "cell",
+                                  out.format = "md"))
+```
+
+```{r}
+used_pkgs <-readLines(here("citations.md"))
+
+ref_line <- which(used_pkgs=="References")
+used_pkgs[ref_line] <- "### References {-}"
+used_pkgs[ref_line+1] <- ""
+```
+
+`r  paste(used_pkgs, collapse = '\n')`

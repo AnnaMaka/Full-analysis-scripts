@@ -12,6 +12,7 @@ output:
 
 ```{r}
 library(reticulate)
+library(here)
 ```
 
 This script is written in Python
@@ -61,10 +62,10 @@ def distance(landmark, obj):
    return d
 ````
 
-```{python, warning=FALSE, results=FALSE}
+```{python, warning = FALSE, results = FALSE, eval=FALSE}
 origin = [0,0,0]
 codes =[]
-r = 1
+part = 1
 for i in range(1): #number adjusted for the target amount of participants
     #objList
     objName = ["none","flower","slime","lamp","partyhat"]
@@ -223,7 +224,7 @@ for i in range(1): #number adjusted for the target amount of participants
     landmark_x = [landmarkPos[1][0], landmarkPos[2][0], landmarkPos[3][0], landmarkPos[4][0]]
     landmark_y = [landmarkPos[1][2], landmarkPos[2][2], landmarkPos[3][2], landmarkPos[4][2]]
     
-    pp = PdfPages('input_figs_' + str(r) +'.pdf')
+    pp = PdfPages('input_figs_' + str(part) +'.pdf')
     
 
     for i in range(4):
@@ -268,17 +269,85 @@ for i in range(1): #number adjusted for the target amount of participants
     json_dump = json.dumps(json_data)
     json_input = json.loads(json_dump)
     
-    '''
+    
     #saves the created json to the current folder
-    with open('psub'+str(r)+'_inputParam.json','w') as json_file:
+    with open('psub'+str(part)+'_inputParam.json','w') as json_file:
         json.dump(json_input, json_file)
-    '''
-        
-    r += 1
+
 ```
 
+**Block 1 - 4 Objects' Locations**
+![ ](`r here("block1-2.png")`)
+![ ](`r here("block3-4.png")`)
 
-```{python, warning=FALSE, results=FALSE}
+
+```{python, warning=FALSE, results=FALSE, eval=FALSE}
+#location restrictions 
+i=2
+circle1 = plt.Circle((0,0), 27.5, color='black', fill=False)
+circle2 = plt.Circle((0,0), 19.5, color='blue', fill=False, alpha=0.6)
+circle3 = plt.Circle((0,0), 14.5, color='blue', fill=False, alpha=0.6)
+circle4 = plt.Circle((landmark_x[i], landmark_y[i]), 13, color='red', fill=False,alpha=0.6)
+circle5 = plt.Circle((landmark_x[i], landmark_y[i]), 8, color='red', fill=False, alpha=0.6)
+fig, ax = plt.subplots()
+plt.xlim(-28,28)
+plt.ylim(-28,28)
+ax.set_aspect(1)
+ax.add_artist(circle1)
+ax.add_artist(circle2)
+ax.add_artist(circle3)
+ax.add_artist(circle4)
+ax.add_artist(circle5)
+plt.plot(landmark_x[i], landmark_y[i], 'xr')
+plt.plot(objLoc[i][bounBound1][0], objLoc[i][bounBound1][2], 'ob')
+plt.plot(objLoc[i][bounBound2][0], objLoc[i][bounBound2][2], 'ob')
+plt.plot(objLoc[i][landBound1][0], objLoc[i][landBound1][2], 'or')
+plt.plot(objLoc[i][landBound2][0], objLoc[i][landBound2][2], 'or')
+plt.title('Block '+str(i+1), fontsize=8)
+plt.show()
+```
+
+**Location Restrictions**
+![ ](`r here("positionRestrictions.png")`)
+
+
+```{python, warning=FALSE, results=FALSE, eval=FALSE}
+#visualising restrictions for new landmakr position in block 3
+
+i=1
+circle1 = plt.Circle((0,0), 27.5, color='black', fill=False) #arena
+circle2 = plt.Circle((0,0), 25, color='black', fill=False, alpha=0.3) #where objects can be located
+circle4 = plt.Circle((landmark_x[i], landmark_y[i]), 9, color='green', fill=False, alpha=0.5)
+circle6 = plt.Circle((landmark_x[0], landmark_y[0]), 9, color='green', fill=False, alpha=0.5) #minimal change of landmark
+circle5 = plt.Circle((landmark_x[i], landmark_y[i]), 5, color='black', fill=False, alpha=0.3) #minimal distance of objects from the landmark
+circle10 = plt.Circle((objLoc[i][bounBound1][0], objLoc[i][bounBound1][2]), 5, color='green', fill=False, alpha=0.5) #landmark cannot be inside these circles in the next blocks
+circle11 = plt.Circle((objLoc[i][bounBound2][0], objLoc[i][bounBound2][2]), 5, color='green', fill=False, alpha=0.5)
+fig, ax = plt.subplots()
+plt.xlim(-30,30)
+plt.ylim(-30,30)
+ax.set_aspect(1)
+ax.add_artist(circle1)
+ax.add_artist(circle2)
+ax.add_artist(circle4)
+ax.add_artist(circle5)
+ax.add_artist(circle6)
+ax.add_artist(circle10)
+ax.add_artist(circle11)
+plt.plot(landmark_x[i], landmark_y[i], 'xr')
+plt.plot(landmark_x[2], landmark_y[2], 'xg')
+plt.plot(objLoc[i][bounBound1][0], objLoc[i][bounBound1][2], 'ob')
+plt.plot(objLoc[i][bounBound2][0], objLoc[i][bounBound2][2], 'ob')
+plt.plot(objLoc[i][landBound1][0], objLoc[i][landBound1][2], 'or')
+plt.plot(objLoc[i][landBound2][0], objLoc[i][landBound2][2], 'or')
+plt.title('Block '+str(i+1), fontsize=8)
+plt.show()
+```
+
+**Landmark Movement Restrictions**
+![ ](`r here("landmarkMovement.png")`)
+
+
+```{python, warning=FALSE, results=FALSE, eval=FALSE}
 #visualizing the feedback ratios
 circle1 = plt.Circle((0,0), 25, color='black', fill=False, alpha=0.3)
 circle2 = plt.Circle((0,0), 27.5, color='black', fill=False)
@@ -305,69 +374,5 @@ plt.title('Block '+str(i+1), fontsize=8)
 plt.show()
 ```
 
-
-```{python, warning=FALSE, results=FALSE}
-#new restrictions 
-i=2
-circle1 = plt.Circle((0,0), 27.5, color='black', fill=False)
-circle2 = plt.Circle((0,0), 19.5, color='blue', fill=False, alpha=0.6)
-circle3 = plt.Circle((0,0), 14.5, color='blue', fill=False, alpha=0.6)
-circle4 = plt.Circle((landmark_x[i], landmark_y[i]), 13, color='red', fill=False,alpha=0.6)
-circle5 = plt.Circle((landmark_x[i], landmark_y[i]), 8, color='red', fill=False, alpha=0.6)
-fig, ax = plt.subplots()
-plt.xlim(-28,28)
-plt.ylim(-28,28)
-ax.set_aspect(1)
-ax.add_artist(circle1)
-ax.add_artist(circle2)
-ax.add_artist(circle3)
-ax.add_artist(circle4)
-ax.add_artist(circle5)
-plt.plot(landmark_x[i], landmark_y[i], 'xr')
-plt.plot(objLoc[i][bounBound1][0], objLoc[i][bounBound1][2], 'ob')
-plt.plot(objLoc[i][bounBound2][0], objLoc[i][bounBound2][2], 'ob')
-plt.plot(objLoc[i][landBound1][0], objLoc[i][landBound1][2], 'or')
-plt.plot(objLoc[i][landBound2][0], objLoc[i][landBound2][2], 'or')
-plt.title('Block '+str(i+1), fontsize=8)
-plt.show()
-```
-
-```{python, warning=FALSE, results=FALSE}
-#visualising restrictions of positions/movements
-
-i=1
-circle1 = plt.Circle((0,0), 27.5, color='black', fill=False) #arena
-circle2 = plt.Circle((0,0), 25, color='black', fill=False, alpha=0.3) #where objects can be located
-circle4 = plt.Circle((landmark_x[i], landmark_y[i]), 9, color='green', fill=False, alpha=0.5)
-circle6 = plt.Circle((landmark_x[0], landmark_y[0]), 9, color='green', fill=False, alpha=0.5) #minimal change of landmark
-circle5 = plt.Circle((landmark_x[i], landmark_y[i]), 5, color='black', fill=False, alpha=0.3) #minimal distance of objects from the landmark
-#circle6 = plt.Circle((objLoc[i][bounBound1][0], objLoc[i][bounBound1][2]), 9, color='orange', fill=False, alpha=0.5) #other objects cannot be inside of these circles
-circle10 = plt.Circle((objLoc[i][bounBound1][0], objLoc[i][bounBound1][2]), 5, color='green', fill=False, alpha=0.5) #landmark cannot be inside these circles in the next blocks
-#circle7 = plt.Circle((objLoc[i][bounBound2][0], objLoc[i][bounBound2][2]), 9, color='orange', fill=False, alpha=0.5)
-circle11 = plt.Circle((objLoc[i][bounBound2][0], objLoc[i][bounBound2][2]), 5, color='green', fill=False, alpha=0.5)
-#circle8 = plt.Circle((objLoc[i][landBound1][0], objLoc[i][landBound1][2]), 9, color='orange', fill=False, alpha=0.5)
-#circle9 = plt.Circle((objLoc[i][landBound2][0], objLoc[i][landBound2][2]), 9, color='orange', fill=False, alpha=0.5)
-fig, ax = plt.subplots()
-plt.xlim(-30,30)
-plt.ylim(-30,30)
-ax.set_aspect(1)
-ax.add_artist(circle1)
-ax.add_artist(circle2)
-ax.add_artist(circle4)
-ax.add_artist(circle5)
-ax.add_artist(circle6)
-#ax.add_artist(circle7)
-#ax.add_artist(circle8)
-#ax.add_artist(circle9)
-ax.add_artist(circle10)
-ax.add_artist(circle11)
-plt.plot(landmark_x[i], landmark_y[i], 'xr')
-plt.plot(landmark_x[2], landmark_y[2], 'xg')
-plt.plot(objLoc[i][bounBound1][0], objLoc[i][bounBound1][2], 'ob')
-plt.plot(objLoc[i][bounBound2][0], objLoc[i][bounBound2][2], 'ob')
-plt.plot(objLoc[i][landBound1][0], objLoc[i][landBound1][2], 'or')
-plt.plot(objLoc[i][landBound2][0], objLoc[i][landBound2][2], 'or')
-plt.title('Block '+str(i+1), fontsize=8)
-plt.show()
-```
-
+**Feedback Ratios**
+![ ](`r here("feedbackRatios.png")`)
