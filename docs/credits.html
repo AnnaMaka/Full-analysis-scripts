@@ -134,7 +134,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <ul class="summary">
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Experiment Overview</a></li>
-<li class="chapter" data-level="2" data-path="randomisation-script.html"><a href="randomisation-script.html"><i class="fa fa-check"></i><b>2</b> Randomisation script</a></li>
+<li class="chapter" data-level="2" data-path="randomisation-script.html"><a href="randomisation-script.html"><i class="fa fa-check"></i><b>2</b> Randomisation script</a><ul>
+<li class="chapter" data-level="2.1" data-path="randomisation-script.html"><a href="randomisation-script.html#set-up"><i class="fa fa-check"></i><b>2.1</b> Set Up</a></li>
+<li class="chapter" data-level="2.2" data-path="randomisation-script.html"><a href="randomisation-script.html#assigning-dependency-and-generating-objects-locations"><i class="fa fa-check"></i><b>2.2</b> Assigning dependency and generating objects’ locations</a></li>
+<li class="chapter" data-level="2.3" data-path="randomisation-script.html"><a href="randomisation-script.html#visualisation-of-location-restrictions"><i class="fa fa-check"></i><b>2.3</b> Visualisation of location restrictions</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="randomisation-script.html"><a href="randomisation-script.html#for-stimulus-objects"><i class="fa fa-check"></i><b>2.3.1</b> For stimulus objects</a></li>
+<li class="chapter" data-level="2.3.2" data-path="randomisation-script.html"><a href="randomisation-script.html#for-landmark"><i class="fa fa-check"></i><b>2.3.2</b> For landmark</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="randomisation-script.html"><a href="randomisation-script.html#visualisation-of-feedback-levels"><i class="fa fa-check"></i><b>2.4</b> Visualisation of Feedback Levels</a></li>
+</ul></li>
 <li class="chapter" data-level="3" data-path="data-preparation.html"><a href="data-preparation.html"><i class="fa fa-check"></i><b>3</b> Data Preparation</a><ul>
 <li class="chapter" data-level="3.1" data-path="data-preparation.html"><a href="data-preparation.html#setup"><i class="fa fa-check"></i><b>3.1</b> Setup</a></li>
 <li class="chapter" data-level="3.2" data-path="data-preparation.html"><a href="data-preparation.html#summary-and-angle-files"><i class="fa fa-check"></i><b>3.2</b> Summary and Angle files</a></li>
@@ -147,7 +155,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="4" data-path="analysis.html"><a href="analysis.html"><i class="fa fa-check"></i><b>4</b> Analysis</a><ul>
 <li class="chapter" data-level="4.1" data-path="analysis.html"><a href="analysis.html#hypothesis"><i class="fa fa-check"></i><b>4.1</b> Hypothesis</a></li>
-<li class="chapter" data-level="4.2" data-path="analysis.html"><a href="analysis.html#set-up"><i class="fa fa-check"></i><b>4.2</b> Set up</a><ul>
+<li class="chapter" data-level="4.2" data-path="analysis.html"><a href="analysis.html#set-up-1"><i class="fa fa-check"></i><b>4.2</b> Set up</a><ul>
 <li class="chapter" data-level="4.2.1" data-path="analysis.html"><a href="analysis.html#exclusion-criteria"><i class="fa fa-check"></i><b>4.2.1</b> Exclusion criteria</a></li>
 <li class="chapter" data-level="4.2.2" data-path="analysis.html"><a href="analysis.html#timeout-sessions"><i class="fa fa-check"></i><b>4.2.2</b> Timeout sessions</a></li>
 </ul></li>
@@ -174,7 +182,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html"><i class="fa fa-check"></i><b>5</b> Angle estimation analysis</a><ul>
-<li class="chapter" data-level="5.1" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#set-up-1"><i class="fa fa-check"></i><b>5.1</b> Set up</a><ul>
+<li class="chapter" data-level="5.1" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#set-up-2"><i class="fa fa-check"></i><b>5.1</b> Set up</a><ul>
 <li class="chapter" data-level="5.1.1" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#exclusion-criteria-1"><i class="fa fa-check"></i><b>5.1.1</b> Exclusion criteria</a></li>
 <li class="chapter" data-level="5.1.2" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#timeout-session"><i class="fa fa-check"></i><b>5.1.2</b> Timeout session</a></li>
 </ul></li>
@@ -235,10 +243,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 
 ## processing file: refs.Rmd</code></pre>
 <pre><code>## 
-  |                                                                            
-  |                                                                      |   0%
-  |                                                                            
-  |......................................................................| 100%
+  |                                                                                                                                                                                                                                 
+  |                                                                                                                                                                                                                           |   0%
+  |                                                                                                                                                                                                                                 
+  |...........................................................................................................................................................................................................................| 100%
 ##   ordinary text without R code</code></pre>
 <pre><code>## output file: refs.knit.md</code></pre>
 <pre><code>## /Applications/RStudio.app/Contents/MacOS/pandoc/pandoc +RTS -K512m -RTS refs.knit.md --to markdown_strict-yaml_metadata_block --from markdown+autolink_bare_uris+tex_math_single_backslash --output /Users/makova/Desktop/landmark_boundary/Full-analysis-scripts/citations.md --filter /Applications/RStudio.app/Contents/MacOS/pandoc/pandoc-citeproc</code></pre>
@@ -251,19 +259,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb257-5"><a href="credits.html#cb257-5"></a>used_pkgs[ref_line<span class="op">+</span><span class="dv">1</span>] &lt;-<span class="st"> &quot;&quot;</span></span></code></pre></div>
 <ul>
 <li>base (R Core Team, 2020)</li>
-<li>ggeffects (Lüdecke, 2018)</li>
-<li>reticulate (Ushey et al., 2021)</li>
 <li>grateful (Rodríguez-Sánchez and Hutchins, 2020)</li>
 <li>circular (Agostinelli and Lund, 2017)</li>
-<li>effsize (Torchiano, 2020)</li>
-<li>here (Müller, 2020)</li>
-<li>ggnewscale (Campitelli, 2021)</li>
 <li>Cairo (Urbanek and Horner, 2020)</li>
-<li>scico (Pedersen and Crameri, 2020)</li>
-<li>cowplot (Wilke, 2020)</li>
-<li>gghalves (Tiedemann, 2020)</li>
 <li>patchwork (Pedersen, 2020)</li>
 <li>ggsignif (Constantin and Patil, 2021)</li>
+<li>ggeffects (Lüdecke, 2018)</li>
+<li>ggnewscale (Campitelli, 2021)</li>
+<li>gghalves (Tiedemann, 2020)</li>
+<li>cowplot (Wilke, 2020)</li>
+<li>scico (Pedersen and Crameri, 2020)</li>
+<li>effsize (Torchiano, 2020)</li>
+<li>sjPlot (Lüdecke, 2021)</li>
+<li>lme4 (Bates et al., 2015)</li>
+<li>Matrix (Bates and Maechler, 2019)</li>
 <li>broom (Robinson et al., 2021)</li>
 <li>forcats (Wickham, 2021a)</li>
 <li>stringr (Wickham, 2019)</li>
@@ -274,9 +283,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>tibble (Müller and Wickham, 2020)</li>
 <li>ggplot2 (Wickham, 2016)</li>
 <li>tidyverse (Wickham et al., 2019)</li>
-<li>sjPlot (Lüdecke, 2021)</li>
-<li>lme4 (Bates et al., 2015)</li>
-<li>Matrix (Bates and Maechler, 2019)</li>
+<li>here (Müller, 2020)</li>
+<li>reticulate (Ushey et al., 2021)</li>
 </ul>
 <div id="references" class="section level3 unnumbered">
 <h3>References</h3>

@@ -134,7 +134,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <ul class="summary">
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Experiment Overview</a></li>
-<li class="chapter" data-level="2" data-path="randomisation-script.html"><a href="randomisation-script.html"><i class="fa fa-check"></i><b>2</b> Randomisation script</a></li>
+<li class="chapter" data-level="2" data-path="randomisation-script.html"><a href="randomisation-script.html"><i class="fa fa-check"></i><b>2</b> Randomisation script</a><ul>
+<li class="chapter" data-level="2.1" data-path="randomisation-script.html"><a href="randomisation-script.html#set-up"><i class="fa fa-check"></i><b>2.1</b> Set Up</a></li>
+<li class="chapter" data-level="2.2" data-path="randomisation-script.html"><a href="randomisation-script.html#assigning-dependency-and-generating-objects-locations"><i class="fa fa-check"></i><b>2.2</b> Assigning dependency and generating objects’ locations</a></li>
+<li class="chapter" data-level="2.3" data-path="randomisation-script.html"><a href="randomisation-script.html#visualisation-of-location-restrictions"><i class="fa fa-check"></i><b>2.3</b> Visualisation of location restrictions</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="randomisation-script.html"><a href="randomisation-script.html#for-stimulus-objects"><i class="fa fa-check"></i><b>2.3.1</b> For stimulus objects</a></li>
+<li class="chapter" data-level="2.3.2" data-path="randomisation-script.html"><a href="randomisation-script.html#for-landmark"><i class="fa fa-check"></i><b>2.3.2</b> For landmark</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="randomisation-script.html"><a href="randomisation-script.html#visualisation-of-feedback-levels"><i class="fa fa-check"></i><b>2.4</b> Visualisation of Feedback Levels</a></li>
+</ul></li>
 <li class="chapter" data-level="3" data-path="data-preparation.html"><a href="data-preparation.html"><i class="fa fa-check"></i><b>3</b> Data Preparation</a><ul>
 <li class="chapter" data-level="3.1" data-path="data-preparation.html"><a href="data-preparation.html#setup"><i class="fa fa-check"></i><b>3.1</b> Setup</a></li>
 <li class="chapter" data-level="3.2" data-path="data-preparation.html"><a href="data-preparation.html#summary-and-angle-files"><i class="fa fa-check"></i><b>3.2</b> Summary and Angle files</a></li>
@@ -147,7 +155,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="4" data-path="analysis.html"><a href="analysis.html"><i class="fa fa-check"></i><b>4</b> Analysis</a><ul>
 <li class="chapter" data-level="4.1" data-path="analysis.html"><a href="analysis.html#hypothesis"><i class="fa fa-check"></i><b>4.1</b> Hypothesis</a></li>
-<li class="chapter" data-level="4.2" data-path="analysis.html"><a href="analysis.html#set-up"><i class="fa fa-check"></i><b>4.2</b> Set up</a><ul>
+<li class="chapter" data-level="4.2" data-path="analysis.html"><a href="analysis.html#set-up-1"><i class="fa fa-check"></i><b>4.2</b> Set up</a><ul>
 <li class="chapter" data-level="4.2.1" data-path="analysis.html"><a href="analysis.html#exclusion-criteria"><i class="fa fa-check"></i><b>4.2.1</b> Exclusion criteria</a></li>
 <li class="chapter" data-level="4.2.2" data-path="analysis.html"><a href="analysis.html#timeout-sessions"><i class="fa fa-check"></i><b>4.2.2</b> Timeout sessions</a></li>
 </ul></li>
@@ -174,7 +182,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html"><i class="fa fa-check"></i><b>5</b> Angle estimation analysis</a><ul>
-<li class="chapter" data-level="5.1" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#set-up-1"><i class="fa fa-check"></i><b>5.1</b> Set up</a><ul>
+<li class="chapter" data-level="5.1" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#set-up-2"><i class="fa fa-check"></i><b>5.1</b> Set up</a><ul>
 <li class="chapter" data-level="5.1.1" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#exclusion-criteria-1"><i class="fa fa-check"></i><b>5.1.1</b> Exclusion criteria</a></li>
 <li class="chapter" data-level="5.1.2" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#timeout-session"><i class="fa fa-check"></i><b>5.1.2</b> Timeout session</a></li>
 </ul></li>
@@ -229,261 +237,294 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="randomisation-script" class="section level1">
 <h1><span class="header-section-number">2</span> Randomisation script</h1>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="randomisation-script.html#cb1-1"></a><span class="kw">library</span>(reticulate)</span>
-<span id="cb1-2"><a href="randomisation-script.html#cb1-2"></a><span class="kw">library</span>(here)</span></code></pre></div>
+<div id="set-up" class="section level2">
+<h2><span class="header-section-number">2.1</span> Set Up</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="randomisation-script.html#cb1-1"></a><span class="co"># import R packages </span></span>
+<span id="cb1-2"><a href="randomisation-script.html#cb1-2"></a></span>
+<span id="cb1-3"><a href="randomisation-script.html#cb1-3"></a><span class="kw">library</span>(reticulate)</span>
+<span id="cb1-4"><a href="randomisation-script.html#cb1-4"></a><span class="kw">library</span>(here)</span></code></pre></div>
 <p>This script is written in Python</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="randomisation-script.html#cb2-1"></a><span class="co">#import packages</span></span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="randomisation-script.html#cb2-1"></a><span class="co">#import Python packages</span></span>
 <span id="cb2-2"><a href="randomisation-script.html#cb2-2"></a></span>
 <span id="cb2-3"><a href="randomisation-script.html#cb2-3"></a><span class="im">import</span> json</span>
 <span id="cb2-4"><a href="randomisation-script.html#cb2-4"></a><span class="im">import</span> random </span>
 <span id="cb2-5"><a href="randomisation-script.html#cb2-5"></a><span class="im">import</span> math </span>
 <span id="cb2-6"><a href="randomisation-script.html#cb2-6"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb2-7"><a href="randomisation-script.html#cb2-7"></a><span class="im">from</span> matplotlib.backends.backend_pdf <span class="im">import</span> PdfPages</span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="randomisation-script.html#cb3-1"></a><span class="co">#all definitions</span></span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="randomisation-script.html#cb3-1"></a><span class="co">#function definitions</span></span>
 <span id="cb3-2"><a href="randomisation-script.html#cb3-2"></a></span>
-<span id="cb3-3"><a href="randomisation-script.html#cb3-3"></a><span class="kw">def</span> arenaRand(circle_r):</span>
-<span id="cb3-4"><a href="randomisation-script.html#cb3-4"></a>    <span class="co"># center of the circle (x, y)</span></span>
-<span id="cb3-5"><a href="randomisation-script.html#cb3-5"></a>    circle_x <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb3-6"><a href="randomisation-script.html#cb3-6"></a>    circle_y <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb3-7"><a href="randomisation-script.html#cb3-7"></a></span>
-<span id="cb3-8"><a href="randomisation-script.html#cb3-8"></a>    <span class="co"># random angle</span></span>
-<span id="cb3-9"><a href="randomisation-script.html#cb3-9"></a>    alpha <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> math.pi <span class="op">*</span> random.random()</span>
-<span id="cb3-10"><a href="randomisation-script.html#cb3-10"></a>    <span class="co"># random radius</span></span>
-<span id="cb3-11"><a href="randomisation-script.html#cb3-11"></a>    r <span class="op">=</span> circle_r <span class="op">*</span> math.sqrt(random.random())</span>
-<span id="cb3-12"><a href="randomisation-script.html#cb3-12"></a>    <span class="co"># calculating coordinates</span></span>
-<span id="cb3-13"><a href="randomisation-script.html#cb3-13"></a>    x <span class="op">=</span> r <span class="op">*</span> math.cos(alpha) <span class="op">+</span> circle_x</span>
-<span id="cb3-14"><a href="randomisation-script.html#cb3-14"></a>    y <span class="op">=</span> r <span class="op">*</span> math.sin(alpha) <span class="op">+</span> circle_y</span>
-<span id="cb3-15"><a href="randomisation-script.html#cb3-15"></a>    <span class="cf">return</span> x, y</span>
-<span id="cb3-16"><a href="randomisation-script.html#cb3-16"></a></span>
+<span id="cb3-3"><a href="randomisation-script.html#cb3-3"></a><span class="co">#generates random location within a circle</span></span>
+<span id="cb3-4"><a href="randomisation-script.html#cb3-4"></a><span class="kw">def</span> arenaRand(circle_r):</span>
+<span id="cb3-5"><a href="randomisation-script.html#cb3-5"></a>    <span class="co"># center of the circle (x, y)</span></span>
+<span id="cb3-6"><a href="randomisation-script.html#cb3-6"></a>    circle_x <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb3-7"><a href="randomisation-script.html#cb3-7"></a>    circle_y <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb3-8"><a href="randomisation-script.html#cb3-8"></a></span>
+<span id="cb3-9"><a href="randomisation-script.html#cb3-9"></a>    <span class="co"># random angle</span></span>
+<span id="cb3-10"><a href="randomisation-script.html#cb3-10"></a>    alpha <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> math.pi <span class="op">*</span> random.random()</span>
+<span id="cb3-11"><a href="randomisation-script.html#cb3-11"></a>    <span class="co"># random radius</span></span>
+<span id="cb3-12"><a href="randomisation-script.html#cb3-12"></a>    r <span class="op">=</span> circle_r <span class="op">*</span> math.sqrt(random.random())</span>
+<span id="cb3-13"><a href="randomisation-script.html#cb3-13"></a>    <span class="co"># calculating coordinates</span></span>
+<span id="cb3-14"><a href="randomisation-script.html#cb3-14"></a>    x <span class="op">=</span> r <span class="op">*</span> math.cos(alpha) <span class="op">+</span> circle_x</span>
+<span id="cb3-15"><a href="randomisation-script.html#cb3-15"></a>    y <span class="op">=</span> r <span class="op">*</span> math.sin(alpha) <span class="op">+</span> circle_y</span>
+<span id="cb3-16"><a href="randomisation-script.html#cb3-16"></a>    <span class="cf">return</span> x, y</span>
 <span id="cb3-17"><a href="randomisation-script.html#cb3-17"></a></span>
-<span id="cb3-18"><a href="randomisation-script.html#cb3-18"></a><span class="kw">def</span> ringRand(circle_r1, circle_r2, circle_x <span class="op">=</span> <span class="dv">0</span>, circle_y <span class="op">=</span> <span class="dv">0</span>):</span>
-<span id="cb3-19"><a href="randomisation-script.html#cb3-19"></a>    <span class="co"># center of the circle (x, y)</span></span>
-<span id="cb3-20"><a href="randomisation-script.html#cb3-20"></a>    <span class="co"># random angle</span></span>
-<span id="cb3-21"><a href="randomisation-script.html#cb3-21"></a>    alpha <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> math.pi <span class="op">*</span> random.random()</span>
-<span id="cb3-22"><a href="randomisation-script.html#cb3-22"></a>    <span class="co"># random radius</span></span>
-<span id="cb3-23"><a href="randomisation-script.html#cb3-23"></a>    r <span class="op">=</span> random.uniform(circle_r1, circle_r2) </span>
-<span id="cb3-24"><a href="randomisation-script.html#cb3-24"></a>    <span class="co"># calculating coordinates</span></span>
-<span id="cb3-25"><a href="randomisation-script.html#cb3-25"></a>    x <span class="op">=</span> r <span class="op">*</span> math.cos(alpha) <span class="op">+</span> circle_x</span>
-<span id="cb3-26"><a href="randomisation-script.html#cb3-26"></a>    y <span class="op">=</span> r <span class="op">*</span> math.sin(alpha) <span class="op">+</span> circle_y</span>
-<span id="cb3-27"><a href="randomisation-script.html#cb3-27"></a>    <span class="cf">return</span> x, y</span>
-<span id="cb3-28"><a href="randomisation-script.html#cb3-28"></a></span>
-<span id="cb3-29"><a href="randomisation-script.html#cb3-29"></a><span class="co">#distance def</span></span>
-<span id="cb3-30"><a href="randomisation-script.html#cb3-30"></a><span class="kw">def</span> distance(landmark, obj):</span>
-<span id="cb3-31"><a href="randomisation-script.html#cb3-31"></a>   d <span class="op">=</span> math.sqrt(((landmark[<span class="dv">0</span>]<span class="op">-</span>obj[<span class="dv">0</span>])<span class="op">**</span><span class="dv">2</span>)<span class="op">+</span>((landmark[<span class="dv">2</span>]<span class="op">-</span>obj[<span class="dv">2</span>])<span class="op">**</span><span class="dv">2</span>))</span>
-<span id="cb3-32"><a href="randomisation-script.html#cb3-32"></a>   <span class="cf">return</span> d</span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="randomisation-script.html#cb4-1"></a>origin <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>]</span>
-<span id="cb4-2"><a href="randomisation-script.html#cb4-2"></a>codes <span class="op">=</span>[]</span>
-<span id="cb4-3"><a href="randomisation-script.html#cb4-3"></a>part <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb4-4"><a href="randomisation-script.html#cb4-4"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>): <span class="co">#number adjusted for the target amount of participants</span></span>
-<span id="cb4-5"><a href="randomisation-script.html#cb4-5"></a>    <span class="co">#objList</span></span>
-<span id="cb4-6"><a href="randomisation-script.html#cb4-6"></a>    objName <span class="op">=</span> [<span class="st">&quot;none&quot;</span>,<span class="st">&quot;flower&quot;</span>,<span class="st">&quot;slime&quot;</span>,<span class="st">&quot;lamp&quot;</span>,<span class="st">&quot;partyhat&quot;</span>]</span>
-<span id="cb4-7"><a href="randomisation-script.html#cb4-7"></a>    </span>
-<span id="cb4-8"><a href="randomisation-script.html#cb4-8"></a>    <span class="co">#learnOrder</span></span>
-<span id="cb4-9"><a href="randomisation-script.html#cb4-9"></a>    obj <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>]</span>
-<span id="cb4-10"><a href="randomisation-script.html#cb4-10"></a>    order <span class="op">=</span> random.sample(obj, k<span class="op">=</span><span class="bu">len</span>(obj))</span>
-<span id="cb4-11"><a href="randomisation-script.html#cb4-11"></a>    learnOrder <span class="op">=</span> [<span class="dv">0</span>] <span class="op">+</span> order <span class="op">+</span> order</span>
+<span id="cb3-18"><a href="randomisation-script.html#cb3-18"></a><span class="co">#generates random locations within a round band </span></span>
+<span id="cb3-19"><a href="randomisation-script.html#cb3-19"></a><span class="kw">def</span> ringRand(circle_r1, circle_r2, circle_x <span class="op">=</span> <span class="dv">0</span>, circle_y <span class="op">=</span> <span class="dv">0</span>):</span>
+<span id="cb3-20"><a href="randomisation-script.html#cb3-20"></a>    <span class="co"># center of the circle (x, y)</span></span>
+<span id="cb3-21"><a href="randomisation-script.html#cb3-21"></a>    <span class="co"># random angle</span></span>
+<span id="cb3-22"><a href="randomisation-script.html#cb3-22"></a>    alpha <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> math.pi <span class="op">*</span> random.random()</span>
+<span id="cb3-23"><a href="randomisation-script.html#cb3-23"></a>    <span class="co"># random radius</span></span>
+<span id="cb3-24"><a href="randomisation-script.html#cb3-24"></a>    r <span class="op">=</span> random.uniform(circle_r1, circle_r2) </span>
+<span id="cb3-25"><a href="randomisation-script.html#cb3-25"></a>    <span class="co"># calculating coordinates</span></span>
+<span id="cb3-26"><a href="randomisation-script.html#cb3-26"></a>    x <span class="op">=</span> r <span class="op">*</span> math.cos(alpha) <span class="op">+</span> circle_x</span>
+<span id="cb3-27"><a href="randomisation-script.html#cb3-27"></a>    y <span class="op">=</span> r <span class="op">*</span> math.sin(alpha) <span class="op">+</span> circle_y</span>
+<span id="cb3-28"><a href="randomisation-script.html#cb3-28"></a>    <span class="cf">return</span> x, y</span>
+<span id="cb3-29"><a href="randomisation-script.html#cb3-29"></a></span>
+<span id="cb3-30"><a href="randomisation-script.html#cb3-30"></a><span class="co">#calculates distance between two objects</span></span>
+<span id="cb3-31"><a href="randomisation-script.html#cb3-31"></a><span class="kw">def</span> distance(landmark, obj):</span>
+<span id="cb3-32"><a href="randomisation-script.html#cb3-32"></a>   d <span class="op">=</span> math.sqrt(((landmark[<span class="dv">0</span>]<span class="op">-</span>obj[<span class="dv">0</span>])<span class="op">**</span><span class="dv">2</span>)<span class="op">+</span>((landmark[<span class="dv">2</span>]<span class="op">-</span>obj[<span class="dv">2</span>])<span class="op">**</span><span class="dv">2</span>))</span>
+<span id="cb3-33"><a href="randomisation-script.html#cb3-33"></a>   <span class="cf">return</span> d</span></code></pre></div>
+</div>
+<div id="assigning-dependency-and-generating-objects-locations" class="section level2">
+<h2><span class="header-section-number">2.2</span> Assigning dependency and generating objects’ locations</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="randomisation-script.html#cb4-1"></a><span class="co"># center of the arena</span></span>
+<span id="cb4-2"><a href="randomisation-script.html#cb4-2"></a>origin <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>]</span>
+<span id="cb4-3"><a href="randomisation-script.html#cb4-3"></a><span class="co"># list for storing new IDs</span></span>
+<span id="cb4-4"><a href="randomisation-script.html#cb4-4"></a>codes <span class="op">=</span>[]</span>
+<span id="cb4-5"><a href="randomisation-script.html#cb4-5"></a><span class="co"># number of first participant</span></span>
+<span id="cb4-6"><a href="randomisation-script.html#cb4-6"></a>part <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb4-7"><a href="randomisation-script.html#cb4-7"></a></span>
+<span id="cb4-8"><a href="randomisation-script.html#cb4-8"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>): <span class="co">#number adjusted for the target amount of participants</span></span>
+<span id="cb4-9"><a href="randomisation-script.html#cb4-9"></a>    <span class="co">#objList</span></span>
+<span id="cb4-10"><a href="randomisation-script.html#cb4-10"></a>    <span class="co"># list containing the names of the objects, used in instructions for each trial</span></span>
+<span id="cb4-11"><a href="randomisation-script.html#cb4-11"></a>    objName <span class="op">=</span> [<span class="st">&quot;none&quot;</span>,<span class="st">&quot;flower&quot;</span>,<span class="st">&quot;slime&quot;</span>,<span class="st">&quot;lamp&quot;</span>,<span class="st">&quot;partyhat&quot;</span>]</span>
 <span id="cb4-12"><a href="randomisation-script.html#cb4-12"></a>    </span>
-<span id="cb4-13"><a href="randomisation-script.html#cb4-13"></a>    <span class="co">#feedbackOrder</span></span>
-<span id="cb4-14"><a href="randomisation-script.html#cb4-14"></a>    feedbackOrder <span class="op">=</span> [<span class="dv">0</span>]</span>
-<span id="cb4-15"><a href="randomisation-script.html#cb4-15"></a>    <span class="cf">while</span> <span class="bu">len</span>(feedbackOrder) <span class="op">&lt;</span> <span class="dv">65</span>:</span>
-<span id="cb4-16"><a href="randomisation-script.html#cb4-16"></a>        <span class="cf">if</span> <span class="bu">len</span>(feedbackOrder) <span class="op">==</span> <span class="dv">1</span>:</span>
-<span id="cb4-17"><a href="randomisation-script.html#cb4-17"></a>                one <span class="op">=</span> random.sample(obj, k<span class="op">=</span><span class="bu">len</span>(obj))</span>
-<span id="cb4-18"><a href="randomisation-script.html#cb4-18"></a>                <span class="cf">if</span> one[<span class="dv">0</span>] <span class="op">!=</span> learnOrder[<span class="op">-</span><span class="dv">1</span>]:</span>
-<span id="cb4-19"><a href="randomisation-script.html#cb4-19"></a>                    feedbackOrder <span class="op">=</span> feedbackOrder <span class="op">+</span> one</span>
-<span id="cb4-20"><a href="randomisation-script.html#cb4-20"></a>                <span class="cf">else</span>:</span>
-<span id="cb4-21"><a href="randomisation-script.html#cb4-21"></a>                    feedbackOrder <span class="op">=</span> [<span class="dv">0</span>]</span>
-<span id="cb4-22"><a href="randomisation-script.html#cb4-22"></a>        <span class="cf">else</span>:</span>
-<span id="cb4-23"><a href="randomisation-script.html#cb4-23"></a>            <span class="bu">next</span> <span class="op">=</span> random.sample(obj, k<span class="op">=</span><span class="bu">len</span>(obj))</span>
-<span id="cb4-24"><a href="randomisation-script.html#cb4-24"></a>            <span class="cf">if</span> <span class="bu">next</span>[<span class="dv">0</span>] <span class="op">!=</span> feedbackOrder[<span class="op">-</span><span class="dv">1</span>]:</span>
-<span id="cb4-25"><a href="randomisation-script.html#cb4-25"></a>                feedbackOrder <span class="op">=</span> feedbackOrder <span class="op">+</span> <span class="bu">next</span></span>
-<span id="cb4-26"><a href="randomisation-script.html#cb4-26"></a>                </span>
-<span id="cb4-27"><a href="randomisation-script.html#cb4-27"></a>    <span class="co">#landmarkPos</span></span>
-<span id="cb4-28"><a href="randomisation-script.html#cb4-28"></a>    landmarkPos <span class="op">=</span> [[<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>]]</span>
-<span id="cb4-29"><a href="randomisation-script.html#cb4-29"></a>    </span>
-<span id="cb4-30"><a href="randomisation-script.html#cb4-30"></a>    x, z <span class="op">=</span> ringRand(<span class="dv">2</span>,<span class="dv">20</span>)</span>
-<span id="cb4-31"><a href="randomisation-script.html#cb4-31"></a>    y <span class="op">=</span> <span class="fl">-2.4</span></span>
-<span id="cb4-32"><a href="randomisation-script.html#cb4-32"></a>    loc <span class="op">=</span> [x, y, z]</span>
-<span id="cb4-33"><a href="randomisation-script.html#cb4-33"></a>    landmarkPos.append(loc)</span>
-<span id="cb4-34"><a href="randomisation-script.html#cb4-34"></a>            </span>
-<span id="cb4-35"><a href="randomisation-script.html#cb4-35"></a>    </span>
-<span id="cb4-36"><a href="randomisation-script.html#cb4-36"></a>    <span class="co">#familiarisePropLoc</span></span>
-<span id="cb4-37"><a href="randomisation-script.html#cb4-37"></a>    familiarisePropLoc <span class="op">=</span> [[<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>]] </span>
-<span id="cb4-38"><a href="randomisation-script.html#cb4-38"></a>    i <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb4-39"><a href="randomisation-script.html#cb4-39"></a>    <span class="cf">while</span> <span class="bu">len</span>(familiarisePropLoc) <span class="op">&lt;</span> <span class="dv">11</span>:</span>
-<span id="cb4-40"><a href="randomisation-script.html#cb4-40"></a>        x, z <span class="op">=</span> arenaRand(<span class="fl">22.5</span>)</span>
-<span id="cb4-41"><a href="randomisation-script.html#cb4-41"></a>        y <span class="op">=</span> <span class="fl">0.25</span></span>
-<span id="cb4-42"><a href="randomisation-script.html#cb4-42"></a>        loc <span class="op">=</span> [x, y, z]</span>
-<span id="cb4-43"><a href="randomisation-script.html#cb4-43"></a>        <span class="co">#making sure it doesnt land in the landmark position </span></span>
-<span id="cb4-44"><a href="randomisation-script.html#cb4-44"></a>        <span class="cf">if</span> distance(loc, landmarkPos[<span class="dv">1</span>]) <span class="op">&gt;</span> <span class="dv">8</span> <span class="kw">and</span> distance(loc, familiarisePropLoc[i]) <span class="op">&gt;</span> <span class="dv">10</span>:</span>
-<span id="cb4-45"><a href="randomisation-script.html#cb4-45"></a>            familiarisePropLoc.append(loc)</span>
-<span id="cb4-46"><a href="randomisation-script.html#cb4-46"></a>            i <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb4-47"><a href="randomisation-script.html#cb4-47"></a>    </span>
-<span id="cb4-48"><a href="randomisation-script.html#cb4-48"></a>                    </span>
-<span id="cb4-49"><a href="randomisation-script.html#cb4-49"></a>    <span class="co">#objLoc</span></span>
-<span id="cb4-50"><a href="randomisation-script.html#cb4-50"></a>    objLoc <span class="op">=</span> []</span>
-<span id="cb4-51"><a href="randomisation-script.html#cb4-51"></a>    </span>
-<span id="cb4-52"><a href="randomisation-script.html#cb4-52"></a>    <span class="co">#randomisation of objects as landmark-dependent vs boundary-dependent</span></span>
-<span id="cb4-53"><a href="randomisation-script.html#cb4-53"></a>    s <span class="op">=</span> random.sample(obj, k<span class="op">=</span><span class="dv">4</span>)</span>
-<span id="cb4-54"><a href="randomisation-script.html#cb4-54"></a>    landBound1 <span class="op">=</span> s[<span class="dv">0</span>]</span>
-<span id="cb4-55"><a href="randomisation-script.html#cb4-55"></a>    landBound2 <span class="op">=</span> s[<span class="dv">1</span>]</span>
-<span id="cb4-56"><a href="randomisation-script.html#cb4-56"></a>    bounBound1 <span class="op">=</span> s[<span class="dv">2</span>]</span>
-<span id="cb4-57"><a href="randomisation-script.html#cb4-57"></a>    bounBound2 <span class="op">=</span> s[<span class="dv">3</span>]</span>
-<span id="cb4-58"><a href="randomisation-script.html#cb4-58"></a>    </span>
-<span id="cb4-59"><a href="randomisation-script.html#cb4-59"></a>    <span class="co">#Object Locations in Block 1-4 &amp; Landmark Locations in BLock 2-4</span></span>
-<span id="cb4-60"><a href="randomisation-script.html#cb4-60"></a>    w<span class="op">=</span><span class="dv">1</span></span>
-<span id="cb4-61"><a href="randomisation-script.html#cb4-61"></a>    <span class="cf">while</span> <span class="bu">len</span>(objLoc) <span class="op">&lt;</span> <span class="dv">4</span>:</span>
-<span id="cb4-62"><a href="randomisation-script.html#cb4-62"></a>        <span class="co">#setting up objects&#39; locations for Block 1</span></span>
-<span id="cb4-63"><a href="randomisation-script.html#cb4-63"></a>        <span class="cf">if</span> <span class="bu">len</span>(objLoc) <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb4-64"><a href="randomisation-script.html#cb4-64"></a>            objLocBlock <span class="op">=</span> [<span class="va">None</span>] <span class="op">*</span> <span class="dv">5</span></span>
-<span id="cb4-65"><a href="randomisation-script.html#cb4-65"></a>            objLocBlock[<span class="dv">0</span>] <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>]</span>
-<span id="cb4-66"><a href="randomisation-script.html#cb4-66"></a>            y<span class="op">=</span><span class="fl">0.7</span></span>
-<span id="cb4-67"><a href="randomisation-script.html#cb4-67"></a>            <span class="cf">while</span> objLocBlock[bounBound1] <span class="op">==</span> <span class="va">None</span>:</span>
-<span id="cb4-68"><a href="randomisation-script.html#cb4-68"></a>                x1, z1 <span class="op">=</span> ringRand(circle_r1 <span class="op">=</span> <span class="fl">14.5</span>, circle_r2 <span class="op">=</span> <span class="fl">19.5</span>, circle_x <span class="op">=</span> <span class="dv">0</span>, circle_y <span class="op">=</span> <span class="dv">0</span>)</span>
-<span id="cb4-69"><a href="randomisation-script.html#cb4-69"></a>                <span class="cf">if</span> distance([x1,y,z1],landmarkPos[<span class="dv">1</span>]) <span class="op">&gt;</span> <span class="dv">8</span>:</span>
-<span id="cb4-70"><a href="randomisation-script.html#cb4-70"></a>                    objLocBlock[bounBound1] <span class="op">=</span> [x1, y, z1]</span>
-<span id="cb4-71"><a href="randomisation-script.html#cb4-71"></a>            <span class="cf">while</span> objLocBlock[bounBound2] <span class="op">==</span> <span class="va">None</span>:</span>
-<span id="cb4-72"><a href="randomisation-script.html#cb4-72"></a>                x2, z2 <span class="op">=</span> ringRand(circle_r1 <span class="op">=</span> <span class="fl">14.5</span>, circle_r2 <span class="op">=</span> <span class="fl">19.5</span>, circle_x <span class="op">=</span> <span class="dv">0</span>, circle_y <span class="op">=</span> <span class="dv">0</span>)</span>
-<span id="cb4-73"><a href="randomisation-script.html#cb4-73"></a>                <span class="cf">if</span> distance([x2,y,z2],landmarkPos[<span class="dv">1</span>]) <span class="op">&gt;</span> <span class="dv">8</span> <span class="kw">and</span> distance([x2,y,z2],objLocBlock[bounBound1]) <span class="op">&gt;</span> <span class="dv">8</span>:</span>
-<span id="cb4-74"><a href="randomisation-script.html#cb4-74"></a>                    objLocBlock[bounBound2] <span class="op">=</span> [x2, y, z2]</span>
-<span id="cb4-75"><a href="randomisation-script.html#cb4-75"></a>            <span class="cf">while</span> objLocBlock[landBound1] <span class="op">==</span> <span class="va">None</span>:</span>
-<span id="cb4-76"><a href="randomisation-script.html#cb4-76"></a>                x3, z3 <span class="op">=</span> ringRand(circle_r1 <span class="op">=</span> <span class="dv">8</span>, circle_r2 <span class="op">=</span> <span class="dv">13</span>, circle_x <span class="op">=</span> landmarkPos[<span class="dv">1</span>][<span class="dv">0</span>], circle_y <span class="op">=</span> landmarkPos[<span class="dv">1</span>][<span class="dv">2</span>])</span>
-<span id="cb4-77"><a href="randomisation-script.html#cb4-77"></a>                <span class="cf">if</span> distance([x3,y,z3],objLocBlock[bounBound1]) <span class="op">&gt;</span> <span class="dv">8</span> <span class="kw">and</span> distance([x3,y,z3],objLocBlock[bounBound2]) <span class="op">&gt;</span> <span class="dv">8</span> <span class="kw">and</span> distance([x3,y,z3],origin) <span class="op">&lt;</span> <span class="fl">22.5</span>:    </span>
-<span id="cb4-78"><a href="randomisation-script.html#cb4-78"></a>                    objLocBlock[landBound1] <span class="op">=</span> [x3, y, z3]</span>
-<span id="cb4-79"><a href="randomisation-script.html#cb4-79"></a>            <span class="cf">while</span> objLocBlock[landBound2] <span class="op">==</span> <span class="va">None</span>:</span>
-<span id="cb4-80"><a href="randomisation-script.html#cb4-80"></a>                x4, z4 <span class="op">=</span> ringRand(circle_r1 <span class="op">=</span> <span class="dv">8</span>, circle_r2 <span class="op">=</span> <span class="dv">13</span>, circle_x <span class="op">=</span> landmarkPos[<span class="dv">1</span>][<span class="dv">0</span>], circle_y <span class="op">=</span> landmarkPos[<span class="dv">1</span>][<span class="dv">2</span>]) </span>
-<span id="cb4-81"><a href="randomisation-script.html#cb4-81"></a>                <span class="cf">if</span> distance([x4,y,z4],objLocBlock[bounBound1]) <span class="op">&gt;</span> <span class="dv">8</span> <span class="kw">and</span> distance([x4,y,z4],objLocBlock[bounBound2]) <span class="op">&gt;</span> <span class="dv">8</span> <span class="kw">and</span> distance([x4,y,z4],objLocBlock[landBound1]) <span class="op">&gt;</span> <span class="dv">8</span> <span class="kw">and</span> distance([x4,y,z4],origin) <span class="op">&lt;</span> <span class="fl">22.5</span>:</span>
-<span id="cb4-82"><a href="randomisation-script.html#cb4-82"></a>                    objLocBlock[landBound2] <span class="op">=</span> [x4, y, z4]</span>
-<span id="cb4-83"><a href="randomisation-script.html#cb4-83"></a>                </span>
-<span id="cb4-84"><a href="randomisation-script.html#cb4-84"></a>            objLoc.append(objLocBlock)</span>
-<span id="cb4-85"><a href="randomisation-script.html#cb4-85"></a>            g <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb4-86"><a href="randomisation-script.html#cb4-86"></a>        </span>
-<span id="cb4-87"><a href="randomisation-script.html#cb4-87"></a>        <span class="co">#setting up landmark &amp; objects locations for block 2-4 </span></span>
-<span id="cb4-88"><a href="randomisation-script.html#cb4-88"></a>        <span class="cf">else</span>: </span>
-<span id="cb4-89"><a href="randomisation-script.html#cb4-89"></a>            <span class="co">#landmark pos</span></span>
-<span id="cb4-90"><a href="randomisation-script.html#cb4-90"></a>            x, z <span class="op">=</span> arenaRand(<span class="fl">22.5</span>)</span>
-<span id="cb4-91"><a href="randomisation-script.html#cb4-91"></a>            y <span class="op">=</span> <span class="fl">-2.4</span></span>
-<span id="cb4-92"><a href="randomisation-script.html#cb4-92"></a>            loc <span class="op">=</span> [x, y, z]</span>
-<span id="cb4-93"><a href="randomisation-script.html#cb4-93"></a>            i <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb4-94"><a href="randomisation-script.html#cb4-94"></a>            diff <span class="op">=</span> []</span>
-<span id="cb4-95"><a href="randomisation-script.html#cb4-95"></a>            <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(landmarkPos)):        <span class="co">#checking distance to other landmark locations</span></span>
-<span id="cb4-96"><a href="randomisation-script.html#cb4-96"></a>                <span class="cf">if</span> distance(landmarkPos[i], loc) <span class="op">&gt;</span> <span class="dv">10</span>:</span>
-<span id="cb4-97"><a href="randomisation-script.html#cb4-97"></a>                    i <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb4-98"><a href="randomisation-script.html#cb4-98"></a>                    diff.append(<span class="st">&#39;True&#39;</span>)</span>
-<span id="cb4-99"><a href="randomisation-script.html#cb4-99"></a>                <span class="cf">else</span>:</span>
-<span id="cb4-100"><a href="randomisation-script.html#cb4-100"></a>                    i <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb4-101"><a href="randomisation-script.html#cb4-101"></a>                    diff.append(<span class="st">&#39;False&#39;</span>)</span>
-<span id="cb4-102"><a href="randomisation-script.html#cb4-102"></a>            </span>
-<span id="cb4-103"><a href="randomisation-script.html#cb4-103"></a>            <span class="cf">if</span> <span class="st">&#39;False&#39;</span> <span class="kw">not</span> <span class="kw">in</span> diff: </span>
-<span id="cb4-104"><a href="randomisation-script.html#cb4-104"></a>                <span class="bu">print</span>(diff)</span>
-<span id="cb4-105"><a href="randomisation-script.html#cb4-105"></a>                <span class="cf">if</span> distance(loc, objLoc[<span class="dv">0</span>][bounBound1]) <span class="op">&gt;</span> <span class="dv">8</span> <span class="kw">and</span> distance(loc, objLoc[<span class="dv">0</span>][bounBound2]) <span class="op">&gt;</span> <span class="dv">8</span>:</span>
-<span id="cb4-106"><a href="randomisation-script.html#cb4-106"></a>                    landmark <span class="op">=</span> loc</span>
-<span id="cb4-107"><a href="randomisation-script.html#cb4-107"></a>                    i <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb4-108"><a href="randomisation-script.html#cb4-108"></a>                  </span>
-<span id="cb4-109"><a href="randomisation-script.html#cb4-109"></a>                    <span class="co">#location of boundary-dependent objs</span></span>
-<span id="cb4-110"><a href="randomisation-script.html#cb4-110"></a>                    objLocBlock <span class="op">=</span> [<span class="va">None</span>] <span class="op">*</span> <span class="dv">5</span></span>
-<span id="cb4-111"><a href="randomisation-script.html#cb4-111"></a>                    objLocBlock[<span class="dv">0</span>] <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>]</span>
-<span id="cb4-112"><a href="randomisation-script.html#cb4-112"></a>                    objLocBlock[bounBound1] <span class="op">=</span> objLoc[<span class="dv">0</span>][bounBound1]</span>
-<span id="cb4-113"><a href="randomisation-script.html#cb4-113"></a>                    objLocBlock[bounBound2] <span class="op">=</span> objLoc[<span class="dv">0</span>][bounBound2]</span>
-<span id="cb4-114"><a href="randomisation-script.html#cb4-114"></a>                    <span class="bu">print</span>(<span class="st">&#39;boundary-bound locations done&#39;</span>)</span>
-<span id="cb4-115"><a href="randomisation-script.html#cb4-115"></a>                    </span>
-<span id="cb4-116"><a href="randomisation-script.html#cb4-116"></a>                    <span class="co">#location of the landmark-dependent objs</span></span>
-<span id="cb4-117"><a href="randomisation-script.html#cb4-117"></a>                    x1 <span class="op">=</span> objLoc[<span class="dv">0</span>][landBound1][<span class="dv">0</span>] <span class="op">+</span> (landmark[<span class="dv">0</span>]<span class="op">-</span>landmarkPos[<span class="dv">1</span>][<span class="dv">0</span>])</span>
-<span id="cb4-118"><a href="randomisation-script.html#cb4-118"></a>                    y1 <span class="op">=</span> <span class="fl">0.7</span></span>
-<span id="cb4-119"><a href="randomisation-script.html#cb4-119"></a>                    z1 <span class="op">=</span> objLoc[<span class="dv">0</span>][landBound1][<span class="dv">2</span>] <span class="op">+</span> (landmark[<span class="dv">2</span>]<span class="op">-</span>landmarkPos[<span class="dv">1</span>][<span class="dv">2</span>])</span>
-<span id="cb4-120"><a href="randomisation-script.html#cb4-120"></a>                    locObj1 <span class="op">=</span> [x1, y1, z1] </span>
-<span id="cb4-121"><a href="randomisation-script.html#cb4-121"></a>                    <span class="cf">if</span> distance(locObj1, origin) <span class="op">&lt;</span> <span class="fl">22.5</span> <span class="kw">and</span> distance(locObj1, objLoc[<span class="dv">0</span>][bounBound1]) <span class="op">&gt;</span> <span class="dv">5</span> <span class="kw">and</span>  distance(locObj1, objLoc[<span class="dv">0</span>][bounBound2]) <span class="op">&gt;</span> <span class="dv">5</span>: <span class="co">#checking if it is inside the arena</span></span>
-<span id="cb4-122"><a href="randomisation-script.html#cb4-122"></a>                        <span class="bu">print</span>(<span class="st">&#39;inside arena obj1&#39;</span>)</span>
-<span id="cb4-123"><a href="randomisation-script.html#cb4-123"></a>                        objLocBlock[landBound1] <span class="op">=</span> locObj1 </span>
-<span id="cb4-124"><a href="randomisation-script.html#cb4-124"></a>                    </span>
-<span id="cb4-125"><a href="randomisation-script.html#cb4-125"></a>                        x2 <span class="op">=</span> objLoc[<span class="dv">0</span>][landBound2][<span class="dv">0</span>] <span class="op">+</span> (landmark[<span class="dv">0</span>]<span class="op">-</span>landmarkPos[<span class="dv">1</span>][<span class="dv">0</span>])</span>
-<span id="cb4-126"><a href="randomisation-script.html#cb4-126"></a>                        y2 <span class="op">=</span> <span class="fl">0.7</span></span>
-<span id="cb4-127"><a href="randomisation-script.html#cb4-127"></a>                        z2 <span class="op">=</span> objLoc[<span class="dv">0</span>][landBound2][<span class="dv">2</span>] <span class="op">+</span> (landmark[<span class="dv">2</span>]<span class="op">-</span>landmarkPos[<span class="dv">1</span>][<span class="dv">2</span>])</span>
-<span id="cb4-128"><a href="randomisation-script.html#cb4-128"></a>                        locObj2 <span class="op">=</span> [x2, y2, z2]</span>
-<span id="cb4-129"><a href="randomisation-script.html#cb4-129"></a>                        <span class="bu">print</span>(<span class="st">&#39;landmark-bound location 1 done&#39;</span>)</span>
-<span id="cb4-130"><a href="randomisation-script.html#cb4-130"></a>                        <span class="cf">if</span> distance(locObj2, origin) <span class="op">&lt;</span> <span class="fl">22.5</span> <span class="kw">and</span> distance(locObj2, objLoc[<span class="dv">0</span>][bounBound1]) <span class="op">&gt;</span> <span class="dv">5</span> <span class="kw">and</span>  distance(locObj2, objLoc[<span class="dv">0</span>][bounBound2]) <span class="op">&gt;</span> <span class="dv">5</span>:</span>
-<span id="cb4-131"><a href="randomisation-script.html#cb4-131"></a>                            objLocBlock[landBound2] <span class="op">=</span> locObj2</span>
-<span id="cb4-132"><a href="randomisation-script.html#cb4-132"></a>                            <span class="bu">print</span>(<span class="st">&#39;inside arena obj2&#39;</span>)</span>
-<span id="cb4-133"><a href="randomisation-script.html#cb4-133"></a>                            objLoc.append(objLocBlock)  </span>
-<span id="cb4-134"><a href="randomisation-script.html#cb4-134"></a>                            landmarkPos.append(landmark)</span>
-<span id="cb4-135"><a href="randomisation-script.html#cb4-135"></a>                            <span class="bu">print</span>(<span class="st">&#39;landmark-bound location 2 done&#39;</span>)</span>
-<span id="cb4-136"><a href="randomisation-script.html#cb4-136"></a>                            <span class="bu">print</span>(<span class="bu">len</span>(objLoc))</span>
-<span id="cb4-137"><a href="randomisation-script.html#cb4-137"></a>                            g <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb4-138"><a href="randomisation-script.html#cb4-138"></a>                        <span class="cf">else</span>:</span>
-<span id="cb4-139"><a href="randomisation-script.html#cb4-139"></a>                            <span class="bu">print</span>(<span class="st">&#39;outside of arena obj2&#39;</span>)</span>
-<span id="cb4-140"><a href="randomisation-script.html#cb4-140"></a>                    <span class="cf">else</span>:</span>
-<span id="cb4-141"><a href="randomisation-script.html#cb4-141"></a>                        <span class="bu">print</span>(<span class="st">&#39;outside of arena obj1&#39;</span>)</span>
-<span id="cb4-142"><a href="randomisation-script.html#cb4-142"></a>            <span class="cf">else</span>:</span>
-<span id="cb4-143"><a href="randomisation-script.html#cb4-143"></a>                w <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb4-144"><a href="randomisation-script.html#cb4-144"></a>                <span class="cf">if</span> w <span class="op">&lt;</span> <span class="dv">5000</span>:</span>
-<span id="cb4-145"><a href="randomisation-script.html#cb4-145"></a>                    objLoc <span class="op">=</span> objLoc[<span class="dv">0</span>:g]</span>
-<span id="cb4-146"><a href="randomisation-script.html#cb4-146"></a>                    <span class="bu">print</span>(<span class="st">&#39;landmark not far away from other landmarks&#39;</span>)</span>
-<span id="cb4-147"><a href="randomisation-script.html#cb4-147"></a>                    landmarkPos <span class="op">=</span> landmarkPos[<span class="dv">0</span>:g<span class="op">+</span><span class="dv">1</span>]</span>
-<span id="cb4-148"><a href="randomisation-script.html#cb4-148"></a>                    <span class="bu">print</span>(w)</span>
-<span id="cb4-149"><a href="randomisation-script.html#cb4-149"></a>                <span class="cf">else</span>:</span>
-<span id="cb4-150"><a href="randomisation-script.html#cb4-150"></a>                    objLoc <span class="op">=</span> []</span>
-<span id="cb4-151"><a href="randomisation-script.html#cb4-151"></a>                    landmarkPos <span class="op">=</span> landmarkPos[<span class="dv">0</span>:<span class="dv">2</span>]</span>
-<span id="cb4-152"><a href="randomisation-script.html#cb4-152"></a>                    w <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb4-153"><a href="randomisation-script.html#cb4-153"></a>                </span>
-<span id="cb4-154"><a href="randomisation-script.html#cb4-154"></a>    </span>
-<span id="cb4-155"><a href="randomisation-script.html#cb4-155"></a>                    </span>
-<span id="cb4-156"><a href="randomisation-script.html#cb4-156"></a>    </span>
-<span id="cb4-157"><a href="randomisation-script.html#cb4-157"></a>                    </span>
-<span id="cb4-158"><a href="randomisation-script.html#cb4-158"></a>    <span class="co">#visualization </span></span>
-<span id="cb4-159"><a href="randomisation-script.html#cb4-159"></a>    landmark_x <span class="op">=</span> [landmarkPos[<span class="dv">1</span>][<span class="dv">0</span>], landmarkPos[<span class="dv">2</span>][<span class="dv">0</span>], landmarkPos[<span class="dv">3</span>][<span class="dv">0</span>], landmarkPos[<span class="dv">4</span>][<span class="dv">0</span>]]</span>
-<span id="cb4-160"><a href="randomisation-script.html#cb4-160"></a>    landmark_y <span class="op">=</span> [landmarkPos[<span class="dv">1</span>][<span class="dv">2</span>], landmarkPos[<span class="dv">2</span>][<span class="dv">2</span>], landmarkPos[<span class="dv">3</span>][<span class="dv">2</span>], landmarkPos[<span class="dv">4</span>][<span class="dv">2</span>]]</span>
-<span id="cb4-161"><a href="randomisation-script.html#cb4-161"></a>    </span>
-<span id="cb4-162"><a href="randomisation-script.html#cb4-162"></a>    pp <span class="op">=</span> PdfPages(<span class="st">&#39;input_figs_&#39;</span> <span class="op">+</span> <span class="bu">str</span>(part) <span class="op">+</span><span class="st">&#39;.pdf&#39;</span>)</span>
-<span id="cb4-163"><a href="randomisation-script.html#cb4-163"></a>    </span>
-<span id="cb4-164"><a href="randomisation-script.html#cb4-164"></a></span>
-<span id="cb4-165"><a href="randomisation-script.html#cb4-165"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
-<span id="cb4-166"><a href="randomisation-script.html#cb4-166"></a>        circle1 <span class="op">=</span> plt.Circle((<span class="dv">0</span>,<span class="dv">0</span>), <span class="fl">27.5</span>, color<span class="op">=</span><span class="st">&#39;black&#39;</span>, fill<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb4-167"><a href="randomisation-script.html#cb4-167"></a>        fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb4-168"><a href="randomisation-script.html#cb4-168"></a>        plt.xlim(<span class="op">-</span><span class="dv">28</span>,<span class="dv">28</span>)</span>
-<span id="cb4-169"><a href="randomisation-script.html#cb4-169"></a>        plt.ylim(<span class="op">-</span><span class="dv">28</span>,<span class="dv">28</span>)</span>
-<span id="cb4-170"><a href="randomisation-script.html#cb4-170"></a>        ax.set_aspect(<span class="dv">1</span>)</span>
-<span id="cb4-171"><a href="randomisation-script.html#cb4-171"></a>        ax.add_artist(circle1)</span>
-<span id="cb4-172"><a href="randomisation-script.html#cb4-172"></a>        plt.plot(landmark_x[i], landmark_y[i], <span class="st">&#39;xr&#39;</span>)</span>
-<span id="cb4-173"><a href="randomisation-script.html#cb4-173"></a>        plt.plot(objLoc[i][bounBound1][<span class="dv">0</span>], objLoc[i][bounBound1][<span class="dv">2</span>], <span class="st">&#39;ob&#39;</span>)</span>
-<span id="cb4-174"><a href="randomisation-script.html#cb4-174"></a>        plt.plot(objLoc[i][bounBound2][<span class="dv">0</span>], objLoc[i][bounBound2][<span class="dv">2</span>], <span class="st">&#39;ob&#39;</span>)</span>
-<span id="cb4-175"><a href="randomisation-script.html#cb4-175"></a>        plt.plot(objLoc[i][landBound1][<span class="dv">0</span>], objLoc[i][landBound1][<span class="dv">2</span>], <span class="st">&#39;or&#39;</span>)</span>
-<span id="cb4-176"><a href="randomisation-script.html#cb4-176"></a>        plt.plot(objLoc[i][landBound2][<span class="dv">0</span>], objLoc[i][landBound2][<span class="dv">2</span>], <span class="st">&#39;or&#39;</span>)</span>
-<span id="cb4-177"><a href="randomisation-script.html#cb4-177"></a>        plt.title(<span class="st">&#39;Block &#39;</span> <span class="op">+</span> <span class="bu">str</span>(i<span class="op">+</span><span class="dv">1</span>), fontsize<span class="op">=</span><span class="dv">8</span>)</span>
-<span id="cb4-178"><a href="randomisation-script.html#cb4-178"></a>        plt.savefig(pp, <span class="bu">format</span><span class="op">=</span><span class="st">&#39;pdf&#39;</span>)</span>
-<span id="cb4-179"><a href="randomisation-script.html#cb4-179"></a>        plt.show()</span>
-<span id="cb4-180"><a href="randomisation-script.html#cb4-180"></a>        i <span class="op">=+</span> <span class="dv">1</span></span>
-<span id="cb4-181"><a href="randomisation-script.html#cb4-181"></a>    </span>
-<span id="cb4-182"><a href="randomisation-script.html#cb4-182"></a>    <span class="co"># creates the overall pdf file with all 4 plots</span></span>
-<span id="cb4-183"><a href="randomisation-script.html#cb4-183"></a>    pp.close()</span>
-<span id="cb4-184"><a href="randomisation-script.html#cb4-184"></a>    </span>
-<span id="cb4-185"><a href="randomisation-script.html#cb4-185"></a>    <span class="co">#coded ID</span></span>
-<span id="cb4-186"><a href="randomisation-script.html#cb4-186"></a>    ID <span class="op">=</span> random.randint(<span class="dv">1000</span>,<span class="dv">9999</span>)</span>
-<span id="cb4-187"><a href="randomisation-script.html#cb4-187"></a>    none <span class="op">=</span> [<span class="st">&quot;none&quot;</span>]</span>
-<span id="cb4-188"><a href="randomisation-script.html#cb4-188"></a>    ID <span class="op">=</span> none <span class="op">+</span> [<span class="bu">str</span>(ID)]</span>
-<span id="cb4-189"><a href="randomisation-script.html#cb4-189"></a>    codes <span class="op">=</span> codes <span class="op">+</span> ID</span>
-<span id="cb4-190"><a href="randomisation-script.html#cb4-190"></a>    </span>
-<span id="cb4-191"><a href="randomisation-script.html#cb4-191"></a>    <span class="co">#json file</span></span>
-<span id="cb4-192"><a href="randomisation-script.html#cb4-192"></a>    json_data <span class="op">=</span> {</span>
-<span id="cb4-193"><a href="randomisation-script.html#cb4-193"></a>            <span class="st">&quot;objName&quot;</span> : objName, </span>
-<span id="cb4-194"><a href="randomisation-script.html#cb4-194"></a>            <span class="st">&quot;learnOrder&quot;</span> : learnOrder, </span>
-<span id="cb4-195"><a href="randomisation-script.html#cb4-195"></a>            <span class="st">&quot;feedbackOrder&quot;</span> : feedbackOrder, </span>
-<span id="cb4-196"><a href="randomisation-script.html#cb4-196"></a>            <span class="st">&quot;landmarkPos&quot;</span>:landmarkPos, </span>
-<span id="cb4-197"><a href="randomisation-script.html#cb4-197"></a>            <span class="st">&quot;familiarisePropLoc&quot;</span>: familiarisePropLoc, </span>
-<span id="cb4-198"><a href="randomisation-script.html#cb4-198"></a>            <span class="st">&quot;objLoc1&quot;</span>: objLoc[<span class="dv">0</span>], </span>
-<span id="cb4-199"><a href="randomisation-script.html#cb4-199"></a>            <span class="st">&quot;objLoc2&quot;</span>: objLoc[<span class="dv">1</span>], </span>
-<span id="cb4-200"><a href="randomisation-script.html#cb4-200"></a>            <span class="st">&quot;objLoc3&quot;</span>: objLoc[<span class="dv">2</span>], </span>
-<span id="cb4-201"><a href="randomisation-script.html#cb4-201"></a>            <span class="st">&quot;objLoc4&quot;</span>: objLoc[<span class="dv">3</span>],</span>
-<span id="cb4-202"><a href="randomisation-script.html#cb4-202"></a>            <span class="st">&quot;IDnew&quot;</span>: ID</span>
-<span id="cb4-203"><a href="randomisation-script.html#cb4-203"></a>            }</span>
-<span id="cb4-204"><a href="randomisation-script.html#cb4-204"></a>    json_dump <span class="op">=</span> json.dumps(json_data)</span>
-<span id="cb4-205"><a href="randomisation-script.html#cb4-205"></a>    json_input <span class="op">=</span> json.loads(json_dump)</span>
-<span id="cb4-206"><a href="randomisation-script.html#cb4-206"></a>    </span>
-<span id="cb4-207"><a href="randomisation-script.html#cb4-207"></a>    </span>
-<span id="cb4-208"><a href="randomisation-script.html#cb4-208"></a>    <span class="co">#saves the created json to the current folder</span></span>
-<span id="cb4-209"><a href="randomisation-script.html#cb4-209"></a>    <span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;psub&#39;</span><span class="op">+</span><span class="bu">str</span>(part)<span class="op">+</span><span class="st">&#39;_inputParam.json&#39;</span>,<span class="st">&#39;w&#39;</span>) <span class="im">as</span> json_file:</span>
-<span id="cb4-210"><a href="randomisation-script.html#cb4-210"></a>        json.dump(json_input, json_file)</span></code></pre></div>
-<p><strong>Block 1 - 4 Objects’ Locations</strong>
-<img src="block1-2.png" />
+<span id="cb4-13"><a href="randomisation-script.html#cb4-13"></a>    <span class="co">#learnOrder</span></span>
+<span id="cb4-14"><a href="randomisation-script.html#cb4-14"></a>    <span class="co"># order in which the objects&#39; appeared during learning phase (each object twice)</span></span>
+<span id="cb4-15"><a href="randomisation-script.html#cb4-15"></a>    obj <span class="op">=</span> [<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>]</span>
+<span id="cb4-16"><a href="randomisation-script.html#cb4-16"></a>    order <span class="op">=</span> random.sample(obj, k<span class="op">=</span><span class="bu">len</span>(obj))</span>
+<span id="cb4-17"><a href="randomisation-script.html#cb4-17"></a>    learnOrder <span class="op">=</span> [<span class="dv">0</span>] <span class="op">+</span> order <span class="op">+</span> order</span>
+<span id="cb4-18"><a href="randomisation-script.html#cb4-18"></a>    </span>
+<span id="cb4-19"><a href="randomisation-script.html#cb4-19"></a>    <span class="co">#feedbackOrder</span></span>
+<span id="cb4-20"><a href="randomisation-script.html#cb4-20"></a>    <span class="co"># order in which the objects&#39; appeared during testing phase (each object 16 times) </span></span>
+<span id="cb4-21"><a href="randomisation-script.html#cb4-21"></a>    <span class="co"># via shuffling the obj list order resulting in each object appearing the same amount of times before further trials</span></span>
+<span id="cb4-22"><a href="randomisation-script.html#cb4-22"></a>    feedbackOrder <span class="op">=</span> [<span class="dv">0</span>]</span>
+<span id="cb4-23"><a href="randomisation-script.html#cb4-23"></a>    <span class="cf">while</span> <span class="bu">len</span>(feedbackOrder) <span class="op">&lt;</span> <span class="dv">65</span>:</span>
+<span id="cb4-24"><a href="randomisation-script.html#cb4-24"></a>        <span class="cf">if</span> <span class="bu">len</span>(feedbackOrder) <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb4-25"><a href="randomisation-script.html#cb4-25"></a>                one <span class="op">=</span> random.sample(obj, k<span class="op">=</span><span class="bu">len</span>(obj))</span>
+<span id="cb4-26"><a href="randomisation-script.html#cb4-26"></a>                <span class="cf">if</span> one[<span class="dv">0</span>] <span class="op">!=</span> learnOrder[<span class="op">-</span><span class="dv">1</span>]:</span>
+<span id="cb4-27"><a href="randomisation-script.html#cb4-27"></a>                    feedbackOrder <span class="op">=</span> feedbackOrder <span class="op">+</span> one</span>
+<span id="cb4-28"><a href="randomisation-script.html#cb4-28"></a>                <span class="cf">else</span>:</span>
+<span id="cb4-29"><a href="randomisation-script.html#cb4-29"></a>                    feedbackOrder <span class="op">=</span> [<span class="dv">0</span>]</span>
+<span id="cb4-30"><a href="randomisation-script.html#cb4-30"></a>        <span class="cf">else</span>:</span>
+<span id="cb4-31"><a href="randomisation-script.html#cb4-31"></a>            <span class="bu">next</span> <span class="op">=</span> random.sample(obj, k<span class="op">=</span><span class="bu">len</span>(obj))</span>
+<span id="cb4-32"><a href="randomisation-script.html#cb4-32"></a>            <span class="cf">if</span> <span class="bu">next</span>[<span class="dv">0</span>] <span class="op">!=</span> feedbackOrder[<span class="op">-</span><span class="dv">1</span>]:</span>
+<span id="cb4-33"><a href="randomisation-script.html#cb4-33"></a>                feedbackOrder <span class="op">=</span> feedbackOrder <span class="op">+</span> <span class="bu">next</span></span>
+<span id="cb4-34"><a href="randomisation-script.html#cb4-34"></a>                </span>
+<span id="cb4-35"><a href="randomisation-script.html#cb4-35"></a>    <span class="co">#landmarkPos</span></span>
+<span id="cb4-36"><a href="randomisation-script.html#cb4-36"></a>    <span class="co"># generating first position of landmark</span></span>
+<span id="cb4-37"><a href="randomisation-script.html#cb4-37"></a>    landmarkPos <span class="op">=</span> [[<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>]]</span>
+<span id="cb4-38"><a href="randomisation-script.html#cb4-38"></a>    </span>
+<span id="cb4-39"><a href="randomisation-script.html#cb4-39"></a>    x, z <span class="op">=</span> ringRand(<span class="dv">2</span>,<span class="dv">20</span>)</span>
+<span id="cb4-40"><a href="randomisation-script.html#cb4-40"></a>    y <span class="op">=</span> <span class="fl">-2.4</span></span>
+<span id="cb4-41"><a href="randomisation-script.html#cb4-41"></a>    loc <span class="op">=</span> [x, y, z]</span>
+<span id="cb4-42"><a href="randomisation-script.html#cb4-42"></a>    landmarkPos.append(loc)</span>
+<span id="cb4-43"><a href="randomisation-script.html#cb4-43"></a>            </span>
+<span id="cb4-44"><a href="randomisation-script.html#cb4-44"></a>    </span>
+<span id="cb4-45"><a href="randomisation-script.html#cb4-45"></a>    <span class="co">#familiarisePropLoc</span></span>
+<span id="cb4-46"><a href="randomisation-script.html#cb4-46"></a>    <span class="co"># generating 10 locations in which a prob object would appear during familiarization phase</span></span>
+<span id="cb4-47"><a href="randomisation-script.html#cb4-47"></a>    familiarisePropLoc <span class="op">=</span> [[<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>]] </span>
+<span id="cb4-48"><a href="randomisation-script.html#cb4-48"></a>    i <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb4-49"><a href="randomisation-script.html#cb4-49"></a>    <span class="cf">while</span> <span class="bu">len</span>(familiarisePropLoc) <span class="op">&lt;</span> <span class="dv">11</span>:</span>
+<span id="cb4-50"><a href="randomisation-script.html#cb4-50"></a>        x, z <span class="op">=</span> arenaRand(<span class="fl">22.5</span>)</span>
+<span id="cb4-51"><a href="randomisation-script.html#cb4-51"></a>        y <span class="op">=</span> <span class="fl">0.25</span></span>
+<span id="cb4-52"><a href="randomisation-script.html#cb4-52"></a>        loc <span class="op">=</span> [x, y, z]</span>
+<span id="cb4-53"><a href="randomisation-script.html#cb4-53"></a>        <span class="co">#making sure it doesnt land in the landmark position </span></span>
+<span id="cb4-54"><a href="randomisation-script.html#cb4-54"></a>        <span class="cf">if</span> distance(loc, landmarkPos[<span class="dv">1</span>]) <span class="op">&gt;</span> <span class="dv">8</span> <span class="kw">and</span> distance(loc, familiarisePropLoc[i]) <span class="op">&gt;</span> <span class="dv">10</span>:</span>
+<span id="cb4-55"><a href="randomisation-script.html#cb4-55"></a>            familiarisePropLoc.append(loc)</span>
+<span id="cb4-56"><a href="randomisation-script.html#cb4-56"></a>            i <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb4-57"><a href="randomisation-script.html#cb4-57"></a>    </span>
+<span id="cb4-58"><a href="randomisation-script.html#cb4-58"></a>                    </span>
+<span id="cb4-59"><a href="randomisation-script.html#cb4-59"></a>    <span class="co">#objLoc</span></span>
+<span id="cb4-60"><a href="randomisation-script.html#cb4-60"></a>    objLoc <span class="op">=</span> []</span>
+<span id="cb4-61"><a href="randomisation-script.html#cb4-61"></a>    </span>
+<span id="cb4-62"><a href="randomisation-script.html#cb4-62"></a>    <span class="co">#randomisation of objects as landmark-dependent vs boundary-dependent</span></span>
+<span id="cb4-63"><a href="randomisation-script.html#cb4-63"></a>    <span class="co"># it shuffles the obj list and assigns the first two as a landmark-dependent and the last two as boundary-dependent objects</span></span>
+<span id="cb4-64"><a href="randomisation-script.html#cb4-64"></a>    s <span class="op">=</span> random.sample(obj, k<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb4-65"><a href="randomisation-script.html#cb4-65"></a>    landBound1 <span class="op">=</span> s[<span class="dv">0</span>]</span>
+<span id="cb4-66"><a href="randomisation-script.html#cb4-66"></a>    landBound2 <span class="op">=</span> s[<span class="dv">1</span>]</span>
+<span id="cb4-67"><a href="randomisation-script.html#cb4-67"></a>    bounBound1 <span class="op">=</span> s[<span class="dv">2</span>]</span>
+<span id="cb4-68"><a href="randomisation-script.html#cb4-68"></a>    bounBound2 <span class="op">=</span> s[<span class="dv">3</span>]</span>
+<span id="cb4-69"><a href="randomisation-script.html#cb4-69"></a>    </span>
+<span id="cb4-70"><a href="randomisation-script.html#cb4-70"></a>    <span class="co">#Object Locations in Block 1-4 &amp; Landmark Locations in BLock 2-4</span></span>
+<span id="cb4-71"><a href="randomisation-script.html#cb4-71"></a>    w<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb4-72"><a href="randomisation-script.html#cb4-72"></a>    <span class="cf">while</span> <span class="bu">len</span>(objLoc) <span class="op">&lt;</span> <span class="dv">4</span>:</span>
+<span id="cb4-73"><a href="randomisation-script.html#cb4-73"></a>        <span class="co">#setting up objects&#39; locations for Block 1</span></span>
+<span id="cb4-74"><a href="randomisation-script.html#cb4-74"></a>        <span class="cf">if</span> <span class="bu">len</span>(objLoc) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb4-75"><a href="randomisation-script.html#cb4-75"></a>            objLocBlock <span class="op">=</span> [<span class="va">None</span>] <span class="op">*</span> <span class="dv">5</span></span>
+<span id="cb4-76"><a href="randomisation-script.html#cb4-76"></a>            objLocBlock[<span class="dv">0</span>] <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>]</span>
+<span id="cb4-77"><a href="randomisation-script.html#cb4-77"></a>            y<span class="op">=</span><span class="fl">0.7</span></span>
+<span id="cb4-78"><a href="randomisation-script.html#cb4-78"></a>            <span class="cf">while</span> objLocBlock[bounBound1] <span class="op">==</span> <span class="va">None</span>:</span>
+<span id="cb4-79"><a href="randomisation-script.html#cb4-79"></a>                x1, z1 <span class="op">=</span> ringRand(circle_r1 <span class="op">=</span> <span class="fl">14.5</span>, circle_r2 <span class="op">=</span> <span class="fl">19.5</span>, circle_x <span class="op">=</span> <span class="dv">0</span>, circle_y <span class="op">=</span> <span class="dv">0</span>)</span>
+<span id="cb4-80"><a href="randomisation-script.html#cb4-80"></a>                <span class="cf">if</span> distance([x1,y,z1],landmarkPos[<span class="dv">1</span>]) <span class="op">&gt;</span> <span class="dv">8</span>:</span>
+<span id="cb4-81"><a href="randomisation-script.html#cb4-81"></a>                    objLocBlock[bounBound1] <span class="op">=</span> [x1, y, z1]</span>
+<span id="cb4-82"><a href="randomisation-script.html#cb4-82"></a>            <span class="cf">while</span> objLocBlock[bounBound2] <span class="op">==</span> <span class="va">None</span>:</span>
+<span id="cb4-83"><a href="randomisation-script.html#cb4-83"></a>                x2, z2 <span class="op">=</span> ringRand(circle_r1 <span class="op">=</span> <span class="fl">14.5</span>, circle_r2 <span class="op">=</span> <span class="fl">19.5</span>, circle_x <span class="op">=</span> <span class="dv">0</span>, circle_y <span class="op">=</span> <span class="dv">0</span>)</span>
+<span id="cb4-84"><a href="randomisation-script.html#cb4-84"></a>                <span class="cf">if</span> distance([x2,y,z2],landmarkPos[<span class="dv">1</span>]) <span class="op">&gt;</span> <span class="dv">8</span> <span class="kw">and</span> distance([x2,y,z2],objLocBlock[bounBound1]) <span class="op">&gt;</span> <span class="dv">8</span>:</span>
+<span id="cb4-85"><a href="randomisation-script.html#cb4-85"></a>                    objLocBlock[bounBound2] <span class="op">=</span> [x2, y, z2]</span>
+<span id="cb4-86"><a href="randomisation-script.html#cb4-86"></a>            <span class="cf">while</span> objLocBlock[landBound1] <span class="op">==</span> <span class="va">None</span>:</span>
+<span id="cb4-87"><a href="randomisation-script.html#cb4-87"></a>                x3, z3 <span class="op">=</span> ringRand(circle_r1 <span class="op">=</span> <span class="dv">8</span>, circle_r2 <span class="op">=</span> <span class="dv">13</span>, circle_x <span class="op">=</span> landmarkPos[<span class="dv">1</span>][<span class="dv">0</span>], circle_y <span class="op">=</span> landmarkPos[<span class="dv">1</span>][<span class="dv">2</span>])</span>
+<span id="cb4-88"><a href="randomisation-script.html#cb4-88"></a>                <span class="cf">if</span> distance([x3,y,z3],objLocBlock[bounBound1]) <span class="op">&gt;</span> <span class="dv">8</span> <span class="kw">and</span> distance([x3,y,z3],objLocBlock[bounBound2]) <span class="op">&gt;</span> <span class="dv">8</span> <span class="kw">and</span> distance([x3,y,z3],origin) <span class="op">&lt;</span> <span class="fl">22.5</span>:    </span>
+<span id="cb4-89"><a href="randomisation-script.html#cb4-89"></a>                    objLocBlock[landBound1] <span class="op">=</span> [x3, y, z3]</span>
+<span id="cb4-90"><a href="randomisation-script.html#cb4-90"></a>            <span class="cf">while</span> objLocBlock[landBound2] <span class="op">==</span> <span class="va">None</span>:</span>
+<span id="cb4-91"><a href="randomisation-script.html#cb4-91"></a>                x4, z4 <span class="op">=</span> ringRand(circle_r1 <span class="op">=</span> <span class="dv">8</span>, circle_r2 <span class="op">=</span> <span class="dv">13</span>, circle_x <span class="op">=</span> landmarkPos[<span class="dv">1</span>][<span class="dv">0</span>], circle_y <span class="op">=</span> landmarkPos[<span class="dv">1</span>][<span class="dv">2</span>]) </span>
+<span id="cb4-92"><a href="randomisation-script.html#cb4-92"></a>                <span class="cf">if</span> distance([x4,y,z4],objLocBlock[bounBound1]) <span class="op">&gt;</span> <span class="dv">8</span> <span class="kw">and</span> distance([x4,y,z4],objLocBlock[bounBound2]) <span class="op">&gt;</span> <span class="dv">8</span> <span class="kw">and</span> distance([x4,y,z4],objLocBlock[landBound1]) <span class="op">&gt;</span> <span class="dv">8</span> <span class="kw">and</span> distance([x4,y,z4],origin) <span class="op">&lt;</span> <span class="fl">22.5</span>:</span>
+<span id="cb4-93"><a href="randomisation-script.html#cb4-93"></a>                    objLocBlock[landBound2] <span class="op">=</span> [x4, y, z4]</span>
+<span id="cb4-94"><a href="randomisation-script.html#cb4-94"></a>                </span>
+<span id="cb4-95"><a href="randomisation-script.html#cb4-95"></a>            objLoc.append(objLocBlock)</span>
+<span id="cb4-96"><a href="randomisation-script.html#cb4-96"></a>            g <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb4-97"><a href="randomisation-script.html#cb4-97"></a>        </span>
+<span id="cb4-98"><a href="randomisation-script.html#cb4-98"></a>        <span class="co">#setting up landmark &amp; objects locations for block 2-4 </span></span>
+<span id="cb4-99"><a href="randomisation-script.html#cb4-99"></a>        <span class="cf">else</span>: </span>
+<span id="cb4-100"><a href="randomisation-script.html#cb4-100"></a>            <span class="co">#landmark location</span></span>
+<span id="cb4-101"><a href="randomisation-script.html#cb4-101"></a>            x, z <span class="op">=</span> arenaRand(<span class="fl">22.5</span>)</span>
+<span id="cb4-102"><a href="randomisation-script.html#cb4-102"></a>            y <span class="op">=</span> <span class="fl">-2.4</span></span>
+<span id="cb4-103"><a href="randomisation-script.html#cb4-103"></a>            loc <span class="op">=</span> [x, y, z]</span>
+<span id="cb4-104"><a href="randomisation-script.html#cb4-104"></a>            i <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb4-105"><a href="randomisation-script.html#cb4-105"></a>            diff <span class="op">=</span> []</span>
+<span id="cb4-106"><a href="randomisation-script.html#cb4-106"></a>            <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(landmarkPos)):        </span>
+<span id="cb4-107"><a href="randomisation-script.html#cb4-107"></a>                <span class="co">#checking distance to other landmark previous locations</span></span>
+<span id="cb4-108"><a href="randomisation-script.html#cb4-108"></a>                <span class="cf">if</span> distance(landmarkPos[i], loc) <span class="op">&gt;</span> <span class="dv">10</span>:</span>
+<span id="cb4-109"><a href="randomisation-script.html#cb4-109"></a>                    i <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb4-110"><a href="randomisation-script.html#cb4-110"></a>                    diff.append(<span class="st">&#39;True&#39;</span>)</span>
+<span id="cb4-111"><a href="randomisation-script.html#cb4-111"></a>                <span class="cf">else</span>:</span>
+<span id="cb4-112"><a href="randomisation-script.html#cb4-112"></a>                    i <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb4-113"><a href="randomisation-script.html#cb4-113"></a>                    diff.append(<span class="st">&#39;False&#39;</span>)</span>
+<span id="cb4-114"><a href="randomisation-script.html#cb4-114"></a>            </span>
+<span id="cb4-115"><a href="randomisation-script.html#cb4-115"></a>            <span class="cf">if</span> <span class="st">&#39;False&#39;</span> <span class="kw">not</span> <span class="kw">in</span> diff: </span>
+<span id="cb4-116"><a href="randomisation-script.html#cb4-116"></a>                <span class="bu">print</span>(diff)</span>
+<span id="cb4-117"><a href="randomisation-script.html#cb4-117"></a>                <span class="co">#checking distance to boundary-dependent objects</span></span>
+<span id="cb4-118"><a href="randomisation-script.html#cb4-118"></a>                <span class="cf">if</span> distance(loc, objLoc[<span class="dv">0</span>][bounBound1]) <span class="op">&gt;</span> <span class="dv">8</span> <span class="kw">and</span> distance(loc, objLoc[<span class="dv">0</span>][bounBound2]) <span class="op">&gt;</span> <span class="dv">8</span>:</span>
+<span id="cb4-119"><a href="randomisation-script.html#cb4-119"></a>                    landmark <span class="op">=</span> loc</span>
+<span id="cb4-120"><a href="randomisation-script.html#cb4-120"></a>                    i <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb4-121"><a href="randomisation-script.html#cb4-121"></a>                  </span>
+<span id="cb4-122"><a href="randomisation-script.html#cb4-122"></a>                    <span class="co">#location of boundary-dependent objs for this block</span></span>
+<span id="cb4-123"><a href="randomisation-script.html#cb4-123"></a>                    objLocBlock <span class="op">=</span> [<span class="va">None</span>] <span class="op">*</span> <span class="dv">5</span></span>
+<span id="cb4-124"><a href="randomisation-script.html#cb4-124"></a>                    objLocBlock[<span class="dv">0</span>] <span class="op">=</span> [<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>]</span>
+<span id="cb4-125"><a href="randomisation-script.html#cb4-125"></a>                    objLocBlock[bounBound1] <span class="op">=</span> objLoc[<span class="dv">0</span>][bounBound1]</span>
+<span id="cb4-126"><a href="randomisation-script.html#cb4-126"></a>                    objLocBlock[bounBound2] <span class="op">=</span> objLoc[<span class="dv">0</span>][bounBound2]</span>
+<span id="cb4-127"><a href="randomisation-script.html#cb4-127"></a>                    <span class="bu">print</span>(<span class="st">&#39;boundary-bound locations done&#39;</span>)</span>
+<span id="cb4-128"><a href="randomisation-script.html#cb4-128"></a>                    </span>
+<span id="cb4-129"><a href="randomisation-script.html#cb4-129"></a>                    <span class="co">#location of the landmark-dependent obj 1 for this block</span></span>
+<span id="cb4-130"><a href="randomisation-script.html#cb4-130"></a>                    x1 <span class="op">=</span> objLoc[<span class="dv">0</span>][landBound1][<span class="dv">0</span>] <span class="op">+</span> (landmark[<span class="dv">0</span>]<span class="op">-</span>landmarkPos[<span class="dv">1</span>][<span class="dv">0</span>])</span>
+<span id="cb4-131"><a href="randomisation-script.html#cb4-131"></a>                    y1 <span class="op">=</span> <span class="fl">0.7</span></span>
+<span id="cb4-132"><a href="randomisation-script.html#cb4-132"></a>                    z1 <span class="op">=</span> objLoc[<span class="dv">0</span>][landBound1][<span class="dv">2</span>] <span class="op">+</span> (landmark[<span class="dv">2</span>]<span class="op">-</span>landmarkPos[<span class="dv">1</span>][<span class="dv">2</span>])</span>
+<span id="cb4-133"><a href="randomisation-script.html#cb4-133"></a>                    locObj1 <span class="op">=</span> [x1, y1, z1] </span>
+<span id="cb4-134"><a href="randomisation-script.html#cb4-134"></a>                    <span class="co">#checking if it is inside the arena and correct distance from boundary-dependent objects</span></span>
+<span id="cb4-135"><a href="randomisation-script.html#cb4-135"></a>                    <span class="cf">if</span> distance(locObj1, origin) <span class="op">&lt;</span> <span class="fl">22.5</span> <span class="kw">and</span> distance(locObj1, objLoc[<span class="dv">0</span>][bounBound1]) <span class="op">&gt;</span> <span class="dv">5</span> <span class="kw">and</span>  distance(locObj1, objLoc[<span class="dv">0</span>][bounBound2]) <span class="op">&gt;</span> <span class="dv">5</span>: </span>
+<span id="cb4-136"><a href="randomisation-script.html#cb4-136"></a>                        <span class="bu">print</span>(<span class="st">&#39;inside arena obj1&#39;</span>)</span>
+<span id="cb4-137"><a href="randomisation-script.html#cb4-137"></a>                        objLocBlock[landBound1] <span class="op">=</span> locObj1 </span>
+<span id="cb4-138"><a href="randomisation-script.html#cb4-138"></a>                        <span class="bu">print</span>(<span class="st">&#39;landmark-bound location 1 done&#39;</span>)</span>
+<span id="cb4-139"><a href="randomisation-script.html#cb4-139"></a>                    </span>
+<span id="cb4-140"><a href="randomisation-script.html#cb4-140"></a>                        <span class="co">#location of the landmark-dependent obj 2 for this block</span></span>
+<span id="cb4-141"><a href="randomisation-script.html#cb4-141"></a>                        x2 <span class="op">=</span> objLoc[<span class="dv">0</span>][landBound2][<span class="dv">0</span>] <span class="op">+</span> (landmark[<span class="dv">0</span>]<span class="op">-</span>landmarkPos[<span class="dv">1</span>][<span class="dv">0</span>])</span>
+<span id="cb4-142"><a href="randomisation-script.html#cb4-142"></a>                        y2 <span class="op">=</span> <span class="fl">0.7</span></span>
+<span id="cb4-143"><a href="randomisation-script.html#cb4-143"></a>                        z2 <span class="op">=</span> objLoc[<span class="dv">0</span>][landBound2][<span class="dv">2</span>] <span class="op">+</span> (landmark[<span class="dv">2</span>]<span class="op">-</span>landmarkPos[<span class="dv">1</span>][<span class="dv">2</span>])</span>
+<span id="cb4-144"><a href="randomisation-script.html#cb4-144"></a>                        locObj2 <span class="op">=</span> [x2, y2, z2]</span>
+<span id="cb4-145"><a href="randomisation-script.html#cb4-145"></a>                        <span class="co">#checking if it is inside the arena and correct distance from boundary-dependent objects</span></span>
+<span id="cb4-146"><a href="randomisation-script.html#cb4-146"></a>                        <span class="cf">if</span> distance(locObj2, origin) <span class="op">&lt;</span> <span class="fl">22.5</span> <span class="kw">and</span> distance(locObj2, objLoc[<span class="dv">0</span>][bounBound1]) <span class="op">&gt;</span> <span class="dv">5</span> <span class="kw">and</span>  distance(locObj2, objLoc[<span class="dv">0</span>][bounBound2]) <span class="op">&gt;</span> <span class="dv">5</span>:</span>
+<span id="cb4-147"><a href="randomisation-script.html#cb4-147"></a>                            objLocBlock[landBound2] <span class="op">=</span> locObj2</span>
+<span id="cb4-148"><a href="randomisation-script.html#cb4-148"></a>                            <span class="bu">print</span>(<span class="st">&#39;inside arena obj2&#39;</span>)</span>
+<span id="cb4-149"><a href="randomisation-script.html#cb4-149"></a>                            objLoc.append(objLocBlock)  </span>
+<span id="cb4-150"><a href="randomisation-script.html#cb4-150"></a>                            landmarkPos.append(landmark)</span>
+<span id="cb4-151"><a href="randomisation-script.html#cb4-151"></a>                            <span class="bu">print</span>(<span class="st">&#39;landmark-bound location 2 done&#39;</span>)</span>
+<span id="cb4-152"><a href="randomisation-script.html#cb4-152"></a>                            <span class="bu">print</span>(<span class="bu">len</span>(objLoc))</span>
+<span id="cb4-153"><a href="randomisation-script.html#cb4-153"></a>                            g <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb4-154"><a href="randomisation-script.html#cb4-154"></a>                            </span>
+<span id="cb4-155"><a href="randomisation-script.html#cb4-155"></a>                        <span class="cf">else</span>:</span>
+<span id="cb4-156"><a href="randomisation-script.html#cb4-156"></a>                            <span class="bu">print</span>(<span class="st">&#39;outside of arena obj2&#39;</span>)</span>
+<span id="cb4-157"><a href="randomisation-script.html#cb4-157"></a>                    <span class="cf">else</span>:</span>
+<span id="cb4-158"><a href="randomisation-script.html#cb4-158"></a>                        <span class="bu">print</span>(<span class="st">&#39;outside of arena obj1&#39;</span>)</span>
+<span id="cb4-159"><a href="randomisation-script.html#cb4-159"></a>            <span class="cf">else</span>:</span>
+<span id="cb4-160"><a href="randomisation-script.html#cb4-160"></a>                w <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb4-161"><a href="randomisation-script.html#cb4-161"></a>                <span class="cf">if</span> w <span class="op">&lt;</span> <span class="dv">5000</span>:</span>
+<span id="cb4-162"><a href="randomisation-script.html#cb4-162"></a>                    objLoc <span class="op">=</span> objLoc[<span class="dv">0</span>:g]</span>
+<span id="cb4-163"><a href="randomisation-script.html#cb4-163"></a>                    <span class="bu">print</span>(<span class="st">&#39;landmark not far away from other landmarks&#39;</span>)</span>
+<span id="cb4-164"><a href="randomisation-script.html#cb4-164"></a>                    landmarkPos <span class="op">=</span> landmarkPos[<span class="dv">0</span>:g<span class="op">+</span><span class="dv">1</span>]</span>
+<span id="cb4-165"><a href="randomisation-script.html#cb4-165"></a>                    <span class="bu">print</span>(w)</span>
+<span id="cb4-166"><a href="randomisation-script.html#cb4-166"></a>                    </span>
+<span id="cb4-167"><a href="randomisation-script.html#cb4-167"></a>                <span class="co"># if number of tries exceed 5000, object locations get reset and only landmark location for block 1 remains </span></span>
+<span id="cb4-168"><a href="randomisation-script.html#cb4-168"></a>                <span class="cf">else</span>:</span>
+<span id="cb4-169"><a href="randomisation-script.html#cb4-169"></a>                    objLoc <span class="op">=</span> []</span>
+<span id="cb4-170"><a href="randomisation-script.html#cb4-170"></a>                    landmarkPos <span class="op">=</span> landmarkPos[<span class="dv">0</span>:<span class="dv">2</span>]</span>
+<span id="cb4-171"><a href="randomisation-script.html#cb4-171"></a>                    w <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb4-172"><a href="randomisation-script.html#cb4-172"></a>                </span>
+<span id="cb4-173"><a href="randomisation-script.html#cb4-173"></a>    </span>
+<span id="cb4-174"><a href="randomisation-script.html#cb4-174"></a>                    </span>
+<span id="cb4-175"><a href="randomisation-script.html#cb4-175"></a>    </span>
+<span id="cb4-176"><a href="randomisation-script.html#cb4-176"></a>                    </span>
+<span id="cb4-177"><a href="randomisation-script.html#cb4-177"></a>    <span class="co">#visualization of the generated locations for all 4 blocks</span></span>
+<span id="cb4-178"><a href="randomisation-script.html#cb4-178"></a>    landmark_x <span class="op">=</span> [landmarkPos[<span class="dv">1</span>][<span class="dv">0</span>], landmarkPos[<span class="dv">2</span>][<span class="dv">0</span>], landmarkPos[<span class="dv">3</span>][<span class="dv">0</span>], landmarkPos[<span class="dv">4</span>][<span class="dv">0</span>]]</span>
+<span id="cb4-179"><a href="randomisation-script.html#cb4-179"></a>    landmark_y <span class="op">=</span> [landmarkPos[<span class="dv">1</span>][<span class="dv">2</span>], landmarkPos[<span class="dv">2</span>][<span class="dv">2</span>], landmarkPos[<span class="dv">3</span>][<span class="dv">2</span>], landmarkPos[<span class="dv">4</span>][<span class="dv">2</span>]]</span>
+<span id="cb4-180"><a href="randomisation-script.html#cb4-180"></a>    </span>
+<span id="cb4-181"><a href="randomisation-script.html#cb4-181"></a>    <span class="co">#generating a pdf holding the graphs to accompany every input data file</span></span>
+<span id="cb4-182"><a href="randomisation-script.html#cb4-182"></a>    pp <span class="op">=</span> PdfPages(<span class="st">&#39;input_figs_&#39;</span> <span class="op">+</span> <span class="bu">str</span>(part) <span class="op">+</span><span class="st">&#39;.pdf&#39;</span>)</span>
+<span id="cb4-183"><a href="randomisation-script.html#cb4-183"></a>    </span>
+<span id="cb4-184"><a href="randomisation-script.html#cb4-184"></a></span>
+<span id="cb4-185"><a href="randomisation-script.html#cb4-185"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
+<span id="cb4-186"><a href="randomisation-script.html#cb4-186"></a>        circle1 <span class="op">=</span> plt.Circle((<span class="dv">0</span>,<span class="dv">0</span>), <span class="fl">27.5</span>, color<span class="op">=</span><span class="st">&#39;black&#39;</span>, fill<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb4-187"><a href="randomisation-script.html#cb4-187"></a>        fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb4-188"><a href="randomisation-script.html#cb4-188"></a>        plt.xlim(<span class="op">-</span><span class="dv">28</span>,<span class="dv">28</span>)</span>
+<span id="cb4-189"><a href="randomisation-script.html#cb4-189"></a>        plt.ylim(<span class="op">-</span><span class="dv">28</span>,<span class="dv">28</span>)</span>
+<span id="cb4-190"><a href="randomisation-script.html#cb4-190"></a>        ax.set_aspect(<span class="dv">1</span>)</span>
+<span id="cb4-191"><a href="randomisation-script.html#cb4-191"></a>        ax.add_artist(circle1)</span>
+<span id="cb4-192"><a href="randomisation-script.html#cb4-192"></a>        plt.plot(landmark_x[i], landmark_y[i], <span class="st">&#39;xr&#39;</span>)</span>
+<span id="cb4-193"><a href="randomisation-script.html#cb4-193"></a>        plt.plot(objLoc[i][bounBound1][<span class="dv">0</span>], objLoc[i][bounBound1][<span class="dv">2</span>], <span class="st">&#39;ob&#39;</span>)</span>
+<span id="cb4-194"><a href="randomisation-script.html#cb4-194"></a>        plt.plot(objLoc[i][bounBound2][<span class="dv">0</span>], objLoc[i][bounBound2][<span class="dv">2</span>], <span class="st">&#39;ob&#39;</span>)</span>
+<span id="cb4-195"><a href="randomisation-script.html#cb4-195"></a>        plt.plot(objLoc[i][landBound1][<span class="dv">0</span>], objLoc[i][landBound1][<span class="dv">2</span>], <span class="st">&#39;or&#39;</span>)</span>
+<span id="cb4-196"><a href="randomisation-script.html#cb4-196"></a>        plt.plot(objLoc[i][landBound2][<span class="dv">0</span>], objLoc[i][landBound2][<span class="dv">2</span>], <span class="st">&#39;or&#39;</span>)</span>
+<span id="cb4-197"><a href="randomisation-script.html#cb4-197"></a>        plt.title(<span class="st">&#39;Block &#39;</span> <span class="op">+</span> <span class="bu">str</span>(i<span class="op">+</span><span class="dv">1</span>), fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb4-198"><a href="randomisation-script.html#cb4-198"></a>        plt.savefig(pp, <span class="bu">format</span><span class="op">=</span><span class="st">&#39;pdf&#39;</span>)</span>
+<span id="cb4-199"><a href="randomisation-script.html#cb4-199"></a>        plt.show()</span>
+<span id="cb4-200"><a href="randomisation-script.html#cb4-200"></a>        i <span class="op">=+</span> <span class="dv">1</span></span>
+<span id="cb4-201"><a href="randomisation-script.html#cb4-201"></a>    </span>
+<span id="cb4-202"><a href="randomisation-script.html#cb4-202"></a>    <span class="co"># creates the overall pdf file with all 4 plots</span></span>
+<span id="cb4-203"><a href="randomisation-script.html#cb4-203"></a>    pp.close()</span>
+<span id="cb4-204"><a href="randomisation-script.html#cb4-204"></a>    </span>
+<span id="cb4-205"><a href="randomisation-script.html#cb4-205"></a>    <span class="co">#coded ID</span></span>
+<span id="cb4-206"><a href="randomisation-script.html#cb4-206"></a>    ID <span class="op">=</span> random.randint(<span class="dv">1000</span>,<span class="dv">9999</span>)</span>
+<span id="cb4-207"><a href="randomisation-script.html#cb4-207"></a>    none <span class="op">=</span> [<span class="st">&quot;none&quot;</span>]</span>
+<span id="cb4-208"><a href="randomisation-script.html#cb4-208"></a>    ID <span class="op">=</span> none <span class="op">+</span> [<span class="bu">str</span>(ID)]</span>
+<span id="cb4-209"><a href="randomisation-script.html#cb4-209"></a>    codes <span class="op">=</span> codes <span class="op">+</span> ID</span>
+<span id="cb4-210"><a href="randomisation-script.html#cb4-210"></a>    </span>
+<span id="cb4-211"><a href="randomisation-script.html#cb4-211"></a>    <span class="co">#json file</span></span>
+<span id="cb4-212"><a href="randomisation-script.html#cb4-212"></a>    json_data <span class="op">=</span> {</span>
+<span id="cb4-213"><a href="randomisation-script.html#cb4-213"></a>            <span class="st">&quot;objName&quot;</span> : objName, </span>
+<span id="cb4-214"><a href="randomisation-script.html#cb4-214"></a>            <span class="st">&quot;learnOrder&quot;</span> : learnOrder, </span>
+<span id="cb4-215"><a href="randomisation-script.html#cb4-215"></a>            <span class="st">&quot;feedbackOrder&quot;</span> : feedbackOrder, </span>
+<span id="cb4-216"><a href="randomisation-script.html#cb4-216"></a>            <span class="st">&quot;landmarkPos&quot;</span>:landmarkPos, </span>
+<span id="cb4-217"><a href="randomisation-script.html#cb4-217"></a>            <span class="st">&quot;familiarisePropLoc&quot;</span>: familiarisePropLoc, </span>
+<span id="cb4-218"><a href="randomisation-script.html#cb4-218"></a>            <span class="st">&quot;objLoc1&quot;</span>: objLoc[<span class="dv">0</span>], </span>
+<span id="cb4-219"><a href="randomisation-script.html#cb4-219"></a>            <span class="st">&quot;objLoc2&quot;</span>: objLoc[<span class="dv">1</span>], </span>
+<span id="cb4-220"><a href="randomisation-script.html#cb4-220"></a>            <span class="st">&quot;objLoc3&quot;</span>: objLoc[<span class="dv">2</span>], </span>
+<span id="cb4-221"><a href="randomisation-script.html#cb4-221"></a>            <span class="st">&quot;objLoc4&quot;</span>: objLoc[<span class="dv">3</span>],</span>
+<span id="cb4-222"><a href="randomisation-script.html#cb4-222"></a>            <span class="st">&quot;IDnew&quot;</span>: ID</span>
+<span id="cb4-223"><a href="randomisation-script.html#cb4-223"></a>            }</span>
+<span id="cb4-224"><a href="randomisation-script.html#cb4-224"></a>    json_dump <span class="op">=</span> json.dumps(json_data)</span>
+<span id="cb4-225"><a href="randomisation-script.html#cb4-225"></a>    json_input <span class="op">=</span> json.loads(json_dump)</span>
+<span id="cb4-226"><a href="randomisation-script.html#cb4-226"></a>    </span>
+<span id="cb4-227"><a href="randomisation-script.html#cb4-227"></a>    </span>
+<span id="cb4-228"><a href="randomisation-script.html#cb4-228"></a>    <span class="co">#saves the created json to the current folder</span></span>
+<span id="cb4-229"><a href="randomisation-script.html#cb4-229"></a>    <span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;psub&#39;</span><span class="op">+</span><span class="bu">str</span>(part)<span class="op">+</span><span class="st">&#39;_inputParam.json&#39;</span>,<span class="st">&#39;w&#39;</span>) <span class="im">as</span> json_file:</span>
+<span id="cb4-230"><a href="randomisation-script.html#cb4-230"></a>        json.dump(json_input, json_file)</span></code></pre></div>
+<p><strong>Block 1 - 4 Objects’ Locations</strong></p>
+<p><img src="block1-2.png" />
 <img src="block3-4.png" /></p>
+</div>
+<div id="visualisation-of-location-restrictions" class="section level2">
+<h2><span class="header-section-number">2.3</span> Visualisation of location restrictions</h2>
+<div id="for-stimulus-objects" class="section level3">
+<h3><span class="header-section-number">2.3.1</span> For stimulus objects</h3>
 <div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="randomisation-script.html#cb5-1"></a><span class="co">#location restrictions </span></span>
 <span id="cb5-2"><a href="randomisation-script.html#cb5-2"></a>i<span class="op">=</span><span class="dv">2</span></span>
 <span id="cb5-3"><a href="randomisation-script.html#cb5-3"></a>circle1 <span class="op">=</span> plt.Circle((<span class="dv">0</span>,<span class="dv">0</span>), <span class="fl">27.5</span>, color<span class="op">=</span><span class="st">&#39;black&#39;</span>, fill<span class="op">=</span><span class="va">False</span>)</span>
@@ -507,9 +548,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-21"><a href="randomisation-script.html#cb5-21"></a>plt.plot(objLoc[i][landBound2][<span class="dv">0</span>], objLoc[i][landBound2][<span class="dv">2</span>], <span class="st">&#39;or&#39;</span>)</span>
 <span id="cb5-22"><a href="randomisation-script.html#cb5-22"></a>plt.title(<span class="st">&#39;Block &#39;</span><span class="op">+</span><span class="bu">str</span>(i<span class="op">+</span><span class="dv">1</span>), fontsize<span class="op">=</span><span class="dv">8</span>)</span>
 <span id="cb5-23"><a href="randomisation-script.html#cb5-23"></a>plt.show()</span></code></pre></div>
-<p><strong>Location Restrictions</strong>
-<img src="positionRestrictions.png" /></p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="randomisation-script.html#cb6-1"></a><span class="co">#visualising restrictions for new landmakr position in block 3</span></span>
+<p><strong>Location Restrictions</strong></p>
+<p>Object’s location can be generated only inside the band surrounding its cue.</p>
+<p><img src="positionRestrictions.png" /></p>
+</div>
+<div id="for-landmark" class="section level3">
+<h3><span class="header-section-number">2.3.2</span> For landmark</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="randomisation-script.html#cb6-1"></a><span class="co">#visualising restrictions for new landmark position in block 3</span></span>
 <span id="cb6-2"><a href="randomisation-script.html#cb6-2"></a></span>
 <span id="cb6-3"><a href="randomisation-script.html#cb6-3"></a>i<span class="op">=</span><span class="dv">1</span></span>
 <span id="cb6-4"><a href="randomisation-script.html#cb6-4"></a>circle1 <span class="op">=</span> plt.Circle((<span class="dv">0</span>,<span class="dv">0</span>), <span class="fl">27.5</span>, color<span class="op">=</span><span class="st">&#39;black&#39;</span>, fill<span class="op">=</span><span class="va">False</span>) <span class="co">#arena</span></span>
@@ -538,8 +583,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb6-27"><a href="randomisation-script.html#cb6-27"></a>plt.plot(objLoc[i][landBound2][<span class="dv">0</span>], objLoc[i][landBound2][<span class="dv">2</span>], <span class="st">&#39;or&#39;</span>)</span>
 <span id="cb6-28"><a href="randomisation-script.html#cb6-28"></a>plt.title(<span class="st">&#39;Block &#39;</span><span class="op">+</span><span class="bu">str</span>(i<span class="op">+</span><span class="dv">1</span>), fontsize<span class="op">=</span><span class="dv">8</span>)</span>
 <span id="cb6-29"><a href="randomisation-script.html#cb6-29"></a>plt.show()</span></code></pre></div>
-<p><strong>Landmark Movement Restrictions</strong>
-<img src="landmarkMovement.png" /></p>
+<p><strong>Landmark Movement Restrictions</strong></p>
+<p>Red cross - current landmark location</p>
+<p>Black circle - arena size</p>
+<p>Big grey circle - area within which objects can be located</p>
+<p>Small grey circle - area within which objects cannot be located due to landmark closeness</p>
+<p>Green circles - area around current and present landmark location within which landmark can not appear in future blocks and around boundary-dependent objects within which landmark also cannot be located</p>
+<p>Blue and red dots - objects’ locations</p>
+<p>Green cross - landmark location in next block</p>
+<p><img src="landmarkMovement.png" /></p>
+</div>
+</div>
+<div id="visualisation-of-feedback-levels" class="section level2">
+<h2><span class="header-section-number">2.4</span> Visualisation of Feedback Levels</h2>
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="randomisation-script.html#cb7-1"></a><span class="co">#visualizing the feedback ratios</span></span>
 <span id="cb7-2"><a href="randomisation-script.html#cb7-2"></a>circle1 <span class="op">=</span> plt.Circle((<span class="dv">0</span>,<span class="dv">0</span>), <span class="dv">25</span>, color<span class="op">=</span><span class="st">&#39;black&#39;</span>, fill<span class="op">=</span><span class="va">False</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
 <span id="cb7-3"><a href="randomisation-script.html#cb7-3"></a>circle2 <span class="op">=</span> plt.Circle((<span class="dv">0</span>,<span class="dv">0</span>), <span class="fl">27.5</span>, color<span class="op">=</span><span class="st">&#39;black&#39;</span>, fill<span class="op">=</span><span class="va">False</span>)</span>
@@ -564,9 +620,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-22"><a href="randomisation-script.html#cb7-22"></a>plt.plot(objLoc[<span class="dv">1</span>][landBound2][<span class="dv">0</span>], objLoc[<span class="dv">1</span>][landBound2][<span class="dv">2</span>], <span class="st">&#39;or&#39;</span>)</span>
 <span id="cb7-23"><a href="randomisation-script.html#cb7-23"></a>plt.title(<span class="st">&#39;Block &#39;</span><span class="op">+</span><span class="bu">str</span>(i<span class="op">+</span><span class="dv">1</span>), fontsize<span class="op">=</span><span class="dv">8</span>)</span>
 <span id="cb7-24"><a href="randomisation-script.html#cb7-24"></a>plt.show()</span></code></pre></div>
-<p><strong>Feedback Ratios</strong>
-<img src="feedbackRatios.png" /></p>
+<p><strong>Feedback Ratios</strong></p>
+<p><img src="feedbackRatios.png" /></p>
 
+</div>
 </div>
             </section>
 

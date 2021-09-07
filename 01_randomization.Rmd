@@ -10,7 +10,11 @@ output:
 
 # Randomisation script 
 
+## Set Up
+
 ```{r}
+# import R packages 
+
 library(reticulate)
 library(here)
 ```
@@ -18,7 +22,7 @@ library(here)
 This script is written in Python
 
 ```{python}
-#import packages
+#import Python packages
 
 import json
 import random 
@@ -28,8 +32,9 @@ from matplotlib.backends.backend_pdf import PdfPages
 ```
 
 ```{python}
-#all definitions
+#function definitions
 
+#generates random location within a circle
 def arenaRand(circle_r):
     # center of the circle (x, y)
     circle_x = 0
@@ -44,7 +49,7 @@ def arenaRand(circle_r):
     y = r * math.sin(alpha) + circle_y
     return x, y
 
-
+#generates random locations within a round band 
 def ringRand(circle_r1, circle_r2, circle_x = 0, circle_y = 0):
     # center of the circle (x, y)
     # random angle
@@ -56,26 +61,36 @@ def ringRand(circle_r1, circle_r2, circle_x = 0, circle_y = 0):
     y = r * math.sin(alpha) + circle_y
     return x, y
 
-#distance def
+#calculates distance between two objects
 def distance(landmark, obj):
    d = math.sqrt(((landmark[0]-obj[0])**2)+((landmark[2]-obj[2])**2))
    return d
 ````
 
+## Assigning dependency and generating objects' locations
+
 ```{python, warning = FALSE, results = FALSE, eval=FALSE}
+# center of the arena
 origin = [0,0,0]
+# list for storing new IDs
 codes =[]
+# number of first participant
 part = 1
+
 for i in range(1): #number adjusted for the target amount of participants
     #objList
+    # list containing the names of the objects, used in instructions for each trial
     objName = ["none","flower","slime","lamp","partyhat"]
     
     #learnOrder
+    # order in which the objects' appeared during learning phase (each object twice)
     obj = [1,2,3,4]
     order = random.sample(obj, k=len(obj))
     learnOrder = [0] + order + order
     
     #feedbackOrder
+    # order in which the objects' appeared during testing phase (each object 16 times) 
+    # via shuffling the obj list order resulting in each object appearing the same amount of times before further trials
     feedbackOrder = [0]
     while len(feedbackOrder) < 65:
         if len(feedbackOrder) == 1:
@@ -90,6 +105,7 @@ for i in range(1): #number adjusted for the target amount of participants
                 feedbackOrder = feedbackOrder + next
                 
     #landmarkPos
+    # generating first position of landmark
     landmarkPos = [[0,0,0]]
     
     x, z = ringRand(2,20)
@@ -99,6 +115,7 @@ for i in range(1): #number adjusted for the target amount of participants
             
     
     #familiarisePropLoc
+    # generating 10 locations in which a prob object would appear during familiarization phase
     familiarisePropLoc = [[0,0,0]] 
     i = 0
     while len(familiarisePropLoc) < 11:
@@ -115,6 +132,7 @@ for i in range(1): #number adjusted for the target amount of participants
     objLoc = []
     
     #randomisation of objects as landmark-dependent vs boundary-dependent
+    # it shuffles the obj list and assigns the first two as a landmark-dependent and the last two as boundary-dependent objects
     s = random.sample(obj, k=4)
     landBound1 = s[0]
     landBound2 = s[1]
@@ -151,13 +169,14 @@ for i in range(1): #number adjusted for the target amount of participants
         
         #setting up landmark & objects locations for block 2-4 
         else: 
-            #landmark pos
+            #landmark location
             x, z = arenaRand(22.5)
             y = -2.4
             loc = [x, y, z]
             i = 0
             diff = []
-            for i in range(len(landmarkPos)):        #checking distance to other landmark locations
+            for i in range(len(landmarkPos)):        
+                #checking distance to other landmark previous locations
                 if distance(landmarkPos[i], loc) > 10:
                     i += 1
                     diff.append('True')
@@ -167,31 +186,35 @@ for i in range(1): #number adjusted for the target amount of participants
             
             if 'False' not in diff: 
                 print(diff)
+                #checking distance to boundary-dependent objects
                 if distance(loc, objLoc[0][bounBound1]) > 8 and distance(loc, objLoc[0][bounBound2]) > 8:
                     landmark = loc
                     i += 1
                   
-                    #location of boundary-dependent objs
+                    #location of boundary-dependent objs for this block
                     objLocBlock = [None] * 5
                     objLocBlock[0] = [0,0,0]
                     objLocBlock[bounBound1] = objLoc[0][bounBound1]
                     objLocBlock[bounBound2] = objLoc[0][bounBound2]
                     print('boundary-bound locations done')
                     
-                    #location of the landmark-dependent objs
+                    #location of the landmark-dependent obj 1 for this block
                     x1 = objLoc[0][landBound1][0] + (landmark[0]-landmarkPos[1][0])
                     y1 = 0.7
                     z1 = objLoc[0][landBound1][2] + (landmark[2]-landmarkPos[1][2])
                     locObj1 = [x1, y1, z1] 
-                    if distance(locObj1, origin) < 22.5 and distance(locObj1, objLoc[0][bounBound1]) > 5 and  distance(locObj1, objLoc[0][bounBound2]) > 5: #checking if it is inside the arena
+                    #checking if it is inside the arena and correct distance from boundary-dependent objects
+                    if distance(locObj1, origin) < 22.5 and distance(locObj1, objLoc[0][bounBound1]) > 5 and  distance(locObj1, objLoc[0][bounBound2]) > 5: 
                         print('inside arena obj1')
                         objLocBlock[landBound1] = locObj1 
+                        print('landmark-bound location 1 done')
                     
+                        #location of the landmark-dependent obj 2 for this block
                         x2 = objLoc[0][landBound2][0] + (landmark[0]-landmarkPos[1][0])
                         y2 = 0.7
                         z2 = objLoc[0][landBound2][2] + (landmark[2]-landmarkPos[1][2])
                         locObj2 = [x2, y2, z2]
-                        print('landmark-bound location 1 done')
+                        #checking if it is inside the arena and correct distance from boundary-dependent objects
                         if distance(locObj2, origin) < 22.5 and distance(locObj2, objLoc[0][bounBound1]) > 5 and  distance(locObj2, objLoc[0][bounBound2]) > 5:
                             objLocBlock[landBound2] = locObj2
                             print('inside arena obj2')
@@ -200,6 +223,7 @@ for i in range(1): #number adjusted for the target amount of participants
                             print('landmark-bound location 2 done')
                             print(len(objLoc))
                             g += 1
+                            
                         else:
                             print('outside of arena obj2')
                     else:
@@ -211,6 +235,8 @@ for i in range(1): #number adjusted for the target amount of participants
                     print('landmark not far away from other landmarks')
                     landmarkPos = landmarkPos[0:g+1]
                     print(w)
+                    
+                # if number of tries exceed 5000, object locations get reset and only landmark location for block 1 remains 
                 else:
                     objLoc = []
                     landmarkPos = landmarkPos[0:2]
@@ -220,10 +246,11 @@ for i in range(1): #number adjusted for the target amount of participants
                     
     
                     
-    #visualization 
+    #visualization of the generated locations for all 4 blocks
     landmark_x = [landmarkPos[1][0], landmarkPos[2][0], landmarkPos[3][0], landmarkPos[4][0]]
     landmark_y = [landmarkPos[1][2], landmarkPos[2][2], landmarkPos[3][2], landmarkPos[4][2]]
     
+    #generating a pdf holding the graphs to accompany every input data file
     pp = PdfPages('input_figs_' + str(part) +'.pdf')
     
 
@@ -276,10 +303,15 @@ for i in range(1): #number adjusted for the target amount of participants
 
 ```
 
-**Block 1 - 4 Objects' Locations**
-![ ](`r here("block1-2.png")`)
+**Block 1 - 4 Objects' Locations**  
+
+
+![ ](`r here("block1-2.png")`) 
 ![ ](`r here("block3-4.png")`)
 
+## Visualisation of location restrictions
+
+### For stimulus objects
 
 ```{python, warning=FALSE, results=FALSE, eval=FALSE}
 #location restrictions 
@@ -307,12 +339,18 @@ plt.title('Block '+str(i+1), fontsize=8)
 plt.show()
 ```
 
-**Location Restrictions**
+**Location Restrictions**  
+
+Object's location can be generated only inside the band surrounding its cue.  
+
+
 ![ ](`r here("positionRestrictions.png")`)
 
 
+### For landmark 
+
 ```{python, warning=FALSE, results=FALSE, eval=FALSE}
-#visualising restrictions for new landmakr position in block 3
+#visualising restrictions for new landmark position in block 3
 
 i=1
 circle1 = plt.Circle((0,0), 27.5, color='black', fill=False) #arena
@@ -343,9 +381,27 @@ plt.title('Block '+str(i+1), fontsize=8)
 plt.show()
 ```
 
-**Landmark Movement Restrictions**
+**Landmark Movement Restrictions**  
+
+Red cross - current landmark location  
+
+Black circle - arena size   
+
+Big grey circle - area within which objects can be located  
+
+
+Small grey circle - area within which objects cannot be located due to landmark closeness  
+
+Green circles - area around current and present landmark location within which landmark can not appear in future blocks and around boundary-dependent objects within which landmark also cannot be located  
+
+Blue and red dots - objects' locations  
+
+Green cross - landmark location in next block  
+
+
 ![ ](`r here("landmarkMovement.png")`)
 
+## Visualisation of Feedback Levels 
 
 ```{python, warning=FALSE, results=FALSE, eval=FALSE}
 #visualizing the feedback ratios
@@ -374,5 +430,6 @@ plt.title('Block '+str(i+1), fontsize=8)
 plt.show()
 ```
 
-**Feedback Ratios**
+**Feedback Ratios**  
+
 ![ ](`r here("feedbackRatios.png")`)

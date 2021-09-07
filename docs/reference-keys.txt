@@ -1,5 +1,11 @@
 experiment-overview
 randomisation-script
+set-up
+assigning-dependency-and-generating-objects-locations
+visualisation-of-location-restrictions
+for-stimulus-objects
+for-landmark
+visualisation-of-feedback-levels
 data-preparation
 setup
 summary-and-angle-files
@@ -10,7 +16,7 @@ based-on-1000-locations-taken-from-the-participants-trajectory
 saving-the-compiled-dataset
 analysis
 hypothesis
-set-up
+set-up-1
 exclusion-criteria
 timeout-sessions
 incomplete-datasets
@@ -31,7 +37,7 @@ relative-influence-1
 cue-dissonance
 distance-error
 angle-estimation-analysis
-set-up-1
+set-up-2
 exclusion-criteria-1
 timeout-session
 descriptives-1

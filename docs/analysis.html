@@ -134,7 +134,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <ul class="summary">
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Experiment Overview</a></li>
-<li class="chapter" data-level="2" data-path="randomisation-script.html"><a href="randomisation-script.html"><i class="fa fa-check"></i><b>2</b> Randomisation script</a></li>
+<li class="chapter" data-level="2" data-path="randomisation-script.html"><a href="randomisation-script.html"><i class="fa fa-check"></i><b>2</b> Randomisation script</a><ul>
+<li class="chapter" data-level="2.1" data-path="randomisation-script.html"><a href="randomisation-script.html#set-up"><i class="fa fa-check"></i><b>2.1</b> Set Up</a></li>
+<li class="chapter" data-level="2.2" data-path="randomisation-script.html"><a href="randomisation-script.html#assigning-dependency-and-generating-objects-locations"><i class="fa fa-check"></i><b>2.2</b> Assigning dependency and generating objects’ locations</a></li>
+<li class="chapter" data-level="2.3" data-path="randomisation-script.html"><a href="randomisation-script.html#visualisation-of-location-restrictions"><i class="fa fa-check"></i><b>2.3</b> Visualisation of location restrictions</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="randomisation-script.html"><a href="randomisation-script.html#for-stimulus-objects"><i class="fa fa-check"></i><b>2.3.1</b> For stimulus objects</a></li>
+<li class="chapter" data-level="2.3.2" data-path="randomisation-script.html"><a href="randomisation-script.html#for-landmark"><i class="fa fa-check"></i><b>2.3.2</b> For landmark</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="randomisation-script.html"><a href="randomisation-script.html#visualisation-of-feedback-levels"><i class="fa fa-check"></i><b>2.4</b> Visualisation of Feedback Levels</a></li>
+</ul></li>
 <li class="chapter" data-level="3" data-path="data-preparation.html"><a href="data-preparation.html"><i class="fa fa-check"></i><b>3</b> Data Preparation</a><ul>
 <li class="chapter" data-level="3.1" data-path="data-preparation.html"><a href="data-preparation.html#setup"><i class="fa fa-check"></i><b>3.1</b> Setup</a></li>
 <li class="chapter" data-level="3.2" data-path="data-preparation.html"><a href="data-preparation.html#summary-and-angle-files"><i class="fa fa-check"></i><b>3.2</b> Summary and Angle files</a></li>
@@ -147,7 +155,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="4" data-path="analysis.html"><a href="analysis.html"><i class="fa fa-check"></i><b>4</b> Analysis</a><ul>
 <li class="chapter" data-level="4.1" data-path="analysis.html"><a href="analysis.html#hypothesis"><i class="fa fa-check"></i><b>4.1</b> Hypothesis</a></li>
-<li class="chapter" data-level="4.2" data-path="analysis.html"><a href="analysis.html#set-up"><i class="fa fa-check"></i><b>4.2</b> Set up</a><ul>
+<li class="chapter" data-level="4.2" data-path="analysis.html"><a href="analysis.html#set-up-1"><i class="fa fa-check"></i><b>4.2</b> Set up</a><ul>
 <li class="chapter" data-level="4.2.1" data-path="analysis.html"><a href="analysis.html#exclusion-criteria"><i class="fa fa-check"></i><b>4.2.1</b> Exclusion criteria</a></li>
 <li class="chapter" data-level="4.2.2" data-path="analysis.html"><a href="analysis.html#timeout-sessions"><i class="fa fa-check"></i><b>4.2.2</b> Timeout sessions</a></li>
 </ul></li>
@@ -174,7 +182,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html"><i class="fa fa-check"></i><b>5</b> Angle estimation analysis</a><ul>
-<li class="chapter" data-level="5.1" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#set-up-1"><i class="fa fa-check"></i><b>5.1</b> Set up</a><ul>
+<li class="chapter" data-level="5.1" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#set-up-2"><i class="fa fa-check"></i><b>5.1</b> Set up</a><ul>
 <li class="chapter" data-level="5.1.1" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#exclusion-criteria-1"><i class="fa fa-check"></i><b>5.1.1</b> Exclusion criteria</a></li>
 <li class="chapter" data-level="5.1.2" data-path="angle-estimation-analysis.html"><a href="angle-estimation-analysis.html#timeout-session"><i class="fa fa-check"></i><b>5.1.2</b> Timeout session</a></li>
 </ul></li>
@@ -233,7 +241,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">4.1</span> Hypothesis</h2>
 <p>Hypothesis: Boundary-dependent object position memory will improve between 8 and 15 years of age, while landmark-dependent object memory will stay relatively constant.</p>
 </div>
-<div id="set-up" class="section level2">
+<div id="set-up-1" class="section level2">
 <h2><span class="header-section-number">4.2</span> Set up</h2>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="analysis.html#cb24-1"></a>knitr<span class="op">::</span>opts_chunk<span class="op">$</span><span class="kw">set</span>(<span class="dt">echo =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
 <p>Packages used for data analysis</p>
@@ -971,8 +979,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb56-3"><a href="analysis.html#cb56-3"></a></span>
 <span id="cb56-4"><a href="analysis.html#cb56-4"></a>ratioCue &lt;-<span class="st"> </span><span class="kw">anova</span>(modelCue, modelCueControl) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
-<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not
-## recognized or transformed: npar</code></pre>
+<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not recognized or transformed: npar</code></pre>
 <p><strong><span class="math inline">\(\chi^{2}\)</span>(1) = 51.989, p&lt;0.001</strong></p>
 </div>
 <div id="distance-error-differences" class="section level3">
@@ -1368,8 +1375,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb69-5"><a href="analysis.html#cb69-5"></a><span class="co">#likelihood ratio test</span></span>
 <span id="cb69-6"><a href="analysis.html#cb69-6"></a>ratioMini &lt;-<span class="st"> </span><span class="kw">anova</span>(modelMiniblocksCue, modelMiniblocksControl) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
-<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not
-## recognized or transformed: npar</code></pre>
+<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not recognized or transformed: npar</code></pre>
 <p><strong><span class="math inline">\(\chi^{2}\)</span>(1) = 54.565, p&lt;0.001</strong></p>
 <p><strong>Cue specific analysis</strong></p>
 <p>To check whether miniblocks are a significant predictor without the cue we ran a model and likelihood ratio test separately for landmark-dependent and boundary-dependent objects.</p>
@@ -1384,8 +1390,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb72-9"><a href="analysis.html#cb72-9"></a><span class="co">#likelihood ratio test</span></span>
 <span id="cb72-10"><a href="analysis.html#cb72-10"></a>ratioMiniLandmark &lt;-<span class="st"> </span><span class="kw">anova</span>(modelMiniblocksLandmark, modelMiniLandmarkControl) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
-<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not
-## recognized or transformed: npar</code></pre>
+<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not recognized or transformed: npar</code></pre>
 <p><strong><span class="math inline">\(\chi^{2}\)</span>(1) = 58.923, p&lt;0.001</strong></p>
 <div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="analysis.html#cb75-1"></a><span class="co"># boundary-dependent objects</span></span>
 <span id="cb75-2"><a href="analysis.html#cb75-2"></a>formulaMiniblocks &lt;-<span class="st"> &quot;relativeInfluence ~ mini + (1+mini|ID)&quot;</span></span>
@@ -1398,8 +1403,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb75-9"><a href="analysis.html#cb75-9"></a><span class="co">#likelihood ratio test</span></span>
 <span id="cb75-10"><a href="analysis.html#cb75-10"></a>ratioMiniBoundary &lt;-<span class="st"> </span><span class="kw">anova</span>(modelMiniblocksBoundary, modelMiniBoundaryControl) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
-<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not
-## recognized or transformed: npar</code></pre>
+<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not recognized or transformed: npar</code></pre>
 <p><strong><span class="math inline">\(\chi^{2}\)</span>(1) = 554.007, p&lt;0.001</strong></p>
 <div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="analysis.html#cb78-1"></a><span class="co">#cue specific models table</span></span>
 <span id="cb78-2"><a href="analysis.html#cb78-2"></a><span class="kw">tab_model</span>(modelMiniblocksLandmark, modelMiniblocksBoundary, </span>
@@ -1740,8 +1744,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb80-5"><a href="analysis.html#cb80-5"></a><span class="co">#likelihood ratio test</span></span>
 <span id="cb80-6"><a href="analysis.html#cb80-6"></a>ratioCueDis_mini &lt;-<span class="st"> </span><span class="kw">anova</span>(modelCueDis_mini, modelCueDis_miniControl) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
-<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not
-## recognized or transformed: npar</code></pre>
+<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not recognized or transformed: npar</code></pre>
 <p><strong><span class="math inline">\(\chi^{2}\)</span>(1) = 41.109, p&lt;0.001</strong></p>
 <p><strong>Graphs</strong></p>
 <div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="analysis.html#cb83-1"></a>CueDis_miniblock &lt;-<span class="st"> </span><span class="kw">ggplot</span>(summary_miniblock, <span class="kw">aes</span>(miniblock, cueDis, <span class="dt">color=</span>cue)) <span class="op">+</span><span class="st"> </span></span>
@@ -1853,8 +1856,7 @@ t(35)= -1.27, p= 0.212, d=-0.24, 95% CI [-0.62, 0.14]</p>
 <span id="cb86-5"><a href="analysis.html#cb86-5"></a><span class="co">#likelihood ratio test</span></span>
 <span id="cb86-6"><a href="analysis.html#cb86-6"></a>ratioMini &lt;-<span class="st"> </span><span class="kw">anova</span>(modelCueDis_miniControl, modelJustMini) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
-<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not
-## recognized or transformed: npar</code></pre>
+<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not recognized or transformed: npar</code></pre>
 <p><strong><span class="math inline">\(\chi^{2}\)</span>(1) = 2.27, p&lt;0.001</strong></p>
 </div>
 </div>
@@ -2021,8 +2023,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb90-5"><a href="analysis.html#cb90-5"></a><span class="co">#likelihood ratio test</span></span>
 <span id="cb90-6"><a href="analysis.html#cb90-6"></a>ratioFullModel &lt;-<span class="st"> </span><span class="kw">anova</span>(modelFull, modelControl) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
-<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not
-## recognized or transformed: npar</code></pre>
+<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not recognized or transformed: npar</code></pre>
 <p><strong><span class="math inline">\(\chi^{2}\)</span>(1) = 6.279, p= 0.012</strong></p>
 <p><strong>Cue specific analysis</strong></p>
 <p>To see if age remains a significant predictor without cue, we ran mixed models separately for boundary-dependent and landmark-dependent objects and tested them with likelihood ratio test including only random intercepts for participants.</p>
@@ -2037,8 +2038,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb93-9"><a href="analysis.html#cb93-9"></a><span class="co">#likelihood ratio test</span></span>
 <span id="cb93-10"><a href="analysis.html#cb93-10"></a>ratioAgeLandmark &lt;-<span class="st"> </span><span class="kw">anova</span>(modelAgeLandmark, modelControlAgeLandmark) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
-<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not
-## recognized or transformed: npar</code></pre>
+<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not recognized or transformed: npar</code></pre>
 <p><strong><span class="math inline">\(\chi^{2}\)</span>(1) = 5.227, p= 0.022</strong></p>
 <div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="analysis.html#cb96-1"></a><span class="co">#boundary-dependent objects</span></span>
 <span id="cb96-2"><a href="analysis.html#cb96-2"></a>formulaAgeBoundary &lt;-<span class="st"> &quot;relativeInfluence ~ age_c +(1|ID)&quot;</span></span>
@@ -2051,8 +2051,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb96-9"><a href="analysis.html#cb96-9"></a><span class="co">#likelihood ratio test </span></span>
 <span id="cb96-10"><a href="analysis.html#cb96-10"></a>ratioAgeBoundary &lt;-<span class="st"> </span><span class="kw">anova</span>(modelAgeBoundary, modelControlAgeBoundary) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
-<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not
-## recognized or transformed: npar</code></pre>
+<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not recognized or transformed: npar</code></pre>
 <p><strong><span class="math inline">\(\chi^{2}\)</span>(1) = 3.912, p= 0.048</strong></p>
 <div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="analysis.html#cb99-1"></a><span class="kw">tab_model</span>(modelAgeLandmark, modelAgeBoundary, </span>
 <span id="cb99-2"><a href="analysis.html#cb99-2"></a>          <span class="dt">show.p =</span> <span class="ot">FALSE</span>, <span class="dt">show.se=</span><span class="ot">TRUE</span>, <span class="dt">show.icc=</span><span class="ot">FALSE</span>,</span>
@@ -2422,8 +2421,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb103-5"><a href="analysis.html#cb103-5"></a><span class="co">#likelihood ratio test</span></span>
 <span id="cb103-6"><a href="analysis.html#cb103-6"></a>ratioCueDis &lt;-<span class="st"> </span><span class="kw">anova</span>(modelCueDis, modelControlCueDis) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
-<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not
-## recognized or transformed: npar</code></pre>
+<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not recognized or transformed: npar</code></pre>
 <p><strong><span class="math inline">\(\chi^{2}\)</span>(1) = 0.127, p= 0.722</strong></p>
 <p><strong>Explorative</strong></p>
 <p>Is cue even significant predictor?</p>
@@ -2434,8 +2432,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb106-5"><a href="analysis.html#cb106-5"></a><span class="co">#likelihood ratio test</span></span>
 <span id="cb106-6"><a href="analysis.html#cb106-6"></a>ratioCueDis_cue &lt;-<span class="st"> </span><span class="kw">anova</span>(modelCueDis_cueControl, modelControlCueDis) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
-<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not
-## recognized or transformed: npar</code></pre>
+<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not recognized or transformed: npar</code></pre>
 <p><strong><span class="math inline">\(\chi^{2}\)</span>(1) = 2.349, p= 0.125</strong></p>
 <p>Adding miniblock as a predictor instead to find the best model.</p>
 <div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="analysis.html#cb109-1"></a><span class="co">#control model for miniblock as predictor</span></span>
@@ -2575,8 +2572,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="analysis.html#cb110-1"></a><span class="co">#likelihood ratio test</span></span>
 <span id="cb110-2"><a href="analysis.html#cb110-2"></a>ratioCueDis_miniFull &lt;-<span class="st"> </span><span class="kw">anova</span>(modelCueDis_miniFull, modelCueDis_cueControl) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
-<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not
-## recognized or transformed: npar</code></pre>
+<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not recognized or transformed: npar</code></pre>
 <p><strong><span class="math inline">\(\chi^{2}\)</span>(1) = 187.449, p&lt;0.001</strong></p>
 <p><strong>Graphs</strong></p>
 <p>The graph below visualizes how the cue dissonance improves with age as seen in collected data.</p>
@@ -2808,8 +2804,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb118-5"><a href="analysis.html#cb118-5"></a><span class="co">#likelihood ratio test</span></span>
 <span id="cb118-6"><a href="analysis.html#cb118-6"></a>ratioFullDist &lt;-<span class="st"> </span><span class="kw">anova</span>(modelFullDist, modelControlFullDist) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
-<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not
-## recognized or transformed: npar</code></pre>
+<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not recognized or transformed: npar</code></pre>
 <p><strong><span class="math inline">\(\chi^{2}\)</span>(1) = 0.046, p= 0.831</strong></p>
 <p><strong>Cue-specific analysis</strong></p>
 <p>To see if age remains a significant predictor without cue, we ran mixed models separately for boundary-dependent and landmark-dependent objects and tested them with likelihood ratio test including only random intercepts for participants.</p>
@@ -2824,8 +2819,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb121-9"><a href="analysis.html#cb121-9"></a><span class="co">#likelihood ratio test</span></span>
 <span id="cb121-10"><a href="analysis.html#cb121-10"></a>ratioAgeLandmark &lt;-<span class="st"> </span><span class="kw">anova</span>(modelAgeLandmark_error, modelControlAgeLandmark_error) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
-<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not
-## recognized or transformed: npar</code></pre>
+<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not recognized or transformed: npar</code></pre>
 <p><strong><span class="math inline">\(\chi^{2}\)</span>(1) = 12.423, p&lt;0.001</strong></p>
 <div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="analysis.html#cb124-1"></a><span class="co">#boundary-dependent objects</span></span>
 <span id="cb124-2"><a href="analysis.html#cb124-2"></a>formulaAgeBoundary &lt;-<span class="st"> &quot;error ~ age_c +(1|ID)&quot;</span></span>
@@ -2838,8 +2832,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb124-9"><a href="analysis.html#cb124-9"></a><span class="co">#likelihood ratio test </span></span>
 <span id="cb124-10"><a href="analysis.html#cb124-10"></a>ratioAgeBoundary &lt;-<span class="st"> </span><span class="kw">anova</span>(modelAgeBoundary_error, modelControlAgeBoundary_error) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
-<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not
-## recognized or transformed: npar</code></pre>
+<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not recognized or transformed: npar</code></pre>
 <p><strong><span class="math inline">\(\chi^{2}\)</span>(1) = 10.055, p= 0.002</strong></p>
 <div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="analysis.html#cb127-1"></a><span class="kw">tab_model</span>(modelAgeLandmark_error, modelAgeBoundary_error, </span>
 <span id="cb127-2"><a href="analysis.html#cb127-2"></a>          <span class="dt">show.p =</span> <span class="ot">FALSE</span>, <span class="dt">show.se=</span><span class="ot">TRUE</span>, <span class="dt">show.icc=</span><span class="ot">FALSE</span>,</span>
@@ -2997,8 +2990,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <span id="cb128-5"><a href="analysis.html#cb128-5"></a><span class="co">#likelihood ratio test</span></span>
 <span id="cb128-6"><a href="analysis.html#cb128-6"></a>ratioAgeDist &lt;-<span class="st"> </span><span class="kw">anova</span>(modelFullDist, modelControlFullDist) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
-<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not
-## recognized or transformed: npar</code></pre>
+<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not recognized or transformed: npar</code></pre>
 <p><strong><span class="math inline">\(\chi^{2}\)</span>(1) = 2.515, p= 0.284</strong></p>
 <p>Adding miniblock instead of cue a predictor.</p>
 <div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="analysis.html#cb131-1"></a><span class="co">#control model for miniblock as predictor</span></span>
@@ -3138,8 +3130,7 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 <div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="analysis.html#cb132-1"></a><span class="co">#likelihood ratio test</span></span>
 <span id="cb132-2"><a href="analysis.html#cb132-2"></a>ratioFullMiniDist &lt;-<span class="st"> </span><span class="kw">anova</span>(modelMiniFullDist, modelControlFullDist) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">tidy</span>()</span></code></pre></div>
 <pre><code>## refitting model(s) with ML (instead of REML)</code></pre>
-<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not
-## recognized or transformed: npar</code></pre>
+<pre><code>## Warning in tidy.anova(.): The following column names in ANOVA output were not recognized or transformed: npar</code></pre>
 <p><strong><span class="math inline">\(\chi^{2}\)</span>(1) = 220.937, p&lt;0.001</strong></p>
 <p><strong>Graphs</strong></p>
 <div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="analysis.html#cb135-1"></a>distance_final &lt;-<span class="st"> </span><span class="kw">ggplot</span>(relativeInfluenceBlocks, <span class="kw">aes</span>(age, distanceError, <span class="dt">color=</span>cue)) <span class="op">+</span><span class="st"> </span></span>
