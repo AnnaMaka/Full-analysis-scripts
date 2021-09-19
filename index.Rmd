@@ -1,15 +1,27 @@
 ---
 title: "Data Preparation and Analysis"
-author: "Anna Makova (under supervision of Dr. Jacob Bellmund)"
-date: "05/08/2021"
+author: "2333622M"
+date: "19/09/2021"
 site: bookdown::bookdown_site
 documentclass: book
 output:
   bookdown::gitbook: default
 ---
 
-# Experiment Overview
+# Overview
 
-This experiment was conducted to investigate the development of spatial memory in 8- to 15-year-old children and adolescents. Participants navigated throughout a circular arena with a landmark and extra-maze, orientation cues created in Unity environment. Participants learned positions of 4 objects from which 2 were landmark-bound and 2 were boundary-bound. After block 1, landmark and landmark-dependent objects changed their position and participants had to notice an dlearn new positions. 
+This website serves as a supplementary information for my MSci placement project. It contains as a complete code documentation of my analysis and partial methods documentation including locations generation script.
 
+## Contents
 
+1.[Overview](https://annamaka.github.io/Full-analysis-scripts/): General information about the contents of this website and abstract
+2.[Randomisation script](https://annamaka.github.io/Full-analysis-scripts/randomisation-script.html): Script generating the individual input files containing cue assignment and location generation  
+3.[Data Preparation](https://annamaka.github.io/Full-analysis-scripts/data-preparation.html): Raw data tidying and calculations of many analysis variables
+4.[Analysis](https://annamaka.github.io/Full-analysis-scripts/analysis.html): Positional memory analysis 
+5.[Angle Estimation Analysis](https://annamaka.github.io/Full-analysis-scripts/angle-estimation-analysis.html): Pointing analysis
+6.[Summary tables and graphs](https://annamaka.github.io/Full-analysis-scripts/summary-tables-and-graphs.html): Contains all tables and graphs that are compiled for positional memory and pointing
+7.[Credit](https://annamaka.github.io/Full-analysis-scripts/credits.html): References and versions of used packages 
+
+## Summary
+
+To efficiently navigate, humans create cognitive maps of their environment. Spatially tuned cells in the hippocampus are considered to be the neural substrates of these cognitive maps. Particularly, the hippocampus is thought to support boundary-dependent spatial representations. While the mechanisms of boundary-dependent spatial memory have been extensively investigated in adults, little is known about its development. It is not fully developed at age 10 and it is unknown how the development continues beyond this age. In contrast, learning positions relative to local landmarks, which recruits the striatum, has been observed to reach adult-like levels by 6 year. To investigate the developmental trajectory of boundary-dependent relative to landmark-dependent spatial memory between age 8 and 15, an online experiment was conducted in which children learnt locations of four objects within a virtual circular arena. Their spatial memory was tested throughout four blocks between which an intra-maze landmark and two objects tethered to it moved. Participants (N=36) performed above chance in the first block and after landmark movement followed the correct cue, i.e. boundary or landmark, of each object in order to find their locations. Age was a significant predictor of error in location. However, no difference between the developmental trajectory of landmark-dependent and boundary-dependent spatial memory was found. This contradicts previous literature and should be investigated further in studies with larger sample size and more controlled conditions during data collection.

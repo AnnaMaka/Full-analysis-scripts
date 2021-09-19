@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Packages used for data analysis
 
-```{r}
+```{r, warning=FALSE}
 library(lme4)
 library(sjPlot)
 library(tidyverse)
@@ -1757,3 +1757,4 @@ used_pkgs[ref_line+1] <- ""
 ```
 
 `r  paste(used_pkgs, collapse = '\n')`
+

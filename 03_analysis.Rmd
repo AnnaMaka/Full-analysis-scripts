@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Packages used for data analysis
 
-```{r}
+```{r, warning=FALSE}
 library(here)
 library(tidyverse)
 library(broom)
@@ -40,7 +40,7 @@ Functions written for this analysis
 ```{r}
 #function circleFun() generates locations of 100 points that are in shape of circle
 #used for mapping out the arena in graphs
-circleFun <- function(center = c(0,0), r = 27.5, npoints = 100){
+circleFull <- function(center = c(0,0), r = 27.5, npoints = 100){
     tt <- seq(0,2*pi,length.out = npoints)
     xx <- center[1] + r * cos(tt)
     yy <- center[2] + r * sin(tt)
@@ -108,8 +108,8 @@ for (i_point in 1:1000){
 #final used data
 outside <- filter(XY, outside == TRUE) #creating separate dataframe for locations that are further from the object than the distance error
 inside <- filter(XY, outside == FALSE) #creating separate dataframe for locations that are closer to the object than the distance error
-littleCircle <- circleFun(center=c(graph_sub$objX[10],graph_sub$objY[10] ), r=graph_sub$error[10]) #circle dividing closer/further locations
-circle <- circleFun() #arena border visualization 
+littleCircle <- circleFull(center=c(graph_sub$objX[10],graph_sub$objY[10] ), r=graph_sub$error[10]) #circle dividing closer/further locations
+circle <- circleFull() #arena border visualization 
 
 #graph
 mem_score <- ggplot(circle, aes(x, y)) +
@@ -202,6 +202,8 @@ age <- Sum_all %>%
   group_by(ID, age) %>%
   summarise(n = n(), .groups="drop")
 
+age_mean <- summarise(age, mean = mean(age), sd=sd(age))
+
 age_graph <- ggplot(age, aes(x=age)) + 
   geom_bar(fill=scico(1, palette="acton", begin=0.8)) +
   theme_cowplot() +
@@ -218,6 +220,10 @@ ggsave("age.png", plot=age_graph, units = "cm", width = 8, height = 6, dpi = "re
 
 age_graph
 ```
+
+- mean age: `r age_mean$mean`
+- sd age: `r age_mean$sd`
+
 
 **Reaction Time**
 
@@ -266,6 +272,89 @@ trial_length <- Sum_all %>%
 
 The average trial length was `r round(trial_length$mean, 3)` seconds (sd = `r round(trial_length$sd, 3)`).
 
+```{r, include=FALSE}
+i_sub = subjects[5]
+graph_sub <- filter(Sum_all, ID == i_sub & objectTrial == 1)
+locations <- ggplot(data=circleFull(), aes(x, y)) +
+  geom_path() +
+  geom_path(data=circleFull(center=c(graph_sub$landmarkX[1],graph_sub$landmarkY[1] ), r=8),color="red") + 
+  geom_path(data=circleFull(center=c(graph_sub$landmarkX[1],graph_sub$landmarkY[1] ), r=13),color="red") + 
+  geom_point(data=graph_sub, aes(x=landmarkX[1], y=landmarkY[1]), shape=4, color="red", size=3) +
+  geom_path(data=circleFull(r=14.5), color="blue") + 
+  geom_path(data=circleFull(r=19.5), color="blue") + 
+  geom_point(data=graph_sub, aes(x=objX, y=objY, color=cue)) +
+  scale_color_manual(values = c("red", "blue"), labels=c("Landmark", "Boundary")) + 
+  theme_cowplot() + 
+  theme(#spect.ratio = 1,
+        axis.title = element_blank(),
+        axis.text = element_text(size=10),
+        plot.margin = margin(l = 0.5, unit="cm")) +
+  labs(title="Restrictions of locations of the objects", color="Cue")
+
+ggsave("location_restrictions.png", plot=locations, units = "cm", width = 10, height = 9, 
+       dpi = "retina", device = "png", path = here("figures"))
+
+locations
+```
+
+```{r, include=FALSE}
+i_sub = subjects[5]
+graph_sub <- filter(Sum_all, ID == i_sub & miniblock==1)
+blocks <- ggplot(data=circleFull(), aes(x, y)) +
+  geom_path() +
+  geom_path(data=circleFull(center=c(60,0))) + 
+  geom_path(data=circleFull(center=c(120,0))) + 
+  geom_path(data=circleFull(center=c(180,0))) + 
+  geom_point(data=graph_sub, aes(x=landmarkX[5]+60, y=landmarkY[5]), shape=4, color="red", size=2) +
+  geom_point(data=graph_sub, aes(x=landmarkX[9]+120, y=landmarkY[9]), shape=4, color="red", size=2) +
+  geom_point(data=graph_sub, aes(x=landmarkX[13]+180, y=landmarkY[13]), shape=4, color="red", size=2) +
+  geom_point(data=graph_sub, aes(x=landmarkX[1], y=landmarkY[1]), shape=4, color="red", size=2) +
+  geom_point(data=graph_sub %>% filter(block==1), aes(x=objX, y=objY, color=cue)) +
+  geom_point(data=graph_sub %>% filter(block==2), aes(x=objX+60, y=objY, color=cue)) +
+  geom_point(data=graph_sub %>% filter(block==3), aes(x=objX+120, y=objY, color=cue)) +
+  geom_point(data=graph_sub %>% filter(block==4), aes(x=objX+180, y=objY, color=cue)) +
+  scale_color_manual(values = c("red", "blue"), labels=c("Landmark", "Boundary")) + 
+  theme_blank() + 
+  theme(#aspect.ratio = 0.23,
+        axis.title = element_blank(),
+        axis.text.y = element_blank(),
+        axis.text.x = element_text(),
+        title = element_text(size=10, face="bold"),
+        legend.position = "none") +
+  labs(title="Locations of the objects throughout the experiment", color="Cue") +
+  scale_x_continuous(breaks = c(0, 60, 120, 180), labels = c("Block 1", "Block 2", "Block 3", "Block 4"))
+
+ggsave("location_blocks.png", plot=blocks, units = "cm", width = 15.9, height = 6, 
+       dpi = "retina", device = "png", path = here("figures"))
+
+blocks
+```
+
+```{r. include=FALSE}
+layout <- "
+AAAA####
+AAAA####
+AAAA####
+AAAA####
+AAAA####
+BBBBBBBB
+BBBBBBBB
+BBBBBBBB
+"
+
+locs <- locations + blocks +
+  plot_layout(design=layout) &
+  theme(plot.title = element_text(size=12, face = "italic"),
+        axis.text = element_text(size=10),
+        legend.title = element_text(size=12),
+        plot.tag = element_text(vjust=1)) &
+  plot_annotation(tag_levels = 'A')
+
+ggsave("locations.png", plot=locs, units = "cm", width = 15.9, height = 12.4, 
+       dpi = "retina", device = "png", path = here("figures") )
+
+locs
+```
 
 ## Block 1 Performance
 
@@ -457,9 +546,9 @@ distance_other
 To test this, we ran paired t-test which showed that on average there is a difference between these 2 distances.
 
 ```{r distance to incorrect objects vs the cued object t-test}
-dist_stats <- t.test(summaryBlock1$distanceOther, summaryBlock1$distanceTrue, paired = TRUE) %>% tidy()
+dist_stats <- t.test(summaryBlock1$distanceTrue, summaryBlock1$distanceOther, paired = TRUE) %>% tidy()
 
-d <- cohen.d(summaryBlock1$distanceOther, summaryBlock1$distanceTrue, paired = TRUE) 
+d <- cohen.d(summaryBlock1$distanceTrue, summaryBlock1$distanceOther, paired = TRUE) 
 
 dist_stats$d <- d$estimate
 dist_stats$dCI_low <- d$conf.int[[1]]
@@ -559,16 +648,16 @@ relativeInf_graph <- ggplot(data=graph_sub) +
   geom_point(aes(x=landmarkCuePosX, y=landmarkCuePosY, color="Location Predicted by Landmark"), size = 2.5) +
   # line visualizing the distance error (between recalled location and landmark-predicted location)
   geom_segment(aes(x=remLocX, y=remLocY, xend= landmarkCuePosX, yend=landmarkCuePosY, 
-                                   color="Location Predicted by Landmark"), alpha=.5) +
+                                   color="Location Predicted by Landmark"), size=0.8) +
   # adding dL label
-  annotate("text", label="dL", x=-7.8, y=-9.5, size=4, color="#C6F1B1", fontface =2) +
+  annotate("text", label="dL", x=-7.9, y=-8.5, size=4, color="#C6F1B1", fontface =2) +
   # location predicted by boundary
   geom_point(aes(x=boundaryCuePosX, y=boundaryCuePosY, color="Location Predicted by Boundary"), size = 2.5) +
   # line visualizing the distance error (between recalled location and true location)
   geom_segment(aes(x=boundaryCuePosX, y=boundaryCuePosY, xend= remLocX, yend= remLocY,
-                                   color="Location Predicted by Boundary"), alpha=.5) +
+                                   color="Location Predicted by Boundary"), alpha=.7 , size=0.8) +
   # adding dB label
-  annotate("text", label="dB", x=10, y=3, size=4, color="#592758", fontface =2) +
+  annotate("text", label="dB", x=10.5, y=3, size=4, color="#592758", fontface =2) +
   #recalled location
   geom_point(aes(x=remLocX, y=remLocY, color = "Remembered Object Location"), size = 2.5) +
   #landmark location 
@@ -576,7 +665,7 @@ relativeInf_graph <- ggplot(data=graph_sub) +
   annotate("text", label="Landmark", x= -16, y = -3.5, size=3.5, color= "#94A98F") +
   
   # creating arena boundary
-  geom_path(data=circle, aes(x, y)) +
+  geom_path(data=circleFull(), aes(x, y)) +
   # aesthetical changes
   theme_cowplot() +
   theme(aspect.ratio=1, 

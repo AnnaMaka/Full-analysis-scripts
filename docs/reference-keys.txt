@@ -1,4 +1,6 @@
-experiment-overview
+overview
+contents
+summary
 randomisation-script
 set-up
 assigning-dependency-and-generating-objects-locations
@@ -21,8 +23,6 @@ exclusion-criteria
 timeout-sessions
 incomplete-datasets
 descriptives
-block-1-performance
-recalled-locations
 memory-score
 distance-from-remembered-locations-to-other-locations
 cue-differences
@@ -41,7 +41,7 @@ set-up-2
 exclusion-criteria-1
 timeout-session
 descriptives-1
-block-1-performance-1
+block-1-performance
 raw-angle-error-visualization
 angle-error-stats
 cue-differences-1

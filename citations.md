@@ -1,6 +1,7 @@
 -   base (R Core Team, 2020)
 -   grateful (Rodríguez-Sánchez and Hutchins, 2020)
 -   circular (Agostinelli and Lund, 2017)
+-   reticulate (Ushey et al., 2021)
 -   Cairo (Urbanek and Horner, 2020)
 -   patchwork (Pedersen, 2020)
 -   ggsignif (Constantin and Patil, 2021)
@@ -24,7 +25,6 @@
 -   ggplot2 (Wickham, 2016)
 -   tidyverse (Wickham et al., 2019)
 -   here (Müller, 2020)
--   reticulate (Ushey et al., 2021)
 
 References
 ----------
