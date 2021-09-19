@@ -10,17 +10,17 @@ output:
 
 # Overview
 
-This website serves as a supplementary information for my MSci placement project. It contains as a complete code documentation of my analysis and partial methods documentation including locations generation script.
+This website serves as a supplementary information for my MSci placement project. It contains a complete code documentation of my analysis and partial methods documentation including locations generation script.
 
 ## Contents
 
-1.[Overview](https://annamaka.github.io/Full-analysis-scripts/): General information about the contents of this website and abstract
-2.[Randomisation script](https://annamaka.github.io/Full-analysis-scripts/randomisation-script.html): Script generating the individual input files containing cue assignment and location generation  
-3.[Data Preparation](https://annamaka.github.io/Full-analysis-scripts/data-preparation.html): Raw data tidying and calculations of many analysis variables
-4.[Analysis](https://annamaka.github.io/Full-analysis-scripts/analysis.html): Positional memory analysis 
-5.[Angle Estimation Analysis](https://annamaka.github.io/Full-analysis-scripts/angle-estimation-analysis.html): Pointing analysis
-6.[Summary tables and graphs](https://annamaka.github.io/Full-analysis-scripts/summary-tables-and-graphs.html): Contains all tables and graphs that are compiled for positional memory and pointing
-7.[Credit](https://annamaka.github.io/Full-analysis-scripts/credits.html): References and versions of used packages 
+1. [Overview](https://annamaka.github.io/Full-analysis-scripts/): General information about the contents of this website and abstract  
+2. [Randomisation script](https://annamaka.github.io/Full-analysis-scripts/randomisation-script.html): Script generating the individual input files containing cue assignment and location generation    
+3. [Data Preparation](https://annamaka.github.io/Full-analysis-scripts/data-preparation.html): Raw data tidying and calculations of many analysis variables  
+4. [Analysis](https://annamaka.github.io/Full-analysis-scripts/analysis.html): Positional memory analysis   
+5. [Angle Estimation Analysis](https://annamaka.github.io/Full-analysis-scripts/angle-estimation-analysis.html): Pointing analysis  
+6. [Summary tables and graphs](https://annamaka.github.io/Full-analysis-scripts/summary-tables-and-graphs.html): Contains all tables and graphs that are compiled for positional memory and pointing  
+7. [Credit](https://annamaka.github.io/Full-analysis-scripts/credits.html): References and versions of used packages  
 
 ## Summary
 

@@ -330,7 +330,7 @@ ggsave("location_blocks.png", plot=blocks, units = "cm", width = 15.9, height = 
 blocks
 ```
 
-```{r. include=FALSE}
+```{r, include=FALSE}
 layout <- "
 AAAA####
 AAAA####
@@ -355,6 +355,8 @@ ggsave("locations.png", plot=locs, units = "cm", width = 15.9, height = 12.4,
 
 locs
 ```
+
+
 
 ## Block 1 Performance
 
