@@ -9,7 +9,7 @@ for-stimulus-objects
 for-landmark
 visualisation-of-feedback-levels
 data-preparation
-setup
+set-up-1
 summary-and-angle-files
 trajectory-files
 memory-scores
@@ -18,7 +18,7 @@ based-on-1000-locations-taken-from-the-participants-trajectory
 saving-the-compiled-dataset
 analysis
 hypothesis
-set-up-1
+set-up-2
 exclusion-criteria
 timeout-sessions
 incomplete-datasets
@@ -39,7 +39,7 @@ relative-influence-1
 cue-dissonance
 distance-error
 angle-estimation-analysis
-set-up-2
+set-up-3
 exclusion-criteria-1
 timeout-session
 descriptives-1

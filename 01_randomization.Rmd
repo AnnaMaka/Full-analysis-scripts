@@ -10,7 +10,7 @@ output:
 
 # Randomisation script 
 
-## Set Up
+## Set up
 
 ```{r}
 # import R packages 

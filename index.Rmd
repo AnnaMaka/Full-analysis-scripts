@@ -1,6 +1,6 @@
 ---
 title: "Data Preparation and Analysis"
-author: "2333622M"
+author: "Anna Makova"
 date: "19/09/2021"
 site: bookdown::bookdown_site
 documentclass: book

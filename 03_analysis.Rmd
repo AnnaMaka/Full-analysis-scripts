@@ -172,8 +172,8 @@ Sum_all <- filter(Sum_all, error != -1)
 
 - number of timeout trials: `r nrow(timeout)`
 - number of participants with timeout trials: `r length(unique(timeout$ID))`
-- average number of timeout trials per participant with timeout trials: `r round(nrow(timeout)/length(unique(timeout$ID)), 3)` (sd = )
-- average number of timeout trials per participant: `r round(nrow(timeout)/length(subjects), 3)` (sd = )
+- average number of timeout trials per participant with timeout trials: `r round(nrow(timeout)/length(unique(timeout$ID)), 3)` 
+- average number of timeout trials per participant: `r round(nrow(timeout)/length(subjects), 3)` 
 
 
 ## Incomplete datasets
@@ -213,9 +213,9 @@ age_graph <- ggplot(age, aes(x=age)) +
   labs(x="Age", y="Count", title="Distribution of age") 
 
 #saving the graph as pdf and png 
-ggsave("age.pdf", plot=age_graph, units = "cm", width = 8, height = 6, dpi = "retina", 
+ggsave("age.pdf", plot=age_graph, units = "cm", width = 11, height = 8.5, dpi = "retina", 
        device = cairo_pdf, path = here("figures"))
-ggsave("age.png", plot=age_graph, units = "cm", width = 8, height = 6, dpi = "retina", 
+ggsave("age.png", plot=age_graph, units = "cm", width = 11, height = 8.5, dpi = "retina", 
        device = "png", path = here("figures"))
 
 age_graph
